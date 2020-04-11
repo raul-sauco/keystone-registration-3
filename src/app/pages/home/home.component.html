@@ -1,0 +1,10 @@
+<mat-grid-list [cols]="columns" rowHeight="4:3"
+  gutterSize="1rem" (window:resize)="onResize($event)">
+  <mat-grid-tile *ngFor="let card of cards; index as i;">
+    <mat-card class="home-presentation-card">
+      <img mat-card-image [src]="url + card.image" [alt]="card.image">
+      <mat-card-header>{{ card.title }}</mat-card-header>
+      <mat-card-content>{{ card.content }}</mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
