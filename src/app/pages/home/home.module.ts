@@ -5,6 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -12,7 +13,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     CommonModule,
     HomeRoutingModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    TranslateModule
   ]
 })
 export class HomeModule { }
