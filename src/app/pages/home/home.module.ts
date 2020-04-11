@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TranslateModule } from '@ngx-translate/core';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -14,7 +15,8 @@ import { TranslateModule } from '@ngx-translate/core';
     HomeRoutingModule,
     MatCardModule,
     MatGridListModule,
-    TranslateModule
+    TranslateModule,
+    MarkdownModule.forChild()
   ]
 })
 export class HomeModule { }
