@@ -12,6 +12,25 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent {
 
   title = 'Keystone Adventures';
+  auth = null;
+
+  public appPages = [
+    {title: 'HOME', url: '/home', icon: 'home'},
+    {title: 'ITINERARY', url: '/itinerary', icon: 'list'},
+    {title: 'PACKING_LIST', url: '/packing-list', icon: 'work'},
+    {title: 'GUIDES', url: '/guides', icon: 'contacts'},
+    {title: 'FAQ', url: '/faq', icon: 'chatbubbles'},
+    {title: 'DOCUMENTS', url: '/documents', icon: 'document'}
+  ];
+
+  public policyPages = [
+    {title: 'WAIVER', url: '/waiver', icon: 'paper'},
+    {title: 'PRIVACY_POLICY', url: '/privacy-policy', icon: 'glasses'}
+  ];
+
+  public mePages = [
+    {title: 'PERSONAL_INFORMATION', url: '/personal-info', icon: 'person'}
+  ];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

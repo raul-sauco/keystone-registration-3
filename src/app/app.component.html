@@ -1,5 +1,6 @@
-
+<!--App Component HTML file. App bar and sidebar menu, render router outlet on the rest -->
 <mat-toolbar id="main-header" color="primary">
+
   <button
     type="button"
     aria-label="Toggle sidenav"
@@ -8,25 +9,61 @@
     *ngIf="isHandset$ | async">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
+
   <span>{{ title }}</span>
+
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
+
   <mat-sidenav #drawer class="sidenav" fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+      [opened]="(isHandset$ | async) === false"
+  >
+
     <mat-toolbar>{{ 'MENU' | translate }}</mat-toolbar>
+
     <mat-nav-list>
-      <a mat-list-item routerLink="/home">
-        <mat-icon color="accent">home</mat-icon>
-        {{ 'HOME' | translate}}
+
+      <a mat-list-item *ngFor="let page of appPages; last as last" [routerLink]="page.url">
+        <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
+        <p matLine>{{ page.title | translate | uppercase }}</p>
+        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
       </a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+
+      <!-- User Info pages -->
+      <h3 matSubheader>{{ 'ME' | translate | uppercase }}</h3>
+
+      <a mat-list-item routerLink="/logout" *ngIf="auth">
+        <mat-icon matListIcon color="primary">logout</mat-icon>
+        <p matLine>{{ 'LOGOUT' | translate | uppercase }} ({{ auth.credentials.userName }})</p>
+        <mat-divider [inset]="true"></mat-divider>
+      </a>
+
+      <a mat-list-item *ngFor="let page of mePages; last as last" [routerLink]="page.url">
+        <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
+        <p matLine>{{ page.title | translate | uppercase }}</p>
+        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+      </a>
+
+      <!-- Company Policy pages -->
+      <h3 matSubheader>{{ 'POLICY' | translate | uppercase }}</h3>
+
+      <a mat-list-item *ngFor="let page of policyPages; last as last" [routerLink]="page.url">
+        <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
+        <p matLine>{{ page.title | translate | uppercase }}</p>
+        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+      </a>
+
     </mat-nav-list>
+
   </mat-sidenav>
+
   <mat-sidenav-content>
+
     <router-outlet></router-outlet>
+
   </mat-sidenav-content>
+
 </mat-sidenav-container>
