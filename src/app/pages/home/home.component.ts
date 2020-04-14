@@ -9,7 +9,7 @@ import { GlobalsService } from 'src/app/local/globals.service';
 export class HomeComponent implements OnInit {
 
   url: string;
-  columns: number = 1;  // Mobile first
+  columns = 1;  // Mobile first
 
   cards = [
     {
@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
    *
    * @param width The width of the container
    */
-  calculateColumns (width) {
+  calculateColumns(width: number) {
     if (width < 768) { return 1; }
     if (width < 1200) { return 2; }
     return 3;
