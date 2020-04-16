@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,8 @@ export class AppComponent {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private logger: NGXLogger
     ) {
       this.initTranslate();
     }
@@ -67,8 +69,7 @@ export class AppComponent {
       this.translate.use('en'); // Set your language here
     }
 
-    // todo delete the next line after tests
-    // this.translate.use('zh-cmn-Hans');
+    this.logger.trace(`TranslateService language set to "${this.translate.currentLang}"`);
 
   }
 

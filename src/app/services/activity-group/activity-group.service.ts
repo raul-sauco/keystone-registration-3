@@ -4,6 +4,7 @@ import { ActivityGroup } from 'src/app/models/activityGroup';
 import { Subject } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { HttpHeaders } from '@angular/common/http';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class ActivityGroupService {
 
   constructor(
     private api: ApiService,
-    private auth: AuthService
+    private auth: AuthService,
+    private logger: NGXLogger
   ) { }
 
   /**
@@ -64,7 +66,7 @@ export class ActivityGroupService {
         if (this.api.hasNextPage(resp.headers)) {
           this.fetchActivityGroupBatch(this.api.nextPageUrl(resp.headers), null);
 
-          console.log('Fetching next ag page at: ' + this.api.nextPageUrl(resp.headers));
+          this.logger.debug('Fetching next ag page at: ' + this.api.nextPageUrl(resp.headers));
 
         } else {
 
@@ -83,7 +85,7 @@ export class ActivityGroupService {
    */
   addActivityGroups(activityGroups: any): void {
 
-    console.log(`Adding ${activityGroups.length} activity groups to provider`);
+    this.logger.debug(`Adding ${activityGroups.length} activity groups to provider`);
 
     activityGroups.forEach(ag => {
 

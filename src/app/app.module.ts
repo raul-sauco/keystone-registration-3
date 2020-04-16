@@ -16,6 +16,8 @@ import { MatListModule } from '@angular/material/list';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MarkdownModule } from 'ngx-markdown';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { apiurl } from 'src/app/local/globals.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -45,7 +47,12 @@ export function HttpLoaderFactory(http: HttpClient) {
             deps: [HttpClient]
         }
     }),
-    MarkdownModule.forRoot({ loader: HttpClient })
+    MarkdownModule.forRoot({ loader: HttpClient }),
+    LoggerModule.forRoot({
+      serverLoggingUrl: (environment.production ? apiurl.production : apiurl.development) + 'portal-logs',
+      level: environment.production ? NgxLoggerLevel.INFO : NgxLoggerLevel.TRACE,
+      serverLogLevel: NgxLoggerLevel.WARN
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

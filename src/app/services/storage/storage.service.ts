@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
 
-  constructor() { }
+  constructor(
+    private logger: NGXLogger
+  ) { }
 
   /**
    * TODO upgrade to use different types of storage.
@@ -18,7 +21,7 @@ export class StorageService {
 
     return new Promise( (resolve, reject) => {
 
-      if (this.storageAvailable(localStorage)) {
+      if (this.storageAvailable('localStorage')) {
 
         resolve(localStorage.getItem(key));
 
@@ -47,14 +50,14 @@ export class StorageService {
 
     return new Promise( (resolve, reject) => {
 
-      if (this.storageAvailable(localStorage)) {
+      if (this.storageAvailable('localStorage')) {
 
         localStorage.setItem(key, value);
         try {
           localStorage.setItem(key, value);
         } catch (e) {
 
-          console.error(e);
+          this.logger.error(e);
           reject({
             error: true,
             msg: e.message,
@@ -88,7 +91,7 @@ export class StorageService {
 
     return new Promise( (resolve, reject) => {
 
-      if (this.storageAvailable(localStorage)) {
+      if (this.storageAvailable('localStorage')) {
 
         resolve(localStorage.removeItem(key));
 
@@ -108,11 +111,11 @@ export class StorageService {
    * Check availability of WebStorage
    * https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
    *
-   * @param type
+   * @param string type localStorage, cacheStorage, sessionStorage type browser storage.
    */
-  storageAvailable(type) {
+  storageAvailable(type: string) {
 
-    let storage;
+    let storage: any;
     try {
         storage = window[type];
         const x = '__storage_test__';
@@ -120,7 +123,9 @@ export class StorageService {
         storage.removeItem(x);
         return true;
     }
-    catch(e) {
+    catch (e) {
+
+        this.logger.warn(`StorageService: Storage type: "${type}" is not available`);
         return e instanceof DOMException && (
             // everything except Firefox
             e.code === 22 ||
