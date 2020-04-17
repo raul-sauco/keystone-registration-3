@@ -29,9 +29,9 @@ export class ItineraryComponent implements OnInit, OnDestroy {
    * will try to authenticate the user and return activity
    * groups for the trip they are a participant on.
    */
-  ngOnInit(): void {
+  ngOnInit() {
     this.route.paramMap.subscribe(
-      (params: ParamMap) => {
+      async (params: ParamMap) => {
         this.activityGroupService.fetchActivityGroups(params.get('trip-id'));
         this.activityGroup$ = this.activityGroupService
           .activityGroup$.subscribe(resp => {
