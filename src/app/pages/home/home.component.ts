@@ -9,7 +9,7 @@ import { GlobalsService } from 'src/app/local/globals.service';
 export class HomeComponent implements OnInit {
 
   url: string;
-  columns = 1;  // Mobile first
+  columns = 1;
 
   cards = [
     {

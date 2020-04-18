@@ -1,2 +1,18 @@
-.home-presentation-card { width: 100%; }
-.grid-container { padding: 40px; }
+#home-slides-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.home-presentation-card {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+
+  @media only screen and (min-width: 760px) {
+    width: 50%;
+  }
+
+  @media only screen and (min-width: 1440px) {
+    width: calc(100%/3);
+  }
+}
