@@ -23,7 +23,8 @@
 
     <mat-nav-list>
 
-      <a mat-list-item *ngFor="let page of appPages; last as last" [routerLink]="page.url">
+      <a mat-list-item *ngFor="let page of appPages; last as last"
+        [routerLink]="page.url + ((tripId$ |async) === null ? '' : '/' + (tripId$ | async))">
         <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
         <p matLine>{{ page.title | translate | uppercase }}</p>
         <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
@@ -47,10 +48,15 @@
       <!-- Company Policy pages -->
       <h3 matSubheader>{{ 'POLICY' | translate | uppercase }}</h3>
 
-      <a mat-list-item *ngFor="let page of policyPages; last as last" [routerLink]="page.url">
+      <a mat-list-item *ngFor="let page of policyPages; last as last"
+        [routerLink]="page.url">
+
         <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
+
         <p matLine>{{ page.title | translate | uppercase }}</p>
+
         <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+
       </a>
 
     </mat-nav-list>

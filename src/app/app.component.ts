@@ -1,19 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, delay } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
+import { RouteStateService } from './services/routeState/route-state.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   title = 'Keystone Adventures';
   auth = null;
+  tripId$: Observable<string | null>;
+  tripId: string = null;
 
   public appPages = [
     {title: 'HOME', url: '/home', icon: 'home'},
@@ -42,10 +45,16 @@ export class AppComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private translate: TranslateService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private routeStateService: RouteStateService
     ) {
       this.initTranslate();
     }
+
+  ngOnInit() {
+    // Subscribe to the routeStateService to get updates on the trip ID parameter
+    this.tripId$ = this.routeStateService.tripIdParam$.pipe(delay(0));
+  }
 
   initTranslate() {
 
@@ -71,6 +80,19 @@ export class AppComponent {
 
     this.logger.trace(`TranslateService language set to "${this.translate.currentLang}"`);
 
+  }
+
+  /**
+   * If the user is visualizing one particular trip, add that trip
+   * id parameter to all the links to allow them to navigate trip data.
+   *
+   * @param pageurl the original page without parameters added
+   */
+  getPageUrl(pageurl: string) {
+    if (this.tripId !== null) {
+      return `${pageurl}/${this.tripId}`;
+    }
+    return pageurl;
   }
 
 }

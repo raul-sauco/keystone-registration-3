@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ActivityGroup } from 'src/app/models/activityGroup';
 import { ActivityGroupService } from 'src/app/services/activity-group/activity-group.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RouteStateService } from 'src/app/services/routeState/route-state.service';
 
 @Component({
   selector: 'app-itinerary',
@@ -18,7 +19,8 @@ export class ItineraryComponent implements OnInit, OnDestroy {
   constructor(
     private activityGroupService: ActivityGroupService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private routeStateService: RouteStateService
   ) { }
 
   /**
@@ -37,6 +39,11 @@ export class ItineraryComponent implements OnInit, OnDestroy {
 
       // Ask ActivityGroupService to fetch data
       const tripId = params.get('trip-id');
+
+      if (tripId !== null) {
+        this.routeStateService.updateTripIdParamState(tripId);
+      }
+
       this.activityGroupService.fetchActivityGroups(tripId);
 
       // Subscribe to the ActivityGroupService Subject
