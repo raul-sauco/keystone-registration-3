@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular
 import { GlobalsService } from 'src/app/local/globals.service';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class ApiService {
 
   constructor(
     public http: HttpClient,
-    private globals: GlobalsService
+    private globals: GlobalsService,
+    private logger: NGXLogger
   ) {
     this.url = globals.getApiUrl();
   }
@@ -51,7 +53,7 @@ export class ApiService {
 
     return this.http.get(url, reqOpts)
       .pipe(
-        catchError(this.handleError)
+        catchError(err => this.handleError(err))
       );
   }
 
@@ -98,19 +100,38 @@ export class ApiService {
    * @param HttpErrorResponse error
    */
   private handleError(error: HttpErrorResponse) {
+
+    let msg: string;
+
     if (error.error instanceof ErrorEvent) {
+
       // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
+      msg = `Network error`;
+
     } else {
+
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+      msg = `Server error`;
+
     }
+
+    // Error level logs get sent to the server
+    this.logger.error(
+      `ApiService ${msg}: ${error.error.message}`,
+      {
+        url: error.url,
+        name: error.name,
+        message: error.message,
+        status: error.status,
+        statusText: error.statusText,
+        error,
+        yiiError: error.error
+      }
+    );
+
     // return an observable with a user-facing error message
-    return throwError(
-      'Something bad happened; please try again later.');
+    return throwError(`${msg}; please try again later.`);
   }
 
 }

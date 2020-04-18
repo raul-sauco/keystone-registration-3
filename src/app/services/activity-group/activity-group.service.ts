@@ -25,6 +25,9 @@ export class ActivityGroupService {
     this.eventService.event$.subscribe(data => {
       this.logger.debug(`ActivityGroupService got ${data.length} events from EventService`);
       this.addEventsToActivityGroups(data);
+    }, (err: string) => {
+      this.logger.warn(`ActivityGroupService event observable error: ${err}`);
+      this.activityGroup$.error(err);
     });
   }
 

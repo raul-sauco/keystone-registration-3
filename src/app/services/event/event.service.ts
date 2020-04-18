@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Event } from 'src/app/models/event';
 import { ApiService } from '../api/api.service';
 import { NGXLogger } from 'ngx-logger';
@@ -61,6 +61,10 @@ export class EventService {
           this.event$.next(this.events);
 
         }
+      },
+      (err: any) => {
+        this.logger.warn(`EventService error: ${err}`);
+        this.event$.error(err);
       }
     );
 
