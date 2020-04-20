@@ -2,6 +2,7 @@
 
 export abstract class AbstractPackingListItem {
 
+  // TODO update to not depend on language parameter
   // Store the current language, default en
   lang = 0; // 0 => 'en', 1 => 'zh',
 

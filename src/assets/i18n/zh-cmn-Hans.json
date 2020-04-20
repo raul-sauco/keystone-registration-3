@@ -14,6 +14,7 @@
   "ASKED": "已询问",
   "AUTHENTICATION_FAILURE": "证书错误，请重试",
   "BACK": "返回",
+  "BRING": "带",
   "CANCEL": "取消",
   "CHALLENGE_BY_CHOICE": "Accept and Overcome Challenges",
   "CITIZENSHIP": "国籍",
@@ -29,6 +30,7 @@
   "DOCS": "文件",
   "DOCUMENTS": "文件",
   "DONE": "完成",
+  "DO_NOT_BRING": "不带",
   "DR": {
     "0": "无",
     "1": "其他",
@@ -106,6 +108,7 @@
   "OK": "确定",
   "ONE_STUDENT": "One student",
   "ONE_TEACHER": "One teacher",
+  "OPTIONAL": "可选的",
   "OTHER": "其他",
   "OTHER_MEDICAL_INFORMATION": "其他相关的医疗信息",
   "OUR_GOAL": "Our goal",

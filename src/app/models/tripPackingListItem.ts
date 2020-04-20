@@ -81,6 +81,17 @@ export class TripPackingListItem extends AbstractPackingListItem {
   }
 
   /**
+   * Returns the order property value if not empty, otherwise the
+   * item.order property value if not empty, otherwise null.
+   */
+  getOrder() {
+    if (this.order !== null) {
+      return this.order;
+    }
+    return this.item.order;
+  }
+
+  /**
    * Return the css class corresponding to the item bring value.
    */
   getBringClass() {
@@ -112,11 +123,11 @@ export class TripPackingListItem extends AbstractPackingListItem {
   /**
    * Returns the best i18n fit for the required attribute.
    */
-  private geti18nAttribute(name: string) {
+  geti18nAttribute(name: string, lang?: string) {
 
     let localizedName = '';
 
-    if (this.lang === 1) {
+    if (lang && lang.indexOf('zh') !== -1) {
       localizedName = name + 'Zh';
       const val = this.getAttribute(localizedName);
       if (val !== null) {

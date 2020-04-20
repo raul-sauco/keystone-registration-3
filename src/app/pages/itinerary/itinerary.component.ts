@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ActivityGroup } from 'src/app/models/activityGroup';
 import { ActivityGroupService } from 'src/app/services/activity-group/activity-group.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RouteStateService } from 'src/app/services/routeState/route-state.service';
+import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 
 @Component({
   selector: 'app-itinerary',
@@ -41,7 +41,15 @@ export class ItineraryComponent implements OnInit, OnDestroy {
       const tripId = params.get('trip-id');
 
       if (tripId !== null) {
-        this.routeStateService.updateTripIdParamState(tripId);
+        this.routeStateService.tripIdParam$.subscribe((id: string) => {
+
+          // If trip-ids are different update them
+          if (tripId !== id) {
+
+            this.routeStateService.updateTripIdParamState(tripId);
+
+          }
+        });
       }
 
       this.activityGroupService.fetchActivityGroups(tripId);

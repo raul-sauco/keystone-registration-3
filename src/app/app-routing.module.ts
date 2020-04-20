@@ -19,11 +19,22 @@ const routes: Routes = [
       .then(m => m.ItineraryModule)
   },
   {
+    path: 'packing-list',
+    loadChildren: () => import('./pages/packing-list/packing-list.module')
+      .then(m => m.PackingListModule)
+  },
+  {
+    path: 'packing-list/:trip-id',
+    loadChildren: () => import('./pages/packing-list/packing-list.module')
+      .then(m => m.PackingListModule)
+  },
+  {
     path: '',
     redirectTo: 'home',   // TODO redirect based on login state
     pathMatch: 'full',
     // canActivate: [AuthGuard]
-  }
+  },
+  { path: 'packing-list', loadChildren: () => import('./pages/packing-list/packing-list.module').then(m => m.PackingListModule) }
 ];
 
 @NgModule({

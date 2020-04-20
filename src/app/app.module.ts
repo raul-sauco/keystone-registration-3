@@ -16,7 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MarkdownModule } from 'ngx-markdown';
-import { LoggerModule, NgxLoggerLevel, NGXLogger } from 'ngx-logger';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { apiurl } from 'src/app/local/globals.service';
 
 // AoT requires an exported function for factories

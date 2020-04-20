@@ -4,7 +4,7 @@ import { map, shareReplay, delay } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { RouteStateService } from './services/routeState/route-state.service';
+import { RouteStateService } from './services/route-state/route-state.service';
 
 @Component({
   selector: 'app-root',

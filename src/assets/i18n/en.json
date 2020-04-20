@@ -14,6 +14,7 @@
   "ASKED": "Asked",
   "AUTHENTICATION_FAILURE": "Wrong credentials, please try again",
   "BACK": "Back",
+  "BRING": "Bring",
   "CANCEL": "Cancel",
   "CHALLENGE_BY_CHOICE": "Accept and Overcome Challenges",
   "CITIZENSHIP": "Citizenship",
@@ -29,6 +30,7 @@
   "DOCS": "Docs",
   "DOCUMENTS": "Documents",
   "DONE": "Done",
+  "DO_NOT_BRING": "Do not bring",
   "DR": {
     "0": "None",
     "1": "Other",
@@ -106,6 +108,7 @@
   "OK": "OK",
   "ONE_STUDENT": "One student",
   "ONE_TEACHER": "One teacher",
+  "OPTIONAL": "Optional",
   "OTHER": "Other",
   "OTHER_MEDICAL_INFORMATION": "Other relevant medical information",
   "OUR_GOAL": "Our goal",
