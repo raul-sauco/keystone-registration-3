@@ -15,7 +15,6 @@ import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
 export class PackingListComponent implements OnInit, OnDestroy {
 
   packingListItem$: Observable<any>;
-  items: TripPackingListItem[] = null;
   itemsBring: TripPackingListItem[] = [];
   itemsOptional: TripPackingListItem[] = [];
   itemsDoNotBring: TripPackingListItem[] = [];

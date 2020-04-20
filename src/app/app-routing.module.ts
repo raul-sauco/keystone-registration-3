@@ -9,6 +9,11 @@ const routes: Routes = [
       .then(m => m.HomeModule)
   },
   {
+    path: 'home/:trip-id',
+    loadChildren: () => import('./pages/home/home.module')
+      .then(m => m.HomeModule)
+  },
+  {
     path: 'itinerary',
     loadChildren: () => import('./pages/itinerary/itinerary.module')
       .then(m => m.ItineraryModule)
@@ -29,12 +34,21 @@ const routes: Routes = [
       .then(m => m.PackingListModule)
   },
   {
+    path: 'guides',
+    loadChildren: () => import('./pages/guides/guides.module')
+      .then(m => m.GuidesModule)
+  },
+  {
+    path: 'guides/:trip-id',
+    loadChildren: () => import('./pages/guides/guides.module')
+      .then(m => m.GuidesModule)
+  },
+  {
     path: '',
     redirectTo: 'home',   // TODO redirect based on login state
     pathMatch: 'full',
     // canActivate: [AuthGuard]
-  },
-  { path: 'packing-list', loadChildren: () => import('./pages/packing-list/packing-list.module').then(m => m.PackingListModule) }
+  }
 ];
 
 @NgModule({

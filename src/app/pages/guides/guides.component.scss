@@ -1,0 +1,32 @@
+.guides-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.guide-item {
+  margin: 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.avatar-container {
+  margin-right: 8px;
+  flex: 0 0 48px;
+  overflow: hidden;
+  img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin: auto;
+  }
+}
+
+.guide-details {
+  flex: 1 1 auto;
+  padding: 8px;
+  border-bottom: 1px solid #CCC;
+}
+
+.guide-nickname {
+  font-weight: bold;
+}
