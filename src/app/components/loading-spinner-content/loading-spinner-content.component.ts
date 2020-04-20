@@ -9,6 +9,8 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 export class LoadingSpinnerContentComponent {
 
   @Input() message = 'LOADING';
+  @Input() diameter = 50;
+  @Input() strokeWidth = 2;
   mode: ProgressSpinnerMode = 'indeterminate';
 
   constructor() { }

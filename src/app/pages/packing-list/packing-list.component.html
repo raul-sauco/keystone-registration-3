@@ -1,4 +1,4 @@
-<mat-tab-group dynamicHeight class="mat-typography">
+<mat-tab-group dynamicHeight class="mat-typography" *ngIf="itemsBring.length; else loading">
   <mat-tab>
 
     <ng-template mat-tab-label>
@@ -71,4 +71,10 @@
 
   </mat-tab>
 </mat-tab-group>
+
+<ng-template #loading>
+
+  <app-loading-spinner-content></app-loading-spinner-content>
+
+</ng-template>
 

@@ -3,7 +3,7 @@ import { ApiService } from '../api/api.service';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { share, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Guide } from 'src/app/models/guide';
 
 @Injectable({

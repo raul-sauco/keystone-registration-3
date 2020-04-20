@@ -5,12 +5,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
 
-  ion-spinner {
-    transform: translateY(-100px);
-  }
-
-  div {
-    transform: translateY(-70px);
-  }
+.loading-message {
+  margin-top: 16px;
 }

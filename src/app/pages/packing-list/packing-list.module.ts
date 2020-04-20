@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MarkdownModule } from 'ngx-markdown';
 
 import { PackingListItemModule } from 'src/app/components/packing-list-item/packing-list-item.module';
+import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { PackingListItemModule } from 'src/app/components/packing-list-item/pack
     MatTabsModule,
     PackingListItemModule,
     TranslateModule,
-    MarkdownModule.forChild()
+    MarkdownModule.forChild(),
+    LoadingSpinnerContentModule
   ]
 })
 export class PackingListModule { }

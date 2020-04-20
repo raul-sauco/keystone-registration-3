@@ -1,5 +1,5 @@
 <!-- Asign the observable result to a variable to avoid multiple HTTP requests -->
-<ul *ngIf="guide$ | async as guides" class="guides-list mat-typography">
+<ul *ngIf="guide$ | async as guides; else loading" class="guides-list mat-typography">
 
   <li
     class="guide-item"
