@@ -14,7 +14,6 @@ export class ItineraryComponent implements OnInit, OnDestroy {
 
   /** used by the template to iterate a collection */
   activityGroups: ActivityGroup[] = null;
-  private activityGroup$;
 
   constructor(
     private activityGroupService: ActivityGroupService,
@@ -55,7 +54,7 @@ export class ItineraryComponent implements OnInit, OnDestroy {
       this.activityGroupService.fetchActivityGroups(tripId);
 
       // Subscribe to the ActivityGroupService Subject
-      this.activityGroup$ = this.activityGroupService
+      this.activityGroupService
           .activityGroup$.subscribe(resp => {
             this.activityGroups = resp;
           },
@@ -78,7 +77,11 @@ export class ItineraryComponent implements OnInit, OnDestroy {
    * Unsubscribe from all active observable subscriptions.
    */
   ngOnDestroy(): void {
-    this.activityGroup$.unsubscribe();
+    /*
+     * TODO unsubscribing from the Subject throws error if
+     * we try to subscribe back on the next ngOnInit call
+     */
+    // this.activityGroupService.activityGroup$.unsubscribe();
   }
 
 }

@@ -14,7 +14,6 @@ import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
 })
 export class PackingListComponent implements OnInit, OnDestroy {
 
-  packingListItem$: Observable<any>;
   itemsBring: TripPackingListItem[] = [];
   itemsOptional: TripPackingListItem[] = [];
   itemsDoNotBring: TripPackingListItem[] = [];
@@ -29,6 +28,8 @@ export class PackingListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
+    this.logger.debug('PackingList ngOnInit called');
 
     // Try to find a trip-id parameter
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -110,7 +111,13 @@ export class PackingListComponent implements OnInit, OnDestroy {
    * Clean up
    */
   ngOnDestroy() {
-    this.packingListService.item$.unsubscribe();
+
+    this.logger.debug('PackingList ngOnDestroy called');
+    /*
+     * TODO unsubscribing from the Subject throws error if
+     * we try to subscribe back on the next ngOnInit call
+     */
+    // this.packingListService.item$.unsubscribe();
   }
 
 }
