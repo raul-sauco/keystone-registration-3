@@ -1,0 +1,50 @@
+<!-- Asign the observable result to a variable to avoid multiple HTTP requests -->
+<ul *ngIf="faq$ | async as faqs; else loading" class="faqs-list mat-typography">
+
+  <li
+    class="faq-item"
+    *ngFor="let faq of faqs">
+
+    <div class="question-container">
+      {{ faq.getQuestion()  }}
+    </div>
+
+    <div class="answer-container" *ngIf="faq.getAnswer(); else noAnswer">
+      {{ faq.getAnswer() }}
+    </div>
+
+    <ng-template #noAnswer>
+      <div class="no-answer-container">
+        {{ 'NO_ANSWER_YET' | translate }}
+      </div>
+    </ng-template>
+
+    <div class="faq-stats">
+
+      <span class="faq-asked">
+        {{ ('ASKED' | translate) + ' ' +
+          (faq.getCreatedAt() * 1000 | date: 'mediumDate') }}
+      </span>.
+
+      <span class="faq-answered" *ngIf="faq.getAnswer(); else noAnswerYet">
+        {{ ('ANSWERED' | translate) + ' ' +
+          (faq.getUpdatedAt() * 1000 | date: 'mediumDate') }}
+      </span>
+
+      <ng-template #noAnswerYet>
+        <span class="no-answer-time">
+          {{ 'NO_ANSWER_YET' | translate }}
+        </span>
+      </ng-template>
+
+    </div>
+
+  </li>
+
+</ul>
+
+<ng-template #loading>
+
+  <app-loading-spinner-content></app-loading-spinner-content>
+
+</ng-template>

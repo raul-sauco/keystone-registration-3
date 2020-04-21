@@ -102,6 +102,14 @@ export class ActivityGroupService {
 
     this.logger.debug(`Adding ${activityGroups.length} activity groups to provider`);
 
+    /*
+     * TODO look into fetching all events using observables instead of
+     * using array.forEach() Some links:
+     *
+     * https://blog.angular-university.io/angular-http/
+     * https://www.learnrxjs.io/learn-rxjs/operators/combination/forkjoin
+     * https://rxjs.dev/api/index/function/forkJoin
+     */
     activityGroups.forEach(ag => {
 
       this.eventService.fetchEvents(ag.id);

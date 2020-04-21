@@ -1,38 +1,38 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Guide } from 'src/app/models/guide';
+import { map, tap } from 'rxjs/operators';
+import { Faq } from 'src/app/models/faq';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GuideService {
+export class FaqService {
 
   constructor(
     private api: ApiService,
     private logger: NGXLogger
   ) {
-    this.logger.debug('GuideService constructor called');
+    this.logger.debug('FaqService constructor called');
   }
 
   /**
-   * Return an observable that resolves in an array of guides data
-   * participating in the trip passed on as a parameter.
+   * Return an observable that resolves in an array of FAQ
+   * data for the corresponding trip.
    *
-   * @param tripId the id of the trip to fetch for
+   * @param string tripId the id of the trip to fetch for
    */
-  fetchGuides(tripId: string): Observable<Guide[]> {
+  fetchFaq(tripId: string): Observable<Faq[]> {
 
-    this.logger.debug('GuideService fetchGuides called', tripId);
+    this.logger.debug('FaqService fetching FAQs called', tripId);
 
     if (!tripId) {
       return of(null);
     }
 
-    const endpoint = 'guides';
+    const endpoint = 'trip-questions';
     const params = {'trip-id': tripId};
     const options = {
       headers: new HttpHeaders({
@@ -44,12 +44,12 @@ export class GuideService {
 
     // Return an API call
     return this.api.get(endpoint, params, options).pipe(
-      map((res: any) => {
+      map((faqjson: any) => {
 
         // Sort the guides and map them to Guide models
-        return res.sort(
-            (a: any, b: any) => a.nickname.localeCompare(b.nickname)
-          ).map(guideJSON => new Guide(guideJSON) );
+        return faqjson.sort(
+            (a: any, b: any) => a.updated_at - b.updated_at
+          ).map((faq: any) => new Faq(faq) );
 
       })
     );

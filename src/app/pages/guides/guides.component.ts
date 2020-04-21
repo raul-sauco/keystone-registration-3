@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 import { GlobalsService } from 'src/app/local/globals.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Guide } from 'src/app/models/guide';
 
 @Component({
   selector: 'app-guides',
@@ -15,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class GuidesComponent implements OnInit, OnDestroy {
 
-  guide$: Observable<any>;
+  guide$: Observable<Guide[]>;
   tripId: string = null;
   url: string;
   lang: string;

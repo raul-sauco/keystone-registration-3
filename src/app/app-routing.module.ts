@@ -44,6 +44,16 @@ const routes: Routes = [
       .then(m => m.GuidesModule)
   },
   {
+    path: 'faq',
+    loadChildren: () => import('./pages/faq/faq.module')
+      .then(m => m.FaqModule)
+  },
+  {
+    path: 'faq/:trip-id',
+    loadChildren: () => import('./pages/faq/faq.module')
+      .then(m => m.FaqModule)
+  },
+  {
     path: '',
     redirectTo: 'home',   // TODO redirect based on login state
     pathMatch: 'full',
