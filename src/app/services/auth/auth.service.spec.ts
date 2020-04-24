@@ -1,12 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from './auth.service';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [
+        LoggerTestingModule
+      ]
+    });
     service = TestBed.inject(AuthService);
   });
 
