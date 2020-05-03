@@ -33,17 +33,31 @@
       <!-- User Info pages -->
       <h3 matSubheader>{{ 'ME' | translate | uppercase }}</h3>
 
-      <a mat-list-item routerLink="/logout" *ngIf="auth">
-        <mat-icon matListIcon color="primary">logout</mat-icon>
-        <p matLine>{{ 'LOGOUT' | translate | uppercase }} ({{ auth.credentials.userName }})</p>
+      <a mat-list-item *ngIf="auth.auth$ | async; else login" (click)="logout()">
+        <mat-icon matListIcon color="primary">open_in_new</mat-icon>
+        <p matLine>{{ 'LOGOUT' | translate | uppercase }} ({{ auth.getCredentials().userName }})</p>
         <mat-divider [inset]="true"></mat-divider>
       </a>
 
-      <a mat-list-item *ngFor="let page of mePages; last as last" [routerLink]="page.url">
-        <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
-        <p matLine>{{ page.title | translate | uppercase }}</p>
-        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
-      </a>
+      <ng-template #login>
+
+        <a mat-list-item routerLink="/login">
+          <mat-icon matListIcon color="primary">exit_to_app</mat-icon>
+          <p matLine>{{ 'LOGIN' | translate | uppercase }}</p>
+          <mat-divider [inset]="true"></mat-divider>
+        </a>
+
+      </ng-template>
+
+      <ng-container *ngFor="let page of mePages; last as last">
+
+        <a mat-list-item [routerLink]="page.url" *ngIf="page.render">
+          <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
+          <p matLine>{{ page.title | translate | uppercase }}</p>
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        </a>
+
+      </ng-container>
 
       <!-- Company Policy pages -->
       <h3 matSubheader>{{ 'POLICY' | translate | uppercase }}</h3>

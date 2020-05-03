@@ -1,0 +1,29 @@
+<div id="login-form-container">
+
+  <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" id="login-form">
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'USERNAME' | translate }}</mat-label>
+      <input matInput formControlName="username" required type="text">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'PASSWORD' | translate }}</mat-label>
+      <input matInput formControlName="password" type="password" required>
+    </mat-form-field>
+
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"
+      class="progress-bar"></mat-progress-bar>
+
+    <button mat-raised-button color="primary" [disabled]="!loginForm.valid || loading">
+      {{ 'LOGIN' | translate }}
+    </button>
+
+    <div class="navigation-links">
+      <a routerLink="/trip-codes">{{ 'REGISTER' | translate }}</a> /
+      <a routerLink="/forgot-password">{{ 'FORGOT_MY_PASSWORD' | translate }}</a>
+    </div>
+
+  </form>
+
+</div>

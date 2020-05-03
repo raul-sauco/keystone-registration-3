@@ -54,6 +54,11 @@ const routes: Routes = [
       .then(m => m.FaqModule)
   },
   {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module')
+    .then(m => m.LoginModule)
+  },
+  {
     path: '',
     redirectTo: 'home',   // TODO redirect based on login state
     pathMatch: 'full',

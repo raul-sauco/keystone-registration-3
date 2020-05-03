@@ -5,6 +5,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { RouteStateService } from './services/route-state/route-state.service';
+import { AuthService } from './services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,6 @@ import { RouteStateService } from './services/route-state/route-state.service';
 export class AppComponent implements OnInit {
 
   title = 'Keystone Adventures';
-  auth = null;
   tripId$: Observable<string | null>;
   tripId: string = null;
 
@@ -33,7 +34,7 @@ export class AppComponent implements OnInit {
   ];
 
   public mePages = [
-    {title: 'PERSONAL_INFORMATION', url: '/personal-info', icon: 'person'}
+    {title: 'PERSONAL_INFORMATION', url: '/personal-info', icon: 'person', render: this.auth && this.auth.authenticated}
   ];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -46,7 +47,9 @@ export class AppComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private translate: TranslateService,
     private logger: NGXLogger,
-    private routeStateService: RouteStateService
+    private routeStateService: RouteStateService,
+    private router: Router,
+    public auth: AuthService
     ) {
       this.initTranslate();
     }
@@ -78,21 +81,15 @@ export class AppComponent implements OnInit {
       this.translate.use('en'); // Set your language here
     }
 
-    this.logger.trace(`TranslateService language set to "${this.translate.currentLang}"`);
+    this.logger.debug(`TranslateService language set to "${this.translate.currentLang}"`);
 
   }
 
-  /**
-   * If the user is visualizing one particular trip, add that trip
-   * id parameter to all the links to allow them to navigate trip data.
-   *
-   * @param pageurl the original page without parameters added
-   */
-  getPageUrl(pageurl: string) {
-    if (this.tripId !== null) {
-      return `${pageurl}/${this.tripId}`;
-    }
-    return pageurl;
+  /** Logout the current application user */
+  logout() {
+    const username = this.auth.getCredentials().userName;
+    this.auth.logout().then(res => {
+      this.logger.debug(`User ${username} logged out`);
+    });
   }
-
 }
