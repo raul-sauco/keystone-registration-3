@@ -1,0 +1,23 @@
+<ng-container *ngIf="feedback$ | async as items; else loading" class="mat-typography">
+
+  <!-- Use container, later we will change list with charts component -->
+  <ng-container *ngIf="items.length > 0; else noItems">
+    <ul class="feedback-list">
+      <li *ngFor="let item of items">
+        {{ item.id }}
+      </li>
+    </ul>
+  </ng-container>
+
+  <ng-template #noItems>
+    <h1 class="no-items">
+      <mat-icon color="accent">info</mat-icon>
+      {{ 'NO_FEEDBACK_FOR_TRIP' | translate }}
+    </h1>
+  </ng-template>
+
+</ng-container>
+
+<ng-template #loading>
+  <app-loading-spinner-content></app-loading-spinner-content>
+</ng-template>

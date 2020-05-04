@@ -27,8 +27,20 @@
         [routerLink]="page.url + ((tripId$ |async) === null ? '' : '/' + (tripId$ | async))">
         <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
         <p matLine>{{ page.title | translate | uppercase }}</p>
-        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        <mat-divider [inset]="true"></mat-divider>
       </a>
+
+      <!--The next link has an async if and a sync one. cannot use page.render -->
+      <ng-container *ngIf="auth.auth$ | async">
+
+        <a mat-list-item
+          [routerLink]="'/feedback' + ((tripId$ |async) === null ? '' : '/' + (tripId$ | async))">
+          <mat-icon matListIcon color="primary">rate_review</mat-icon>
+          <p matLine>{{ 'FEEDBACK' | translate | uppercase }}</p>
+          <mat-divider [inset]="true"></mat-divider>
+        </a>
+
+      </ng-container>
 
       <!-- User Info pages -->
       <h3 matSubheader>{{ 'ME' | translate | uppercase }}</h3>
@@ -54,7 +66,7 @@
         <a mat-list-item [routerLink]="page.url" *ngIf="page.render | async">
           <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
           <p matLine>{{ page.title | translate | uppercase }}</p>
-          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+          <mat-divider [inset]="true"></mat-divider>
         </a>
 
       </ng-container>
@@ -69,7 +81,7 @@
 
         <p matLine>{{ page.title | translate | uppercase }}</p>
 
-        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        <mat-divider [inset]="true"></mat-divider>
 
       </a>
 

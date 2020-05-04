@@ -4,6 +4,8 @@
 export class Credentials {
   userName: string;
   accessToken: string;
+
+  /** User type 6 for students and 4 for teachers */
   type: number;
   studentId: number;
 

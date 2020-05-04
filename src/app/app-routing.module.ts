@@ -54,6 +54,16 @@ const routes: Routes = [
       .then(m => m.FaqModule)
   },
   {
+    path: 'feedback',
+    loadChildren: () => import('./pages/feedback/feedback.module')
+      .then(m => m.FeedbackModule)
+  },
+  {
+    path: 'feedback/:trip-id',
+    loadChildren: () => import('./pages/feedback/feedback.module')
+      .then(m => m.FeedbackModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module')
     .then(m => m.LoginModule)
