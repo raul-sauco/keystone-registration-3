@@ -51,7 +51,7 @@
 
       <ng-container *ngFor="let page of mePages; last as last">
 
-        <a mat-list-item [routerLink]="page.url" *ngIf="page.render">
+        <a mat-list-item [routerLink]="page.url" *ngIf="page.render | async">
           <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
           <p matLine>{{ page.title | translate | uppercase }}</p>
           <mat-divider [inset]="true" *ngIf="!last"></mat-divider>

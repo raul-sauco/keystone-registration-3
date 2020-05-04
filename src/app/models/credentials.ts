@@ -11,6 +11,6 @@ export class Credentials {
     this.userName     = cred.userName.trim();
     this.accessToken  = cred.accessToken.trim();
     this.type         = cred.type;
-    this.studentId           = cred.studentId;
+    this.studentId    = cred.studentId;
   }
 }

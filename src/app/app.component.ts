@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   ];
 
   public mePages = [
-    {title: 'PERSONAL_INFORMATION', url: '/personal-info', icon: 'person', render: this.auth && this.auth.authenticated}
+    {title: 'PERSONAL_INFORMATION', url: '/personal-info', icon: 'person', render: this.auth.auth$}
   ];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -90,6 +90,8 @@ export class AppComponent implements OnInit {
     const username = this.auth.getCredentials().userName;
     this.auth.logout().then(res => {
       this.logger.debug(`User ${username} logged out`);
+    }).catch(error => {
+      this.logger.warn('AppComponent error logging out', error);
     });
   }
 }

@@ -8,32 +8,30 @@ export class StorageService {
 
   constructor(
     private logger: NGXLogger
-  ) { }
+  ) {
+    this.logger.debug('StorageService constructor');
+  }
 
   /**
    * TODO upgrade to use different types of storage.
    *
    * Get the value for a given key
    * @param key the key the value is indexed by
-   * @returns Returns a promise that resolves to the value found or null
+   * @returns Returns a promise that resolves to the parsed value associated with the key
    */
   get(key: string): Promise<any> {
-
     return new Promise( (resolve, reject) => {
-
       if (this.storageAvailable('localStorage')) {
-
-        resolve(localStorage.getItem(key));
-
+        const stringValue = localStorage.getItem(key);
+        this.logger.debug(`StorageService found value for ${key}: ${stringValue}`);
+        resolve(JSON.parse(stringValue));
       } else {
-
+        this.logger.warn('StorageService.get() warning; localStorage not available in platform');
         reject({
           error: true,
           msg: 'localStorage not available in browser'
         });
-
       }
-
     });
   }
 
@@ -43,21 +41,17 @@ export class StorageService {
    *
    * Set the value for the given key.
    * @param key the key to identify this value
-   * @param value the value for this key
+   * @param value the value to store for this key
    * @returns Returns a promise that resolves when the key and value are set
    */
   set(key: string, value: any): Promise<any> {
-
     return new Promise( (resolve, reject) => {
-
       if (this.storageAvailable('localStorage')) {
-
-        localStorage.setItem(key, value);
+        const stringValue = JSON.stringify(value);
         try {
-          localStorage.setItem(key, value);
+          localStorage.setItem(key, stringValue);
         } catch (e) {
-
-          this.logger.error(e);
+          this.logger.warn('StorageService.set() warning; localStorage error setting value', e);
           reject({
             error: true,
             msg: e.message,
@@ -65,19 +59,16 @@ export class StorageService {
             name: e.name
           });
         }
-
+        this.logger.debug(`StorageService; set ${key}: ${stringValue}`);
         resolve(true);
-
       } else {
-
+        this.logger.warn('StorageService.set() warning; localStorage not available in platform');
         reject({
           error: true,
           msg: 'localStorage not available in browser'
         });
-
       }
     });
-
   }
 
   /**
@@ -88,22 +79,17 @@ export class StorageService {
    * @returns Returns a promise that resolves when the value is removed
    */
   remove(key: string): Promise<any> {
-
     return new Promise( (resolve, reject) => {
-
       if (this.storageAvailable('localStorage')) {
-
+        this.logger.debug(`StorageService; removing ${key}`);
         resolve(localStorage.removeItem(key));
-
       } else {
-
+        this.logger.warn('StorageService.remove() warning; localStorage not available in platform');
         reject({
           error: true,
           msg: 'localStorage not available in browser'
         });
-
       }
-
     });
   }
 
