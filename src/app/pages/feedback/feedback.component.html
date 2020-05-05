@@ -1,13 +1,46 @@
-<ng-container *ngIf="feedback$ | async as items; else loading" class="mat-typography">
+<ng-container *ngIf="feedback$ | async as feedback; else loading">
 
-  <!-- Use container, later we will change list with charts component -->
-  <ng-container *ngIf="items.length > 0; else noItems">
-    <ul class="feedback-list">
-      <li *ngFor="let item of items">
-        {{ item.id }}
-      </li>
-    </ul>
-  </ng-container>
+  <mat-tab-group dynamicHeight
+    *ngIf="feedback.count > 0; else noItems">
+
+    <mat-tab [label]="'GRAPHS' | translate">
+
+      <div class="charts-container">
+        <ng-container *ngFor="let chart of feedback.charts">
+          <div class="chart-container">
+            <ngx-charts-pie-chart
+              scheme="cool"
+              [results]="chart.data"
+              [gradient]="true"
+              [legend]="true"
+              [legendTitle]="chart.label"
+              legendPosition="top"
+              [labels]="true"
+              [trimLabels]="false"
+              [doughnut]="false"
+              >
+            </ngx-charts-pie-chart>
+          </div>
+        </ng-container>
+      </div>
+
+    </mat-tab>
+
+    <mat-tab [label]="'DETAIL' | translate">
+
+      <div *ngFor="let item of feedback.questions"
+        class="question-container material-typography">
+        <h2>{{ item.question }}</h2>
+        <ol class="answer-list">
+          <li *ngFor="let answer of item.answers" class="answer-container">
+            {{ answer }}
+          </li>
+        </ol>
+      </div>
+
+    </mat-tab>
+
+  </mat-tab-group>
 
   <ng-template #noItems>
     <h1 class="no-items">

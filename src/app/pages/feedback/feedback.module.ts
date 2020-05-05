@@ -6,6 +6,8 @@ import { FeedbackComponent } from './feedback.component';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { MatIconModule } from '@angular/material/icon';
     FeedbackRoutingModule,
     LoadingSpinnerContentModule,
     TranslateModule,
-    MatIconModule
+    MatIconModule,
+    MatTabsModule,
+    NgxChartsModule
   ]
 })
 export class FeedbackModule { }

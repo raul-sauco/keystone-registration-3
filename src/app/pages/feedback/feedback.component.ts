@@ -32,9 +32,9 @@ export class FeedbackComponent implements OnInit {
 
       // If the url has a parameter, let RouteStateService handle it
       if (tripId !== null) {
+        // Always update the components trip-id if found in the URL
+        this.tripId = tripId;
         this.routeStateService.tripIdParam$.subscribe((id: string) => {
-          // Always update the components trip-id if found in the URL
-          this.tripId = tripId;
           if (tripId !== id) {
             this.logger.debug(
               `FeedbackComponent OnInit: url param tripId ${tripId} ` +
