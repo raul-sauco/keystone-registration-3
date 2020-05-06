@@ -59,3 +59,7 @@ $ka-theme: mat-light-theme($ka-primary, $ka-accent, $ka-warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($ka-theme);
+
+h1, h2, h3, h4, h5, h6 {
+  color: #2a872c;
+}

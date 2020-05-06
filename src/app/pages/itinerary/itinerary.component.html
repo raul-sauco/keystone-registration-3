@@ -14,7 +14,7 @@
 
           <mat-list-item *ngFor="let event of ag.getFormattedItinerary(d)">
 
-            <h2 matLine>{{ event.getFormattedTimes() }} {{ event.getName() }}</h2>
+            <p matLine>{{ event.getFormattedTimes() }} {{ event.getName() }}</p>
             <p matLine *ngIf="event.getNotes()" class="event-notes" height="fit-contents">
               {{ event.getNotes() }}
             </p>

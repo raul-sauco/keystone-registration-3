@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 
   public policyPages = [
     {title: 'WAIVER', url: '/waiver', icon: 'paper'},
-    {title: 'PRIVACY_POLICY', url: '/privacy-policy', icon: 'glasses'}
+    {title: 'PRIVACY_POLICY', url: '/privacy-policy', icon: 'policy'}
   ];
 
   public mePages = [
