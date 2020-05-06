@@ -33,8 +33,8 @@
       <!--The next link has an async if and a sync one. cannot use page.render -->
       <ng-container *ngIf="auth.auth$ | async">
 
-        <a mat-list-item
-          [routerLink]="'/feedback' + ((tripId$ |async) === null ? '' : '/' + (tripId$ | async))">
+        <a mat-list-item *ngIf="auth.getCredentials().type === 4"
+          routerLink="/feedback">
           <mat-icon matListIcon color="primary">rate_review</mat-icon>
           <p matLine>{{ 'FEEDBACK' | translate | uppercase }}</p>
           <mat-divider [inset]="true"></mat-divider>

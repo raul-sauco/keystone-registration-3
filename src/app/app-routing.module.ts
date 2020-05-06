@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { TeacherGuard } from './guards/teacher.guard';
 
 
 const routes: Routes = [
@@ -56,12 +57,8 @@ const routes: Routes = [
   {
     path: 'feedback',
     loadChildren: () => import('./pages/feedback/feedback.module')
-      .then(m => m.FeedbackModule)
-  },
-  {
-    path: 'feedback/:trip-id',
-    loadChildren: () => import('./pages/feedback/feedback.module')
-      .then(m => m.FeedbackModule)
+      .then(m => m.FeedbackModule),
+    canActivate: [TeacherGuard]
   },
   {
     path: 'login',

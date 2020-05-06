@@ -1,61 +1,46 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { HttpHeaders } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-feedback',
   templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.scss']
+  styleUrls: ['./feedback.component.scss'],
 })
 export class FeedbackComponent implements OnInit {
-
-  tripId: string = null;
   feedback$: Observable<any>;
 
   constructor(
-    private routeStateService: RouteStateService,
-    private route: ActivatedRoute,
     private logger: NGXLogger,
-    private api: ApiService
-  ) { }
+    private api: ApiService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.logger.debug('FeedbackComponent OnInit');
+    if (
+      this.auth.authenticated &&
+      this.auth.getCredentials().accessToken &&
+      this.auth.getCredentials().type === 4
+    ) {
+      this.fetch();
+    } else {
+      this.logger.error(
+        'Called FeedbackComponent OnInit without valid ' +
+          'authentication status. AuthGuard failure?',
+        this.auth.getCredentials()
+      );
 
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      const tripId = params.get('trip-id');
-      this.logger.debug(`FeedbackComponent OnInit: ParamMap tripId: ${tripId}`);
-
-      // If the url has a parameter, let RouteStateService handle it
-      if (tripId !== null) {
-        // Always update the components trip-id if found in the URL
-        this.tripId = tripId;
-        this.routeStateService.tripIdParam$.subscribe((id: string) => {
-          if (tripId !== id) {
-            this.logger.debug(
-              `FeedbackComponent OnInit: url param tripId ${tripId} ` +
-              `does not match RouterStateService param tripId ${id}, updating.`);
-            this.routeStateService.updateTripIdParamState(tripId);
-          }
-          // We should have correct tripId at this point
-          this.fetch();
-        });
-      } else {
-        // No tripId URL parameter, find it on service
-        this.routeStateService.tripIdParam$.subscribe((id: string) => {
-          if (!id) {
-            this.logger.warn('FeedbackComponent warning; RouterStateService did not have a tripId');
-          } else {
-            this.tripId = id;
-            this.fetch();
-          }
-        });
-      }
-    });
+      // Return an empty result set to display the 'No Feedback' message
+      this.feedback$ = of({
+        count: 0,
+        charts: [],
+        questions: [],
+      });
+    }
   }
 
   /**
@@ -64,14 +49,12 @@ export class FeedbackComponent implements OnInit {
   fetch(): void {
     this.logger.debug('FeedbackComponent fetch() called');
     const endpoint = 'feedbacks';
-    const params = {'trip-id': this.tripId};
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        // Authorization: ' Bearer ' + (this.auth.getCredentials().accessToken || '') todo
-      })
+        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+      }),
     };
-
-    this.feedback$ = this.api.get(endpoint, params, options);
+    this.feedback$ = this.api.get(endpoint, null, options);
   }
 }
