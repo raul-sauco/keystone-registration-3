@@ -1,0 +1,58 @@
+.files-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.file-item {
+  margin: 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.icon-container {
+  margin-right: 8px;
+  flex: 0 0 48px;
+  overflow: hidden;
+}
+
+.file-details {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #CCC;
+  height: 64px;
+}
+
+.file-name {
+  flex: 1 1 auto;
+  text-transform: capitalize;
+}
+
+.file-size {
+  margin-right: 8px;
+  color: #666;
+  font-size: small;
+}
+
+.file-download-link {
+  padding-top: 8px;
+}
+
+.no-items, .need-login {
+  margin: 16px;
+  height: calc(100vh - 64px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.no-items mat-icon {
+  margin-right: 8px;
+}
+
+.need-login {
+  h1 { color: inherit; }
+  flex-direction: column;
+}

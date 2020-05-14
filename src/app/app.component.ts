@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     {title: 'PACKING_LIST', url: '/packing-list', icon: 'work'},
     {title: 'GUIDES', url: '/guides', icon: 'contacts'},
     {title: 'FAQ', url: '/faq', icon: 'chatbubbles'},
-    {title: 'DOCUMENTS', url: '/documents', icon: 'document'}
+    {title: 'DOCUMENTS', url: '/documents', icon: 'description'}
   ];
 
   public policyPages = [

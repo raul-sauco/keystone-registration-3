@@ -55,6 +55,11 @@ const routes: Routes = [
       .then(m => m.FaqModule)
   },
   {
+    path: 'documents',
+    loadChildren: () => import('./pages/documents/documents.module')
+    .then(m => m.DocumentsModule)
+  },
+  {
     path: 'feedback',
     loadChildren: () => import('./pages/feedback/feedback.module')
       .then(m => m.FeedbackModule),

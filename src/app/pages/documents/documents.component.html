@@ -1,0 +1,52 @@
+<ng-container *ngIf="!isGuest; else guest">
+
+  <ng-container *ngIf="document$ | async as documents; else loading">
+
+    <ul *ngIf="documents.length > 0; else noItems"
+      class="files-list mat-typography"
+      >
+      <li class="file-item" *ngFor="let doc of documents">
+        <div class="icon-container">
+          <img [src]="url + doc.getIconLink()"
+          alt="{{ doc.getNamei18n() }} icon">
+        </div>
+        <div class="file-details">
+          <div class="file-name">
+            {{ doc.getNamei18n() }}
+          </div>
+          <div class="file-size">
+            {{ doc.getSize() }}
+          </div>
+          <a [href]="url + doc.getDownloadLink()"
+            download="{{ doc.getNamei18n() }}.pdf"
+            class="file-download-link">
+            <mat-icon color="primary">get_app</mat-icon>
+          </a>
+        </div>
+      </li>
+    </ul>
+
+    <ng-template #noItems>
+      <h1 class="no-items mat-typography">
+        <mat-icon color="accent">info</mat-icon>
+        {{ 'NO_DOCUMENTS_FOR_TRIP' | translate }}
+      </h1>
+    </ng-template>
+
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
+  </ng-template>
+
+</ng-container>
+<ng-template #guest>
+  <div class="need-login mat-typography">
+    <h1>
+      {{ 'NEED_TO_LOGIN_TO_ACCESS_CONTENT' | translate }}
+    </h1>
+    <a mat-raised-button routerLink='/login' color="primary">
+      {{ 'LOGIN' | translate }}
+    </a>
+  </div>
+</ng-template>
