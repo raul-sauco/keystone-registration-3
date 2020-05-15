@@ -1,6 +1,5 @@
 <ng-container *ngIf="needsLogin; else app">
-  <!-- TODO Make a component out of this -->
-  Dude, login please
+  <app-login-required-message></app-login-required-message>
 </ng-container>
 <ng-template #app>
   <ng-container *ngIf="activityGroups; else loading">

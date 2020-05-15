@@ -41,12 +41,7 @@
 
 </ng-container>
 <ng-template #guest>
-  <div class="need-login mat-typography">
-    <h1>
-      {{ 'NEED_TO_LOGIN_TO_ACCESS_CONTENT' | translate }}
-    </h1>
-    <a mat-raised-button routerLink='/login' color="primary">
-      {{ 'LOGIN' | translate }}
-    </a>
-  </div>
+  <app-login-required-message
+    message="LOGIN_PAGE_ALLOWS_REGISTRATION"
+  ></app-login-required-message>
 </ng-template>

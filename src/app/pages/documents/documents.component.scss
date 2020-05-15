@@ -38,7 +38,7 @@
   padding-top: 8px;
 }
 
-.no-items, .need-login {
+.no-items {
   margin: 16px;
   height: calc(100vh - 64px);
   width: 100%;
@@ -50,9 +50,4 @@
 
 .no-items mat-icon {
   margin-right: 8px;
-}
-
-.need-login {
-  h1 { color: inherit; }
-  flex-direction: column;
 }
