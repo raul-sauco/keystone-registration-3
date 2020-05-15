@@ -39,18 +39,26 @@ export class ActivityGroupService {
    *
    * @param tripId optional parameter if we don't have a logged in user
    */
-  fetchActivityGroups(tripId = null) {
-
-    // TODO make sure we fetch for an authenticated user or for a given trip, otherwise return error.
-    // TODO fetching without an authenticated user or trip number results in over 1000 requests
+  fetchActivityGroups(tripId: string = null) {
     const endpoint = 'activity-groups';
+    const headers: any = {'Content-Type': 'application/json'};
     let  params = null;
-
+    let fetch = false;
     if (tripId !== null) {
       params = {'trip-id': tripId};
+      fetch = true;
+    } else if (this.auth.authenticated && this.auth.getCredentials().accessToken) {
+      headers.authorization = ' Bearer ' + this.auth.getCredentials().accessToken;
+      fetch = true;
     }
 
-    this.fetchActivityGroupBatch(endpoint, params);
+    if (fetch) {
+      const options = {
+        headers: new HttpHeaders(headers),
+        observe: 'response'
+      };
+      this.fetchActivityGroupBatch(endpoint, params, options);
+    }
   }
 
   /**
@@ -59,17 +67,9 @@ export class ActivityGroupService {
    *
    * @param endpoint request endpoint
    * @param params request parameters
+   * @param options request options; headers, observe
    */
-  fetchActivityGroupBatch(endpoint: string, params: any): void {
-
-    // Options will be the same in requests for other pages
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        // Authorization: ' Bearer ' + (this.auth.getCredentials().accessToken || '') todo
-      }),
-      observe: 'response'
-    };
+  fetchActivityGroupBatch(endpoint: string, params: any, options: any): void {
 
     this.api.get(endpoint, params, options).subscribe(
       (resp: any) => {
@@ -79,7 +79,7 @@ export class ActivityGroupService {
 
         if (this.api.hasNextPage(resp.headers)) {
 
-          this.fetchActivityGroupBatch(this.api.nextPageUrl(resp.headers), null);
+          this.fetchActivityGroupBatch(this.api.nextPageUrl(resp.headers), null, options);
 
           this.logger.debug('Fetching next ag page at: ' + this.api.nextPageUrl(resp.headers));
 

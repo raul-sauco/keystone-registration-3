@@ -49,32 +49,34 @@ export class AuthService {
     this.logger.debug('AuthService.checkAuthenticated called');
     return new Promise<boolean>(
       ((resolve, reject) => {
-
+        // Quick resolve
+        if (this.authenticated) {
+          resolve(true);
+        }
         if (this.credentials !== null && this.credentials.accessToken !== null) {
           this.logger.debug('AuthService.checkAuthenticated(); had credentials: ', this.credentials);
           this.authenticated = true;
           this.auth$.next(this.authenticated);
           resolve(true);
-        } else {
-          this.logger.debug('AuthService.checkAuthenticated(); did not have credentials, checking storage');
-          this.storage.get(this.CREDENTIALS_STORAGE_KEY).then(
-            cred => {
-              if (cred) {
-                this.logger.debug('AuthService.checkAuthenticated(); got credentials from StorageService', cred);
-                this.credentials = new Credentials(cred);
-                this.authenticated = true;
-                this.auth$.next(this.authenticated);
-                resolve(true);
-              } else {
-                this.logger.debug('AuthService.checkAuthenticated(); did not get credentials from StorageService', cred);
-                resolve(false);
-              }
-            }
-          ).catch(error => {
-            this.logger.warn('AuthService.checkAuthenticated(); Error getting credentials from storage', error);
-            reject(error);
-          });
         }
+        this.logger.debug('AuthService.checkAuthenticated(); did not have credentials, checking storage');
+        this.storage.get(this.CREDENTIALS_STORAGE_KEY).then(
+          cred => {
+            if (cred) {
+              this.logger.debug('AuthService.checkAuthenticated(); got credentials from StorageService', cred);
+              this.credentials = new Credentials(cred);
+              this.authenticated = true;
+              this.auth$.next(this.authenticated);
+              resolve(true);
+            } else {
+              this.logger.debug('AuthService.checkAuthenticated(); did not get credentials from StorageService', cred);
+              resolve(false);
+            }
+          }
+        ).catch(error => {
+          this.logger.warn('AuthService.checkAuthenticated(); Error getting credentials from storage', error);
+          reject(error);
+        });
       })
     );
   }

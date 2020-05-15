@@ -10,11 +10,11 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class ApiService {
 
-  url: string;
+  private url: string;
 
   constructor(
     public http: HttpClient,
-    private globals: GlobalsService,
+    globals: GlobalsService,
     private logger: NGXLogger
   ) {
     this.url = globals.getApiUrl();

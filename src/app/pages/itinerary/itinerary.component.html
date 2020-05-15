@@ -1,38 +1,33 @@
-<ng-container *ngIf="activityGroups; else loading">
-
-  <mat-tab-group dynamicHeight id="itinerary-tabs">
-
-    <mat-tab *ngFor="let ag of activityGroups" [label]="ag.name">
-
-      <mat-list>
-
-        <ng-container *ngFor="let d of ag.getOrderedItineraryDates()">
-
-          <h1 matSubheader>{{ d | date:'MMM d' }}</h1>
-
-          <mat-divider></mat-divider>
-
-          <mat-list-item *ngFor="let event of ag.getFormattedItinerary(d)">
-
-            <p matLine>{{ event.getFormattedTimes() }} {{ event.getName() }}</p>
-            <p matLine *ngIf="event.getNotes()" class="event-notes" height="fit-contents">
-              {{ event.getNotes() }}
-            </p>
-
-          </mat-list-item>
-
-        </ng-container>
-
-      </mat-list>
-
-    </mat-tab>
-
-  </mat-tab-group>
-
+<ng-container *ngIf="needsLogin; else app">
+  <!-- TODO Make a component out of this -->
+  Dude, login please
 </ng-container>
-
-<ng-template #loading>
-
-  <app-loading-spinner-content></app-loading-spinner-content>
-
+<ng-template #app>
+  <ng-container *ngIf="activityGroups; else loading">
+    <mat-tab-group dynamicHeight id="itinerary-tabs">
+      <mat-tab *ngFor="let ag of activityGroups" [label]="ag.name">
+        <mat-list>
+          <ng-container *ngFor="let d of ag.getOrderedItineraryDates()">
+            <h1 matSubheader>{{ d | date:'MMM d' }}</h1>
+            <mat-divider></mat-divider>
+            <mat-list-item *ngFor="let event of ag.getFormattedItinerary(d)">
+              <p matLine>
+                {{ event.getFormattedTimes() }} {{ event.getName() }}
+              </p>
+              <p matLine
+                *ngIf="event.getNotes()"
+                class="event-notes"
+                height="fit-contents"
+                >
+                {{ event.getNotes() }}
+              </p>
+            </mat-list-item>
+          </ng-container>
+        </mat-list>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
+  </ng-template>
 </ng-template>

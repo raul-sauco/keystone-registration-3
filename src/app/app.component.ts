@@ -90,6 +90,7 @@ export class AppComponent implements OnInit {
     const username = this.auth.getCredentials().userName;
     this.auth.logout().then(res => {
       this.logger.debug(`User ${username} logged out`);
+      this.router.navigateByUrl('/login');
     }).catch(error => {
       this.logger.warn('AppComponent error logging out', error);
     });
