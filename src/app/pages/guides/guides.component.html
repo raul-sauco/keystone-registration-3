@@ -1,33 +1,26 @@
-<!-- Asign the observable result to a variable to avoid multiple HTTP requests -->
-<ul *ngIf="guide$ | async as guides; else loading" class="guides-list mat-typography">
-
-  <li
-    class="guide-item"
-    *ngFor="let guide of guides">
-
-    <div class="avatar-container">
-      <img [src]="url + 'img/users/40x40/' + guide.getAvatar()"
-        alt="{{ guide.getName(lang) }} profile image">
-    </div>
-
-    <div class="guide-details">
-
-      <header class="guide-nickname">
-        {{ guide.getName(lang)}}
-      </header>
-
-      <div class="guide-bio"
-            [innerHtml]="guide.getBio(lang)">
+<ng-container *ngIf="needsLogin; else app">
+  <app-login-required-message></app-login-required-message>
+</ng-container>
+<ng-template #app>
+  <ul class="guides-list mat-typography"
+    *ngIf="guide$ | async as guides; else loading">
+    <li class="guide-item"
+      *ngFor="let guide of guides">
+      <div class="avatar-container">
+        <img [src]="url + 'img/users/40x40/' + guide.getAvatar()"
+          alt="{{ guide.getName(lang) }} profile image">
       </div>
-
-    </div>
-
-  </li>
-
-</ul>
-
-<ng-template #loading>
-
-  <app-loading-spinner-content></app-loading-spinner-content>
-
+      <div class="guide-details">
+        <header class="guide-nickname">
+          {{ guide.getName(lang)}}
+        </header>
+        <div class="guide-bio"
+              [innerHtml]="guide.getBio(lang)">
+        </div>
+      </div>
+    </li>
+  </ul>
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
+  </ng-template>
 </ng-template>

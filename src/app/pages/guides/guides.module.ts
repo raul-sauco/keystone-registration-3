@@ -5,7 +5,7 @@ import { GuidesRoutingModule } from './guides-routing.module';
 import { GuidesComponent } from './guides.component';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { MarkdownModule } from 'ngx-markdown';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoginRequiredMessageModule } from 'src/app/components/login-required-message/login-required-message.module';
 
 
 @NgModule({
@@ -13,8 +13,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     GuidesRoutingModule,
-    MatSnackBarModule,
     LoadingSpinnerContentModule,
+    LoginRequiredMessageModule,
     MarkdownModule.forChild()
   ]
 })
