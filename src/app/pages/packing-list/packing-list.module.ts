@@ -11,6 +11,7 @@ import { MarkdownModule } from 'ngx-markdown';
 
 import { PackingListItemModule } from 'src/app/components/packing-list-item/packing-list-item.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
+import { LoginRequiredMessageModule } from 'src/app/components/login-required-message/login-required-message.module';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-
     PackingListItemModule,
     TranslateModule,
     MarkdownModule.forChild(),
-    LoadingSpinnerContentModule
+    LoadingSpinnerContentModule,
+    LoginRequiredMessageModule
   ]
 })
 export class PackingListModule { }

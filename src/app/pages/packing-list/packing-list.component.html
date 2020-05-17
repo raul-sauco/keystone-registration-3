@@ -1,80 +1,82 @@
-<mat-tab-group dynamicHeight class="mat-typography" *ngIf="itemsBring.length; else loading">
-  <mat-tab>
+<ng-container *ngIf="needsLogin; else app">
+  <app-login-required-message></app-login-required-message>
+</ng-container>
+<ng-template #app>
+  <mat-tab-group dynamicHeight class="mat-typography" *ngIf="itemsBring.length; else loading">
+    <mat-tab>
 
-    <ng-template mat-tab-label>
-      <mat-icon class="tab-icon" color="primary">check_circle_outline</mat-icon>
-      {{ 'BRING' | translate }}
-    </ng-template>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon" color="primary">check_circle_outline</mat-icon>
+        {{ 'BRING' | translate }}
+      </ng-template>
 
-    <div class="tab-content">
+      <div class="tab-content">
 
-      <header
-        class="pli-header"
-        [innerHtml]="'PACKING_LIST_HEADER' | translate | markdown">
-      </header>
+        <header
+          class="pli-header"
+          [innerHtml]="'PACKING_LIST_HEADER' | translate | markdown">
+        </header>
 
-      <ul class="pli-list">
-        <li *ngFor="let item of itemsBring" class="pli-item">
-          <app-packing-list-item [pli]="item"></app-packing-list-item>
-        </li>
-      </ul>
+        <ul class="pli-list">
+          <li *ngFor="let item of itemsBring" class="pli-item">
+            <app-packing-list-item [pli]="item"></app-packing-list-item>
+          </li>
+        </ul>
 
-    </div>
+      </div>
 
-  </mat-tab>
+    </mat-tab>
 
-  <mat-tab>
+    <mat-tab>
 
-    <ng-template mat-tab-label>
-      <mat-icon class="tab-icon" color="accent">help_outline</mat-icon>
-      {{ 'OPTIONAL' | translate }}
-    </ng-template>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon" color="accent">help_outline</mat-icon>
+        {{ 'OPTIONAL' | translate }}
+      </ng-template>
 
-    <div class="tab-content">
+      <div class="tab-content">
 
-      <header
-        class="pli-header"
-        [innerHtml]="'PACKING_LIST_HEADER_OPTIONAL' | translate | markdown">
-      </header>
+        <header
+          class="pli-header"
+          [innerHtml]="'PACKING_LIST_HEADER_OPTIONAL' | translate | markdown">
+        </header>
 
-      <ul class="pli-list">
-        <li *ngFor="let item of itemsOptional">
-          <app-packing-list-item [pli]="item"></app-packing-list-item>
-        </li>
-      </ul>
+        <ul class="pli-list">
+          <li *ngFor="let item of itemsOptional">
+            <app-packing-list-item [pli]="item"></app-packing-list-item>
+          </li>
+        </ul>
 
-    </div>
+      </div>
 
-  </mat-tab>
+    </mat-tab>
 
-  <mat-tab>
+    <mat-tab>
 
-    <ng-template mat-tab-label>
-      <mat-icon class="tab-icon" color="warn">highlight_off</mat-icon>
-      {{ 'DO_NOT_BRING' | translate }}
-    </ng-template>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon" color="warn">highlight_off</mat-icon>
+        {{ 'DO_NOT_BRING' | translate }}
+      </ng-template>
 
-    <div class="tab-content">
+      <div class="tab-content">
 
-      <header
-        class="pli-header"
-        [innerHtml]="'PACKING_LIST_HEADER_DO_NOT_BRING' | translate | markdown">
-      </header>
+        <header
+          class="pli-header"
+          [innerHtml]="'PACKING_LIST_HEADER_DO_NOT_BRING' | translate | markdown">
+        </header>
 
-      <ul class="pli-list">
-        <li *ngFor="let item of itemsDoNotBring">
-          <app-packing-list-item [pli]="item"></app-packing-list-item>
-        </li>
-      </ul>
+        <ul class="pli-list">
+          <li *ngFor="let item of itemsDoNotBring">
+            <app-packing-list-item [pli]="item"></app-packing-list-item>
+          </li>
+        </ul>
 
-    </div>
+      </div>
 
-  </mat-tab>
-</mat-tab-group>
+    </mat-tab>
+  </mat-tab-group>
 
-<ng-template #loading>
-
-  <app-loading-spinner-content></app-loading-spinner-content>
-
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
+  </ng-template>
 </ng-template>
-

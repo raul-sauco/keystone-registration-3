@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs';
 import { PackingListService } from 'src/app/services/packing-list/packing-list.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 import { NGXLogger } from 'ngx-logger';
 import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-packing-list',
@@ -17,56 +16,61 @@ export class PackingListComponent implements OnInit, OnDestroy {
   itemsBring: TripPackingListItem[] = [];
   itemsOptional: TripPackingListItem[] = [];
   itemsDoNotBring: TripPackingListItem[] = [];
-  tripId: string = null;
+  needsLogin = false;
 
   constructor(
     private packingListService: PackingListService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
     private routeStateService: RouteStateService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private auth: AuthService
   ) { }
 
   ngOnInit(): void {
-
     this.logger.debug('PackingList ngOnInit called');
-
     // Try to find a trip-id parameter
     this.route.paramMap.subscribe((params: ParamMap) => {
-
       const tripId = params.get('trip-id');
-
       if (tripId !== null) {
-
-        this.tripId = tripId;
-
         this.routeStateService.tripIdParam$.subscribe((id: string) => {
-
           // If trip-ids are different update them
           if (tripId !== id) {
-
             this.routeStateService.updateTripIdParamState(tripId);
-
           }
         });
-
-        this.packingListService.fetchItems(tripId);
-
+        this.fetch(tripId);
       } else {
-
-        // TODO if user is authenticated, fetch for their trip
-        // Currently we need a trip-id parameter
-        this.snackBar.open('No trip selected', 'Got it');
-        this.logger.warn('PackingListComponent; missing trip-id parameter');
-
+        this.auth.checkAuthenticated().then((res: boolean) => {
+          if (res) {
+            this.fetch();
+          } else {
+            this.needsLogin = true;
+          }
+        });
       }
-
-
     });
+  }
+
+  /**
+   * Ask the service to fetch packing list items for the
+   * current user's trip. Optionally can pass a tripId
+   * parameter to indicate which trip to fetch for
+   * @param tripId string the id of the trip to fetch for.
+   */
+  fetch(tripId?: string): void {
+    this.packingListService.fetchItems(tripId);
+    this.subscribe();
+  }
+
+  /**
+   * Subscribe to the service
+   */
+  subscribe(): void {
 
     // Subscribe to the service observable
     this.packingListService.item$.subscribe(
       (items: TripPackingListItem[]) => {
+        this.logger.debug(`Got ${items.length} items from the service`);
 
         // Assign the items to the corresponding properties
         items.forEach((i: TripPackingListItem) => {
@@ -81,7 +85,8 @@ export class PackingListComponent implements OnInit, OnDestroy {
               this.itemsDoNotBring.push(i);
               break;
             default:
-              this.logger.warn(`PLI bring ${i.getBring()} is not valid;`, i);
+              this.logger.warn(
+                `PLI bring ${i.getBring()} is not valid;`, i);
               break;
           }
         });
@@ -97,12 +102,7 @@ export class PackingListComponent implements OnInit, OnDestroy {
         });
 
       }, (err: string) => {
-
-        const snackBarRef = this.snackBar.open(err, 'Retry');
-
-        snackBarRef.onAction().subscribe(() => {
-          this.packingListService.fetchItems(this.tripId);
-        });
+        this.logger.error(`Error fetching packing list items`, err);
       }
     );
   }

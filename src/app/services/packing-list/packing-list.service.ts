@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { ApiService } from '../api/api.service';
 import { NGXLogger } from 'ngx-logger';
 import { HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class PackingListService {
 
   constructor(
     private api: ApiService,
+    private auth: AuthService,
     private logger: NGXLogger
   ) {
     this.logger.debug('PackingListService constructor called');
@@ -28,15 +30,27 @@ export class PackingListService {
    * @param string|null tripId ID of the trip to fetch items for
    */
   fetchItems(tripId: string = null): void {
-
     const endpoint = 'trip-packing-list-items';
-    const params = {expand: 'item'};
-
+    const headers: any = {'Content-Type': 'application/json'};
+    const  params = {expand: 'item'};
+    let fetch = false;
     if (tripId !== null) {
       params['trip-id'] = tripId;
+      fetch = true;
+    } else if (this.auth.authenticated && this.auth.getCredentials().accessToken) {
+      headers.authorization = ' Bearer ' + this.auth.getCredentials().accessToken;
+      fetch = true;
     }
 
-    this.fetchItemBatch(endpoint, params);
+    if (fetch) {
+      // Clean up
+      this.items = [];
+      const options = {
+        headers: new HttpHeaders(headers),
+        observe: 'response'
+      };
+      this.fetchItemBatch(endpoint, params, options);
+    }
   }
 
   /**
@@ -46,18 +60,9 @@ export class PackingListService {
    * @param endpoint the endpoint for the current API call
    * @param params an object with parameters to be passed to the call
    */
-  protected fetchItemBatch(endpoint: string, params: {}): void {
+  protected fetchItemBatch(endpoint: string, params: any, options: any): void {
 
     this.logger.debug(`PackingListService fetching ${endpoint}`);
-
-    // Options will be the same in requests for other pages
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        // Authorization: ' Bearer ' + (this.auth.getCredentials().accessToken || '') todo
-      }),
-      observe: 'response'
-    };
 
     this.api.get(endpoint, params, options).subscribe(
       (resp: any) => {
@@ -65,7 +70,7 @@ export class PackingListService {
         this.addItems(resp.body);
 
         if (this.api.hasNextPage(resp.headers)) {
-          this.fetchItemBatch(this.api.nextPageUrl(resp.headers), null);
+          this.fetchItemBatch(this.api.nextPageUrl(resp.headers), null, options);
         } else {
           // We fetched all the available items, notify subscribers
           this.item$.next(this.items);
