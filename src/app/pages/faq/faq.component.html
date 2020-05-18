@@ -38,7 +38,9 @@
       </li>
     </ul>
     <ng-template #noItems>
-      No items
+      <app-no-items-notification
+      message='NO_FAQ_FOR_TRIP'
+      ></app-no-items-notification>
     </ng-template>
   </ng-container>
   <ng-template #loading>

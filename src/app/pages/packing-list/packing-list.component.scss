@@ -14,15 +14,3 @@
 .pli-item {
   margin: 16px 0;
 }
-
-app-loading-spinner-content {
-  position: fixed;
-  top: 64px;
-  bottom: 0;
-  right: 0;
-  left: 0;
-
-  @media screen and (min-width: 960px) {
-    left: 320px;
-  }
-}

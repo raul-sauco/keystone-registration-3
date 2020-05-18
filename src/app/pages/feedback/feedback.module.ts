@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NoItemsNotificationModule } from 'src/app/components/no-items-notification/no-items-notification.module';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     CommonModule,
     FeedbackRoutingModule,
     LoadingSpinnerContentModule,
+    NoItemsNotificationModule,
     TranslateModule,
     MatIconModule,
     MatTabsModule,

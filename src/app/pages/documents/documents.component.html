@@ -27,10 +27,9 @@
     </ul>
 
     <ng-template #noItems>
-      <h1 class="no-items mat-typography">
-        <mat-icon color="accent">info</mat-icon>
-        {{ 'NO_DOCUMENTS_FOR_TRIP' | translate }}
-      </h1>
+      <app-no-items-notification
+      message='NO_DOCUMENTS_FOR_TRIP'
+      ></app-no-items-notification>
     </ng-template>
 
   </ng-container>

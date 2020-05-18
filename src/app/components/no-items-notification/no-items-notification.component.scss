@@ -1,0 +1,17 @@
+.full-page-no-items-message-container {
+  width: 100%;
+  height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  h1 {
+    /* Vertically align icon and text */
+    display: flex;
+    align-items: center;
+    color: inherit;
+  }
+  mat-icon {
+    margin-right: 8px;
+  }
+}
