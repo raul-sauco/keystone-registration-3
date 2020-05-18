@@ -5,6 +5,7 @@ import { FaqRoutingModule } from './faq-routing.module';
 import { FaqComponent } from './faq.component';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { LoginRequiredMessageModule } from 'src/app/components/login-required-message/login-required-message.module';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     FaqRoutingModule,
     LoadingSpinnerContentModule,
+    LoginRequiredMessageModule,
     TranslateModule
   ]
 })
