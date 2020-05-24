@@ -175,5 +175,6 @@
   "WHERE_TO_GET_THE_CODES": "Where do I find the codes?",
   "WRITE_QUESTION_HERE": "Write your question here...",
   "WRITE_YOUR_USER_NAME_SOMEWHERE": "<p>Your user name is <strong>{{name}}</strong>, write it down somewhere in case you need to login in the future, via this device or a different one</p><p><strong>Almost done!</strong> We just need to get a few details from you</p><p>You can stop at any time and continue later, any data entered will be saved automatically</p>",
+  "WRONG_CODES": "Incorrect codes, please check your codes and try again",
   "YES": "Yes"
 }

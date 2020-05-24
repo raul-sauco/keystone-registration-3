@@ -1,0 +1,43 @@
+<ng-container *ngIf="data.lang.includes('zh'); else english">
+  <h1 mat-dialog-title>Security Codes Help</h1>
+  <div mat-dialog-content>
+    <h2>Where do I find the codes?</h2>
+    <p>Keystone Adventures sends the codes to the school at the
+      same time as we send the link.</p>
+    <p>If you didn't receive the codes yet, ask the trip organizer.</p>
+    <h2>What do the codes look like?</h2>
+    <p>The trip code is all digits, usually 3 digits in length,
+      something like <em>143</em>.</p>
+    <p>The security code can have digits and letters, and it is always
+      6 characters long.</p>
+    <p>If you think you have the right codes, but something is not
+      working, try refreshing the page, then make sure you don't add any
+      extra spaces when entering the codes. Try sending them again</p>
+    <p>If after all you still have problems, please contact your trip
+      organizer.</p>
+  </div>
+</ng-container>
+<ng-template #english>
+  <h1 mat-dialog-title>Security Codes Help</h1>
+  <div mat-dialog-content>
+    <h2>Where do I find the codes?</h2>
+    <p>Keystone Adventures sends the codes to the school at the
+      same time as we send the link.</p>
+    <p>If you didn't receive the codes yet, ask the trip organizer.</p>
+    <h2>What do the codes look like?</h2>
+    <p>The trip code is all digits, usually 3 digits in length,
+      something like <em>143</em>.</p>
+    <p>The security code can have digits and letters, and it is always
+      6 characters long.</p>
+    <p>If you think you have the right codes, but something is not
+      working, try refreshing the page, then make sure you don't add any
+      extra spaces when entering the codes. Try sending them again</p>
+    <p>If after all you still have problems, please contact your trip
+      organizer.</p>
+  </div>
+</ng-template>
+<div mat-dialog-actions>
+  <button mat-button (click)="dismiss()">
+    {{ 'BACK' | translate }}
+  </button>
+</div>

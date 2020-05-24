@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>
+  {{ data.title | translate }}
+</h1>
+<div mat-dialog-content>
+  {{ data.content | translate }}
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClose()">
+    {{ 'OK' | translate }}
+  </button>
+</div>

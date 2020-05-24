@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TeacherGuard } from './guards/teacher.guard';
+import { NoAuthGuard } from './guards/no-auth.guard';
 
 
 const routes: Routes = [
@@ -73,7 +74,26 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module')
-    .then(m => m.LoginModule)
+    .then(m => m.LoginModule),
+    canActivate: [NoAuthGuard]
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module')
+    .then(m => m.RegisterModule),
+    canActivate: [NoAuthGuard]
+  },
+  {
+    path: 'trip-codes',
+    loadChildren: () => import('./pages/trip-codes/trip-codes.module')
+    .then(m => m.TripCodesModule),
+    canActivate: [NoAuthGuard]
+  },
+  {
+    path: 'trip-codes/:id',
+    loadChildren: () => import('./pages/trip-codes/trip-codes.module')
+    .then(m => m.TripCodesModule),
+    canActivate: [NoAuthGuard]
   },
   {
     path: '',

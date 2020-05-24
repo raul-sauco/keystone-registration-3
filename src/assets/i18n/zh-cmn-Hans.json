@@ -175,5 +175,6 @@
   "WHERE_TO_GET_THE_CODES": "Where do I find the codes?",
   "WRITE_QUESTION_HERE": "请在此写下您的问题...",
   "WRITE_YOUR_USER_NAME_SOMEWHERE": "您的用户名为<strong>{{name}}</strong>，请妥善记录下来，以便将来您在本台设备上或其他电子设备上再次登陆之需。</br>Almost done, we just need to get a few details from you</br>You can stop at any time and continue later, data entered will be saved automatically",
+  "WRONG_CODES": "验证码不正确，请检查您的验证码，然后重试",
   "YES": "是的"
 }
