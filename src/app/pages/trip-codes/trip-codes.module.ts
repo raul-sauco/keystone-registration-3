@@ -2,7 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TripCodesRoutingModule } from './trip-codes-routing.module';
-import { TripCodesComponent, CodeErrorDialogComponent, TripCodeHelpDialogComponent } from './trip-codes.component';
+import {
+  TripCodesComponent,
+  CodeErrorDialogComponent,
+  TripCodeHelpDialogComponent
+} from './trip-codes.component';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';

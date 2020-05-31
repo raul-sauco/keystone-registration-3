@@ -1,1 +1,79 @@
-<p>register works!</p>
+<div id="registration-form-container"
+     *ngIf="userRegistrationForm">
+  <h1>{{ 'WELCOME_TO_KA' | translate }}</h1>
+  <div *ngIf="trip.name">
+    {{ 'REGISTERING_FOR' | translate }}:
+    <div class="trip-name">{{ trip.name }}</div>
+  </div>
+  <p>{{ 'ADVENTURE_OF_A_LIFETIME' | translate }}</p>
+  <p>{{ 'NO_HITCHES' | translate }}</p>
+  <form [formGroup]="userRegistrationForm"
+        id="registration-form"
+        (ngSubmit)="submitUserRegistration()">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'USERNAME' | translate }}</mat-label>
+      <input type="text"
+             matInput
+             formControlName="username"
+             required>
+      <mat-error *ngIf="username.errors?.required">
+        {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="username.errors?.uniqueUsername">
+        {{ 'USERNAME_IS_TAKEN' | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'EMAIL' | translate }}</mat-label>
+      <input type="email"
+             matInput
+             formControlName="email"
+      >
+      <mat-error *ngIf="email.errors?.email">
+        {{ 'EMAIL_IS_NOT_VALID' | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'PASSWORD' | translate }}</mat-label>
+      <input type="password"
+             matInput
+             formControlName="password"
+             required
+      >
+      <mat-error *ngIf="password.errors?.required">
+        {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="password.errors?.minlength">
+        {{ 'MIN_LENGTH_8_CHAR' | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'PASSWORD_CONFIRM' | translate }}</mat-label>
+      <input type="password"
+             matInput
+             formControlName="passwordConfirm"
+             required
+             [errorStateMatcher]="errorMatcher"
+      >
+      <mat-error *ngIf="userRegistrationForm.errors?.passwordMismatch">
+        {{ 'PASSWORDS_DO_NOT_MATCH' | translate }}
+      </mat-error>
+      <mat-error *ngIf="passwordConfirm.errors?.required">
+        {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="passwordConfirm.errors?.minlength">
+        {{ 'MIN_LENGTH_8_CHAR' | translate }}
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button
+            color="primary"
+            [disabled]="!userRegistrationForm.valid || loading"
+    >
+      {{ 'SEND' | translate }}
+    </button>
+  </form>
+  <div class="navigation-links">
+    <a routerLink="/login">{{ 'LOGIN' | translate }}</a> /
+    <a routerLink="/privacy-policy">{{ 'PRIVACY_POLICY' | translate }}</a>
+  </div>
+</div>

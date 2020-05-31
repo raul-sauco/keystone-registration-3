@@ -36,6 +36,7 @@ export class TripCodesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.logger.debug('TripComponent OnInit');
     this.loading = false;
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.tripId = params.get('id');
@@ -77,8 +78,14 @@ export class TripCodesComponent implements OnInit {
     this.api.post(endpoint, params).subscribe(
       (response: any) => {
         this.loading = false;
-        if (response.error === false &&
-          this.trip.setCodeValues(response)) {
+        if (response.error === false) {
+            const tripData = {
+              id: response.id,
+              name: response.name,
+              code: this.tripCodeForm.value.code,
+              type: response.registration
+            };
+            this.trip.setCodeValues(tripData);
             this.router.navigateByUrl('/register');
         } else {
           this.resetForm();

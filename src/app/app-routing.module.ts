@@ -90,6 +90,11 @@ const routes: Routes = [
     canActivate: [NoAuthGuard]
   },
   {
+    path: 'waiver',
+    loadChildren: () => import('./pages/waiver/waiver.module')
+    .then(m => m.WaiverModule)
+  },
+  {
     path: 'trip-codes/:id',
     loadChildren: () => import('./pages/trip-codes/trip-codes.module')
     .then(m => m.TripCodesModule),

@@ -14,20 +14,21 @@ export class TripService {
 
   /**
    * Init the providers values with a server's response
-   * response = {
+   * data = {
+   *   code: code,
    *   error: false,
    *   type: 'student' | 'teacher'
    *   id: 143,
    *   name: 'Hogwarts school of witchcr...'
    * }
-   * @param res whether the values could be used to set
+   * @param data whether the values could be used to set
    * the provider
    */
-  setCodeValues(res): boolean {
-    this.id = res.id;
-    this.name = res.name;
-    this.code = res.code;
-    this.type = res.type;
+  setCodeValues(data: any): boolean {
+    this.id = data.id;
+    this.name = data.name;
+    this.code = data.code;
+    this.type = data.type;
     // todo check if values can be used
     return true;
   }
