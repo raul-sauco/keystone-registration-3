@@ -17,7 +17,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MarkdownModule } from 'ngx-markdown';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import { apiurl } from 'src/app/local/globals.service';
+import { apiUrl } from 'src/app/local/globals.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -25,15 +25,15 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+    }),
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,
@@ -41,20 +41,24 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatIconModule,
     MatListModule,
     TranslateModule.forRoot({
-        loader: {
-            provide: TranslateLoader,
-            useFactory: HttpLoaderFactory,
-            deps: [HttpClient]
-        }
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
     }),
     MarkdownModule.forRoot({ loader: HttpClient }),
     LoggerModule.forRoot({
-      serverLoggingUrl: (environment.production ? apiurl.production : apiurl.development) + 'portal-logs',
-      level: environment.production ? NgxLoggerLevel.INFO : NgxLoggerLevel.TRACE,
-      serverLogLevel: NgxLoggerLevel.WARN
-    })
+      serverLoggingUrl:
+        (environment.production ? apiUrl.production : apiUrl.development) +
+        'portal-logs',
+      level: environment.production
+        ? NgxLoggerLevel.INFO
+        : NgxLoggerLevel.TRACE,
+      serverLogLevel: NgxLoggerLevel.WARN,
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
