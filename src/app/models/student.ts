@@ -1,5 +1,6 @@
-import { formatDate} from '@angular/common';
+import { formatDate } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
 
 export class Student {
   id: number;
@@ -29,39 +30,65 @@ export class Student {
   private dietaryAttributes;
   private medicalAttributes;
 
-  constructor(json: any, private translate: TranslateService) {
-
+  constructor(
+    json: any,
+    private translate: TranslateService,
+    private logger: NGXLogger
+  ) {
     // Set the ID attribute only at creation
     this.id = json.id;
     this.setFromJSON(json);
     this.getTranslations();
     this.setAttributeArrays();
-
   }
 
   /**
    * Get all translations from TranslateService
    */
   private getTranslations() {
-    this.translate.get([
-      'ID', 'FIRST_NAME', 'LAST_NAME', 'CITIZENSHIP', 'TRAVEL_DOCUMENT', 'TRAVEL_DOCUMENT_NUMBER',
-      'GENDER', 'G', 'DOB', 'GUARDIAN_NAME', 'WAIVER_ACCEPTED', 'WAIVER_SIGNED_ON',
-      'DR', 'DIETARY_REQUIREMENTS', 'DIETARY_REQUIREMENTS_OTHER', 'ALLER', 'ALLERGIES',
-      'ALLERGIES_OTHER', 'MEDICAL_INFORMATION', 'INSURANCE', 'I', 'INSURANCE_NAME',
-      'INSURANCE_POLICY_NUMBER', 'YES', 'NO', 'EMPTY', 'COUNTRY_OF_CITIZENSHIP'
-    ]).subscribe(
-      res => this.translations = res
-    );
+    this.translate
+      .get([
+        'ID',
+        'FIRST_NAME',
+        'LAST_NAME',
+        'CITIZENSHIP',
+        'TRAVEL_DOCUMENT',
+        'TRAVEL_DOCUMENT_NUMBER',
+        'GENDER',
+        'G',
+        'DOB',
+        'GUARDIAN_NAME',
+        'WAIVER_ACCEPTED',
+        'WAIVER_SIGNED_ON',
+        'DR',
+        'DIETARY_REQUIREMENTS',
+        'DIETARY_REQUIREMENTS_OTHER',
+        'ALLER',
+        'ALLERGIES',
+        'ALLERGIES_OTHER',
+        'MEDICAL_INFORMATION',
+        'INSURANCE',
+        'I',
+        'INSURANCE_NAME',
+        'INSURANCE_POLICY_NUMBER',
+        'YES',
+        'NO',
+        'EMPTY',
+        'COUNTRY_OF_CITIZENSHIP',
+      ])
+      .subscribe((res) => (this.translations = res));
   }
 
   /**
    * Use JSON data to set this student's attributes.
    */
   setFromJSON(json) {
-
     // Prevent updates if the JSON id does not match
     if (this.id && this.id !== json.id) {
-      console.error('Trying to update student with wrong ID parameter');
+      this.logger.error(
+        'Trying to update student with wrong ID parameter',
+        json
+      );
       return false;
     }
 
@@ -75,7 +102,11 @@ export class Student {
     this.gender = json.gender;
     this.dob = json.dob;
     this.guardianName = json.guardian_name;
-    this.waiverAccepted = json.waiver_accepted ? true : json.waiver_accepted === 0 ? false : null;
+    this.waiverAccepted = json.waiver_accepted
+      ? true
+      : json.waiver_accepted === 0
+      ? false
+      : null;
     this.waiverSignedOn = json.waiver_signed_on;
     this.dietaryRequirements = json.dietary_requirements;
     this.dietaryRequirementsOther = json.dietary_requirements_other;
@@ -91,7 +122,6 @@ export class Student {
    * Get the i18n attribute name.
    */
   public getAttributeLabel(attribute: string) {
-
     const labels = {
       id: this.translations.ID,
       firstName: this.translations.FIRST_NAME,
@@ -110,18 +140,16 @@ export class Student {
       medicalInformation: this.translations.MEDICAL_INFORMATION,
       insurance: this.translations.INSURANCE,
       insuranceName: this.translations.INSURANCE_NAME,
-      insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER
+      insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER,
     };
 
     return labels[attribute];
-
   }
 
   /**
    * Get the attribute value element content.
    */
   getAttributeText(attr) {
-
     if (typeof this[attr] === 'boolean') {
       if (this[attr] === true) {
         return this.translations.YES;
@@ -162,14 +190,12 @@ export class Student {
     }
 
     return this[attr];
-
   }
 
   /**
-   * Find out wheter an attribute is null.
+   * Find out whether an attribute is null.
    */
   isAttributeEmpty(attr): boolean {
-
     if (typeof this[attr] === 'boolean') {
       return !(this[attr] === true || this[attr] === false);
     }
@@ -179,7 +205,6 @@ export class Student {
     }
 
     return !this[attr];
-
   }
 
   getPersonalAttributes() {
@@ -202,29 +227,36 @@ export class Student {
    * Initialize the class attribute arrays
    */
   setAttributeArrays() {
-
     this.personalAttributes = [
-      {name: 'firstName', visible: true}, {name: 'lastName', visible: true},
-      {name: 'citizenship', visible: true}, {name: 'travelDocument', visible: true},
-      {name: 'gender', visible: true}, {name: 'dob', visible: true}
+      { name: 'firstName', visible: true },
+      { name: 'lastName', visible: true },
+      { name: 'citizenship', visible: true },
+      { name: 'travelDocument', visible: true },
+      { name: 'gender', visible: true },
+      { name: 'dob', visible: true },
     ];
 
     this.legalAttributes = [
-      {name: 'waiverAccepted', visible: true}, {name: 'waiverSignedOn', visible: true},
-      {name: 'guardianName', visible: true}, {name: 'insurance', visible: true},
-      {name: 'insuranceName', visible: this.insurance !== null},
-      {name: 'insurancePolicyNumber', visible: this.insurance !== null}
+      { name: 'waiverAccepted', visible: true },
+      { name: 'waiverSignedOn', visible: true },
+      { name: 'guardianName', visible: true },
+      { name: 'insurance', visible: true },
+      { name: 'insuranceName', visible: this.insurance !== null },
+      { name: 'insurancePolicyNumber', visible: this.insurance !== null },
     ];
 
     this.dietaryAttributes = [
-      {name: 'dietaryRequirements', visible: true},
-      {name: 'dietaryRequirementsOther', visible: this.dietaryRequirements === 1}
+      { name: 'dietaryRequirements', visible: true },
+      {
+        name: 'dietaryRequirementsOther',
+        visible: this.dietaryRequirements === 1,
+      },
     ];
 
     this.medicalAttributes = [
-      {name: 'allergies', visible: true},
-      {name: 'allergiesOther', visible: this.allergies === 1},
-      {name: 'medicalInformation', visible: true}
+      { name: 'allergies', visible: true },
+      { name: 'allergiesOther', visible: this.allergies === 1 },
+      { name: 'medicalInformation', visible: true },
     ];
   }
 }

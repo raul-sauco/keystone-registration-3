@@ -7,19 +7,19 @@ import {
   FormControl,
   Validators,
   FormGroupDirective,
-  NgForm
+  NgForm,
 } from '@angular/forms';
-import {
-  UniqueUsernameValidator
-} from 'src/app/directives/unique-username-validator.directive';
-import {
-  passwordMatchValidator
-} from 'src/app/directives/password-match-validator.directive';
+import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
+import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
 import { ApiService } from 'src/app/services/api/api.service';
 import { Credentials } from 'src/app/models/credentials';
 import { NGXLogger } from 'ngx-logger';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 export interface DialogData {
@@ -32,7 +32,8 @@ export interface DialogData {
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
-    form: FormGroupDirective | NgForm | null): boolean {
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
     return control.dirty && form.invalid;
   }
 }
@@ -40,10 +41,9 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-
   loading: boolean;
   userRegistrationForm: FormGroup;
   errorMatcher: CrossFieldErrorMatcher;
@@ -57,10 +57,10 @@ export class RegisterComponent implements OnInit {
     private usernameValidator: UniqueUsernameValidator,
     public dialog: MatDialog,
     public trip: TripService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.logger.debug('RegisterCompnent OnInit');
+    this.logger.debug('RegisterComponent OnInit');
     this.loading = false;
     this.errorMatcher = new CrossFieldErrorMatcher();
     if (!this.trip.code || !this.trip.id) {
@@ -76,44 +76,54 @@ export class RegisterComponent implements OnInit {
    * register for the trip.
    */
   initUserRegistrationForm(): void {
-    this.userRegistrationForm = this.formBuilder.group({
-      username: new FormControl('', {
-        validators: [Validators.required],
-        asyncValidators: [
-          this.usernameValidator.validate.bind(this.usernameValidator)
+    this.userRegistrationForm = this.formBuilder.group(
+      {
+        username: new FormControl('', {
+          validators: [Validators.required],
+          asyncValidators: [
+            this.usernameValidator.validate.bind(this.usernameValidator),
+          ],
+          updateOn: 'blur',
+        }),
+        email: ['', Validators.email],
+        password: [
+          '',
+          Validators.compose([Validators.required, Validators.minLength(8)]),
         ],
-        updateOn: 'blur'
-      }),
-      email: ['', Validators.email],
-      password: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8)
-      ])],
-      passwordConfirm: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8)
-      ])]
-    }, {validator: passwordMatchValidator});
+        passwordConfirm: [
+          '',
+          Validators.compose([Validators.required, Validators.minLength(8)]),
+        ],
+      },
+      { validator: passwordMatchValidator }
+    );
   }
 
-  get username() { return this.userRegistrationForm.get('username'); }
-  get password() { return this.userRegistrationForm.get('password'); }
-  get email() { return this.userRegistrationForm.get('email'); }
-  get passwordConfirm() { return this.userRegistrationForm.get('passwordConfirm'); }
+  get username() {
+    return this.userRegistrationForm.get('username');
+  }
+  get password() {
+    return this.userRegistrationForm.get('password');
+  }
+  get email() {
+    return this.userRegistrationForm.get('email');
+  }
+  get passwordConfirm() {
+    return this.userRegistrationForm.get('passwordConfirm');
+  }
 
   /**
    * POST user details to the server.
    * If successful, it will create a new Student record
    */
   submitUserRegistration(): void {
-
     const params = {
       username: this.userRegistrationForm.value.username,
       password: this.userRegistrationForm.value.password,
       email: this.userRegistrationForm.value.email,
       tripId: this.trip.id,
-      code: this.trip.code
-      };
+      code: this.trip.code,
+    };
     this.loading = true;
 
     this.api.post('r', params).subscribe(
@@ -124,27 +134,26 @@ export class RegisterComponent implements OnInit {
           this.dialog.open(ErrorMessageDialogComponent, {
             data: {
               title: 'ERROR',
-              content: response.message
-            }
+              content: response.message,
+            },
           });
         } else {
           const cred = new Credentials(response.credentials);
-          this.auth.setCredentials(cred).then(
-            () => {
-              this.loading = false;
-              this.displayRegistrationSuccess();
-            }
-          );
+          this.auth.setCredentials(cred).then(() => {
+            this.loading = false;
+            this.displayRegistrationSuccess();
+          });
         }
-      }, (error: any) => {
+      },
+      (error: any) => {
         this.dialog.open(ErrorMessageDialogComponent, {
           data: {
             title: 'ERROR',
-            content: 'SERVER_ERROR'
-          }
+            content: 'SERVER_ERROR',
+          },
         });
-
-      });
+      }
+    );
   }
 
   /**
@@ -162,7 +171,7 @@ export class RegisterComponent implements OnInit {
 
 @Component({
   selector: 'app-error-message-dialog-component',
-  templateUrl: './error-message-dialog.component.html'
+  templateUrl: './error-message-dialog.component.html',
 })
 export class ErrorMessageDialogComponent {
   constructor(
@@ -173,7 +182,7 @@ export class ErrorMessageDialogComponent {
 
 @Component({
   selector: 'app-registration-success-dialog-component',
-  templateUrl: './registration-success-dialog.component.html'
+  templateUrl: './registration-success-dialog.component.html',
 })
 export class RegistrationSuccessDialogComponent {
   username: string = null;

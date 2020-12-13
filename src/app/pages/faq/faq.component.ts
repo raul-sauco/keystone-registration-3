@@ -12,10 +12,9 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-faq',
   templateUrl: './faq.component.html',
-  styleUrls: ['./faq.component.scss']
+  styleUrls: ['./faq.component.scss'],
 })
 export class FaqComponent implements OnInit {
-
   faq$: Observable<Faq[]>;
   needsLogin = false;
 
@@ -25,11 +24,11 @@ export class FaqComponent implements OnInit {
     private logger: NGXLogger,
     private routeStateService: RouteStateService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.logger.debug('FaqComponent OnInit');
-    const headers: any = {'Content-Type': 'application/json'};
+    const headers: any = { 'Content-Type': 'application/json' };
     this.route.paramMap.subscribe((params: ParamMap) => {
       const tripId = params.get('trip-id');
       if (tripId !== null) {
@@ -40,12 +39,14 @@ export class FaqComponent implements OnInit {
         });
 
         // TODO get trip id from auth user
-        this.fetch({'trip-id': tripId}, headers);
+        this.fetch({ 'trip-id': tripId }, headers);
       } else {
         // No trip id parameter, try to find an user
         this.auth.checkAuthenticated().then((res: boolean) => {
           if (res && this.auth.getCredentials().accessToken) {
-            headers.authorization = `Bearer ${this.auth.getCredentials().accessToken}`;
+            headers.authorization = `Bearer ${
+              this.auth.getCredentials().accessToken
+            }`;
             this.fetch(null, headers);
             // this.guide$ = this.guideService.fetchGuides();
           } else {
@@ -65,18 +66,15 @@ export class FaqComponent implements OnInit {
   fetch(params: any, headers: any): void {
     const endpoint = 'trip-questions';
     const options = {
-      headers: new HttpHeaders(headers)
+      headers: new HttpHeaders(headers),
     };
     this.faq$ = this.api.get(endpoint, params, options).pipe(
-      map((faqjson: any) => {
-
+      map((faqJson: any) => {
         // Sort the guides and map them to Guide models
-        return faqjson.sort(
-            (a: any, b: any) => a.updated_at - b.updated_at
-          ).map((faq: any) => new Faq(faq) );
-
+        return faqJson
+          .sort((a: any, b: any) => a.updated_at - b.updated_at)
+          .map((faq: any) => new Faq(faq));
       })
     );
   }
-
 }

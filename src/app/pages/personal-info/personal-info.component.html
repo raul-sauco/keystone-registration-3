@@ -1,0 +1,203 @@
+<ng-container *ngIf="needsLogin; else app">
+  <app-login-required-message></app-login-required-message>
+</ng-container>
+<ng-template #app>
+  <ng-container *ngIf="student$ | async as student; else loading">
+    <div id="personal-info-form-container" *ngIf="personalInfoForm">
+      <form
+        [formGroup]="personalInfoForm"
+        (ngSubmit)="submitPersonalInfoForm()"
+        id="personal-info-form"
+      >
+        <!-- START Personal information section -->
+        <h2>{{ "PERSONAL_INFORMATION" | translate }}</h2>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ student.getAttributeLabel("firstName") }}</mat-label>
+          <input type="text" matInput formControlName="firstName" />
+        </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          [hintLabel]="'PIF_HINT_NAME' | translate"
+        >
+          <mat-label>{{ student.getAttributeLabel("lastName") }}</mat-label>
+          <input type="text" matInput formControlName="lastName" />
+        </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          [hintLabel]="'PIF_HINT_CITIZENSHIP' | translate"
+        >
+          <mat-label>{{ student.getAttributeLabel("citizenship") }}</mat-label>
+          <input type="text" matInput formControlName="citizenship" />
+        </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          [hintLabel]="'PIF_HINT_TRAVEL_DOCUMENT' | translate"
+        >
+          <mat-label>{{
+            student.getAttributeLabel("travelDocument")
+          }}</mat-label>
+          <input type="text" matInput formControlName="travelDocument" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ student.getAttributeLabel("gender") }}</mat-label>
+          <mat-select formControlName="gender" [compareWith]="intValueCompare">
+            <mat-option *ngFor="let i of [0, 1, 2, 3]" [value]="i">
+              {{ "G." + i | translate }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ student.getAttributeLabel("dob") }}</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="dob"
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker touchUi #picker></mat-datepicker>
+        </mat-form-field>
+        <!-- END Personal information section -->
+
+        <!-- START Legal information section -->
+        <h2>{{ "LEGAL" | translate }}</h2>
+        <mat-form-field
+          appearance="outline"
+          *ngIf="auth.getCredentials().type !== 4"
+        >
+          <mat-label>{{ student.getAttributeLabel("guardianName") }}</mat-label>
+          <input type="text" matInput formControlName="guardianName" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ student.getAttributeLabel("insurance") }}</mat-label>
+          <mat-select
+            formControlName="insurance"
+            [compareWith]="intValueCompare"
+          >
+            <mat-option *ngFor="let i of [0, 1, 2]" [value]="i">
+              {{ "I." + i | translate }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <ng-container
+          *ngIf="
+            personalInfoForm.value.insurance &&
+            personalInfoForm.value.insurance !== 0
+          "
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              student.getAttributeLabel("insuranceName")
+            }}</mat-label>
+            <input type="text" matInput formControlName="insuranceName" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              student.getAttributeLabel("insurancePolicyNumber")
+            }}</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="insurancePolicyNumber"
+            /> </mat-form-field
+        ></ng-container>
+        <!-- END Legal information section -->
+
+        <!-- START Dietary requirements section -->
+        <h2>{{ "DIETARY_REQUIREMENTS" | translate }}</h2>
+        <mat-form-field
+          appearance="outline"
+          [hintLabel]="'PIF_HINT_DIETARY' | translate"
+        >
+          <mat-label>{{
+            student.getAttributeLabel("dietaryRequirements")
+          }}</mat-label>
+          <mat-select
+            formControlName="dietaryRequirements"
+            [compareWith]="intValueCompare"
+          >
+            <mat-option *ngFor="let i of [0, 2, 3, 4, 5, 1]" [value]="i">
+              {{ "DR." + i | translate }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <ng-container
+          *ngIf="
+            personalInfoForm.value.dietaryRequirements &&
+            personalInfoForm.value.dietaryRequirements === 1
+          "
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              student.getAttributeLabel("dietaryRequirementsOther")
+            }}</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="dietaryRequirementsOther"
+            />
+          </mat-form-field>
+        </ng-container>
+        <!-- END Dietary requirements section -->
+
+        <!-- START Medical information section -->
+        <h2>{{ "MEDICAL_INFORMATION" | translate }}</h2>
+        <mat-form-field
+          appearance="outline"
+          [hintLabel]="'PIF_HINT_ALLERGIES' | translate"
+        >
+          <mat-label>{{ student.getAttributeLabel("allergies") }}</mat-label>
+          <mat-select
+            formControlName="allergies"
+            [compareWith]="intValueCompare"
+          >
+            <mat-option *ngFor="let i of [0, 2, 3, 1]" [value]="i">
+              {{ "ALLER." + i | translate }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <ng-container
+          *ngIf="
+            personalInfoForm.value.allergies &&
+            personalInfoForm.value.allergies === 1
+          "
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>{{
+              student.getAttributeLabel("allergiesOther")
+            }}</mat-label>
+            <input type="text" matInput formControlName="allergiesOther" />
+          </mat-form-field>
+        </ng-container>
+        <mat-form-field
+          appearance="outline"
+          [hintLabel]="'PIF_HINT_MEDICAL' | translate"
+        >
+          <mat-label>{{
+            student.getAttributeLabel("medicalInformation")
+          }}</mat-label>
+          <textarea
+            type="text"
+            matInput
+            formControlName="medicalInformation"
+          ></textarea>
+        </mat-form-field>
+        <!-- END Medical information section -->
+
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!personalInfoForm.valid"
+        >
+          {{ "UPDATE" | translate }}
+        </button>
+      </form>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
+  </ng-template>
+</ng-template>

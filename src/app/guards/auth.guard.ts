@@ -12,7 +12,7 @@ import { AuthService } from '../services/auth/auth.service';
 @Injectable({
   providedIn: 'root',
 })
-export class NoAuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -22,13 +22,15 @@ export class NoAuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.auth.authenticated) {
-      this.router.navigateByUrl('/home');
+    // If we have no user, redirect to the login page.
+    if (!this.auth.authenticated) {
+      this.router.navigateByUrl('/login');
       return false;
     }
+    // Async check the authenticated status.
     return this.auth.checkAuthenticated().then((res) => {
-      if (res) {
-        this.router.navigateByUrl('/home');
+      if (!res) {
+        this.router.navigateByUrl('/login');
         return false;
       }
       return true;

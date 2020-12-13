@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TripService {
-
   id: number;
   name: string;
   code: string;
   type: string;
 
-  constructor() { }
+  constructor() {}
 
   /**
    * Init the providers values with a server's response
@@ -19,7 +18,7 @@ export class TripService {
    *   error: false,
    *   type: 'student' | 'teacher'
    *   id: 143,
-   *   name: 'Hogwarts school of witchcr...'
+   *   name: 'Hogwarts school of witchcraft...'
    * }
    * @param data whether the values could be used to set
    * the provider

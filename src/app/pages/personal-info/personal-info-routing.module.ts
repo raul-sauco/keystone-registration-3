@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { WaiverComponent } from './waiver.component';
+import { PersonalInfoComponent } from './personal-info.component';
 
-const routes: Routes = [{ path: '', component: WaiverComponent }];
+const routes: Routes = [{ path: '', component: PersonalInfoComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class WaiverRoutingModule {}
+export class PersonalInfoRoutingModule {}
