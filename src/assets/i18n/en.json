@@ -1,5 +1,6 @@
 {
   "ACCEPT": "Accept",
+  "ACCEPT_WAIVER": "I understand and accept the above conditions",
   "ACCOUNT_FOR_EMAIL_NOT_FOUND": "No account was found for email {{email}}, make sure the email is correct and it is the one you used to register.",
   "ADVENTURE_OF_A_LIFETIME": "You are about to embark on the adventure of a lifetime.",
   "ALLER": {

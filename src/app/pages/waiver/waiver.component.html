@@ -1,1 +1,29 @@
-<p>waiver works!</p>
+<ng-container *ngIf="needsLogin; else app">
+  <app-login-required-message></app-login-required-message>
+</ng-container>
+<ng-template #app>
+  <ng-container *ngIf="student$ | async as student; else loading">
+    <div id="waiver-page-container">
+      <app-waiver-content></app-waiver-content>
+      <div id="waiver-accept-container">
+        <button
+          mat-raised-button
+          *ngIf="!student.waiverAccepted; else acceptedOn"
+          color="primary"
+          (click)="acceptWaiver()"
+        >
+          {{ "ACCEPT_WAIVER" | translate }}
+        </button>
+        <ng-template #acceptedOn>
+          <p>
+            {{ "WAIVER_SIGNED_ON" | translate }}
+            <strong>{{ student.waiverSignedOn | date }}</strong>
+          </p>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
+  </ng-template>
+</ng-template>

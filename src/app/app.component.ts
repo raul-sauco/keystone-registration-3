@@ -11,35 +11,40 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   title = 'Keystone Adventures';
   tripId$: Observable<string | null>;
   tripId: string = null;
 
   public appPages = [
-    {title: 'HOME', url: '/home', icon: 'home'},
-    {title: 'ITINERARY', url: '/itinerary', icon: 'list'},
-    {title: 'PACKING_LIST', url: '/packing-list', icon: 'work'},
-    {title: 'GUIDES', url: '/guides', icon: 'contacts'},
-    {title: 'FAQ', url: '/faq', icon: 'chatbubbles'},
-    {title: 'DOCUMENTS', url: '/documents', icon: 'description'}
+    { title: 'HOME', url: '/home', icon: 'home' },
+    { title: 'ITINERARY', url: '/itinerary', icon: 'list' },
+    { title: 'PACKING_LIST', url: '/packing-list', icon: 'work' },
+    { title: 'GUIDES', url: '/guides', icon: 'contacts' },
+    { title: 'FAQ', url: '/faq', icon: 'chatbubbles' },
+    { title: 'DOCUMENTS', url: '/documents', icon: 'description' },
   ];
 
   public policyPages = [
-    {title: 'WAIVER', url: '/waiver', icon: 'paper'},
-    {title: 'PRIVACY_POLICY', url: '/privacy-policy', icon: 'policy'}
+    { title: 'WAIVER', url: '/waiver', icon: 'verified_user' },
+    { title: 'PRIVACY_POLICY', url: '/privacy-policy', icon: 'policy' },
   ];
 
   public mePages = [
-    {title: 'PERSONAL_INFORMATION', url: '/personal-info', icon: 'person', render: this.auth.auth$}
+    {
+      title: 'PERSONAL_INFORMATION',
+      url: '/personal-info',
+      icon: 'person',
+      render: this.auth.auth$,
+    },
   ];
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches),
+      map((result) => result.matches),
       shareReplay()
     );
 
@@ -50,9 +55,9 @@ export class AppComponent implements OnInit {
     private routeStateService: RouteStateService,
     private router: Router,
     public auth: AuthService
-    ) {
-      this.initTranslate();
-    }
+  ) {
+    this.initTranslate();
+  }
 
   ngOnInit() {
     // Subscribe to the routeStateService to get updates on the trip ID parameter
@@ -60,7 +65,6 @@ export class AppComponent implements OnInit {
   }
 
   initTranslate() {
-
     // Set the default language for translation strings, and the current language.
     this.translate.setDefaultLang('en');
     const browserLang = this.translate.getBrowserLang();
@@ -81,18 +85,22 @@ export class AppComponent implements OnInit {
       this.translate.use('en'); // Set your language here
     }
 
-    this.logger.debug(`TranslateService language set to "${this.translate.currentLang}"`);
-
+    this.logger.debug(
+      `TranslateService language set to "${this.translate.currentLang}"`
+    );
   }
 
   /** Logout the current application user */
   logout() {
     const username = this.auth.getCredentials().userName;
-    this.auth.logout().then(res => {
-      this.logger.debug(`User ${username} logged out`);
-      this.router.navigateByUrl('/login');
-    }).catch(error => {
-      this.logger.warn('AppComponent error logging out', error);
-    });
+    this.auth
+      .logout()
+      .then((res) => {
+        this.logger.debug(`User ${username} logged out`);
+        this.router.navigateByUrl('/login');
+      })
+      .catch((error) => {
+        this.logger.warn('AppComponent error logging out', error);
+      });
   }
 }
