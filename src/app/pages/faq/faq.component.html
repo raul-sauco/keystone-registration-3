@@ -3,35 +3,37 @@
 </ng-container>
 <ng-template #app>
   <ng-container *ngIf="faq$ | async as faqs; else loading">
-    <ul *ngIf="faqs.length > 0; else noItems"
-      class="faqs-list mat-typography">
-      <li
-        class="faq-item"
-        *ngFor="let faq of faqs">
+    <ul *ngIf="faqs.length > 0; else noItems" class="faqs-list mat-typography">
+      <li class="faq-item" *ngFor="let faq of faqs">
         <div class="question-container">
-          {{ faq.getQuestion()  }}
+          {{ faq.getQuestion() }}
         </div>
-        <div class="answer-container"
-          *ngIf="faq.getAnswer(); else noAnswer">
+        <div class="answer-container" *ngIf="faq.getAnswer(); else noAnswer">
           {{ faq.getAnswer() }}
         </div>
         <ng-template #noAnswer>
           <div class="no-answer-container">
-            {{ 'NO_ANSWER_YET' | translate }}
+            {{ "NO_ANSWER_YET" | translate }}
           </div>
         </ng-template>
         <div class="faq-stats">
           <span class="faq-asked">
-            {{ ('ASKED' | translate) + ' ' +
-              (faq.getCreatedAt() * 1000 | date: 'mediumDate') }}
-          </span>.
+            {{
+              ("ASKED" | translate) +
+                " " +
+                (faq.getCreatedAt() * 1000 | date: "mediumDate")
+            }} </span
+          >.
           <span class="faq-answered" *ngIf="faq.getAnswer(); else noAnswerYet">
-            {{ ('ANSWERED' | translate) + ' ' +
-              (faq.getUpdatedAt() * 1000 | date: 'mediumDate') }}
+            {{
+              ("ANSWERED" | translate) +
+                " " +
+                (faq.getUpdatedAt() * 1000 | date: "mediumDate")
+            }}
           </span>
           <ng-template #noAnswerYet>
             <span class="no-answer-time">
-              {{ 'NO_ANSWER_YET' | translate }}
+              {{ "NO_ANSWER_YET" | translate }}
             </span>
           </ng-template>
         </div>
@@ -39,9 +41,20 @@
     </ul>
     <ng-template #noItems>
       <app-no-items-notification
-      message='NO_FAQ_FOR_TRIP'
+        message="NO_FAQ_FOR_TRIP"
       ></app-no-items-notification>
     </ng-template>
+    <!-- FAB should be present if there are no items, not if loading -->
+    <button
+      *ngIf="auth.authenticated"
+      id="send-faq-fab"
+      mat-fab
+      aria-label="Ask a question"
+      color="primary"
+      (click)="openDialog()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
   </ng-container>
   <ng-template #loading>
     <app-loading-spinner-content></app-loading-spinner-content>

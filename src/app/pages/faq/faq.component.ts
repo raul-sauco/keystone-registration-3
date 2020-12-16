@@ -8,6 +8,9 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { ApiService } from 'src/app/services/api/api.service';
 import { HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-faq',
@@ -19,11 +22,12 @@ export class FaqComponent implements OnInit {
   needsLogin = false;
 
   constructor(
-    private auth: AuthService,
     private api: ApiService,
     private logger: NGXLogger,
     private routeStateService: RouteStateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    public auth: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -76,5 +80,97 @@ export class FaqComponent implements OnInit {
           .map((faq: any) => new Faq(faq));
       })
     );
+  }
+
+  /** Display a dialog to let users send QAs */
+  openDialog(): void {
+    if (!this.auth.authenticated || !this.auth.getCredentials().accessToken) {
+      this.logger.error('Not logged in user had send QA option', this.auth);
+      return;
+    }
+    const dialogRef = this.dialog.open(PostQaDialogComponent);
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.logger.log('User posted new QA');
+        const headers = {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.auth.getCredentials().accessToken}`,
+        };
+        this.fetch(null, headers);
+      } else {
+        this.logger.debug('No QA posted');
+      }
+    });
+  }
+}
+
+@Component({
+  selector: 'app-post-qa-dialog.component',
+  templateUrl: './post-qa-dialog.component.html',
+  styleUrls: ['./post-qa-dialog.component.scss'],
+})
+export class PostQaDialogComponent implements OnInit {
+  question: string;
+
+  constructor(
+    public dialogRef: MatDialogRef<PostQaDialogComponent>,
+    private auth: AuthService,
+    private api: ApiService,
+    private logger: NGXLogger,
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
+  ) {}
+
+  ngOnInit(): void {
+    this.question = '';
+  }
+
+  /** Post the question to the server. */
+  send() {
+    const q = this.question || this.question.trim();
+    if (q === '') {
+      this.logger.debug('Empty question body, cancelling');
+      this.dialogRef.close(false);
+      return;
+    }
+    this.logger.debug('Posting new QA: ' + q);
+    const endpoint = 'trip-questions';
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+      }),
+    };
+    const params = { question: q };
+    this.api.post(endpoint, params, options).subscribe(
+      (res: any) => {
+        this.logger.debug('Question received correctly');
+        this.snackBar.open(this.translate.instant('QUESTION_RECEIVED'), null, {
+          duration: 3000,
+        });
+        this.dialogRef.close(true);
+      },
+      (err: any) => {
+        this.logger.error('Error posting new QA', {
+          question: q,
+          auth: this.auth.getCredentials(),
+          res: err,
+        });
+        this.snackBar.open(this.translate.instant('SERVER_ERROR'), null, {
+          duration: 3000,
+        });
+        this.dialogRef.close(false);
+      },
+      () => {
+        // Reset the question in case users want to ask multiple QAs.
+        this.question = '';
+      }
+    );
+  }
+
+  /** Close the dialog on cancel button click. */
+  cancel(): void {
+    this.logger.debug('Dialog cancelled by user');
+    this.dialogRef.close(false);
   }
 }
