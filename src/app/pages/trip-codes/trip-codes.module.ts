@@ -1,27 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
+
+import { TranslateModule } from '@ngx-translate/core';
 
 import { TripCodesRoutingModule } from './trip-codes-routing.module';
 import {
   TripCodesComponent,
   CodeErrorDialogComponent,
-  TripCodeHelpDialogComponent
+  TripCodeHelpDialogComponent,
 } from './trip-codes.component';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-
 
 @NgModule({
   declarations: [
     TripCodesComponent,
     CodeErrorDialogComponent,
-    TripCodeHelpDialogComponent
+    TripCodeHelpDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -30,11 +32,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     TripCodesRoutingModule,
     LoadingSpinnerContentModule,
     MatButtonModule,
+    MatCardModule,
     MatDialogModule,
     MatIconModule,
     MatInputModule,
     MatProgressBarModule,
-    TranslateModule
-  ]
+    TranslateModule,
+  ],
 })
-export class TripCodesModule { }
+export class TripCodesModule {}

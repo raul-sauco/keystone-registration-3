@@ -5,15 +5,38 @@
   right: 0;
   left: 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-
   box-sizing: border-box;
-  padding: 10% 16px 16px 16px;
+  background: top 24px right 16px / 150px no-repeat
+      url(https://static.keystone-adventures.com/img/kalogo.png),
+    center / cover no-repeat
+      url(https://static.keystone-adventures.com/img/portal/bg/f/FM54269YGLNS.png);
+  @media screen and (min-width: 960px) {
+    left: 320px;
+  }
+  // @media screen and (min-width: 1200px) { padding: 10% 320px 10% 16px; }
+}
 
-  /** Angular media queries have an error here */
-  @media screen and (min-width: 600px) and (max-width: 628px) { left: 320px; }
-  @media screen and (min-width: 960px)  { left: 320px; }
-  @media screen and (min-width: 1200px) { padding: 10% 320px 10% 16px; }
+#login-form-mat-card-container {
+  background-color: rgba(255, 255, 255, 0.93);
+  width: 90%;
+  @media screen and (min-width: 1300px) {
+    width: 80%;
+  }
+  @media screen and (min-width: 1400px) {
+    width: 70%;
+  }
+  @media screen and (min-width: 1500px) {
+    width: 60%;
+  }
+  @media screen and (min-width: 1700px) {
+    width: 50%;
+  }
+  @media screen and (min-width: 1900px) {
+    width: 40%;
+  }
 }
 
 form#login-form {
@@ -21,16 +44,9 @@ form#login-form {
   flex-direction: column;
   width: 100%;
 
-  .progress-bar { margin-bottom: 16px; }
-
-  @media screen and (min-width: 700px)  { width: 90%;  }
-  @media screen and (min-width: 900px)  { width: 80%;  }
-  @media screen and (min-width: 1200px) { width: 100%; }
-  @media screen and (min-width: 1300px) { width: 90%;  }
-  @media screen and (min-width: 1400px) { width: 80%;  }
-  @media screen and (min-width: 1500px) { width: 70%;  }
-  @media screen and (min-width: 1700px) { width: 60%;  }
-  @media screen and (min-width: 1900px) { width: 50%;  }
+  .progress-bar {
+    margin-bottom: 16px;
+  }
 }
 
 .navigation-links {

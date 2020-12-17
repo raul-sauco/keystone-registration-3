@@ -1,36 +1,39 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+import { TranslateModule } from '@ngx-translate/core';
 
 import { RegisterRoutingModule } from './register-routing.module';
 import {
   RegisterComponent,
   ErrorMessageDialogComponent,
-  RegistrationSuccessDialogComponent
+  RegistrationSuccessDialogComponent,
 } from './register.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-
 
 @NgModule({
   declarations: [
     RegisterComponent,
     ErrorMessageDialogComponent,
-    RegistrationSuccessDialogComponent
+    RegistrationSuccessDialogComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     MatButtonModule,
+    MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
     RegisterRoutingModule,
-    TranslateModule
-  ]
+    TranslateModule,
+  ],
 })
-export class RegisterModule { }
+export class RegisterModule {}
