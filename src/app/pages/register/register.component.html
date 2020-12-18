@@ -58,6 +58,11 @@
           {{ "MIN_LENGTH_8_CHAR" | translate }}
         </mat-error>
       </mat-form-field>
+      <mat-progress-bar
+        mode="indeterminate"
+        *ngIf="loading"
+        class="progress-bar"
+      ></mat-progress-bar>
       <button
         mat-raised-button
         color="primary"
