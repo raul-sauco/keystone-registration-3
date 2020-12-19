@@ -21,12 +21,7 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { ErrorStateMatcher } from '@angular/material/core';
-
-export interface DialogData {
-  title: string;
-  subtitle: string;
-  content: string;
-}
+import { DialogData } from 'src/app/interfaces/dialog-data';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -149,7 +144,7 @@ export class RegisterComponent implements OnInit {
         this.dialog.open(ErrorMessageDialogComponent, {
           data: {
             title: 'ERROR',
-            content: 'SERVER_ERROR',
+            content: 'SERVER_ERROR_TRY_LATER',
           },
         });
       }

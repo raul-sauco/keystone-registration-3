@@ -125,6 +125,14 @@ const routes: Routes = [
     canActivate: [NoAuthGuard],
   },
   {
+    path: 'forgot-password',
+    loadChildren: () =>
+      import('./pages/forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordModule
+      ),
+    // canActivate: [NoAuthGuard],
+  },
+  {
     path: '',
     redirectTo: 'home', // TODO redirect based on login state
     pathMatch: 'full',

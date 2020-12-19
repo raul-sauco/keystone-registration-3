@@ -90,9 +90,11 @@ export class LoginComponent implements OnInit {
           `Server or Network login error. Username: ${params.username}`,
           error
         );
-        this.translate.get('SERVER_ERROR').subscribe((translation: string) => {
-          this.notifyError(translation);
-        });
+        this.translate
+          .get('SERVER_ERROR_TRY_LATER')
+          .subscribe((translation: string) => {
+            this.notifyError(translation);
+          });
       }
     );
   }

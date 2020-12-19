@@ -156,9 +156,13 @@ export class PostQaDialogComponent implements OnInit {
           auth: this.auth.getCredentials(),
           res: err,
         });
-        this.snackBar.open(this.translate.instant('SERVER_ERROR'), null, {
-          duration: 3000,
-        });
+        this.snackBar.open(
+          this.translate.instant('SERVER_ERROR_TRY_LATER'),
+          null,
+          {
+            duration: 3000,
+          }
+        );
         this.dialogRef.close(false);
       },
       () => {

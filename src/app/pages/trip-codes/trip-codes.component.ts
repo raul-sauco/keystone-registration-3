@@ -4,7 +4,11 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { TripService } from 'src/app/services/trip/trip.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { NGXLogger } from 'ngx-logger';
 
 export interface DialogData {
@@ -16,10 +20,9 @@ export interface DialogData {
 @Component({
   selector: 'app-trip-codes',
   templateUrl: './trip-codes.component.html',
-  styleUrls: ['./trip-codes.component.scss']
+  styleUrls: ['./trip-codes.component.scss'],
 })
 export class TripCodesComponent implements OnInit {
-
   tripCodeForm: FormGroup;
   tripId: string = null;
   loading: boolean;
@@ -33,7 +36,7 @@ export class TripCodesComponent implements OnInit {
     private trip: TripService,
     private logger: NGXLogger,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.logger.debug('TripComponent OnInit');
@@ -51,15 +54,21 @@ export class TripCodesComponent implements OnInit {
    */
   initTripCodeForm(): void {
     this.tripCodeForm = this.formBuilder.group({
-      tripId: [{
-        value: this.tripId,
-        disabled: this.tripId
-      }, Validators.required],
-      code: ['', Validators.compose([
+      tripId: [
+        {
+          value: this.tripId,
+          disabled: this.tripId,
+        },
         Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(6)
-      ])]
+      ],
+      code: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(6),
+        ]),
+      ],
     });
   }
 
@@ -71,7 +80,7 @@ export class TripCodesComponent implements OnInit {
     const params = {
       id: this.tripId || this.tripCodeForm.value.tripId,
       code: this.tripCodeForm.value.code,
-      lang: this.translate.currentLang
+      lang: this.translate.currentLang,
     };
     const endpoint = 'trip-codes';
     this.loading = true;
@@ -79,26 +88,27 @@ export class TripCodesComponent implements OnInit {
       (response: any) => {
         this.loading = false;
         if (response.error === false) {
-            const tripData = {
-              id: response.id,
-              name: response.name,
-              code: this.tripCodeForm.value.code,
-              type: response.registration
-            };
-            this.trip.setCodeValues(tripData);
-            this.router.navigateByUrl('/register');
+          const tripData = {
+            id: response.id,
+            name: response.name,
+            code: this.tripCodeForm.value.code,
+            type: response.registration,
+          };
+          this.trip.setCodeValues(tripData);
+          this.router.navigateByUrl('/register');
         } else {
           this.resetForm();
           this.dialog.open(CodeErrorDialogComponent, {
-            data: {title: 'ERROR', content: 'WRONG_CODES'}
+            data: { title: 'ERROR', content: 'WRONG_CODES' },
           });
         }
-      }, (error: any) => {
+      },
+      (error: any) => {
         this.resetForm();
         this.loading = false;
         this.logger.warn('Error posting trip-codes', params, error);
         this.dialog.open(CodeErrorDialogComponent, {
-          data: {title: 'ERROR', content: 'SERVER_ERROR'}
+          data: { title: 'ERROR', content: 'SERVER_ERROR_TRY_LATER' },
         });
       }
     );
@@ -118,14 +128,14 @@ export class TripCodesComponent implements OnInit {
    */
   showHelp() {
     this.dialog.open(TripCodeHelpDialogComponent, {
-      data: {lang: this.translate.currentLang}
+      data: { lang: this.translate.currentLang },
     });
   }
 }
 
 @Component({
   selector: 'app-code-error-dialog-component',
-  templateUrl: './code-error-dialog.component.html'
+  templateUrl: './code-error-dialog.component.html',
 })
 export class CodeErrorDialogComponent {
   constructor(
@@ -140,7 +150,7 @@ export class CodeErrorDialogComponent {
 
 @Component({
   selector: 'app-trip-code-help-dialog-component',
-  templateUrl: './trip-code-help-dialog.component.html'
+  templateUrl: './trip-code-help-dialog.component.html',
 })
 export class TripCodeHelpDialogComponent {
   constructor(
