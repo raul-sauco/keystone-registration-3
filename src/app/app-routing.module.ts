@@ -71,6 +71,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'documents/:trip-id',
+    loadChildren: () =>
+      import('./pages/documents/documents.module').then(
+        (m) => m.DocumentsModule
+      ),
+  },
+  {
     path: 'feedback',
     loadChildren: () =>
       import('./pages/feedback/feedback.module').then((m) => m.FeedbackModule),
@@ -130,7 +137,15 @@ const routes: Routes = [
       import('./pages/forgot-password/forgot-password.module').then(
         (m) => m.ForgotPasswordModule
       ),
-    // canActivate: [NoAuthGuard],
+    canActivate: [NoAuthGuard],
+  },
+  {
+    path: 'reset-password/:token',
+    loadChildren: () =>
+      import('./pages/reset-password/reset-password.module').then(
+        (m) => m.ResetPasswordModule
+      ),
+    canActivate: [NoAuthGuard],
   },
   {
     path: '',
