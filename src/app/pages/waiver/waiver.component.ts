@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 import * as moment from 'moment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-waiver',
@@ -18,13 +19,16 @@ import * as moment from 'moment';
 })
 export class WaiverComponent implements OnInit {
   needsLogin = false;
+  posting = false;
   student$: Observable<Student>;
+  waiverForm: FormGroup;
 
   constructor(
     private api: ApiService,
-    private auth: AuthService,
+    private formBuilder: FormBuilder,
     private logger: NGXLogger,
     private snackBar: MatSnackBar,
+    public auth: AuthService,
     public translate: TranslateService
   ) {}
 
@@ -51,6 +55,24 @@ export class WaiverComponent implements OnInit {
     });
   }
 
+  get firstName() {
+    return this.waiverForm.get('firstName');
+  }
+  get lastName() {
+    return this.waiverForm.get('lastName');
+  }
+  get guardianName() {
+    return this.waiverForm.get('guardianName');
+  }
+
+  initWaiverForm(stu: Student): void {
+    this.waiverForm = this.formBuilder.group({
+      firstName: [stu.firstName || '', Validators.required],
+      lastName: [stu.lastName || '', Validators.required],
+      guardianName: [stu.guardianName || '', Validators.required],
+    });
+  }
+
   /**
    * Have the ApiService request student information.
    */
@@ -66,6 +88,7 @@ export class WaiverComponent implements OnInit {
       map((studentJson: any) => {
         const s = new Student(studentJson, this.translate, this.logger);
         this.logger.debug('Fetched student from backend', s);
+        this.initWaiverForm(s);
         return s;
       })
     );
@@ -81,9 +104,13 @@ export class WaiverComponent implements OnInit {
       }),
     };
     const studentData = {
+      first_name: this.waiverForm.value.firstName,
+      last_name: this.waiverForm.value.lastName,
+      guardian_name: this.waiverForm.value.guardianName,
       waiver_accepted: 1,
       waiver_signed_on: moment().format('YYYY-MM-DD'),
     };
+    this.posting = true;
     this.student$ = this.api.patch(endpoint, studentData, options).pipe(
       map((studentJson: any) => {
         const s = new Student(studentJson, this.translate, this.logger);
@@ -93,6 +120,7 @@ export class WaiverComponent implements OnInit {
           null,
           { duration: 3000 }
         );
+        this.posting = false;
         return s;
       })
     );

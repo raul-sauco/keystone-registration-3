@@ -2,9 +2,32 @@
   padding: 16px;
 }
 
-#waiver-accept-container {
-  padding: 2em 0 5em;
-  width: 100%;
+#waiver-form {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+
+  mat-form-field {
+    margin: 8px 0;
+    width: 100%;
+  }
+  .progress-bar {
+    margin-bottom: 16px;
+  }
+}
+
+#waiver-form-container {
+  width: 90%;
+  @media screen and (min-width: 900px) {
+    width: 80%;
+  }
+  @media screen and (min-width: 1500px) {
+    width: 70%;
+  }
+  @media screen and (min-width: 1700px) {
+    width: 60%;
+  }
+  @media screen and (min-width: 1900px) {
+    width: 50%;
+  }
 }
