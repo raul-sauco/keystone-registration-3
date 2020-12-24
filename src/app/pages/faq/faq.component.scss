@@ -1,18 +1,12 @@
-.faqs-list {
-  padding-left: 0;
-  list-style: none;
+#faq-page {
+  padding: 16px;
 }
 
-.faq-item {
-  margin: 16px;
-  .question-container {
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
+.faq {
+  margin: 16px 0;
 }
 
-#send-faq-fab {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
+.faq-q {
+  font-weight: bold;
+  margin-bottom: 8px;
 }

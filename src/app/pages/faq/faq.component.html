@@ -1,62 +1,277 @@
-<ng-container *ngIf="needsLogin; else app">
-  <app-login-required-message></app-login-required-message>
-</ng-container>
-<ng-template #app>
-  <ng-container *ngIf="faq$ | async as faqs; else loading">
-    <ul *ngIf="faqs.length > 0; else noItems" class="faqs-list mat-typography">
-      <li class="faq-item" *ngFor="let faq of faqs">
-        <div class="question-container">
-          {{ faq.getQuestion() }}
-        </div>
-        <div class="answer-container" *ngIf="faq.getAnswer(); else noAnswer">
-          {{ faq.getAnswer() }}
-        </div>
-        <ng-template #noAnswer>
-          <div class="no-answer-container">
-            {{ "NO_ANSWER_YET" | translate }}
-          </div>
-        </ng-template>
-        <div class="faq-stats">
-          <span class="faq-asked">
-            {{
-              ("ASKED" | translate) +
-                " " +
-                (faq.getCreatedAt() * 1000 | date: "mediumDate")
-            }} </span
-          >.
-          <span class="faq-answered" *ngIf="faq.getAnswer(); else noAnswerYet">
-            {{
-              ("ANSWERED" | translate) +
-                " " +
-                (faq.getUpdatedAt() * 1000 | date: "mediumDate")
-            }}
-          </span>
-          <ng-template #noAnswerYet>
-            <span class="no-answer-time">
-              {{ "NO_ANSWER_YET" | translate }}
-            </span>
-          </ng-template>
-        </div>
-      </li>
-    </ul>
-    <ng-template #noItems>
-      <app-no-items-notification
-        message="NO_FAQ_FOR_TRIP"
-      ></app-no-items-notification>
-    </ng-template>
-    <!-- FAB should be present if there are no items, not if loading -->
-    <button
-      *ngIf="auth.authenticated"
-      id="send-faq-fab"
-      mat-fab
-      aria-label="Ask a question"
-      color="primary"
-      (click)="openDialog()"
-    >
-      <mat-icon>add</mat-icon>
-    </button>
-  </ng-container>
-  <ng-template #loading>
-    <app-loading-spinner-content></app-loading-spinner-content>
-  </ng-template>
-</ng-template>
+<div id="faq-page">
+  <div class="faq">
+    <div class="faq-q">How will you guarantee the safety of participants?</div>
+    <div class="faq-a">
+      In designing our programs, selecting locations, and hiring staff, safety
+      is our greatest priority. Keystone Adventures completes risk assessments
+      on our programs, taking not only safety into account, but availability of
+      quality food and water, distance to emergency medical care, evacuation
+      procedures, quality of transportation, etc. Our student-to-leader ratio is
+      kept low in order to closely manage safety, and students receive a safety
+      briefing that reviews possible risks and the procedures used to minimize
+      those risks. Ultimately, our impeccable safety record is a point of pride
+      for our company, and we will continue to work diligently to ensure that it
+      remains unblemished.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">What is your policy on mobile phone use?</div>
+    <div class="faq-a">
+      <p>
+        Students should NOT plan to use mobile phones or electronic devices
+        during the day, including social media, listening to music, etc. Mobile
+        phones can be used during bus rides and before going to sleep if
+        necessary. The purpose of this policy is to facilitate student
+        engagement in the trip.
+      </p>
+      <p>
+        For taking pictures, you can consider bringing cameras, though bear in
+        mind this is at your own risk. Many of the locations we visit (such as
+        water environments, deserts, etc) can be particularly unforgiving to
+        electronics. Also consider that your teachers will probably be taking
+        photos of the experiences.
+      </p>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">How much spending money should students take?</div>
+    <div class="faq-a">
+      Although there may be an opportunity to purchase souvenirs, there will be
+      little time for shopping in our busy schedule of activities. It will not
+      be necessary for students to bring any more money than they would normally
+      spend on snacks and drinks, perhaps 100-200CNY for the duration of the
+      program.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">What can we expect regarding food and drinks?</div>
+    <div class="faq-a">
+      <p>
+        All meals are included as stated in the itinerary. Breakfasts are
+        typically Chinese-style and served in the hotel. Lunches vary between
+        sit-down lunches at local restaurants and local homes and picnic-style
+        lunches consisting of sandwiches, fruit, and snacks. For dinner, we will
+        eat primarily Chinese food in a variety of different restaurants.
+      </p>
+      <p>
+        As for water, students should bring refillable water bottles, which can
+        be refilled with fresh spring water at every guesthouse. Students are
+        expected to carry their water bottles at all times. It is safe to drink
+        bottled water, but drinking tap water is not recommended unless it has
+        been boiled.
+      </p>
+      <p>Personal soft drinks during meals are NOT included.</p>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">
+      What about access to medical facilities? Any there any potential health
+      risks on this trip?
+    </div>
+    <div class="faq-a">
+      <p>
+        Medical facilities in urban areas are typically modern and
+        well-equipped, but may not employ English-speaking staff. In the
+        countryside, medical facilities in China are typically quite basic.
+      </p>
+      <p>
+        To minimize the likelihood of illness, students are advised to dress
+        appropriately, drink plenty of water, and eat the food that is provided
+        for them. Students should limit contact with domestic or stray dogs and
+        cats as it is unlikely they are vaccinated and they may carry diseases
+        such as rabies. Students should be responsible for their valuable items,
+        and use good judgment when interacting with strangers. There may be
+        insects in the areas that we will visit, so feel free to bring insect
+        repellant.
+      </p>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">What about accommodation? Where will we be staying?</div>
+    <div class="faq-a">
+      You can find specific information on the accommodation here. In general,
+      all of our accommodation options have been vetted in advance to meet our
+      rigorous standards for safety, hygiene, and comfort. Students will all be
+      allocated their own beds, though rooming assignments will be determined by
+      school teachers. Most hotels/guesthouses offer WiFi coverage.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">How difficult is the trip?</div>
+    <div class="faq-a">
+      We try to keep the pace of our trips fairly relaxed. We ensure that
+      students have adequate time to rest and recover, both between activities
+      and at night. That being said, most of our programs have an outdoor
+      component, and most activities will be somewhat physical. Routes have been
+      chosen to accommodate those with limited or no previous experience, though
+      students should nonetheless expect them to be strenuous. While
+      participation in activities will rarely be compulsory, we encourage
+      students to at least give each activity a chance.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">How should I Pack?</div>
+    <div class="faq-a">
+      <p>
+        Students should prepare a daypack for day activities, to carry essential
+        items only. Other items, extra clothing, etc. can be left behind in a
+        large backpack (or suitcase if necessary), and can be retrieved upon
+        returning to the hotel every evening. As all valuable items should be
+        carried on one’s person, students are discouraged from being computers
+        and other valuable items. Students should expect that all clothes worn
+        during daytime activities will get dirty.
+      </p>
+      <p>
+        For specific questions on what to bring, please consult the
+        <a [routerLink]="packingListLink">Packing List</a>
+      </p>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">
+      What will the weather be like on this trip? What happens if it rains?
+    </div>
+    <div class="faq-a">
+      <p>
+        You should check the forecast 24 to 48 hours before departure for a
+        better indication of weather. Please remember that many of the
+        activities will take place outside, so regardless of the forecast, you
+        need to protect yourself against a range of temperatures, sun, and rain.
+      </p>
+      <p>
+        We have detailed backup plans, including alternative activities, indoor
+        games, team-building exercises, and more. To-date, it has never once
+        been necessary to cancel a trip because of the weather.
+      </p>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">How about Insurance?</div>
+    <div class="faq-a">
+      <p>
+        Keystone Adventures is contractually obligated to provide adequate cover
+        for medical expenses, personal injury and death, and local
+        transportation. We ensure that insurance covers all activities, such as
+        for trekking, cycling, kayaking, and high ropes activities, as
+        applicable. Of course, these policies do NOT cover against loss of
+        baggage and loss/theft/damage to personal property, and curtailment or
+        cancellation of trip, and participants may consider taking out
+        additional coverage.
+      </p>
+      <p>
+        Due to the medical/insurance situation in China, patients are required
+        to pay medical providers in advance for any and all medical treatment.
+        If any participants require medical attention for any reason during a
+        Keystone Adventures trip, the client school should be prepared to
+        facilitate payment of medical services and submit an insurance claim
+        where applicable. Keystone Adventures is not responsible for up-front
+        medical costs of participants regardless of its role in arranging
+        insurance for participants.
+      </p>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">Will students need their passports/ID cards?</div>
+    <div class="faq-a">
+      <p>
+        Yes! Even if a flight is not required, bear in mind that the law of
+        China requires that all individuals present a valid ID as part of the
+        hotel registration process. Those that don’t have IDs can legally be
+        refused entry.
+      </p>
+      <p>
+        It is the responsibility of parents to ensure that students bring their
+        own passports/ID cards and that they are up to date. (Typically, Macau,
+        Taiwanese and Hong Kong passport holders must bring their passport and
+        their Chinese ID card / booklet).
+      </p>
+      <p>
+        Rest assured that the passports will be looked after by the trip leaders
+        while we are away for the week.
+      </p>
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">What if a student is taking medication?</div>
+    <div class="faq-a">
+      Please ensure any medication your son or daughter need to take is given to
+      their group leader before the trip leaves school. Any personal medication
+      must be in a sealed plastic bag clearly labelled with the child’s name and
+      fully typed instructions in English as to when and how often the
+      medication should be taken. It is vital that these instructions are clear
+      and if the medication needs to be given with food or water, or in a
+      specific order, this should also be recorded. If you are confident that
+      your child can be in charge of his/her own medication then he/she should
+      keep it in his/her rucksack etc. If however, your child needs supervision
+      with the medication, please email the trip leader and include all the
+      relevant information mentioned above.
+    </div>
+  </div>
+  <h2>General Company FAQs (for parents)</h2>
+  <div class="faq">
+    <div class="faq-q">Why should we trust Keystone Adventures?</div>
+    <div class="faq-a">
+      Our roster of clients includes some of the most prestigious international
+      schools in China, most of which we have multi-year relationships with.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">Do you have a Child Safeguarding Policy?</div>
+    <div class="faq-a">
+      Keystone Adventures recognizes that most of the participants in our
+      programs/activities are children under 18 years of age. Consequently, we
+      have both a moral and a legal duty to protect and safeguard them and to
+      promote their welfare. We recognize that child safeguarding means caring
+      for children appropriately and protecting them from anything which is not
+      in their best interests. It includes health and safety, child protection
+      and pastoral care, recognizing that children depend on adults for their
+      safety and well-being. With this in mind, we have developed a
+      comprehensive company policy document and supporting procedures, which you
+      can find in the <a [routerLink]="documentPageLink">documents section</a>.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">How closely will students be supervised?</div>
+    <div class="faq-a">
+      The supervision ratio will vary according to the activity the students are
+      doing, but will always be in line with health and safety recommendations.
+      Girls and boys will sleep in separate areas. They will be expected to go
+      to bed at the specified times and to stay in their rooms until the
+      morning. Typically, you can expect your male teachers to supervise the
+      areas that the boys are sleeping in and the female staff to supervise the
+      girls’ areas.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">Why focus on outdoor education?</div>
+    <div class="faq-a">
+      Outdoor education primarily enables students to interface with a new
+      environment, collect new experiences, and learn concrete skills. In
+      addition, it has been proven to strengthen bonds among team members,
+      enhance problem-solving and leadership skills, and deepen one‘s spiritual
+      appreciation for life. From a practical standpoint, outdoor education
+      equips students with the knowledge of minimizing risks and dealing with
+      dangerous situations, including specialized skills that can be used in the
+      event of an emergency.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">Have staff been vetted? Are they certified?</div>
+    <div class="faq-a">
+      All of our full-time staff must submit to a criminal background check
+      before they are offered employment. All of our staff hold first-aid
+      certifications, many of them hold advanced wilderness first aid
+      certifications, and several of them have advanced certifications in other
+      activities.
+    </div>
+  </div>
+  <div class="faq">
+    <div class="faq-q">Does KA have a good safety record?</div>
+    <div class="faq-a">
+      We have an impeccable safety record, without any serious injuries or
+      hospitalizations to date. Once each season or so, it’s likely that a
+      student will need stitches (almost always from falling off a bike), but
+      it’s fortunately rare for us to deal with anything beyond that.
+    </div>
+  </div>
+</div>
