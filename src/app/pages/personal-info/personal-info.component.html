@@ -59,6 +59,9 @@
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker touchUi #picker></mat-datepicker>
+          <mat-error *ngIf="dob.errors?.matDatepickerParse">
+            {{ "PIF_ERROR_INVALID_DATE" | translate }}
+          </mat-error>
         </mat-form-field>
         <!-- END Personal information section -->
 
@@ -81,11 +84,7 @@
               {{ "I." + i | translate }}</mat-option
             >
           </mat-select>
-          <mat-hint
-            >Please provide details for your family’s medical insurance policy.
-            If you don’t know if you have an insurance policy and/or you don’t
-            know the details, please select ‘Not Sure.’</mat-hint
-          >
+          <mat-hint>{{ "PIF_HINT_INSURANCE" | translate }}</mat-hint>
         </mat-form-field>
         <ng-container
           *ngIf="

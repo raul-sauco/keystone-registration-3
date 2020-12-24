@@ -55,6 +55,10 @@ export class PersonalInfoComponent implements OnInit {
     });
   }
 
+  get dob() {
+    return this.personalInfoForm.get('dob');
+  }
+
   initPersonalInfoForm(): void {
     this.personalInfoForm = this.formBuilder.group({
       firstName: [this.student.firstName],
@@ -130,18 +134,12 @@ export class PersonalInfoComponent implements OnInit {
 
   /** Sanitize the data entered by the user before sending it to the server. */
   sanitizeData(data: any): any {
-    // Dob could be a moment object.
-    if (!moment.isMoment(data.dob)) {
-      data.dob = moment(data.dob);
-    }
-    data.dob = data.dob.format('YYYY-MM-DD');
-    const sanitizedData = {
+    const sanitizedData: any = {
       first_name: data.firstName,
       last_name: data.lastName,
       citizenship: data.citizenship,
       travel_document: data.travelDocument,
       gender: data.gender,
-      dob: data.dob,
       guardian_name: data.guardianName,
       waiver_accepted: data.waiverAccepted,
       waiver_signed_on: data.waiverSignedOn,
@@ -154,6 +152,21 @@ export class PersonalInfoComponent implements OnInit {
       insurance_name: data.insuranceName,
       insurance_policy_number: data.insurancePolicyNumber,
     };
+    if (data.dob !== this.student.dob) {
+      this.logger.debug('DOB field has been updated');
+      let dob = data.dob;
+      if (!moment.isMoment(dob)) {
+        dob = moment(dob);
+      }
+      if (dob.isValid()) {
+        sanitizedData.dob = dob.format('YYYY-MM-DD');
+      } else {
+        this.logger.warn(
+          'Trying to use invalid date ' + dob.format('YYYY-MM-DD')
+        );
+      }
+    }
+    // Dob could be a moment object.
     return sanitizedData;
   }
 }
