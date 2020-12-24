@@ -81,6 +81,11 @@
               {{ "I." + i | translate }}</mat-option
             >
           </mat-select>
+          <mat-hint
+            >Please provide details for your family’s medical insurance policy.
+            If you don’t know if you have an insurance policy and/or you don’t
+            know the details, please select ‘Not Sure.’</mat-hint
+          >
         </mat-form-field>
         <ng-container
           *ngIf="
@@ -188,6 +193,7 @@
         <!-- END Medical information section -->
 
         <button
+          id="submit-personal-info"
           mat-raised-button
           color="primary"
           [disabled]="!personalInfoForm.valid"
