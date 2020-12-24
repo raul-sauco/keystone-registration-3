@@ -4,47 +4,76 @@ import { GlobalsService } from 'src/app/local/globals.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
   url: string;
   columns = 1;
 
   cards = [
     {
-      title: 'WELCOME_TO_KA',
-      content: 'HOME_CARD_WELCOME_MESSAGE',
-      image: 'keystone.jpg'
+      title: 'HOME_CARD_TITLE_ABOUT',
+      content: 'HOME_CARD_CONTENT_ABOUT',
+      image: 'KJ3M1ODBSAFMVEB8KPID.jpg',
     },
     {
-      title: 'OUR_GOAL',
-      content: 'HOME_CARD_OUR_GOAL',
-      image: 'goals.png'
+      title: 'HOME_CARD_TITLE_MISSION',
+      content: 'HOME_CARD_CONTENT_MISSION',
+      image: 'PC4XLG7D7G8WVECMVDTO.jpg',
     },
     {
-      title: 'STAFF',
-      content: 'HOME_CARD_STAFF',
-      image: 'staff.jpg'
+      title: 'HOME_CARD_TITLE_SAFETY_FIRST_AID',
+      content: 'HOME_CARD_CONTENT_SAFETY_FIRST_AID',
+      image: '4F1Y03I7SNQVNZKXF67G.jpg',
     },
     {
-      title: 'CHALLENGE_BY_CHOICE',
-      content: 'HOME_CARD_CHALLENGE',
-      image: 'challenge.jpg'
+      title: 'HOME_CARD_TITLE_STAFF',
+      content: 'HOME_CARD_CONTENT_STAFF',
+      image: 'XIS486MWGCBKLQ20HAO1.jpg',
     },
     {
-      title: 'LOCATIONS',
-      content: 'HOME_CARD_LOCATIONS',
-      image: 'locations.jpg'
+      title: 'HOME_CARD_TITLE_RISK_MANAGEMENT',
+      content: 'HOME_CARD_CONTENT_RISK_MANAGEMENT',
+      image: 'Y8P3HCWWB7VOY21UYVBK.jpg',
     },
     {
-      title: 'RISK_MANAGEMENT',
-      content: 'HOME_CARD_RISK_MANAGEMENT',
-      image: 'risk.jpg'
-    }
+      title: 'HOME_CARD_TITLE_EMERGENCY_PROCEDURES',
+      content: 'HOME_CARD_CONTENT_EMERGENCY_PROCEDURES',
+      image: 'QV2G16I1OFGL23JSOFZM.webp',
+    },
+    {
+      title: 'HOME_CARD_TITLE_BACKUP_PLANS',
+      content: 'HOME_CARD_CONTENT_BACKUP_PLANS',
+      image: 'FTBR4BCVJVHQ754O4CDD.jpg',
+    },
+    {
+      title: 'HOME_CARD_TITLE_EQUIPMENT',
+      content: 'HOME_CARD_CONTENT_EQUIPMENT',
+      image: 'HI4D3G46YKJMNUBV7SMI.jpg',
+    },
+    {
+      title: 'HOME_CARD_TITLE_MEALS',
+      content: 'HOME_CARD_CONTENT_MEALS',
+      image: 'Z0TP2KIC99SHR8TYSLJJ.png',
+    },
+    {
+      title: 'HOME_CARD_TITLE_ACCOMMODATION',
+      content: 'HOME_CARD_CONTENT_ACCOMMODATION',
+      image: 'MRBDL3Y3TTDEHK4RKLJE.jpg',
+    },
+    {
+      title: 'HOME_CARD_TITLE_TRANSPORTATION',
+      content: 'HOME_CARD_CONTENT_TRANSPORTATION',
+      image: '5HPQYJ6QTC3UG23WGITX.jpg',
+    },
+    {
+      title: 'HOME_CARD_TITLE_INSURANCE',
+      content: 'HOME_CARD_CONTENT_INSURANCE',
+      image: 'Y8NUMCWKUDIMMPJJCCOM.jpg',
+    },
   ];
 
-  constructor( globals: GlobalsService ) {
+  constructor(globals: GlobalsService) {
     this.url = globals.getResUrl() + 'img/portal/';
   }
 
@@ -63,9 +92,12 @@ export class HomeComponent implements OnInit {
    * @param width The width of the container
    */
   calculateColumns(width: number) {
-    if (width < 768) { return 1; }
-    if (width < 1200) { return 2; }
+    if (width < 768) {
+      return 1;
+    }
+    if (width < 1200) {
+      return 2;
+    }
     return 3;
   }
-
 }
