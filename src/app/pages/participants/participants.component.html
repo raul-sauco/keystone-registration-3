@@ -1,0 +1,29 @@
+<!-- https://material.angular.io/components/table/overview -->
+<ng-container *ngIf="participant$ | async as participants; else loading">
+  <div id="participants-table-container">
+    <table
+      id="participants-table"
+      mat-table
+      [dataSource]="participants"
+      class="mat-elevation-z8"
+    >
+      <ng-container *ngFor="let attr of displayedColumns" [matColumnDef]="attr">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ attr | camelToSnake | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.getAttributeText(attr) }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; let even = even; columns: displayedColumns"
+        [ngClass]="{ gray: even }"
+      ></tr>
+    </table>
+  </div>
+</ng-container>
+<ng-template #loading>
+  <app-loading-spinner-content></app-loading-spinner-content>
+</ng-template>

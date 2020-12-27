@@ -84,6 +84,14 @@ const routes: Routes = [
     canActivate: [TeacherGuard],
   },
   {
+    path: 'participants',
+    loadChildren: () =>
+      import('./pages/participants/participants.module').then(
+        (m) => m.ParticipantsModule
+      ),
+    canActivate: [TeacherGuard],
+  },
+  {
     path: 'personal-info',
     loadChildren: () =>
       import('./pages/personal-info/personal-info.module').then(
