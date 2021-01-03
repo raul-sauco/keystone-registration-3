@@ -134,5 +134,8 @@
       }
     }
   },
-  "defaultProject": "keystone-registration"
+  "defaultProject": "keystone-registration",
+  "cli": {
+    "analytics": "9f9138a1-6d44-4052-ad70-b4c8f19b53a2"
+  }
 }

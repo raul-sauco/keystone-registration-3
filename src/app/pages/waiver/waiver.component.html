@@ -4,12 +4,16 @@
 <ng-template #app>
   <ng-container *ngIf="student$ | async as student; else loading">
     <div id="waiver-page-container">
+      <p>
+        {{ "WAIVER_SIGNED_ON" | translate }}
+        <strong>{{ student.waiverSignedOn | date }}</strong>
+      </p>
       <app-waiver-content></app-waiver-content>
       <div id="waiver-form-container">
         <form
           [formGroup]="waiverForm"
           id="waiver-form"
-          *ngIf="!student.waiverAccepted; else acceptedOn"
+          *ngIf="!student.waiverAccepted"
         >
           <mat-form-field appearance="outline">
             <mat-label>{{ student.getAttributeLabel("firstName") }}</mat-label>
@@ -54,12 +58,6 @@
             {{ "ACCEPT_WAIVER" | translate }}
           </button>
         </form>
-        <ng-template #acceptedOn>
-          <p>
-            {{ "WAIVER_SIGNED_ON" | translate }}
-            <strong>{{ student.waiverSignedOn | date }}</strong>
-          </p>
-        </ng-template>
       </div>
     </div>
   </ng-container>

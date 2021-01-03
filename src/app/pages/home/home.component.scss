@@ -4,6 +4,8 @@
 }
 
 .home-presentation-card {
+  display: flex;
+
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
@@ -13,6 +15,10 @@
   }
 
   @media only screen and (min-width: 1440px) {
-    width: calc(100%/3);
+    width: calc(100% / 3);
+  }
+
+  .card-content {
+    text-align: justify;
   }
 }
