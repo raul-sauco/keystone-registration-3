@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     { title: 'HOME', url: '/home', icon: 'home' },
     { title: 'ITINERARY', url: '/itinerary', icon: 'list' },
     { title: 'PACKING_LIST', url: '/packing-list', icon: 'work' },
-    { title: 'GUIDES', url: '/guides', icon: 'contacts' },
+    { title: 'STAFF', url: '/guides', icon: 'contacts' },
     { title: 'FAQ', url: '/faq', icon: 'chatbubbles' },
     { title: 'DOCUMENTS', url: '/documents', icon: 'description' },
   ];
