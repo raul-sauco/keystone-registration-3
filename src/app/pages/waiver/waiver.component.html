@@ -4,7 +4,7 @@
 <ng-template #app>
   <ng-container *ngIf="student$ | async as student; else loading">
     <div id="waiver-page-container">
-      <p>
+      <p *ngIf="student.waiverAccepted">
         {{ "WAIVER_SIGNED_ON" | translate }}
         <strong>{{ student.waiverSignedOn | date }}</strong>
       </p>
@@ -17,7 +17,7 @@
         >
           <mat-form-field appearance="outline">
             <mat-label>{{ student.getAttributeLabel("firstName") }}</mat-label>
-            <input type="text" matInput formControlName="firstName" />
+            <input type="text" matInput formControlName="firstName" required />
             <mat-error *ngIf="firstName.errors?.required">
               {{ "THIS_FIELD_IS_REQUIRED" | translate }}
             </mat-error>
@@ -27,7 +27,7 @@
             [hintLabel]="'PIF_HINT_NAME' | translate"
           >
             <mat-label>{{ student.getAttributeLabel("lastName") }}</mat-label>
-            <input type="text" matInput formControlName="lastName" />
+            <input type="text" matInput formControlName="lastName" required />
             <mat-error *ngIf="lastName.errors?.required">
               {{ "THIS_FIELD_IS_REQUIRED" | translate }}
             </mat-error>
@@ -39,7 +39,12 @@
             <mat-label>{{
               student.getAttributeLabel("guardianName")
             }}</mat-label>
-            <input type="text" matInput formControlName="guardianName" />
+            <input
+              type="text"
+              matInput
+              formControlName="guardianName"
+              required
+            />
             <mat-error *ngIf="guardianName.errors?.required">
               {{ "THIS_FIELD_IS_REQUIRED" | translate }}
             </mat-error>

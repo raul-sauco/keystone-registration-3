@@ -69,7 +69,10 @@ export class WaiverComponent implements OnInit {
     this.waiverForm = this.formBuilder.group({
       firstName: [stu.firstName || '', Validators.required],
       lastName: [stu.lastName || '', Validators.required],
-      guardianName: [stu.guardianName || '', Validators.required],
+      guardianName: [
+        stu.guardianName || '',
+        this.auth.getCredentials().type === 4 ? null : Validators.required,
+      ],
     });
   }
 
