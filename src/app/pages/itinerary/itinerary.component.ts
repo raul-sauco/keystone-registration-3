@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ActivityGroup } from 'src/app/models/activityGroup';
 import { ActivityGroupService } from 'src/app/services/activity-group/activity-group.service';
@@ -9,10 +9,10 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 @Component({
   selector: 'app-itinerary',
   templateUrl: './itinerary.component.html',
-  styleUrls: ['./itinerary.component.scss']
+  styleUrls: ['./itinerary.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ItineraryComponent implements OnInit, OnDestroy {
-
   /** used by the template to iterate a collection */
   activityGroups: ActivityGroup[] = null;
   needsLogin = false;
@@ -23,7 +23,7 @@ export class ItineraryComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private routeStateService: RouteStateService,
     private auth: AuthService
-  ) { }
+  ) {}
 
   /**
    * Try to get an optional trip-id parameter and have the
@@ -36,7 +36,7 @@ export class ItineraryComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     // Try to find a trip ID parameter
-    this.route.paramMap.subscribe( (params: ParamMap) => {
+    this.route.paramMap.subscribe((params: ParamMap) => {
       const tripId = params.get('trip-id');
       if (tripId !== null) {
         // If we have a routing parameter, update the route state and fetch data
@@ -66,21 +66,21 @@ export class ItineraryComponent implements OnInit, OnDestroy {
     this.activityGroupService.fetchActivityGroups(tripId);
 
     // Subscribe to the ActivityGroupService Subject
-    this.activityGroupService
-        .activityGroup$.subscribe(resp => {
-          this.activityGroups = resp;
-        },
-        (err: string) => {
-
-          // Notify the user of the error
-          const snackBarRef = this.snackBar.open(err, 'Retry', {
-            duration: 5000
-          });
-
-          snackBarRef.onAction().subscribe(() => {
-            this.activityGroupService.fetchActivityGroups(tripId);
-          });
+    this.activityGroupService.activityGroup$.subscribe(
+      (resp) => {
+        this.activityGroups = resp;
+      },
+      (err: string) => {
+        // Notify the user of the error
+        const snackBarRef = this.snackBar.open(err, 'Retry', {
+          duration: 5000,
         });
+
+        snackBarRef.onAction().subscribe(() => {
+          this.activityGroupService.fetchActivityGroups(tripId);
+        });
+      }
+    );
   }
 
   /**
@@ -93,5 +93,4 @@ export class ItineraryComponent implements OnInit, OnDestroy {
      */
     // this.activityGroupService.activityGroup$.unsubscribe();
   }
-
 }

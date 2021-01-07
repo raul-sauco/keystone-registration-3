@@ -1,29 +1,31 @@
-.tab-icon {
-  margin-right: 8px;
-}
-
-.tab-content {
-  padding: 16px;
-}
-
-.pli-list {
-  padding-left: 0;
-  list-style: none;
-}
-
-.pli-item {
-  margin: 16px 0;
-}
-
+/* Component has ViewEncapsulation.None to access .mat-tab-label-active,
+ * styles should be placed inside a page element selector
+ */
 #pl-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
   background-color: #eee;
-}
 
-#pl-container {
-  max-width: 800px;
-  background-color: white;
+  .tab-icon {
+    margin-right: 8px;
+  }
+  .tab-content {
+    padding: 16px;
+  }
+  .pli-list {
+    padding-left: 0;
+    list-style: none;
+  }
+  .pli-item {
+    margin: 16px 0;
+  }
+  #pl-container {
+    max-width: 800px;
+    background-color: white;
+  }
+  .mat-tab-label-active {
+    background-color: #efefef;
+  }
 }

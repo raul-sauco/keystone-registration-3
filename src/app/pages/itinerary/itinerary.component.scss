@@ -1,10 +1,17 @@
-.mat-divider {
-  border-top-color: #2a872b;
-  /* could also use transparency rgba(42, 135, 43, 0.75); */
-  /* border-top-width: 2px; */
-}
-
-h1.date-header {
-  font-weight: bold;
-  color: #333;
+/* Component has ViewEncapsulation.None to access .mat-tab-label-active,
+ * styles should be placed inside a page element selector
+ */
+#itinerary-tabs {
+  .mat-divider {
+    border-top-color: #2a872b;
+    /* could also use transparency rgba(42, 135, 43, 0.75); */
+    /* border-top-width: 2px; */
+  }
+  h1.date-header {
+    font-weight: bold;
+    color: #333;
+  }
+  .mat-tab-label-active {
+    background-color: #efefef;
+  }
 }

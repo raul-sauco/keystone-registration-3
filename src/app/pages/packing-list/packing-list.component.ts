@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { PackingListService } from 'src/app/services/packing-list/packing-list.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
@@ -9,10 +9,10 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 @Component({
   selector: 'app-packing-list',
   templateUrl: './packing-list.component.html',
-  styleUrls: ['./packing-list.component.scss']
+  styleUrls: ['./packing-list.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class PackingListComponent implements OnInit, OnDestroy {
-
   itemsBring: TripPackingListItem[] = [];
   itemsOptional: TripPackingListItem[] = [];
   itemsDoNotBring: TripPackingListItem[] = [];
@@ -24,7 +24,7 @@ export class PackingListComponent implements OnInit, OnDestroy {
     private routeStateService: RouteStateService,
     private logger: NGXLogger,
     private auth: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.logger.debug('PackingList ngOnInit called');
@@ -66,7 +66,6 @@ export class PackingListComponent implements OnInit, OnDestroy {
    * Subscribe to the service
    */
   subscribe(): void {
-
     // Subscribe to the service observable
     this.packingListService.item$.subscribe(
       (items: TripPackingListItem[]) => {
@@ -85,23 +84,22 @@ export class PackingListComponent implements OnInit, OnDestroy {
               this.itemsDoNotBring.push(i);
               break;
             default:
-              this.logger.warn(
-                `PLI bring ${i.getBring()} is not valid;`, i);
+              this.logger.warn(`PLI bring ${i.getBring()} is not valid;`, i);
               break;
           }
         });
 
         // Sort the arrays by the item's order property
-        [
-          this.itemsBring,
-          this.itemsOptional,
-          this.itemsDoNotBring
-        ].forEach((array: TripPackingListItem[]) => {
-          array.sort((a: TripPackingListItem, b: TripPackingListItem) =>
-            a.getOrder() - b.getOrder());
-        });
-
-      }, (err: string) => {
+        [this.itemsBring, this.itemsOptional, this.itemsDoNotBring].forEach(
+          (array: TripPackingListItem[]) => {
+            array.sort(
+              (a: TripPackingListItem, b: TripPackingListItem) =>
+                a.getOrder() - b.getOrder()
+            );
+          }
+        );
+      },
+      (err: string) => {
         this.logger.error(`Error fetching packing list items`, err);
       }
     );
@@ -111,7 +109,6 @@ export class PackingListComponent implements OnInit, OnDestroy {
    * Clean up
    */
   ngOnDestroy() {
-
     this.logger.debug('PackingList ngOnDestroy called');
     /*
      * TODO unsubscribing from the Subject throws error if
@@ -119,5 +116,4 @@ export class PackingListComponent implements OnInit, OnDestroy {
      */
     // this.packingListService.item$.unsubscribe();
   }
-
 }
