@@ -4,6 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 
 export class Student {
   id: number;
+  index: number;
   type: number; // 1 for teacher, 0 for student
   firstName: string;
   lastName: string;
@@ -49,6 +50,7 @@ export class Student {
     this.translate
       .get([
         'ID',
+        'INDEX',
         'FIRST_NAME',
         'LAST_NAME',
         'CITIZENSHIP',
@@ -75,6 +77,8 @@ export class Student {
         'NO',
         'EMPTY',
         'COUNTRY_OF_CITIZENSHIP',
+        'TEACHER',
+        'STUDENT',
       ])
       .subscribe((res) => (this.translations = res));
   }
@@ -150,13 +154,19 @@ export class Student {
    * Get the attribute value element content.
    */
   getAttributeText(attr) {
+    if (attr === 'type') {
+      if (this[attr]) {
+        return this.translations.TEACHER;
+      }
+      return this.translations.STUDENT;
+    }
     if (typeof this[attr] === 'boolean') {
       if (this[attr] === true) {
         return this.translations.YES;
       } else if (this[attr] === false) {
         return this.translations.NO;
       } else {
-        return this.translations.EMPTY;
+        return '';
       }
     }
 
@@ -177,7 +187,7 @@ export class Student {
     }
 
     if (!this[attr]) {
-      return this.translations.EMPTY;
+      return '';
     }
 
     // Customize a few attributes
@@ -190,6 +200,17 @@ export class Student {
     }
 
     return this[attr];
+  }
+
+  /**
+   * Hide the teachers medical information from the participants table
+   * @param attr
+   */
+  getParticipantTableDisplayValue(attr) {
+    if (attr === 'medicalInformation' && +this.type === 1) {
+      return '';
+    }
+    return this.getAttributeText(attr);
   }
 
   /**

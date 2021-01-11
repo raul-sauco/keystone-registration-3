@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
@@ -12,11 +12,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   selector: 'app-participants',
   templateUrl: './participants.component.html',
   styleUrls: ['./participants.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ParticipantsComponent implements OnInit {
   participant$: Observable<Student[]>;
   displayedColumns: string[] = [
-    'id',
+    'index',
+    'type',
     'firstName',
     'lastName',
     'citizenship',
@@ -62,10 +64,39 @@ export class ParticipantsComponent implements OnInit {
     };
     this.participant$ = this.api.get(endpoint, null, options).pipe(
       map((studentsJson: any) => {
-        const studentsArray = studentsJson.map(
-          (s: any) => new Student(s, this.translate, this.logger)
-        );
-        return studentsArray;
+        const studentsArray = studentsJson
+          .map((s: any) => new Student(s, this.translate, this.logger))
+          .sort(
+            // Sort by type first and then last name.
+            // Strings can be null strings do not use localCompare
+            (a: Student, b: Student) => {
+              const t = b.type - a.type;
+              if (t) {
+                return t;
+              }
+              if (!a.lastName) {
+                return 1;
+              }
+              if (!b.lastName) {
+                return -1;
+              }
+              return a.lastName.localeCompare(b.lastName);
+            }
+          );
+
+        // Add an index value to all
+        let ti = 1;
+        let si = 1;
+        const indexedStudentArray = [];
+        studentsArray.forEach((student: Student) => {
+          if (!student.type) {
+            student.index = ti++;
+          } else {
+            student.index = si++;
+          }
+          indexedStudentArray.push(student);
+        });
+        return indexedStudentArray;
       })
     );
   }
