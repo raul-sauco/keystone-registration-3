@@ -1,24 +1,28 @@
-.charts-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  margin: 0 16px 0 8px;
-}
-
-.chart-container {
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 16px;
-  width: 80%;
-  @media screen and (min-width: 1200px) {
-    width: 50%;
+#feedback-container {
+  .charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0 16px 0 8px;
   }
-  @media screen and (min-width: 1900px) {
-    width: calc(100% / 3);
-  }
-}
 
-.question-container {
-  margin: 16px 16px 32px 16px;
+  .chart-container {
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 16px;
+    width: 80%;
+    @media screen and (min-width: 1200px) {
+      width: 50%;
+    }
+    @media screen and (min-width: 1900px) {
+      width: calc(100% / 3);
+    }
+  }
+  .question-container {
+    margin: 16px 16px 32px 16px;
+  }
+  .mat-tab-label-active {
+    background-color: #efefef;
+  }
 }

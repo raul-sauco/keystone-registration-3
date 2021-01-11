@@ -1,10 +1,10 @@
 <ng-container *ngIf="feedback$ | async as feedback; else loading">
-
-  <mat-tab-group dynamicHeight
-    *ngIf="feedback.count > 0; else noItems">
-
-    <mat-tab [label]="'GRAPHS' | translate">
-
+  <mat-tab-group
+    dynamicHeight
+    id="feedback-container"
+    *ngIf="feedback.count > 0; else noItems"
+  >
+    <mat-tab [label]="'OVERVIEW' | translate">
       <div class="charts-container">
         <ng-container *ngFor="let chart of feedback.charts">
           <div class="chart-container">
@@ -18,18 +18,18 @@
               [labels]="true"
               [trimLabels]="false"
               [doughnut]="false"
-              >
+            >
             </ngx-charts-pie-chart>
           </div>
         </ng-container>
       </div>
-
     </mat-tab>
 
-    <mat-tab [label]="'DETAIL' | translate">
-
-      <div *ngFor="let item of feedback.questions"
-        class="question-container material-typography">
+    <mat-tab [label]="'DETAILS' | translate">
+      <div
+        *ngFor="let item of feedback.questions"
+        class="question-container material-typography"
+      >
         <h2>{{ item.question }}</h2>
         <ol class="answer-list">
           <li *ngFor="let answer of item.answers" class="answer-container">
@@ -37,17 +37,14 @@
           </li>
         </ol>
       </div>
-
     </mat-tab>
-
   </mat-tab-group>
 
   <ng-template #noItems>
     <app-no-items-notification
-    message='NO_FEEDBACK_FOR_TRIP'
+      message="NO_FEEDBACK_FOR_TRIP"
     ></app-no-items-notification>
   </ng-template>
-
 </ng-container>
 <ng-template #loading>
   <app-loading-spinner-content></app-loading-spinner-content>

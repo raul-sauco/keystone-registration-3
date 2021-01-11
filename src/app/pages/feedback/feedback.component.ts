@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   selector: 'app-feedback',
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FeedbackComponent implements OnInit {
   feedback$: Observable<any>;
