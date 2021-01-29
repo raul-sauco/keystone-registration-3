@@ -78,6 +78,14 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'accommodation',
+    loadChildren: () =>
+      import('./pages/accommodation/accommodation.module').then(
+        (m) => m.AccommodationModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'feedback',
     loadChildren: () =>
       import('./pages/feedback/feedback.module').then((m) => m.FeedbackModule),

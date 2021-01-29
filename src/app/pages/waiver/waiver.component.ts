@@ -90,7 +90,6 @@ export class WaiverComponent implements OnInit {
     this.student$ = this.api.get(endpoint, null, options).pipe(
       map((studentJson: any) => {
         const s = new Student(studentJson, this.translate, this.logger);
-        this.logger.debug('Fetched student from backend', s);
         this.initWaiverForm(s);
         return s;
       })

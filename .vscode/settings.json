@@ -3,6 +3,7 @@
         "Datepicker",
         "chatbubbles",
         "fulldate",
-        "minlength"
+        "minlength",
+        "sidenav"
     ]
 }

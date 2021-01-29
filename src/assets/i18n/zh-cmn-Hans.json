@@ -1,6 +1,7 @@
 {
   "ACCEPT": "同意并签署",
   "ACCEPT_WAIVER": "I understand and accept the above conditions",
+  "ACCOMMODATION": "Accommodation",
   "ACCOUNT_FOR_EMAIL_NOT_FOUND": "No account was found for email {{email}}, make sure the email is correct and it is the one you used to register.",
   "ACCOUNT_FOR_THAT_EMAIL_NOT_FOUND": "No account was found for the email provided, please, make sure the email is correct and it is the one you used to register.",
   "ACCOUNT_INACTIVE": "The account we found is inactive.",
@@ -108,6 +109,7 @@
     "1": "是",
     "2": "不确定"
   },
+  "INDEX": "Index",
   "INSURANCE": "保险",
   "INSURANCE_DETAILS": "保险条款",
   "INSURANCE_NAME": "保险公司名称",

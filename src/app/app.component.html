@@ -43,6 +43,11 @@
 
       <!--The next links have an async if and a sync one. cannot use page.render -->
       <ng-container *ngIf="auth.auth$ | async">
+        <a mat-list-item routerLink="/accommodation">
+          <mat-icon matListIcon color="primary">hotel</mat-icon>
+          <p matLine>{{ "ACCOMMODATION" | translate | uppercase }}</p>
+          <mat-divider [inset]="true"></mat-divider>
+        </a>
         <a
           mat-list-item
           *ngIf="auth.getCredentials().type === 4"

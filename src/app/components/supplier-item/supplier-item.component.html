@@ -1,0 +1,25 @@
+<div class="supplier-item-container">
+  <mat-card>
+    <mat-card-title class="supplier-item-name">
+      {{ lang === "en" ? supplier.name : supplier.nameZh }}
+      <ng-container *ngIf="lang === 'en'">
+        ( {{ supplier.nameZh }} )
+      </ng-container>
+    </mat-card-title>
+    <div class="supplier-item-description">
+      {{ lang === "en" ? supplier.description : supplier.descriptionZh }}
+    </div>
+    <div class="supplier-item-images-container" *ngIf="supplier.images">
+      <div
+        *ngFor="let image of supplier.images"
+        class="supplier-item-image-container"
+      >
+        <img
+          class="supplier-item-image"
+          [src]="url + 'img/supplier/' + image.name"
+          [alt]="image.name"
+        />
+      </div>
+    </div>
+  </mat-card>
+</div>
