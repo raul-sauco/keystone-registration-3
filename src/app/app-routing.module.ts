@@ -115,6 +115,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'covid-policy',
+    loadChildren: () =>
+      import('./pages/covid-policy/covid-policy.module').then(
+        (m) => m.CovidPolicyModule
+      ),
+  },
+  {
     path: 'login',
     loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginModule),

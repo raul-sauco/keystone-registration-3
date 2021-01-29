@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
-import { ApiService } from 'src/app/services/api/api.service';
-import { HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
-  selector: 'app-privacy-policy',
-  templateUrl: './privacy-policy.component.html',
-  styleUrls: ['./privacy-policy.component.scss'],
+  selector: 'app-covid-policy',
+  templateUrl: './covid-policy.component.html',
+  styleUrls: ['./covid-policy.component.scss'],
 })
-export class PrivacyPolicyComponent implements OnInit {
+export class CovidPolicyComponent implements OnInit {
   content$: Observable<any>;
   lang: string;
 
@@ -21,13 +21,12 @@ export class PrivacyPolicyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.logger.debug('PrivacyPolicyComponent OnInit');
+    this.logger.debug('CovidPolicyComponent OnInit');
     this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
-    const endpoint = 'documents/2';
+    const endpoint = 'documents/44';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        // Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
       }),
     };
     this.content$ = this.api.get(endpoint, null, options);

@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   public policyPages = [
     { title: 'WAIVER', url: '/waiver', icon: 'verified_user' },
     { title: 'PRIVACY_POLICY', url: '/privacy-policy', icon: 'policy' },
+    { title: 'COVID_POLICY', url: '/covid-policy', icon: 'coronavirus' },
   ];
 
   public mePages = [

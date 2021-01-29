@@ -1,0 +1,11 @@
+<ng-container *ngIf="content$ | async as content; else loading">
+  <div
+    id="covid-policy"
+    class="material-typography"
+    [innerHTML]="(lang === 'zh' ? content.text_zh : content.text) | markdown"
+  ></div>
+</ng-container>
+
+<ng-template #loading>
+  <app-loading-spinner-content></app-loading-spinner-content>
+</ng-template>
