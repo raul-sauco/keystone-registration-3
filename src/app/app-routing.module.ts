@@ -122,6 +122,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'child-protection',
+    loadChildren: () =>
+      import('./pages/child-protection/child-protection.module').then(
+        (m) => m.ChildProtectionModule
+      ),
+  },
+  {
     path: 'login',
     loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginModule),

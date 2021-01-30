@@ -1,7 +1,7 @@
 // This file comes from https://material.angular.io/guide/theming#defining-a-custom-theme
 // info: https://stackoverflow.com/questions/41440998/how-can-i-use-custom-theme-palettes-in-angular
 
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -11,46 +11,46 @@
 
 // Generator http://mcg.mbitson.com/
 $ka-brand-palette: (
-    50 : #e7f4e7,
-    100 : #c5e3c4,
-    200 : #a0d29f,
-    300 : #79c178,
-    400 : #5cb45c,
-    500 : #3fa73f,
-    600 : #369936,
-    700 : #2a872c,
-    800 : #1e7621,
-    900 : #03580e,
-    A100 : #8eff90,
-    A200 : #5bff5d,
-    A400 : #28ff2b,
-    A700 : #0eff12,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #000000,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
+  50: #e7f4e7,
+  100: #c5e3c4,
+  200: #a0d29f,
+  300: #79c178,
+  400: #5cb45c,
+  500: #3fa73f,
+  600: #369936,
+  700: #2a872c,
+  800: #1e7621,
+  900: #03580e,
+  A100: #8eff90,
+  A200: #5bff5d,
+  A400: #28ff2b,
+  A700: #0eff12,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
 );
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $ka-primary: mat-palette($ka-brand-palette, 700, 300, 900);
-$ka-accent:  mat-palette($mat-purple);
+$ka-accent: mat-palette($mat-purple);
 
 // The warn palette is optional (defaults to red).
-$ka-warn:    mat-palette($mat-red);
+$ka-warn: mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $ka-theme: mat-light-theme($ka-primary, $ka-accent, $ka-warn);
@@ -60,6 +60,57 @@ $ka-theme: mat-light-theme($ka-primary, $ka-accent, $ka-warn);
 // that you are using.
 @include angular-material-theme($ka-theme);
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #2a872c;
+}
+
+.app-page-wrapper {
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: top 24px right 16px / 150px no-repeat
+      url(https://static.keystone-adventures.com/img/kalogo.png),
+    center / cover no-repeat
+      url(https://static.keystone-adventures.com/img/portal/bg/f/FM54269YGLNS.png);
+  @media screen and (min-width: 960px) {
+    left: 320px;
+  }
+  // @media screen and (min-width: 1200px) { padding: 10% 320px 10% 16px; }
+}
+
+.app-content-wrapper {
+  overflow-y: auto;
+  background-color: rgba(255, 255, 255, 1);
+  width: 100%;
+  @media screen and (min-width: 1300px) {
+    width: 90%;
+  }
+  @media screen and (min-width: 1400px) {
+    background-color: rgba(255, 255, 255, 0.98);
+    width: 80%;
+  }
+  @media screen and (min-width: 1500px) {
+    background-color: rgba(255, 255, 255, 0.96);
+    width: 70%;
+  }
+  @media screen and (min-width: 1700px) {
+    background-color: rgba(255, 255, 255, 0.94);
+    width: 60%;
+  }
+  @media screen and (min-width: 1900px) {
+    background-color: rgba(255, 255, 255, 0.93);
+    width: 50%;
+  }
 }

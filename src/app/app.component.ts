@@ -32,12 +32,13 @@ export class AppComponent implements OnInit {
     { title: 'PACKING_LIST', url: '/packing-list', icon: 'work' },
     { title: 'STAFF', url: '/guides', icon: 'contacts' },
     { title: 'FAQ', url: '/faq', icon: 'chatbubbles' },
-    { title: 'DOCUMENTS', url: '/documents', icon: 'description' },
+    // { title: 'DOCUMENTS', url: '/documents', icon: 'description' },
   ];
 
   public policyPages = [
     { title: 'WAIVER', url: '/waiver', icon: 'verified_user' },
     { title: 'PRIVACY_POLICY', url: '/privacy-policy', icon: 'policy' },
+    { title: 'SAFEGUARDING', url: '/child-protection', icon: 'security' },
     { title: 'COVID_POLICY', url: '/covid-policy', icon: 'coronavirus' },
   ];
 
