@@ -60,6 +60,15 @@ $ka-theme: mat-light-theme($ka-primary, $ka-accent, $ka-warn);
 // that you are using.
 @include angular-material-theme($ka-theme);
 
+// https://material.angular.io/guide/typography
+$custom-typography: mat-typography-config(
+  // $font-family: "Roboto, monospace",
+  // $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 400)
+);
+
+@include mat-core($custom-typography);
+
 h1,
 h2,
 h3,
