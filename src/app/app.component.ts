@@ -1,12 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, shareReplay, delay } from 'rxjs/operators';
+import {
+  map,
+  shareReplay,
+  delay,
+  withLatestFrom,
+  filter,
+} from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { RouteStateService } from './services/route-state/route-state.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
 import { AuthService } from './services/auth/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +21,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  @ViewChild('drawer', { static: true }) drawer: MatSidenav;
   title = 'Keystone Adventures';
   tripId$: Observable<string | null>;
   tripId: string = null;
@@ -58,6 +66,12 @@ export class AppComponent implements OnInit {
     public auth: AuthService
   ) {
     this.initTranslate();
+    router.events
+      .pipe(
+        withLatestFrom(this.isHandset$),
+        filter(([a, b]) => b && a instanceof NavigationEnd)
+      )
+      .subscribe((_) => this.drawer.toggle());
   }
 
   ngOnInit() {
