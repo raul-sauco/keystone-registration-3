@@ -129,6 +129,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'help',
+    loadChildren: () =>
+      import('./pages/help/help.module').then((m) => m.HelpModule),
+  },
+  {
     path: 'login',
     loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginModule),
