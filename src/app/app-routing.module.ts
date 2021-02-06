@@ -129,6 +129,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'teacher-note',
+    loadChildren: () =>
+      import('./pages/teacher-note/teacher-note.module').then(
+        (m) => m.TeacherNoteModule
+      ),
+  },
+  {
     path: 'help',
     loadChildren: () =>
       import('./pages/help/help.module').then((m) => m.HelpModule),
