@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   map,
   shareReplay,
@@ -27,27 +27,60 @@ export class AppComponent implements OnInit {
   tripId: string = null;
 
   public appPages = [
-    { title: 'HOME', url: '/home', icon: 'home' },
-    { title: 'ITINERARY', url: '/itinerary', icon: 'list' },
-    { title: 'PACKING_LIST', url: '/packing-list', icon: 'work' },
-    { title: 'STAFF', url: '/guides', icon: 'contacts' },
-    { title: 'FAQ', url: '/faq', icon: 'chatbubbles' },
-    // { title: 'DOCUMENTS', url: '/documents', icon: 'description' },
-  ];
-
-  public policyPages = [
-    { title: 'WAIVER', url: '/waiver', icon: 'verified_user' },
-    { title: 'PRIVACY_POLICY', url: '/privacy-policy', icon: 'policy' },
-    { title: 'SAFEGUARDING', url: '/child-protection', icon: 'security' },
-    { title: 'COVID_POLICY', url: '/covid-policy', icon: 'coronavirus' },
-  ];
-
-  public mePages = [
+    { title: 'HOME', url: '/home', icon: 'home', render: of(true) },
     {
       title: 'PERSONAL_INFORMATION',
       url: '/personal-info',
       icon: 'person',
       render: this.auth.auth$,
+    },
+    { title: 'ITINERARY', url: '/itinerary', icon: 'list', render: of(true) },
+    {
+      title: 'ACCOMMODATION',
+      url: '/accommodation',
+      icon: 'hotel',
+      render: of(true),
+    },
+    {
+      title: 'PACKING_LIST',
+      url: '/packing-list',
+      icon: 'work',
+      render: of(true),
+    },
+    { title: 'FAQ', url: '/faq', icon: 'chatbubbles', render: of(true) },
+    { title: 'STAFF', url: '/guides', icon: 'contacts', render: of(true) },
+  ];
+
+  public teacherPages = [
+    { title: 'PARTICIPANT_INFORMATION', url: '/participants', icon: 'groups' },
+    { title: 'NOTE_TO_TEACHER', url: '/teacher-note', icon: 'note' },
+    { title: 'FEEDBACK', url: '/feedback', icon: 'rate_review' },
+  ];
+
+  public policyPages = [
+    {
+      title: 'WAIVER',
+      url: '/waiver',
+      icon: 'verified_user',
+      render: this.auth.auth$,
+    },
+    {
+      title: 'COVID_POLICY',
+      url: '/covid-policy',
+      icon: 'coronavirus',
+      render: of(true),
+    },
+    {
+      title: 'CHILD_SAFEGUARDING',
+      url: '/child-protection',
+      icon: 'security',
+      render: of(true),
+    },
+    {
+      title: 'PRIVACY_POLICY',
+      url: '/privacy-policy',
+      icon: 'policy',
+      render: of(true),
     },
   ];
 

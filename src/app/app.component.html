@@ -19,12 +19,39 @@
   <span class="toolbar-spacer"></span>
   <button
     type="button"
+    mat-raised-button
+    class="help-button"
     aria-label="Display help"
-    mat-icon-button
     routerLink="help"
   >
-    <mat-icon aria-label="Help toggle icon">help</mat-icon>
+    {{ "HELP" | translate | uppercase }}
+    <mat-icon aria-label="Help toggle icon" color="primary">help</mat-icon>
   </button>
+
+  <!-- Log in/out buttons -->
+  <button
+    type="button"
+    *ngIf="auth.auth$ | async; else login"
+    aria-label="Log out"
+    mat-icon-button
+    (click)="logout()"
+    title="{{ 'LOGOUT' | translate | uppercase }} ({{
+      auth.getCredentials().userName
+    }})"
+  >
+    <mat-icon aria-label="Logout icon">open_in_new</mat-icon>
+  </button>
+  <ng-template #login>
+    <button
+      type="button"
+      aria-label="Log in"
+      mat-icon-button
+      routerLink="/login"
+      [title]="'LOGIN' | translate | uppercase"
+    >
+      <mat-icon aria-label="Logout icon">exit_to_app</mat-icon>
+    </button>
+  </ng-template>
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
@@ -38,92 +65,56 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-nav-list>
-      <a
-        mat-list-item
-        *ngFor="let page of appPages; last as last"
-        [routerLink]="
-          page.url + ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-        "
-      >
-        <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
-        <p matLine>{{ page.title | translate | uppercase }}</p>
-        <mat-divider [inset]="true"></mat-divider>
-      </a>
-
-      <!--The next links have an async if and a sync one. cannot use page.render -->
-      <ng-container *ngIf="auth.auth$ | async">
-        <a mat-list-item routerLink="/accommodation">
-          <mat-icon matListIcon color="primary">hotel</mat-icon>
-          <p matLine>{{ "ACCOMMODATION" | translate | uppercase }}</p>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
+      <ng-container *ngFor="let page of appPages; last as last">
         <a
           mat-list-item
-          *ngIf="auth.getCredentials().type === 4"
-          routerLink="/feedback"
+          [routerLink]="
+            page.url +
+            ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
+          "
+          *ngIf="page.render | async"
         >
-          <mat-icon matListIcon color="primary">rate_review</mat-icon>
-          <p matLine>{{ "FEEDBACK" | translate | uppercase }}</p>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
-        <a
-          mat-list-item
-          *ngIf="auth.getCredentials().type === 4"
-          routerLink="/participants"
-        >
-          <mat-icon matListIcon color="primary">groups</mat-icon>
-          <p matLine>{{ "PARTICIPANTS" | translate | uppercase }}</p>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
-      </ng-container>
-
-      <!-- User Info pages -->
-      <h3 matSubheader>{{ "ME" | translate | uppercase }}</h3>
-
-      <a
-        mat-list-item
-        *ngIf="auth.auth$ | async; else login"
-        (click)="logout()"
-      >
-        <mat-icon matListIcon color="primary">open_in_new</mat-icon>
-        <p matLine>
-          {{ "LOGOUT" | translate | uppercase }} ({{
-            auth.getCredentials().userName
-          }})
-        </p>
-        <mat-divider [inset]="true"></mat-divider>
-      </a>
-
-      <ng-template #login>
-        <a mat-list-item routerLink="/login">
-          <mat-icon matListIcon color="primary">exit_to_app</mat-icon>
-          <p matLine>{{ "LOGIN" | translate | uppercase }}</p>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
-      </ng-template>
-
-      <ng-container *ngFor="let page of mePages; last as last">
-        <a mat-list-item [routerLink]="page.url" *ngIf="page.render | async">
           <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
           <p matLine>{{ page.title | translate | uppercase }}</p>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-container>
 
-      <!-- Company Policy pages -->
-      <h3 matSubheader>{{ "POLICY" | translate | uppercase }}</h3>
-
-      <a
-        mat-list-item
-        *ngFor="let page of policyPages; last as last"
-        [routerLink]="page.url"
+      <!-- This links should only be available for teachers -->
+      <ng-container
+        *ngIf="(auth.auth$ | async) && auth.getCredentials().type === 4"
       >
-        <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
+        <h3 matSubheader>{{ "TEACHER_AREA" | translate | uppercase }}</h3>
+        <a
+          mat-list-item
+          [routerLink]="
+            page.url +
+            ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
+          "
+          *ngFor="let page of teacherPages; last as last"
+        >
+          <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
+          <p matLine>{{ page.title | translate | uppercase }}</p>
+          <mat-divider [inset]="true"></mat-divider>
+        </a>
+      </ng-container>
 
-        <p matLine>{{ page.title | translate | uppercase }}</p>
-
-        <mat-divider [inset]="true"></mat-divider>
-      </a>
+      <!-- Policy pages -->
+      <h3 matSubheader>{{ "POLICY" | translate | uppercase }}</h3>
+      <ng-container *ngFor="let page of policyPages; last as last">
+        <a
+          mat-list-item
+          [routerLink]="
+            page.url +
+            ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
+          "
+          *ngIf="page.render | async"
+        >
+          <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
+          <p matLine>{{ page.title | translate | uppercase }}</p>
+          <mat-divider [inset]="true"></mat-divider>
+        </a>
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav>
 
