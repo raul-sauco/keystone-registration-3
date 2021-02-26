@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       title: 'ACCOMMODATION',
       url: '/accommodation',
       icon: 'hotel',
-      render: of(true),
+      render: this.auth.auth$,
     },
     {
       title: 'PACKING_LIST',

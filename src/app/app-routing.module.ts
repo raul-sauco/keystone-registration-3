@@ -86,6 +86,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'accommodation/:trip-id',
+    loadChildren: () =>
+      import('./pages/accommodation/accommodation.module').then(
+        (m) => m.AccommodationModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'feedback',
     loadChildren: () =>
       import('./pages/feedback/feedback.module').then((m) => m.FeedbackModule),
@@ -115,6 +123,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'privacy-policy/:trip-id',
+    loadChildren: () =>
+      import('./pages/privacy-policy/privacy-policy.module').then(
+        (m) => m.PrivacyPolicyModule
+      ),
+  },
+  {
     path: 'covid-policy',
     loadChildren: () =>
       import('./pages/covid-policy/covid-policy.module').then(
@@ -122,7 +137,21 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'covid-policy/:trip-id',
+    loadChildren: () =>
+      import('./pages/covid-policy/covid-policy.module').then(
+        (m) => m.CovidPolicyModule
+      ),
+  },
+  {
     path: 'child-protection',
+    loadChildren: () =>
+      import('./pages/child-protection/child-protection.module').then(
+        (m) => m.ChildProtectionModule
+      ),
+  },
+  {
+    path: 'child-protection/:trip-id',
     loadChildren: () =>
       import('./pages/child-protection/child-protection.module').then(
         (m) => m.ChildProtectionModule
