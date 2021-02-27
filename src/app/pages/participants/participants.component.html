@@ -11,8 +11,21 @@
         <th mat-header-cell *matHeaderCellDef>
           {{ attr | camelToSnake | translate }}
         </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.getParticipantTableDisplayValue(attr) }}
+        <td mat-cell *matCellDef="let student">
+          <ng-container [ngSwitch]="getAttrType(attr)">
+            <span
+              *ngSwitchCase="'inline'"
+              (click)="handleClick(student)"
+              (focusout)="handleFocusOut($event, attr, student)"
+              (focusin)="handleFocusIn(student)"
+              contenteditable="true"
+            >
+              {{ student.getParticipantTableDisplayValue(attr) }}
+            </span>
+            <ng-container *ngSwitchDefault>
+              {{ student.getParticipantTableDisplayValue(attr) }}
+            </ng-container>
+          </ng-container>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
