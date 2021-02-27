@@ -46,11 +46,9 @@ export class CovidPolicyComponent implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       const tripId = params.get('trip-id');
       if (tripId !== null) {
-        this.routeStateService.tripIdParam$.subscribe((id: string) => {
-          if (tripId !== id) {
-            this.routeStateService.updateTripIdParamState(tripId);
-          }
-        });
+        if (this.routeStateService.getTripId() !== tripId) {
+          this.routeStateService.updateTripIdParamState(tripId);
+        }
       }
     });
   }

@@ -14,10 +14,9 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-guides',
   templateUrl: './guides.component.html',
-  styleUrls: ['./guides.component.scss']
+  styleUrls: ['./guides.component.scss'],
 })
 export class GuidesComponent implements OnInit {
-
   guide$: Observable<Guide[]>;
   url: string;
   lang: string;
@@ -38,22 +37,22 @@ export class GuidesComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('GuidesComponent OnInit');
-    const headers: any = {'Content-Type': 'application/json'};
+    const headers: any = { 'Content-Type': 'application/json' };
     this.route.paramMap.subscribe((params: ParamMap) => {
       const tripId = params.get('trip-id');
       if (tripId !== null) {
-        this.routeStateService.tripIdParam$.subscribe((id: string) => {
-          if (tripId !== id) {
-            this.routeStateService.updateTripIdParamState(tripId);
-          }
-        });
+        if (this.routeStateService.getTripId() !== tripId) {
+          this.routeStateService.updateTripIdParamState(tripId);
+        }
         // If we have a trip id request info for that trip
-        this.fetch({'trip-id': tripId}, headers);
+        this.fetch({ 'trip-id': tripId }, headers);
       } else {
         // If we don't have a trip id parameter, request for the current user
         this.auth.checkAuthenticated().then((res: boolean) => {
           if (res && this.auth.getCredentials().accessToken) {
-            headers.authorization = `Bearer ${this.auth.getCredentials().accessToken}`;
+            headers.authorization = `Bearer ${
+              this.auth.getCredentials().accessToken
+            }`;
             this.fetch(null, headers);
             // this.guide$ = this.guideService.fetchGuides();
           } else {
@@ -75,14 +74,14 @@ export class GuidesComponent implements OnInit {
   fetch(params: any, headers: any): void {
     const endpoint = 'guides';
     const options = {
-      headers: new HttpHeaders(headers)
+      headers: new HttpHeaders(headers),
     };
     this.guide$ = this.api.get(endpoint, params, options).pipe(
       map((res: any) => {
         // Sort the guides and map them to Guide models
-        return res.sort(
-            (a: any, b: any) => a.nickname.localeCompare(b.nickname)
-          ).map(guideJSON => new Guide(guideJSON) );
+        return res
+          .sort((a: any, b: any) => a.nickname.localeCompare(b.nickname))
+          .map((guideJSON) => new Guide(guideJSON));
       })
     );
   }

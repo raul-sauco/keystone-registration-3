@@ -40,12 +40,9 @@ export class ItineraryComponent implements OnInit, OnDestroy {
       const tripId = params.get('trip-id');
       if (tripId !== null) {
         // If we have a routing parameter, update the route state and fetch data
-        this.routeStateService.tripIdParam$.subscribe((id: string) => {
-          // If trip-ids are different update them
-          if (tripId !== id) {
-            this.routeStateService.updateTripIdParamState(tripId);
-          }
-        });
+        if (this.routeStateService.getTripId() !== tripId) {
+          this.routeStateService.updateTripIdParamState(tripId);
+        }
         this.fetch(tripId);
       } else {
         // No trip id router parameter

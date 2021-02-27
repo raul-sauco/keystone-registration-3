@@ -32,12 +32,9 @@ export class PackingListComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe((params: ParamMap) => {
       const tripId = params.get('trip-id');
       if (tripId !== null) {
-        this.routeStateService.tripIdParam$.subscribe((id: string) => {
-          // If trip-ids are different update them
-          if (tripId !== id) {
-            this.routeStateService.updateTripIdParamState(tripId);
-          }
-        });
+        if (this.routeStateService.getTripId() !== tripId) {
+          this.routeStateService.updateTripIdParamState(tripId);
+        }
         this.fetch(tripId);
       } else {
         this.auth.checkAuthenticated().then((res: boolean) => {
