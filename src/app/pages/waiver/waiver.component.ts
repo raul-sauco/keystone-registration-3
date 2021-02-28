@@ -1,16 +1,17 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
+
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-
-import * as moment from 'moment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-waiver',
@@ -25,10 +26,11 @@ export class WaiverComponent implements OnInit {
 
   constructor(
     private api: ApiService,
+    public auth: AuthService,
     private formBuilder: FormBuilder,
     private logger: NGXLogger,
+    private router: Router,
     private snackBar: MatSnackBar,
-    public auth: AuthService,
     public translate: TranslateService
   ) {}
 
@@ -113,18 +115,15 @@ export class WaiverComponent implements OnInit {
       waiver_signed_on: moment().format('YYYY-MM-DD'),
     };
     this.posting = true;
-    this.student$ = this.api.patch(endpoint, studentData, options).pipe(
-      map((studentJson: any) => {
-        const s = new Student(studentJson, this.translate, this.logger);
-        this.logger.debug('Updated student waiver data on backend', s);
-        this.snackBar.open(
-          this.translate.instant('PERSONAL_INFO_UPDATED'),
-          null,
-          { duration: 3000 }
-        );
-        this.posting = false;
-        return s;
-      })
+    this.api.patch(endpoint, studentData, options).subscribe(
+      (res: any) => {
+        // Try to construct a Student to get error reporting.
+        const s = new Student(res, this.translate, this.logger);
+        this.router.navigateByUrl('/personal-info');
+      },
+      (error: any) => {
+        this.logger.error(`Error sending waiver`, error);
+      }
     );
   }
 }
