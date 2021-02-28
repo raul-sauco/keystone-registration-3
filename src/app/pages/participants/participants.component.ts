@@ -116,17 +116,25 @@ export class ParticipantsComponent implements OnInit {
       return 'non-editable';
     }
     if (
-      attr === 'gender' ||
-      attr === 'dietaryRequirements' ||
-      attr === 'allergies' ||
-      attr === 'insurance'
+      attr === 'firstName' ||
+      attr === 'lastName' ||
+      attr === 'citizenship' ||
+      attr === 'travelDocument' ||
+      attr === 'guardianName' ||
+      attr === 'dietaryRequirementsOther' ||
+      attr === 'allergiesOther' ||
+      attr === 'medicalInformation' ||
+      attr === 'insuranceName' ||
+      attr === 'insurancePolicyNumber'
     ) {
-      return 'select';
+      return 'inline';
     }
-    if (attr === 'dob') {
-      return 'date';
-    }
-    return 'inline';
+    return attr;
+  }
+
+  /** Compare number select values to determine if we have a value already. */
+  intValueCompare(v: any, c: any): boolean {
+    return +v === +c;
   }
 
   handleClick(student: Student) {
@@ -143,15 +151,36 @@ export class ParticipantsComponent implements OnInit {
       (letter) => `_${letter.toLowerCase()}`
     );
     if (updatedValue !== '' && updatedValue !== student[attr]) {
-      console.log(
-        `Student ${student.id} attribute "${attrSnakeCase}" updated from "${student[attr]}" to "${updatedValue}"`
-      );
       this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
     }
   }
 
-  handleFocusIn(student: Student) {
-    console.log(`Focus in cell for student ${student.id}`);
+  /**
+   * Respond to select fields "focusout" events.
+   * @param event Event
+   * @param attr string, the attribute the select.
+   * @param student Student.
+   */
+  handleSelectFocusOut(event, attr: string, student: Student) {
+    const updatedValue = student[attr];
+    const attrSnakeCase = attr.replace(
+      /[A-Z]/g,
+      (letter) => `_${letter.toLowerCase()}`
+    );
+    // TODO this update happens twice, find a way to only update when the value has changed.
+    this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
+  }
+
+  /**
+   * Handle focusin events.
+   * @param event Event
+   * @param attr string, the attribute the select.
+   * @param student Student.
+   */
+  handleFocusIn(event, attr: string, student: Student) {
+    console.log(
+      `Focus in cell for student ${student.id} attr ${attr} value ${student[attr]}`
+    );
   }
 
   /**

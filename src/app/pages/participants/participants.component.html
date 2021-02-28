@@ -17,11 +17,47 @@
               *ngSwitchCase="'inline'"
               (click)="handleClick(student)"
               (focusout)="handleFocusOut($event, attr, student)"
-              (focusin)="handleFocusIn(student)"
+              (focusin)="handleFocusIn($event, attr, student)"
               contenteditable="true"
             >
               {{ student.getParticipantTableDisplayValue(attr) }}
             </span>
+            <mat-form-field *ngSwitchCase="'gender'">
+              <mat-select
+                [(value)]="student.gender"
+                (focusin)="handleFocusIn($event, attr, student)"
+                (focusout)="handleSelectFocusOut($event, attr, student)"
+                [compareWith]="intValueCompare"
+              >
+                <mat-option *ngFor="let i of [0, 1, 2, 3]" [value]="i">
+                  {{ "G." + i | translate }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="'dietaryRequirements'">
+              <mat-select
+                [(value)]="student.dietaryRequirements"
+                (focusin)="handleFocusIn($event, attr, student)"
+                (focusout)="handleSelectFocusOut($event, attr, student)"
+                [compareWith]="intValueCompare"
+              >
+                <mat-option *ngFor="let i of [0, 2, 3, 4, 5, 1]" [value]="i">
+                  {{ "DR." + i | translate }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="'allergies'">
+              <mat-select
+                [(value)]="student.allergies"
+                (focusin)="handleFocusIn($event, attr, student)"
+                (focusout)="handleSelectFocusOut($event, attr, student)"
+                [compareWith]="intValueCompare"
+              >
+                <mat-option *ngFor="let i of [0, 2, 3, 1]" [value]="i">
+                  {{ "ALLER." + i | translate }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
             <ng-container *ngSwitchDefault>
               {{ student.getParticipantTableDisplayValue(attr) }}
             </ng-container>

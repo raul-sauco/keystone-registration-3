@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -17,8 +19,10 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     CommonModule,
     DirectivesModule,
     LoadingSpinnerContentModule,
-    MatTableModule,
+    MatFormFieldModule,
+    MatSelectModule,
     MatSnackBarModule,
+    MatTableModule,
     ParticipantsRoutingModule,
     PipesModule,
     TranslateModule,
