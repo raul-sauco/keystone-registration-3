@@ -117,9 +117,17 @@ export class WaiverComponent implements OnInit {
     this.posting = true;
     this.api.patch(endpoint, studentData, options).subscribe(
       (res: any) => {
+        this.posting = false;
         // Try to construct a Student to get error reporting.
         const s = new Student(res, this.translate, this.logger);
-        this.router.navigateByUrl('/personal-info');
+        const snackBar = this.snackBar.open(
+          this.translate.instant('WAIVER_ACCEPTED'),
+          null,
+          { duration: 2000 }
+        );
+        snackBar.afterDismissed().subscribe(() => {
+          this.router.navigateByUrl('/personal-info');
+        });
       },
       (error: any) => {
         this.logger.error(`Error sending waiver`, error);
