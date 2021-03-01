@@ -6,9 +6,6 @@
         ( {{ supplier.nameZh }} )
       </ng-container>
     </mat-card-title>
-    <div class="supplier-item-description">
-      {{ lang === "en" ? supplier.description : supplier.descriptionZh }}
-    </div>
     <div class="supplier-item-images-container" *ngIf="supplier.images">
       <div
         *ngFor="let image of supplier.images"

@@ -47,7 +47,7 @@ export class AccommodationComponent implements OnInit {
    * Fetch accommodation info from the backend.
    */
   fetch(): void {
-    const endpoint = 'accommodation?expand=gps,images';
+    const endpoint = 'accommodation?expand=images';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
