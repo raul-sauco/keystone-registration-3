@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -137,10 +138,6 @@ export class ParticipantsComponent implements OnInit {
     return +v === +c;
   }
 
-  handleClick(student: Student) {
-    console.log(`Clicked cell for student ${student.id}`);
-  }
-
   /**
    * Handle focus out event on inline content-editable fields.
    */
@@ -172,15 +169,21 @@ export class ParticipantsComponent implements OnInit {
   }
 
   /**
-   * Handle focusin events.
-   * @param event Event
-   * @param attr string, the attribute the select.
+   * Handle changes on the DOB field.
+   * @param event DateChange event.
    * @param student Student.
    */
-  handleFocusIn(event, attr: string, student: Student) {
-    console.log(
-      `Focus in cell for student ${student.id} attr ${attr} value ${student[attr]}`
-    );
+  handleDobChange(event, student: Student): void {
+    // The event contains a moment date object.
+    const dob = event.value;
+    if (moment.isMoment(dob) && dob.isValid()) {
+      this.updateStudentInfo(student, { dob: dob.format('YYYY-MM-DD') });
+    } else {
+      // The date object is not valid.
+      this.snackBar.open(this.translate.instant('DATE_NOT_VALID'), null, {
+        duration: 3000,
+      });
+    }
   }
 
   /**

@@ -33,6 +33,7 @@
   "COUNTRY_OF_CITIZENSHIP": "Country of citizenship",
   "DATE": "Date",
   "DATE_NOT_MATCH_TODAY": "The date entered '{{formDate}}' should match today's date '{{today}}'",
+  "DATE_NOT_VALID": "The date selected is not valid",
   "DETAILS": "Details",
   "DETAILS_UPDATED": "The details were successfully updated",
   "DIETARY_REQUIREMENTS": "Dietary Requirements",

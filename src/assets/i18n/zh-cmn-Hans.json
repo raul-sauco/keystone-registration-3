@@ -33,6 +33,7 @@
   "COUNTRY_OF_CITIZENSHIP": "公民权国家",
   "DATE": "日期",
   "DATE_NOT_MATCH_TODAY": "输入的日期 '{{formDate}}' 必须和今日日期一致'{{today}}'",
+  "DATE_NOT_VALID": "The date selected is not valid",
   "DETAILS": "细节",
   "DETAILS_UPDATED": "详细信息已成功更新",
   "DIETARY_REQUIREMENTS": "饮食要求",
