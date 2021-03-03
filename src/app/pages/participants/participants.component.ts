@@ -1,5 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -10,6 +15,7 @@ import * as moment from 'moment';
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { DialogData } from './../../interfaces/dialog-data';
 
 @Component({
   selector: 'app-participants',
@@ -39,12 +45,14 @@ export class ParticipantsComponent implements OnInit {
     'insurance',
     'insuranceName',
     'insurancePolicyNumber',
+    'delete',
   ];
 
   constructor(
     private api: ApiService,
     private auth: AuthService,
     private logger: NGXLogger,
+    private dialog: MatDialog,
     private translate: TranslateService,
     private snackBar: MatSnackBar
   ) {}
@@ -212,5 +220,78 @@ export class ParticipantsComponent implements OnInit {
         this.snackBar.open(error.error.message, null, { duration: 2000 });
       }
     );
+  }
+
+  /**
+   * Display a MatDialog asking for confirmation about deleting the student.
+   * @param student Student
+   */
+  showDeleteConfirm(student: Student) {
+    const dialogRef = this.dialog.open(
+      DeleteStudentConfirmationDialogComponent,
+      {
+        data: student,
+      }
+    );
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.fetch();
+        this.snackBar.open(
+          this.translate.instant('PARTICIPANT_DELETED'),
+          null,
+          { duration: 2000 }
+        );
+      }
+    });
+  }
+}
+
+@Component({
+  selector: 'app-delete-student-confirmation-dialog-component',
+  templateUrl: './delete-student-confirmation-dialog.component.html',
+  styleUrls: ['./delete-student-confirmation-dialog.component.scss'],
+})
+export class DeleteStudentConfirmationDialogComponent {
+  public loading = false;
+  public deleteError = false;
+
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+    private logger: NGXLogger,
+    public dialogRef: MatDialogRef<DeleteStudentConfirmationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Student
+  ) {}
+
+  /**
+   * User confirms participant delete.
+   */
+  confirmDelete() {
+    this.deleteError = false;
+    this.loading = true;
+    this.logger.debug(`Sending DELETE for student ${this.data.id}`);
+    const endpoint = `students/${this.data.id}`;
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+      }),
+    };
+    this.api.delete(endpoint, options).subscribe(
+      () => {
+        this.dialogRef.close(true);
+      },
+      (error: any) => {
+        this.logger.error(`Error deleting student ${this.data.id}`, error);
+        this.deleteError = true;
+      }
+    );
+  }
+
+  /**
+   * User cancels participant delete.
+   */
+  cancelDelete() {
+    this.dialogRef.close(false);
   }
 }

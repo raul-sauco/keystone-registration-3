@@ -1,0 +1,63 @@
+<ng-container *ngIf="!deleteError; else error">
+  <ng-container *ngIf="loading; else dialog">
+    <h1 mat-dialog-title>{{ "DELETING_PARTICIPANT" | translate }}</h1>
+    <div mat-dialog-content>
+      <div class="loading-spinner-wrapper">
+        <mat-progress-spinner
+          mode="indeterminate"
+          diameter="50"
+          strokeWidth="2"
+        ></mat-progress-spinner>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #dialog>
+    <h1 mat-dialog-title>{{ "CONFIRM_DELETE" | translate }}</h1>
+    <div mat-dialog-content>
+      <p>{{ "SURE_DELETE_PARTICIPANT" | translate }}</p>
+      <p>
+        {{
+          "PARTICIPANT_ID_IS"
+            | translate
+              : {
+                  id: data.id,
+                  firstName: data.firstName,
+                  lastName: data.lastName
+                }
+        }}
+      </p>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="cancelDelete()">
+        {{ "CANCEL" | translate }}
+      </button>
+      <button
+        mat-button
+        color="primary"
+        cdkFocusInitial
+        (click)="confirmDelete()"
+      >
+        {{ "DELETE" | translate }}
+      </button>
+    </div>
+  </ng-template>
+</ng-container>
+<ng-template #error>
+  <h1 mat-dialog-title>{{ "SERVER_ERROR" | translate }}</h1>
+  <div mat-dialog-content>
+    <p>{{ "SERVER_ERROR_TRY_LATER" | translate }}</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancelDelete()">
+      {{ "CANCEL" | translate }}
+    </button>
+    <button
+      mat-button
+      color="primary"
+      cdkFocusInitial
+      (click)="confirmDelete()"
+    >
+      {{ "TRY_AGAIN" | translate }}
+    </button>
+  </div>
+</ng-template>

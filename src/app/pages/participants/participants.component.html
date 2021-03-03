@@ -67,6 +67,16 @@
               ></mat-datepicker-toggle>
               <mat-datepicker touchUi #picker></mat-datepicker>
             </mat-form-field>
+            <ng-container *ngSwitchCase="'delete'">
+              <button
+                mat-icon-button
+                color="warn"
+                aria-label="Delete this participant"
+                (click)="showDeleteConfirm(student)"
+              >
+                <mat-icon>delete_forever</mat-icon>
+              </button>
+            </ng-container>
             <ng-container *ngSwitchDefault>
               {{ student.getParticipantTableDisplayValue(attr) }}
             </ng-container>
