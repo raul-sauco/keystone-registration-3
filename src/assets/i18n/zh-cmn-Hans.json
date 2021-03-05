@@ -5,6 +5,7 @@
   "ACCOUNT_FOR_EMAIL_NOT_FOUND": "找不到电子邮件{{email}}的帐户，请确保该电子邮件正确无误，并且该帐户是您用来注册的电子邮件。",
   "ACCOUNT_FOR_THAT_EMAIL_NOT_FOUND": "找不到提供的电子邮件帐户，请确保电子邮件正确无误，并且该帐户是您用来注册的电子邮件。",
   "ACCOUNT_INACTIVE": "我们发现该帐户无效。",
+  "ADD_PARTICIPANT": "添加参与者",
   "ADVENTURE_OF_A_LIFETIME": "您即将开启一段终身难忘的探险之旅",
   "ALLER": {
     "0": "无",

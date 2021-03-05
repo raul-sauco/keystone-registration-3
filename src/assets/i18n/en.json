@@ -5,6 +5,7 @@
   "ACCOUNT_FOR_EMAIL_NOT_FOUND": "No account was found for email {{email}}, make sure the email is correct and it is the one you used to register.",
   "ACCOUNT_FOR_THAT_EMAIL_NOT_FOUND": "No account was found for the email provided, please, make sure the email is correct and it is the one you used to register.",
   "ACCOUNT_INACTIVE": "The account we found is inactive.",
+  "ADD_PARTICIPANT": "Add participant",
   "ADVENTURE_OF_A_LIFETIME": "You are about to embark on the adventure of a lifetime.",
   "ALLER": {
     "0": "None",

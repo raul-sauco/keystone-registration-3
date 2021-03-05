@@ -1,0 +1,26 @@
+#participant-form {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  width: 70vw;
+  @media screen and (min-width: 900px) {
+    width: 60vw;
+  }
+  @media screen and (min-width: 1500px) {
+    width: 50vw;
+  }
+  @media screen and (min-width: 1700px) {
+    width: 40vw;
+  }
+  @media screen and (min-width: 1900px) {
+    width: 30vw;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  button {
+    margin-left: 8px;
+  }
+}

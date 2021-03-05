@@ -90,6 +90,16 @@
         [ngClass]="{ gray: even }"
       ></tr>
     </table>
+    <button
+      id="add-participant-button"
+      mat-fab
+      color="primary"
+      [title]="'ADD_PARTICIPANT' | translate"
+      aria-label="Add participant button"
+      (click)="addParticipant()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </ng-container>
 <ng-template #loading>

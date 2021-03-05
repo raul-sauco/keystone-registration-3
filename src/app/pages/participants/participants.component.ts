@@ -12,10 +12,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
+import { AddParticipantComponent } from 'src/app/components/add-participant/add-participant.component';
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { DialogData } from './../../interfaces/dialog-data';
 
 @Component({
   selector: 'app-participants',
@@ -111,6 +111,18 @@ export class ParticipantsComponent implements OnInit {
         return indexedStudentArray;
       })
     );
+  }
+
+  /**
+   * Let the current user add a new participant to the system.
+   */
+  addParticipant(): void {
+    const dialogRef = this.dialog.open(AddParticipantComponent);
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.fetch();
+      }
+    });
   }
 
   // The following section deals with editable table fields.

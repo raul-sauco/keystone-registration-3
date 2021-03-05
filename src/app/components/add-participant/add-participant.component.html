@@ -1,0 +1,80 @@
+<h1 mat-dialog-title>{{ "ADD_PARTICIPANT" | translate }}</h1>
+<div mat-dialog-content>
+  <form
+    [formGroup]="participantForm"
+    id="participant-form"
+    (ngSubmit)="submitForm()"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "FIRST_NAME" | translate }}</mat-label>
+      <input type="text" matInput formControlName="firstName" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "LAST_NAME" | translate }}</mat-label>
+      <input type="text" matInput formControlName="lastName" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "USERNAME" | translate }}</mat-label>
+      <input type="text" matInput formControlName="username" required />
+      <mat-error *ngIf="username.errors?.required">
+        {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+      </mat-error>
+      <mat-error *ngIf="username.errors?.uniqueUsername">
+        {{ "USERNAME_IS_TAKEN" | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "EMAIL" | translate }}</mat-label>
+      <input type="email" matInput formControlName="email" />
+      <mat-error *ngIf="email.errors?.email">
+        {{ "EMAIL_IS_NOT_VALID" | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "PASSWORD" | translate }}</mat-label>
+      <input type="password" matInput formControlName="password" required />
+      <mat-error *ngIf="password.errors?.required">
+        {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+      </mat-error>
+      <mat-error *ngIf="password.errors?.minlength">
+        {{ "MIN_LENGTH_8_CHAR" | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "PASSWORD_CONFIRM" | translate }}</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="passwordConfirm"
+        required
+        [errorStateMatcher]="errorMatcher"
+      />
+      <mat-error *ngIf="participantForm.errors?.passwordMismatch">
+        {{ "PASSWORDS_DO_NOT_MATCH" | translate }}
+      </mat-error>
+      <mat-error *ngIf="passwordConfirm.errors?.required">
+        {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+      </mat-error>
+      <mat-error *ngIf="passwordConfirm.errors?.minlength">
+        {{ "MIN_LENGTH_8_CHAR" | translate }}
+      </mat-error>
+    </mat-form-field>
+    <mat-progress-bar
+      mode="indeterminate"
+      *ngIf="loading"
+      class="progress-bar"
+    ></mat-progress-bar>
+    <div class="actions">
+      <button mat-button type="button" (click)="cancel()">
+        {{ "CANCEL" | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!participantForm.valid || loading"
+      >
+        {{ "SEND" | translate }}
+      </button>
+    </div>
+  </form>
+</div>

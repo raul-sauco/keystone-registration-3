@@ -13,8 +13,9 @@ import { MatTableModule } from '@angular/material/table';
 
 import { TranslateModule } from '@ngx-translate/core';
 
+import { AddParticipantModule } from 'src/app/components/add-participant/add-participant.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { DirectivesModule } from './../../directives/directives.module';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 import { ParticipantsRoutingModule } from './participants-routing.module';
 import {
   DeleteStudentConfirmationDialogComponent,
@@ -28,6 +29,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     DeleteStudentConfirmationDialogComponent,
   ],
   imports: [
+    AddParticipantModule,
     CommonModule,
     DirectivesModule,
     LoadingSpinnerContentModule,
