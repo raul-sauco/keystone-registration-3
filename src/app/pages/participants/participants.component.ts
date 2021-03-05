@@ -155,7 +155,8 @@ export class ParticipantsComponent implements OnInit {
       /[A-Z]/g,
       (letter) => `_${letter.toLowerCase()}`
     );
-    if (updatedValue !== '' && updatedValue !== student[attr]) {
+    if (updatedValue !== student[attr]) {
+      student[attr] = updatedValue;
       this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
     }
   }

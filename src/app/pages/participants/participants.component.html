@@ -13,13 +13,13 @@
         </th>
         <td mat-cell *matCellDef="let student">
           <ng-container [ngSwitch]="getAttrType(attr)">
-            <span
+            <div
               *ngSwitchCase="'inline'"
               (focusout)="handleFocusOut($event, attr, student)"
               contenteditable="true"
             >
               {{ student.getParticipantTableDisplayValue(attr) }}
-            </span>
+            </div>
             <mat-form-field *ngSwitchCase="'gender'">
               <mat-select
                 [(value)]="student.gender"
