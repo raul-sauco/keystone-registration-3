@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
-import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
-import { Subject } from 'rxjs';
-import { ApiService } from '../api/api.service';
-import { NGXLogger } from 'ngx-logger';
 import { HttpHeaders } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
+import { TranslateService } from '@ngx-translate/core';
+
+import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
+import { ApiService } from '../api/api.service';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PackingListService {
-
   items: TripPackingListItem[] = [];
   item$: Subject<TripPackingListItem[]> = new Subject<TripPackingListItem[]>();
 
   constructor(
     private api: ApiService,
     private auth: AuthService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private translate: TranslateService
   ) {
     this.logger.debug('PackingListService constructor called');
   }
@@ -31,14 +33,18 @@ export class PackingListService {
    */
   fetchItems(tripId: string = null): void {
     const endpoint = 'trip-packing-list-items';
-    const headers: any = {'Content-Type': 'application/json'};
-    const  params = {expand: 'item'};
+    const headers: any = { 'Content-Type': 'application/json' };
+    const params = { expand: 'item' };
     let fetch = false;
     if (tripId !== null) {
       params['trip-id'] = tripId;
       fetch = true;
-    } else if (this.auth.authenticated && this.auth.getCredentials().accessToken) {
-      headers.authorization = ' Bearer ' + this.auth.getCredentials().accessToken;
+    } else if (
+      this.auth.authenticated &&
+      this.auth.getCredentials().accessToken
+    ) {
+      headers.authorization =
+        ' Bearer ' + this.auth.getCredentials().accessToken;
       fetch = true;
     }
 
@@ -47,7 +53,7 @@ export class PackingListService {
       this.items = [];
       const options = {
         headers: new HttpHeaders(headers),
-        observe: 'response'
+        observe: 'response',
       };
       this.fetchItemBatch(endpoint, params, options);
     }
@@ -61,22 +67,16 @@ export class PackingListService {
    * @param params an object with parameters to be passed to the call
    */
   protected fetchItemBatch(endpoint: string, params: any, options: any): void {
-
     this.logger.debug(`PackingListService fetching ${endpoint}`);
-
-    this.api.get(endpoint, params, options).subscribe(
-      (resp: any) => {
-
-        this.addItems(resp.body);
-
-        if (this.api.hasNextPage(resp.headers)) {
-          this.fetchItemBatch(this.api.nextPageUrl(resp.headers), null, options);
-        } else {
-          // We fetched all the available items, notify subscribers
-          this.item$.next(this.items);
-        }
+    this.api.get(endpoint, params, options).subscribe((resp: any) => {
+      this.addItems(resp.body);
+      if (this.api.hasNextPage(resp.headers)) {
+        this.fetchItemBatch(this.api.nextPageUrl(resp.headers), null, options);
+      } else {
+        // We fetched all the available items, notify subscribers
+        this.item$.next(this.items);
       }
-    );
+    });
   }
 
   /**
@@ -86,10 +86,10 @@ export class PackingListService {
    * @param items JSON array with data for a batch of items
    */
   protected addItems(items: any): void {
-
     this.logger.debug(`Adding ${items.length} packing list items to provider`);
-
-    items.forEach(i => {
+    items.forEach((i) => {
+      // Pass the language to the PLI
+      i.lang = this.translate.currentLang;
       this.items.push(new TripPackingListItem(i));
     });
   }

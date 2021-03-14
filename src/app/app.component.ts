@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
     const browserLang = this.translate.getBrowserLang();
 
     if (browserLang) {
-      if (browserLang.includes('zh')) {
+      if (!browserLang.includes('zh')) {
         this.translate.use('zh-cmn-Hans');
         // No support for Hant currently
         // const browserCultureLang = this.translate.getBrowserCultureLang();

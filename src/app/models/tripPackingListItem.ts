@@ -4,18 +4,15 @@ import { AbstractPackingListItem } from './abstractPackingListItem';
 import { PackingListItem } from './packingListItem';
 
 export class TripPackingListItem extends AbstractPackingListItem {
-
   tripId: number;
   packingListItemId: number;
   item: PackingListItem;
 
   constructor(data: any) {
-
     super(data);
     this.tripId = data.trip_id;
     this.packingListItemId = data.packing_list_item_id;
     this.item = new PackingListItem(data.item);
-
   }
 
   /**
@@ -114,7 +111,10 @@ export class TripPackingListItem extends AbstractPackingListItem {
   getQuantity() {
     if (this.quantity !== null && this.quantity.trim() !== '') {
       return this.quantity;
-    } else if (this.item.quantity !== null && this.item.quantity.trim() !== '') {
+    } else if (
+      this.item.quantity !== null &&
+      this.item.quantity.trim() !== ''
+    ) {
       return this.item.quantity;
     }
     return null;
@@ -123,11 +123,12 @@ export class TripPackingListItem extends AbstractPackingListItem {
   /**
    * Returns the best i18n fit for the required attribute.
    */
-  geti18nAttribute(name: string, lang?: string) {
+  geti18nAttribute(name: string) {
+    // console.log(`Translating attribute ${name}, lang is ${this.lang}`);
 
     let localizedName = '';
 
-    if (lang && lang.indexOf('zh') !== -1) {
+    if (this.lang && this.lang.indexOf('zh') !== -1) {
       localizedName = name + 'Zh';
       const val = this.getAttribute(localizedName);
       if (val !== null) {
@@ -156,13 +157,10 @@ export class TripPackingListItem extends AbstractPackingListItem {
    * Returns whether the parameter is empty
    */
   private empty(value: string): boolean {
-
     if (value === null || value.trim() === '') {
       return true;
     }
 
     return false;
-
   }
-
 }

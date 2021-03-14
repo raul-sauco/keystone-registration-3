@@ -66,6 +66,7 @@
   "ERROR_PERSISTS_CONTACT_US": "如果错误仍然存在，请稍后再试，请与我们联系",
   "ERROR_SENDING_MAIL": "尝试发送电子邮件时遇到错误",
   "FAQ": "常见问题",
+  "FEEDBACK": "反馈",
   "FIRST_NAME": "名",
   "FORGOT_MY_PASSWORD": "忘了我的密码",
   "G": {
@@ -246,6 +247,7 @@
   "USERNAME": "用户名",
   "USERNAME_IS_TAKEN": "用户名已存在",
   "VALIDATING_TOKEN": "验证令牌",
+  "WAIVER": "豁免",
   "WAIVER_ACCEPTED": "接受豁免",
   "WAIVER_HAS_BEEN_ACCEPTED": "我们更新了您的详细信息以反映您接受了豁免条件",
   "WAIVER_SIGNED_ON": "豁免签署",

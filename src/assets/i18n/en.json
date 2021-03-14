@@ -66,6 +66,7 @@
   "ERROR_PERSISTS_CONTACT_US": "Please try again later, if the error persists contact us",
   "ERROR_SENDING_MAIL": "We encountered an error while trying to send the email",
   "FAQ": "FAQ",
+  "FEEDBACK": "Feedback",
   "FIRST_NAME": "First Name",
   "FORGOT_MY_PASSWORD": "Forgot my password",
   "G": {
@@ -246,6 +247,7 @@
   "USERNAME": "Username",
   "USERNAME_IS_TAKEN": "Username is taken",
   "VALIDATING_TOKEN": "Validating token",
+  "WAIVER": "Waiver",
   "WAIVER_ACCEPTED": "Waiver accepted",
   "WAIVER_HAS_BEEN_ACCEPTED": "We updated your details to reflect that you accepted the waiver conditions",
   "WAIVER_SIGNED_ON": "Waiver signed on",

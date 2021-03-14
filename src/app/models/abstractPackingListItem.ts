@@ -1,11 +1,6 @@
 /* Abstract PackingListItem */
 
 export abstract class AbstractPackingListItem {
-
-  // TODO update to not depend on language parameter
-  // Store the current language, default en
-  lang = 0; // 0 => 'en', 1 => 'zh',
-
   name?: string;
   nameZh?: string;
   remarks?: string;
@@ -18,9 +13,9 @@ export abstract class AbstractPackingListItem {
   bring?: number;
   quantity?: string;
   order?: number;
+  lang?: string;
 
   constructor(data: any) {
-
     this.name = data.name;
     this.nameZh = data.name_zh;
     this.remarks = data.remarks;
@@ -33,7 +28,6 @@ export abstract class AbstractPackingListItem {
     this.bring = data.bring;
     this.quantity = data.quantity;
     this.order = data.order;
-
+    this.lang = data.lang || 'en';
   }
-
 }
