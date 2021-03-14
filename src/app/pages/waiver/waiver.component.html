@@ -3,66 +3,84 @@
 </ng-container>
 <ng-template #app>
   <ng-container *ngIf="student$ | async as student; else loading">
-    <div id="waiver-page-container">
-      <p *ngIf="student.waiverAccepted">
-        {{ "WAIVER_SIGNED_ON" | translate }}
-        <strong>{{ student.waiverSignedOn | date }}</strong>
-      </p>
-      <app-waiver-content></app-waiver-content>
-      <div id="waiver-form-container">
-        <form
-          [formGroup]="waiverForm"
-          id="waiver-form"
-          *ngIf="!student.waiverAccepted"
-        >
-          <mat-form-field appearance="outline">
-            <mat-label>{{ student.getAttributeLabel("firstName") }}</mat-label>
-            <input type="text" matInput formControlName="firstName" required />
-            <mat-error *ngIf="firstName.errors?.required">
-              {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field
-            appearance="outline"
-            [hintLabel]="'PIF_HINT_NAME' | translate"
-          >
-            <mat-label>{{ student.getAttributeLabel("lastName") }}</mat-label>
-            <input type="text" matInput formControlName="lastName" required />
-            <mat-error *ngIf="lastName.errors?.required">
-              {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field
-            appearance="outline"
-            *ngIf="auth.getCredentials().type !== 4"
-          >
-            <mat-label>{{
-              student.getAttributeLabel("guardianName")
-            }}</mat-label>
-            <input
-              type="text"
-              matInput
-              formControlName="guardianName"
-              required
-            />
-            <mat-error *ngIf="guardianName.errors?.required">
-              {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-            </mat-error>
-          </mat-form-field>
-          <mat-progress-bar
-            mode="indeterminate"
-            *ngIf="posting"
-            class="progress-bar"
-          ></mat-progress-bar>
-          <button
-            mat-raised-button
-            [disabled]="!waiverForm.valid"
-            color="primary"
-            (click)="acceptWaiver()"
-          >
-            {{ "ACCEPT_WAIVER" | translate }}
-          </button>
-        </form>
+    <div class="app-page-wrapper">
+      <div class="app-content-wrapper">
+        <div id="waiver-page-container">
+          <p *ngIf="student.waiverAccepted">
+            {{ "WAIVER_SIGNED_ON" | translate }}
+            <strong>{{ student.waiverSignedOn | date }}</strong>
+          </p>
+          <app-waiver-content></app-waiver-content>
+          <div id="waiver-form-container">
+            <form
+              [formGroup]="waiverForm"
+              id="waiver-form"
+              *ngIf="!student.waiverAccepted"
+            >
+              <mat-form-field appearance="outline">
+                <mat-label>{{
+                  student.getAttributeLabel("firstName")
+                }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="firstName"
+                  required
+                />
+                <mat-error *ngIf="firstName.errors?.required">
+                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                [hintLabel]="'PIF_HINT_NAME' | translate"
+              >
+                <mat-label>{{
+                  student.getAttributeLabel("lastName")
+                }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="lastName"
+                  required
+                />
+                <mat-error *ngIf="lastName.errors?.required">
+                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                *ngIf="auth.getCredentials().type !== 4"
+              >
+                <mat-label>{{
+                  student.getAttributeLabel("guardianName")
+                }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="guardianName"
+                  required
+                />
+                <mat-error *ngIf="guardianName.errors?.required">
+                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                </mat-error>
+              </mat-form-field>
+              <mat-progress-bar
+                mode="indeterminate"
+                *ngIf="posting"
+                class="progress-bar"
+              ></mat-progress-bar>
+              <button
+                mat-raised-button
+                [disabled]="!waiverForm.valid"
+                color="primary"
+                (click)="acceptWaiver()"
+              >
+                {{ "ACCEPT_WAIVER" | translate }}
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </ng-container>

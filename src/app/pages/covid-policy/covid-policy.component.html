@@ -1,9 +1,15 @@
 <ng-container *ngIf="content$ | async as content; else loading">
-  <div
-    id="covid-policy"
-    class="material-typography"
-    [innerHTML]="(lang === 'zh' ? content.text_zh : content.text) | markdown"
-  ></div>
+  <div class="app-page-wrapper">
+    <div class="app-content-wrapper">
+      <div
+        id="covid-policy"
+        class="material-typography"
+        [innerHTML]="
+          (lang === 'zh' ? content.text_zh : content.text) | markdown
+        "
+      ></div>
+    </div>
+  </div>
 </ng-container>
 
 <ng-template #loading>
