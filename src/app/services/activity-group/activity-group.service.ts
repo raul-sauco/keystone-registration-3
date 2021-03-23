@@ -9,10 +9,9 @@ import { EventService } from '../event/event.service';
 import { Event } from 'src/app/models/event';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ActivityGroupService {
-
   activityGroups: ActivityGroup[] = [];
   activityGroup$: Subject<ActivityGroup[]> = new Subject<ActivityGroup[]>();
 
@@ -22,13 +21,18 @@ export class ActivityGroupService {
     private eventService: EventService,
     private logger: NGXLogger
   ) {
-    this.eventService.event$.subscribe(data => {
-      this.logger.debug(`ActivityGroupService got ${data.length} events from EventService`);
-      this.addEventsToActivityGroups(data);
-    }, (err: string) => {
-      this.logger.warn(`ActivityGroupService event observable error: ${err}`);
-      this.activityGroup$.error(err);
-    });
+    this.eventService.event$.subscribe(
+      (data) => {
+        this.logger.debug(
+          `ActivityGroupService got ${data.length} events from EventService`
+        );
+        this.addEventsToActivityGroups(data);
+      },
+      (err: string) => {
+        this.logger.warn(`ActivityGroupService event observable error: ${err}`);
+        this.activityGroup$.error(err);
+      }
+    );
   }
 
   /**
@@ -40,22 +44,28 @@ export class ActivityGroupService {
    * @param tripId optional parameter if we don't have a logged in user
    */
   fetchActivityGroups(tripId: string = null) {
+    // Reset the activity group array.
+    this.activityGroups = [];
     const endpoint = 'activity-groups';
-    const headers: any = {'Content-Type': 'application/json'};
-    let  params = null;
+    const headers: any = { 'Content-Type': 'application/json' };
+    let params = null;
     let fetch = false;
     if (tripId !== null) {
-      params = {'trip-id': tripId};
+      params = { 'trip-id': tripId };
       fetch = true;
-    } else if (this.auth.authenticated && this.auth.getCredentials().accessToken) {
-      headers.authorization = ' Bearer ' + this.auth.getCredentials().accessToken;
+    } else if (
+      this.auth.authenticated &&
+      this.auth.getCredentials().accessToken
+    ) {
+      headers.authorization =
+        ' Bearer ' + this.auth.getCredentials().accessToken;
       fetch = true;
     }
 
     if (fetch) {
       const options = {
         headers: new HttpHeaders(headers),
-        observe: 'response'
+        observe: 'response',
       };
       this.fetchActivityGroupBatch(endpoint, params, options);
     }
@@ -70,27 +80,25 @@ export class ActivityGroupService {
    * @param options request options; headers, observe
    */
   fetchActivityGroupBatch(endpoint: string, params: any, options: any): void {
+    this.api.get(endpoint, params, options).subscribe((resp: any) => {
+      // TODO handle errors
+      this.addActivityGroups(resp.body);
 
-    this.api.get(endpoint, params, options).subscribe(
-      (resp: any) => {
+      if (this.api.hasNextPage(resp.headers)) {
+        this.fetchActivityGroupBatch(
+          this.api.nextPageUrl(resp.headers),
+          null,
+          options
+        );
 
-        // TODO handle errors
-        this.addActivityGroups(resp.body);
-
-        if (this.api.hasNextPage(resp.headers)) {
-
-          this.fetchActivityGroupBatch(this.api.nextPageUrl(resp.headers), null, options);
-
-          this.logger.debug('Fetching next ag page at: ' + this.api.nextPageUrl(resp.headers));
-
-        } else {
-
-          // There are no more pages of data, notify subscribers
-          this.activityGroup$.next(this.activityGroups);
-
-        }
+        this.logger.debug(
+          'Fetching next ag page at: ' + this.api.nextPageUrl(resp.headers)
+        );
+      } else {
+        // There are no more pages of data, notify subscribers
+        this.activityGroup$.next(this.activityGroups);
       }
-    );
+    });
   }
 
   /**
@@ -99,8 +107,9 @@ export class ActivityGroupService {
    * @param activityGroups JSON with the activity groups data
    */
   addActivityGroups(activityGroups: any) {
-
-    this.logger.debug(`Adding ${activityGroups.length} activity groups to provider`);
+    this.logger.debug(
+      `Adding ${activityGroups.length} activity groups to provider`
+    );
 
     /*
      * TODO look into fetching all events using observables instead of
@@ -110,26 +119,19 @@ export class ActivityGroupService {
      * https://www.learnrxjs.io/learn-rxjs/operators/combination/forkjoin
      * https://rxjs.dev/api/index/function/forkJoin
      */
-    activityGroups.forEach(ag => {
-
+    activityGroups.forEach((ag) => {
       this.eventService.fetchEvents(ag.id);
 
       // Check if the activity group is already in the array
-      const index = this.activityGroups.findIndex( e => e.id === ag.id);
+      const index = this.activityGroups.findIndex((e) => e.id === ag.id);
 
       // If we find the activity group update it, otherwise add it
       if (index !== -1) {
-
         this.activityGroups[index] = new ActivityGroup(ag);
-
       } else {
-
         this.activityGroups.push(new ActivityGroup(ag));
-
       }
-
     });
-
   }
 
   /**
@@ -139,12 +141,12 @@ export class ActivityGroupService {
    * @param events an array containing all events for all activity groups
    */
   addEventsToActivityGroups(events: Event[]) {
-
-    this.logger.debug(`AGS132 Adding ${events.length} Events to ActivityGroups`);
+    this.logger.debug(
+      `AGS132 Adding ${events.length} Events to ActivityGroups`
+    );
 
     this.activityGroups.forEach((ag: ActivityGroup) => {
-      ag.setEvents(events.filter(event => event.activityGroupId === ag.id));
+      ag.setEvents(events.filter((event) => event.activityGroupId === ag.id));
     });
-
   }
 }
