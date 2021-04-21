@@ -35,6 +35,7 @@ export class ParticipantsComponent implements OnInit {
     'gender',
     'dob',
     'guardianName',
+    'emergencyContact',
     'waiverAccepted',
     'waiverSignedOn',
     'dietaryRequirements',
@@ -42,9 +43,6 @@ export class ParticipantsComponent implements OnInit {
     'allergies',
     'allergiesOther',
     'medicalInformation',
-    'insurance',
-    'insuranceName',
-    'insurancePolicyNumber',
     'delete',
   ];
 
@@ -142,11 +140,10 @@ export class ParticipantsComponent implements OnInit {
       attr === 'citizenship' ||
       attr === 'travelDocument' ||
       attr === 'guardianName' ||
+      attr === 'emergencyContact' ||
       attr === 'dietaryRequirementsOther' ||
       attr === 'allergiesOther' ||
-      attr === 'medicalInformation' ||
-      attr === 'insuranceName' ||
-      attr === 'insurancePolicyNumber'
+      attr === 'medicalInformation'
     ) {
       return 'inline';
     }
