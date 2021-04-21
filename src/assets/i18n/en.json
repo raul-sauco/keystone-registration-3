@@ -58,6 +58,7 @@
   "EMAIL": "Email",
   "EMAIL_IS_NOT_VALID": "That is not a valid email address",
   "EMAIL_SENT": "Email sent",
+  "EMERGENCY_CONTACT": "Emergency contact number",
   "EMPTY": "Empty",
   "ENTER_EMAIL_RECOVER_PASSWORD": "Enter the email linked to your account and we will send instructions to reset your password.",
   "ENTER_NEW_PASSWORD": "Enter new password",

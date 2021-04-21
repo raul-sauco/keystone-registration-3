@@ -68,14 +68,15 @@ export class PersonalInfoComponent implements OnInit {
       gender: [this.student.gender],
       dob: [this.student.dob],
       guardianName: [this.student.guardianName],
+      emergencyContact: [this.student.emergencyContact],
       dietaryRequirements: [this.student.dietaryRequirements],
       dietaryRequirementsOther: [this.student.dietaryRequirementsOther],
       allergies: [this.student.allergies],
       allergiesOther: [this.student.allergiesOther],
       medicalInformation: [this.student.medicalInformation],
-      insurance: [this.student.insurance],
-      insuranceName: [this.student.insuranceName],
-      insurancePolicyNumber: [this.student.insurancePolicyNumber],
+      // insurance: [this.student.insurance],
+      // insuranceName: [this.student.insuranceName],
+      // insurancePolicyNumber: [this.student.insurancePolicyNumber],
     });
   }
 
@@ -141,6 +142,7 @@ export class PersonalInfoComponent implements OnInit {
       travel_document: data.travelDocument,
       gender: data.gender,
       guardian_name: data.guardianName,
+      emergency_contact: data.emergencyContact,
       waiver_accepted: data.waiverAccepted,
       waiver_signed_on: data.waiverSignedOn,
       dietary_requirements: data.dietaryRequirements,
@@ -148,12 +150,11 @@ export class PersonalInfoComponent implements OnInit {
       allergies: data.allergies,
       allergies_other: data.allergiesOther,
       medical_information: data.medicalInformation,
-      insurance: data.insurance,
-      insurance_name: data.insuranceName,
-      insurance_policy_number: data.insurancePolicyNumber,
+      // insurance: data.insurance,
+      // insurance_name: data.insuranceName,
+      // insurance_policy_number: data.insurancePolicyNumber,
     };
     if (data.dob !== this.student.dob) {
-      this.logger.debug('DOB field has been updated');
       let dob = data.dob;
       if (!moment.isMoment(dob)) {
         dob = moment(dob);

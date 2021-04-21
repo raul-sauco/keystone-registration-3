@@ -75,6 +75,12 @@
           <input type="text" matInput formControlName="guardianName" />
         </mat-form-field>
         <mat-form-field appearance="outline">
+          <mat-label>{{
+            student.getAttributeLabel("emergencyContact")
+          }}</mat-label>
+          <input type="text" matInput formControlName="emergencyContact" />
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline">
           <mat-label>{{ student.getAttributeLabel("insurance") }}</mat-label>
           <mat-select
             formControlName="insurance"
@@ -107,7 +113,7 @@
               matInput
               formControlName="insurancePolicyNumber"
             /> </mat-form-field
-        ></ng-container>
+        ></ng-container> -->
         <!-- END Legal information section -->
 
         <!-- START Dietary requirements section -->

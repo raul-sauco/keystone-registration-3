@@ -13,6 +13,7 @@ export class Student {
   gender: number;
   dob: string;
   guardianName: string;
+  emergencyContact: string;
   waiverAccepted: boolean;
   waiverSignedOn: string;
   dietaryRequirements: number;
@@ -20,9 +21,9 @@ export class Student {
   allergies: number;
   allergiesOther: string;
   medicalInformation: string;
-  insurance: boolean;
-  insuranceName: string;
-  insurancePolicyNumber: string;
+  // insurance: boolean;
+  // insuranceName: string;
+  // insurancePolicyNumber: string;
 
   private translations: any;
 
@@ -60,6 +61,7 @@ export class Student {
         'G',
         'DOB',
         'GUARDIAN_NAME',
+        'EMERGENCY_CONTACT',
         'WAIVER_ACCEPTED',
         'WAIVER_SIGNED_ON',
         'DR',
@@ -69,10 +71,10 @@ export class Student {
         'ALLERGIES',
         'ALLERGIES_OTHER',
         'MEDICAL_INFORMATION',
-        'INSURANCE',
-        'I',
-        'INSURANCE_NAME',
-        'INSURANCE_POLICY_NUMBER',
+        // 'INSURANCE',
+        // 'I',
+        // 'INSURANCE_NAME',
+        // 'INSURANCE_POLICY_NUMBER',
         'YES',
         'NO',
         'EMPTY',
@@ -106,6 +108,7 @@ export class Student {
     this.gender = json.gender;
     this.dob = json.dob;
     this.guardianName = json.guardian_name;
+    this.emergencyContact = json.emergency_contact;
     this.waiverAccepted = json.waiver_accepted
       ? true
       : json.waiver_accepted === 0
@@ -117,9 +120,9 @@ export class Student {
     this.allergies = json.allergies;
     this.allergiesOther = json.allergies_other;
     this.medicalInformation = json.medical_information;
-    this.insurance = json.insurance;
-    this.insuranceName = json.insurance_name;
-    this.insurancePolicyNumber = json.insurance_policy_number;
+    // this.insurance = json.insurance;
+    // this.insuranceName = json.insurance_name;
+    // this.insurancePolicyNumber = json.insurance_policy_number;
   }
 
   /**
@@ -135,6 +138,7 @@ export class Student {
       gender: this.translations.GENDER,
       dob: this.translations.DOB,
       guardianName: this.translations.GUARDIAN_NAME,
+      emergencyContact: this.translations.EMERGENCY_CONTACT,
       waiverAccepted: this.translations.WAIVER_ACCEPTED,
       waiverSignedOn: this.translations.WAIVER_SIGNED_ON,
       dietaryRequirements: this.translations.DIETARY_REQUIREMENTS,
@@ -142,9 +146,9 @@ export class Student {
       allergies: this.translations.ALLERGIES,
       allergiesOther: this.translations.ALLERGIES_OTHER,
       medicalInformation: this.translations.MEDICAL_INFORMATION,
-      insurance: this.translations.INSURANCE,
-      insuranceName: this.translations.INSURANCE_NAME,
-      insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER,
+      // insurance: this.translations.INSURANCE,
+      // insuranceName: this.translations.INSURANCE_NAME,
+      // insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER,
     };
 
     return labels[attribute];
@@ -174,9 +178,9 @@ export class Student {
       return this.translations.G[this[attr]];
     }
 
-    if (attr === 'insurance') {
-      return this.translations.I[this[attr]];
-    }
+    // if (attr === 'insurance') {
+    //   return this.translations.I[this[attr]];
+    // }
 
     if (attr === 'dietaryRequirements') {
       return this.translations.DR[this[attr]];
@@ -261,9 +265,9 @@ export class Student {
       { name: 'waiverAccepted', visible: true },
       { name: 'waiverSignedOn', visible: true },
       { name: 'guardianName', visible: true },
-      { name: 'insurance', visible: true },
-      { name: 'insuranceName', visible: this.insurance !== null },
-      { name: 'insurancePolicyNumber', visible: this.insurance !== null },
+      // { name: 'insurance', visible: true },
+      // { name: 'insuranceName', visible: this.insurance !== null },
+      // { name: 'insurancePolicyNumber', visible: this.insurance !== null },
     ];
 
     this.dietaryAttributes = [

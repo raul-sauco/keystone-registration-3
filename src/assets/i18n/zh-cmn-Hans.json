@@ -58,6 +58,7 @@
   "EMAIL": "电子邮件",
   "EMAIL_IS_NOT_VALID": "这不是有效的电子邮件地址",
   "EMAIL_SENT": "邮件已发送",
+  "EMERGENCY_CONTACT": "紧急联络电话",
   "EMPTY": "空",
   "ENTER_EMAIL_RECOVER_PASSWORD": "输入链接到您帐户的电子邮件，我们将发送说明重置您的密码。",
   "ENTER_NEW_PASSWORD": "输入新密码",
