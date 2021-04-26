@@ -83,7 +83,7 @@ const routes: Routes = [
       import('./pages/accommodation/accommodation.module').then(
         (m) => m.AccommodationModule
       ),
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: 'accommodation/:trip-id',
@@ -91,7 +91,7 @@ const routes: Routes = [
       import('./pages/accommodation/accommodation.module').then(
         (m) => m.AccommodationModule
       ),
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: 'feedback',

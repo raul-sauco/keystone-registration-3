@@ -1,3 +1,5 @@
+import { RouteStateService } from './../../services/route-state/route-state.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -15,30 +17,41 @@ import { Supplier } from './../../models/supplier';
 })
 export class AccommodationComponent implements OnInit {
   supplier$: Observable<Supplier>;
+  needsLogin = false;
 
   constructor(
     private api: ApiService,
     private auth: AuthService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private route: ActivatedRoute,
+    private routeStateService: RouteStateService
   ) {}
 
   ngOnInit(): void {
     this.logger.debug('AccommodationComponent OnInit');
-    this.auth.checkAuthenticated().then((res: boolean) => {
-      if (res) {
-        if (this.auth.getCredentials().accessToken) {
-          if (this.auth.getCredentials().studentId) {
-            this.fetch();
-          } else {
-            this.logger.error(
-              'Authentication error, expected valid student ID.'
-            );
-          }
-        } else {
-          this.logger.error('Authentication error, expected access token.');
+    const headers: any = { 'Content-Type': 'application/json' };
+    let requestParams: any = { expand: 'images' };
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      const tripId = params.get('trip-id');
+      if (tripId !== null) {
+        // If we have a routing parameter, update the route state and fetch data
+        if (this.routeStateService.getTripId() !== tripId) {
+          this.routeStateService.updateTripIdParamState(tripId);
         }
+        // If we have a trip id request info for that trip
+        requestParams['trip-id'] = tripId;
+        this.fetch(requestParams, headers);
       } else {
-        this.logger.error('Authentication error, expected having auth info.');
+        this.auth.checkAuthenticated().then((res: boolean) => {
+          if (res && this.auth.getCredentials().accessToken) {
+            headers.authorization = `Bearer ${
+              this.auth.getCredentials().accessToken
+            }`;
+            this.fetch(params, headers);
+          } else {
+            this.needsLogin = true;
+          }
+        });
       }
     });
   }
@@ -46,16 +59,13 @@ export class AccommodationComponent implements OnInit {
   /**
    * Fetch accommodation info from the backend.
    */
-  fetch(): void {
-    const endpoint = 'accommodation?expand=images';
+  fetch(params: any, headers: any): void {
+    const endpoint = 'accommodation';
     const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
-      }),
+      headers: new HttpHeaders(headers),
     };
     this.supplier$ = this.api
-      .get(endpoint, null, options)
+      .get(endpoint, params, options)
       .pipe(
         map((res: any) =>
           res.map((supplierJson: any) => new Supplier(supplierJson))
