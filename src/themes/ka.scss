@@ -1,13 +1,13 @@
+@use '~@angular/material' as mat;
 // This file comes from https://material.angular.io/guide/theming#defining-a-custom-theme
 // info: https://stackoverflow.com/questions/41440998/how-can-i-use-custom-theme-palettes-in-angular
 
-@import "~@angular/material/theming";
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat.core();
 
 // Generator http://mcg.mbitson.com/
 $ka-brand-palette: (
@@ -46,28 +46,28 @@ $ka-brand-palette: (
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$ka-primary: mat-palette($ka-brand-palette, 700, 300, 900);
-$ka-accent: mat-palette($mat-purple);
+$ka-primary: mat.define-palette($ka-brand-palette, 700, 300, 900);
+$ka-accent: mat.define-palette(mat.$purple-palette);
 
 // The warn palette is optional (defaults to red).
-$ka-warn: mat-palette($mat-red);
+$ka-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$ka-theme: mat-light-theme($ka-primary, $ka-accent, $ka-warn);
+$ka-theme: mat.define-light-theme($ka-primary, $ka-accent, $ka-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($ka-theme);
+@include mat.all-component-themes($ka-theme);
 
 // https://material.angular.io/guide/typography
-$custom-typography: mat-typography-config(
+$custom-typography: mat.define-typography-config(
   // $font-family: "Roboto, monospace",
-  // $headline: mat-typography-level(32px, 48px, 700),
-  $body-1: mat-typography-level(16px, 24px, 400)
+  // $headline: mat.define-typography-level(32px, 48px, 700),
+  $body-1: mat.define-typography-level(16px, 24px, 400)
 );
 
-@include mat-core($custom-typography);
+@include mat.core($custom-typography);
 
 h1,
 h2,
