@@ -1,5 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { GuidesComponent } from './guides.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -12,22 +11,23 @@ describe('GuidesComponent', () => {
   let component: GuidesComponent;
   let fixture: ComponentFixture<GuidesComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        LoggerTestingModule,
-        RouterTestingModule,
-        MatSnackBarModule,
-        LoadingSpinnerContentModule,
-        TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json')
-        })
-      ],
-      declarations: [ GuidesComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          HttpClientTestingModule,
+          LoggerTestingModule,
+          RouterTestingModule,
+          MatSnackBarModule,
+          LoadingSpinnerContentModule,
+          TranslateTestingModule.withTranslations({
+            en: require('src/assets/i18n/en.json'),
+          }),
+        ],
+        declarations: [GuidesComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GuidesComponent);

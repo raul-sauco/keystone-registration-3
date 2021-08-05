@@ -1,17 +1,37 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { RegisterComponent } from './register.component';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ RegisterComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          { provide: TranslateService, useClass: TranslateServiceStub },
+        ],
+        declarations: [RegisterComponent],
+        imports: [
+          HttpClientTestingModule,
+          RouterTestingModule,
+          LoggerTestingModule,
+          FormsModule,
+          ReactiveFormsModule,
+          MatDialogModule,
+        ],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterComponent);

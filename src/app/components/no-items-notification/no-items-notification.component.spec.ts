@@ -1,17 +1,23 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 import { NoItemsNotificationComponent } from './no-items-notification.component';
 
 describe('NoItemsNotificationComponent', () => {
   let component: NoItemsNotificationComponent;
   let fixture: ComponentFixture<NoItemsNotificationComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ NoItemsNotificationComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          TranslateTestingModule.withTranslations({
+            en: require('src/assets/i18n/en.json'),
+          }),
+        ],
+        declarations: [NoItemsNotificationComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NoItemsNotificationComponent);
