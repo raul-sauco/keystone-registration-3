@@ -17,7 +17,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MarkdownModule } from 'ngx-markdown';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import { apiUrl } from 'src/app/local/globals.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -49,10 +48,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     MarkdownModule.forRoot({ loader: HttpClient }),
     LoggerModule.forRoot({
-      serverLoggingUrl:
-        (window.location.href.includes('localhost:4200')
-          ? apiUrl.production
-          : apiUrl.development) + 'portal-logs',
+      serverLoggingUrl: environment.apiUrl,
       level: environment.production
         ? NgxLoggerLevel.INFO
         : NgxLoggerLevel.TRACE,

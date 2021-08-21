@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { GlobalsService } from 'src/app/local/globals.service';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Guide } from 'src/app/models/guide';
 import { AuthService } from 'src/app/services/auth/auth.service';

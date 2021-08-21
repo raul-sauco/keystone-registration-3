@@ -4,7 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { HttpHeaders } from '@angular/common/http';
-import { GlobalsService } from 'src/app/local/globals.service';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { map } from 'rxjs/operators';
 import { Document } from 'src/app/models/document';
 

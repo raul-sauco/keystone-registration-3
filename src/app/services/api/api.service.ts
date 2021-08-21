@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { GlobalsService } from 'src/app/local/globals.service';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpParams,
+  HttpErrorResponse,
+} from '@angular/common/http';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-
   private url: string;
 
   constructor(
@@ -30,14 +34,15 @@ export class ApiService {
    * @param reqOpts an object with options to configure the HttpRequest object.
    */
   get(endpoint: string, params?: any, reqOpts?: any) {
-
     /* Allow both full URLs and endpoints for main API https://stackoverflow.com/a/19709846/2557030 */
-    const url = endpoint.includes('http://') ||
-      endpoint.includes('https://') ? endpoint : (this.url + endpoint);
+    const url =
+      endpoint.includes('http://') || endpoint.includes('https://')
+        ? endpoint
+        : this.url + endpoint;
 
     if (!reqOpts) {
       reqOpts = {
-        params: new HttpParams()
+        params: new HttpParams(),
       };
     }
 
@@ -51,10 +56,9 @@ export class ApiService {
       }
     }
 
-    return this.http.get(url, reqOpts)
-      .pipe(
-        catchError(err => this.handleError(err))
-      );
+    return this.http
+      .get(url, reqOpts)
+      .pipe(catchError((err) => this.handleError(err)));
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
@@ -85,11 +89,11 @@ export class ApiService {
   /**
    * Get the link for the next page of results if there are any.
    *
-   * @param headers a JSON object with the htttp response headers
+   * @param headers a JSON object with the http response headers
    */
   nextPageUrl(headers: HttpHeaders): string {
     const links = headers.get('link').split(',');
-    let next = links.find(l => l.includes('rel=next') );
+    let next = links.find((l) => l.includes('rel=next'));
     next = next.split(';')[0];
     next = next.replace(/[<>]/gi, '');
     return next;
@@ -100,38 +104,29 @@ export class ApiService {
    * @param HttpErrorResponse error
    */
   private handleError(error: HttpErrorResponse) {
-
     let msg: string;
 
     if (error.error instanceof ErrorEvent) {
-
       // A client-side or network error occurred. Handle it accordingly.
       msg = `Network error`;
-
     } else {
-
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
       msg = `Server error`;
-
     }
 
     // Error level logs get sent to the server
-    this.logger.error(
-      `ApiService ${msg}: ${error.error.message}`,
-      {
-        url: error.url,
-        name: error.name,
-        message: error.message,
-        status: error.status,
-        statusText: error.statusText,
-        error,
-        yiiError: error.error
-      }
-    );
+    this.logger.error(`ApiService ${msg}: ${error.error.message}`, {
+      url: error.url,
+      name: error.name,
+      message: error.message,
+      status: error.status,
+      statusText: error.statusText,
+      error,
+      yiiError: error.error,
+    });
 
     // return an observable with a user-facing error message
-    return throwError(`${msg}; please try again later.`);
+    return throwError(() => new Error(`${msg}; please try again later.`));
   }
-
 }
