@@ -66,8 +66,8 @@ export class LoginComponent implements OnInit {
 
     this.logger.debug(`Sending login request for ${params.username}`);
 
-    this.api.post('login', params).subscribe(
-      (res: any) => {
+    this.api.post('login', params).subscribe({
+      next: (res: any) => {
         // Todo
         if (!res.error && res.credentials) {
           // Creating the Credentials object does some error checking
@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
             });
         }
       },
-      (error) => {
+      error: (error) => {
         this.logger.warn(
           `Server or Network login error. Username: ${params.username}`,
           error
@@ -99,8 +99,8 @@ export class LoginComponent implements OnInit {
           .subscribe((translation: string) => {
             this.notifyError(translation);
           });
-      }
-    );
+      },
+    });
   }
 
   /**

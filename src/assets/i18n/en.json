@@ -231,6 +231,7 @@
   "STRONG_PASSWORD": "So that we can verify your identity and protect your privacy when you login in the future, you will need to enter in a password below, which should be at least 8 characters long.",
   "STUDENT": "Student",
   "SUCCESS": "Success",
+  "SWITCH": "Switch",
   "TEACHER": "Teacher",
   "TEACHER_AREA": "Teacher area",
   "THIS_FIELD_IS_REQUIRED": "This field cannot be empty",

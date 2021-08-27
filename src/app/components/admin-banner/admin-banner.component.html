@@ -1,0 +1,17 @@
+<div id="admin-banner-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Browsing </mat-card-title>
+      <mat-card-actions align="end">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="browseAvailableTrips()"
+        >
+          {{ "SWITCH" | translate }}
+        </button>
+      </mat-card-actions>
+      <mat-card-subtitle *ngIf="trip">{{ trip.getName() }}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</div>

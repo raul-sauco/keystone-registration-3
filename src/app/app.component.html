@@ -119,6 +119,11 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <ng-container
+      *ngIf="(auth.auth$ | async) && auth.getCredentials().type === 8"
+    >
+      <app-admin-banner></app-admin-banner>
+    </ng-container>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

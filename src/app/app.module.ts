@@ -1,3 +1,4 @@
+import { AdminBannerModule } from './components/admin-banner/admin-banner.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -54,6 +55,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         : NgxLoggerLevel.TRACE,
       serverLogLevel: NgxLoggerLevel.WARN,
     }),
+    AdminBannerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
