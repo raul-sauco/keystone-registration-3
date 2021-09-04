@@ -113,15 +113,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         },
@@ -142,6 +138,7 @@
   },
   "defaultProject": "keystone-registration",
   "cli": {
-    "analytics": "9f9138a1-6d44-4052-ad70-b4c8f19b53a2"
+    "analytics": "9f9138a1-6d44-4052-ad70-b4c8f19b53a2",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }
