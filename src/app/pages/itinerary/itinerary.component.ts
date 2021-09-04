@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ActivityGroup } from 'src/app/models/activityGroup';
 import { ActivityGroupService } from 'src/app/services/activity-group/activity-group.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 
 @Component({
   selector: 'app-itinerary',
@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./itinerary.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ItineraryComponent implements OnInit, OnDestroy {
+export class ItineraryComponent implements OnInit {
   /** used by the template to iterate a collection */
   activityGroups: ActivityGroup[] = null;
   needsLogin = false;
@@ -63,11 +63,11 @@ export class ItineraryComponent implements OnInit, OnDestroy {
     this.activityGroupService.fetchActivityGroups(tripId);
 
     // Subscribe to the ActivityGroupService Subject
-    this.activityGroupService.activityGroup$.subscribe(
-      (resp) => {
+    this.activityGroupService.activityGroup$.subscribe({
+      next: (resp) => {
         this.activityGroups = resp;
       },
-      (err: string) => {
+      error: (err: string) => {
         // Notify the user of the error
         const snackBarRef = this.snackBar.open(err, 'Retry', {
           duration: 5000,
@@ -76,18 +76,7 @@ export class ItineraryComponent implements OnInit, OnDestroy {
         snackBarRef.onAction().subscribe(() => {
           this.activityGroupService.fetchActivityGroups(tripId);
         });
-      }
-    );
-  }
-
-  /**
-   * Unsubscribe from all active observable subscriptions.
-   */
-  ngOnDestroy(): void {
-    /*
-     * TODO unsubscribing from the Subject throws error if
-     * we try to subscribe back on the next ngOnInit call
-     */
-    // this.activityGroupService.activityGroup$.unsubscribe();
+      },
+    });
   }
 }

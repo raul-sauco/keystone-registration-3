@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-waiver-content',
@@ -7,7 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./waiver-content.component.scss'],
 })
 export class WaiverContentComponent implements OnInit {
-  constructor(public translate: TranslateService) {}
+  constructor(public translate: TranslateService, private logger: NGXLogger) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.logger.debug('WaiverContentComponent OnInit');
+  }
 }
