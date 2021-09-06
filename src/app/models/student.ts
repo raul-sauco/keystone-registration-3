@@ -4,33 +4,33 @@ import { NGXLogger } from 'ngx-logger';
 
 export class Student {
   id: number;
-  index: number;
-  type: number; // 1 for teacher, 0 for student
-  firstName: string;
-  lastName: string;
-  citizenship: string;
-  travelDocument: string;
-  gender: number;
-  dob: string;
-  guardianName: string;
-  emergencyContact: string;
-  waiverAccepted: boolean;
-  waiverSignedOn: string;
-  dietaryRequirements: number;
-  dietaryRequirementsOther: string;
-  allergies: number;
-  allergiesOther: string;
-  medicalInformation: string;
+  index?: number;
+  type?: number; // 1 for teacher, 0 for student
+  firstName?: string;
+  lastName?: string;
+  citizenship?: string;
+  travelDocument?: string;
+  gender?: number;
+  dob?: string;
+  guardianName?: string;
+  emergencyContact?: string;
+  waiverAccepted: boolean | null = null;
+  waiverSignedOn?: string;
+  dietaryRequirements?: number;
+  dietaryRequirementsOther?: string;
+  allergies?: number;
+  allergiesOther?: string;
+  medicalInformation?: string;
   // insurance: boolean;
   // insuranceName: string;
   // insurancePolicyNumber: string;
 
   private translations: any;
 
-  private personalAttributes;
-  private legalAttributes;
-  private dietaryAttributes;
-  private medicalAttributes;
+  private personalAttributes: any;
+  private legalAttributes: any;
+  private dietaryAttributes: any;
+  private medicalAttributes: any;
 
   constructor(
     json: any,
@@ -88,7 +88,7 @@ export class Student {
   /**
    * Use JSON data to set this student's attributes.
    */
-  setFromJSON(json) {
+  private setFromJSON(json: any) {
     // Prevent updates if the JSON id does not match
     if (this.id && this.id !== json.id) {
       this.logger.error(
@@ -129,7 +129,7 @@ export class Student {
    * Get the i18n attribute name.
    */
   public getAttributeLabel(attribute: string) {
-    const labels = {
+    const labels: { [key: string]: string } = {
       id: this.translations.ID,
       firstName: this.translations.FIRST_NAME,
       lastName: this.translations.LAST_NAME,
@@ -150,14 +150,13 @@ export class Student {
       // insuranceName: this.translations.INSURANCE_NAME,
       // insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER,
     };
-
-    return labels[attribute];
+    return labels[attribute] || '';
   }
 
   /**
    * Get the attribute value element content.
    */
-  getAttributeText(attr) {
+  public getAttributeText(attr: keyof Student) {
     if (attr === 'type') {
       if (this[attr]) {
         return this.translations.TEACHER;
@@ -173,21 +172,17 @@ export class Student {
         return '';
       }
     }
-
     if (attr === 'gender') {
-      return this.translations.G[this[attr]];
+      return this.translations.G[this['gender']!];
     }
-
     // if (attr === 'insurance') {
     //   return this.translations.I[this[attr]];
     // }
-
-    if (attr === 'dietaryRequirements') {
-      return this.translations.DR[this[attr]];
+    if (attr === 'dietaryRequirements' && this['dietaryRequirements']) {
+      return this.translations.DR[this['dietaryRequirements']];
     }
-
-    if (attr === 'allergies') {
-      return this.translations.ALLER[this[attr]];
+    if (attr === 'allergies' && this['allergies']) {
+      return this.translations.ALLER[this['allergies']];
     }
 
     if (!this[attr]) {
@@ -197,7 +192,7 @@ export class Student {
     // Customize a few attributes
     if (attr === 'waiverSignedOn' || attr === 'dob') {
       return formatDate(
-        this[attr],
+        this[attr] || '',
         'longDate',
         this.translate.currentLang.includes('zh') ? 'zh' : 'en-US'
       );
@@ -210,8 +205,8 @@ export class Student {
    * Hide the teachers medical information from the participants table
    * @param attr
    */
-  getParticipantTableDisplayValue(attr) {
-    if (attr === 'medicalInformation' && +this.type === 1) {
+  getParticipantTableDisplayValue(attr: keyof Student) {
+    if (attr === 'medicalInformation' && this.type === 1) {
       return '';
     }
     return this.getAttributeText(attr);
@@ -220,7 +215,7 @@ export class Student {
   /**
    * Find out whether an attribute is null.
    */
-  isAttributeEmpty(attr): boolean {
+  isAttributeEmpty(attr: keyof Student): boolean {
     if (typeof this[attr] === 'boolean') {
       return !(this[attr] === true || this[attr] === false);
     }
@@ -283,5 +278,48 @@ export class Student {
       { name: 'allergiesOther', visible: this.allergies === 1 },
       { name: 'medicalInformation', visible: true },
     ];
+  }
+
+  /**
+   * Set one of the settable Student attributes to a given value.
+   * @param attr the Student attribute to set.
+   * @param value the value to assign to the attribute.
+   */
+  public setAttribute(attr: keyof Student, value: string): void {
+    switch (attr) {
+      case 'firstName':
+        this.firstName = value;
+        break;
+      case 'lastName':
+        this.lastName = value;
+        break;
+      case 'citizenship':
+        this.citizenship = value;
+        break;
+      case 'travelDocument':
+        this.travelDocument = value;
+        break;
+      case 'gender':
+        this.gender = +value;
+        break;
+      case 'emergencyContact':
+        this.emergencyContact = value;
+        break;
+      case 'dietaryRequirements':
+        this.dietaryRequirements = +value;
+        break;
+      case 'dietaryRequirementsOther':
+        this.dietaryRequirementsOther = value;
+        break;
+      case 'allergies':
+        this.allergies = +value;
+        break;
+      case 'allergiesOther':
+        this.allergiesOther = value;
+        break;
+      case 'medicalInformation':
+        this.medicalInformation = value;
+        break;
+    }
   }
 }

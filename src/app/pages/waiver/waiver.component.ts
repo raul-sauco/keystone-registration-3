@@ -21,8 +21,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class WaiverComponent implements OnInit {
   needsLogin = false;
   posting = false;
-  student$: Observable<Student>;
-  waiverForm: FormGroup;
+  student$!: Observable<Student>;
+  waiverForm!: FormGroup;
 
   constructor(
     private api: ApiService,
@@ -38,8 +38,8 @@ export class WaiverComponent implements OnInit {
     this.logger.debug('WaiverComponent OnInit');
     this.auth.checkAuthenticated().then((res: boolean) => {
       if (res) {
-        if (this.auth.getCredentials().accessToken) {
-          if (this.auth.getCredentials().studentId) {
+        if (this.auth.getCredentials()?.accessToken) {
+          if (this.auth.getCredentials()?.studentId) {
             this.fetch();
           } else {
             this.logger.error(
@@ -73,7 +73,7 @@ export class WaiverComponent implements OnInit {
       lastName: [stu.lastName || '', Validators.required],
       guardianName: [
         stu.guardianName || '',
-        this.auth.getCredentials().type === 4 ? null : Validators.required,
+        this.auth.getCredentials()?.type === 4 ? null : Validators.required,
       ],
     });
   }
@@ -82,11 +82,11 @@ export class WaiverComponent implements OnInit {
    * Have the ApiService request student information.
    */
   fetch(): void {
-    const endpoint = 'students/' + this.auth.getCredentials().studentId;
+    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
     this.student$ = this.api.get(endpoint, null, options).pipe(
@@ -100,11 +100,11 @@ export class WaiverComponent implements OnInit {
 
   /** Mark the student as having accepted the waiver today. */
   acceptWaiver(): void {
-    const endpoint = 'students/' + this.auth.getCredentials().studentId;
+    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
     const studentData = {
@@ -122,7 +122,7 @@ export class WaiverComponent implements OnInit {
         const s = new Student(res, this.translate, this.logger);
         const snackBar = this.snackBar.open(
           this.translate.instant('WAIVER_ACCEPTED'),
-          null,
+          undefined,
           { duration: 2000 }
         );
         snackBar.afterDismissed().subscribe(() => {

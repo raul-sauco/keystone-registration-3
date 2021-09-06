@@ -1,14 +1,15 @@
 <ng-container *ngIf="!isGuest; else guest">
-
   <ng-container *ngIf="document$ | async as documents; else loading">
-
-    <ul *ngIf="documents.length > 0; else noItems"
+    <ul
+      *ngIf="documents.length > 0; else noItems"
       class="files-list mat-typography"
-      >
+    >
       <li class="file-item" *ngFor="let doc of documents">
         <div class="icon-container">
-          <img [src]="url + doc.getIconLink()"
-          alt="{{ doc.getNamei18n() }} icon">
+          <img
+            [src]="url + doc.getIconLink()"
+            alt="{{ doc.getNamei18n() }} icon"
+          />
         </div>
         <div class="file-details">
           <div class="file-name">
@@ -17,9 +18,11 @@
           <div class="file-size">
             {{ doc.getSize() }}
           </div>
-          <a [href]="url + doc.getDownloadLink()"
+          <a
+            [href]="url + doc.getDownloadLink()"
             download="{{ doc.getNamei18n() }}.pdf"
-            class="file-download-link">
+            class="file-download-link"
+          >
             <mat-icon color="primary">get_app</mat-icon>
           </a>
         </div>
@@ -28,16 +31,14 @@
 
     <ng-template #noItems>
       <app-no-items-notification
-      message='NO_DOCUMENTS_FOR_TRIP'
+        message="NO_DOCUMENTS_FOR_TRIP"
       ></app-no-items-notification>
     </ng-template>
-
   </ng-container>
 
   <ng-template #loading>
     <app-loading-spinner-content></app-loading-spinner-content>
   </ng-template>
-
 </ng-container>
 <ng-template #guest>
   <app-login-required-message

@@ -1,8 +1,9 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { LegendPosition } from '@swimlane/ngx-charts';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
-import { HttpHeaders } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -12,7 +13,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class FeedbackComponent implements OnInit {
-  feedback$: Observable<any>;
+  feedback$!: Observable<any>;
+  legendPosition: LegendPosition = LegendPosition.Below;
 
   constructor(
     private logger: NGXLogger,
@@ -24,8 +26,8 @@ export class FeedbackComponent implements OnInit {
     this.logger.debug('FeedbackComponent OnInit');
     if (
       this.auth.authenticated &&
-      this.auth.getCredentials().accessToken &&
-      this.auth.getCredentials().type === 4
+      this.auth.getCredentials()?.accessToken &&
+      this.auth.getCredentials()?.type === 4
     ) {
       this.fetch();
     } else {
@@ -53,7 +55,7 @@ export class FeedbackComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
     this.feedback$ = this.api.get(endpoint, null, options);

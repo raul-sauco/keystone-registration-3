@@ -7,23 +7,23 @@ export class Event {
   notes?: string;
   date: string;
   startTime: string;
-  endTime?: string;
-  activityTypeId?: number;
+  endTime: string | null;
+  activityTypeId: number | null;
   activityTypeNameEn?: string;
   activityTypeNameZh?: string;
   activityGroupId: number;
 
-  constructor(event) {
-    this.id = event.id;
-    this.name = event.name || '';
-    this.notes = event.notes || '';
-    this.date = event.activity_date;
-    this.startTime = event.start_time || '00:00:00';
-    this.endTime = event.endTime || null;
-    this.activityTypeId = event.activity_type_id || null;
-    this.activityTypeNameEn = event.activityTypeNameEn || '';
-    this.activityTypeNameZh = event.activityTypeNameZh || '';
-    this.activityGroupId = event.activity_group_id;
+  constructor(eventJson: { [key: string]: string }) {
+    this.id = +eventJson.id;
+    this.name = eventJson.name || '';
+    this.notes = eventJson.notes || '';
+    this.date = eventJson.activity_date;
+    this.startTime = eventJson.start_time || '00:00:00';
+    this.endTime = eventJson.endTime || null;
+    this.activityTypeId = +eventJson.activity_type_id || null;
+    this.activityTypeNameEn = eventJson.activityTypeNameEn || '';
+    this.activityTypeNameZh = eventJson.activityTypeNameZh || '';
+    this.activityGroupId = +eventJson.activity_group_id;
   }
 
   /**
@@ -31,23 +31,22 @@ export class Event {
    * This method may return null if no data at all is found.
    */
   getName(): string {
-
     // Return the event's name if found
     if (this.name) {
       return this.name;
     }
-
     // Try to get an activity type name
     if (this.activityTypeNameEn) {
       return this.activityTypeNameEn;
     }
+    return '';
   }
 
   /**
    * Notes property getter
    */
   getNotes(): string {
-    return this.notes;
+    return this.notes || '';
   }
 
   /**
@@ -56,15 +55,11 @@ export class Event {
    * directly in views.
    */
   getFormattedTimes(): string {
-
     let time = this.formatTime(this.startTime);
-
     const endTime = this.formatTime(this.endTime);
-
     if (endTime) {
       time += ` - ${endTime}`;
     }
-
     return time;
   }
 
@@ -74,15 +69,12 @@ export class Event {
    *
    * @param time a time in HH:mm:ss format or a null value
    */
-  private formatTime(time?: string): string {
-
-    // If the input is null, undefined, '', return null
+  private formatTime(time: string | null): string {
+    // If the input is null, undefined, '', return ''
     if (!time) {
-      return null;
+      return '';
     }
-
     const sections = time.split(':');
     return `${sections[0]}:${sections[1]}`;
-
   }
 }

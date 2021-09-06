@@ -14,8 +14,8 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
   styleUrls: ['./covid-policy.component.scss'],
 })
 export class CovidPolicyComponent implements OnInit {
-  content$: Observable<any>;
-  lang: string;
+  content$!: Observable<any>;
+  lang: string = 'en';
 
   constructor(
     private logger: NGXLogger,

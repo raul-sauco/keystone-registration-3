@@ -73,11 +73,11 @@ describe('AppComponent', () => {
     const sideNav = appElement.querySelector('mat-sidenav');
     expect(sideNav).toBeTruthy();
     fixture.detectChanges();
-    expect(sideNav.textContent).toContain('HOME');
+    expect(sideNav!.textContent).toContain('HOME');
   });
 
   it('should have access to credentials from AuthService', () => {
-    expect(component.auth.getCredentials().userName).toBe(
+    expect(component.auth.getCredentials()?.userName).toBe(
       'test',
       'wrong username'
     );
@@ -93,7 +93,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const banner = appElement.querySelector('#admin-banner-container');
     expect(banner).toBeTruthy();
-    expect(banner.textContent).toContain('Placeholder Trip name');
+    expect(banner!.textContent).toContain('Placeholder Trip name');
   });
 
   it('teachers should not see the admin banner', () => {

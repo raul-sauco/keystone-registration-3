@@ -21,10 +21,11 @@ import { AuthService } from './services/auth/auth.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  @ViewChild('drawer', { static: true }) drawer: MatSidenav;
+  @ViewChild('drawer', { static: true })
+  drawer!: MatSidenav;
   title = 'Keystone Adventures';
-  tripId$: Observable<string | null>;
-  tripId: string = null;
+  tripId$!: Observable<string | null>;
+  tripId: string | null = null;
 
   public appPages = [
     { title: 'HOME', url: '/home', icon: 'home', render: of(true) },
@@ -142,7 +143,7 @@ export class AppComponent implements OnInit {
 
   /** Logout the current application user */
   logout() {
-    const username = this.auth.getCredentials().userName;
+    const username = this.auth.getCredentials()?.userName;
     this.auth
       .logout()
       .then((res) => {

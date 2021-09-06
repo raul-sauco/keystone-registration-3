@@ -18,8 +18,8 @@ export class Faq {
     return this.question;
   }
 
-  getAnswer(): string {
-    return this.answer;
+  getAnswer(): string | null {
+    return this.answer || null;
   }
 
   getCreatedAt(): number {

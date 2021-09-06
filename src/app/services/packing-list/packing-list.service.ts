@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-import { Subject } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
+import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-
+import { NGXLogger } from 'ngx-logger';
+import { Subject } from 'rxjs';
+import { RequestParams } from 'src/app/models/requestParams';
 import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
 import { ApiService } from '../api/api.service';
 import { AuthService } from '../auth/auth.service';
@@ -31,20 +31,21 @@ export class PackingListService {
    *
    * @param string|null tripId ID of the trip to fetch items for
    */
-  fetchItems(tripId: string = null): void {
+  fetchItems(tripId: string | null = null): void {
     const endpoint = 'trip-packing-list-items';
     const headers: any = { 'Content-Type': 'application/json' };
-    const params = { expand: 'item' };
+    const params: RequestParams = new RequestParams();
+    params.expand = 'item';
     let fetch = false;
     if (tripId !== null) {
       params['trip-id'] = tripId;
       fetch = true;
     } else if (
       this.auth.authenticated &&
-      this.auth.getCredentials().accessToken
+      this.auth.getCredentials()?.accessToken
     ) {
       headers.authorization =
-        ' Bearer ' + this.auth.getCredentials().accessToken;
+        ' Bearer ' + this.auth.getCredentials()?.accessToken;
       fetch = true;
     }
 
@@ -87,7 +88,7 @@ export class PackingListService {
    */
   protected addItems(items: any): void {
     this.logger.debug(`Adding ${items.length} packing list items to provider`);
-    items.forEach((i) => {
+    items.forEach((i: any) => {
       // Pass the language to the PLI
       i.lang = this.translate.currentLang;
       this.items.push(new TripPackingListItem(i));

@@ -81,11 +81,11 @@ export class TripPackingListItem extends AbstractPackingListItem {
    * Returns the order property value if not empty, otherwise the
    * item.order property value if not empty, otherwise null.
    */
-  getOrder() {
+  getOrder(): number | null {
     if (this.order !== null) {
-      return this.order;
+      return this.order || null;
     }
-    return this.item.order;
+    return this.item.order || null;
   }
 
   /**
@@ -104,18 +104,30 @@ export class TripPackingListItem extends AbstractPackingListItem {
   }
 
   /**
+   * Check wether this PackingListItem's quantity value is greater than 1
+   * @returns boolean
+   */
+  hasQuantityMoreThanOne(): boolean {
+    if (this.getQuantity === null) {
+      return false;
+    }
+    const quantity: number = +this.getQuantity()!;
+    return quantity > 1;
+  }
+
+  /**
    * Returns the item's quantity property value if not empty, if empty it will
    * return the item.quantity value, if that one is empty as well it will return
    * null.
    */
-  getQuantity() {
-    if (this.quantity !== null && this.quantity.trim() !== '') {
-      return this.quantity;
+  getQuantity(): string | null {
+    if (this.quantity !== null && this.quantity?.trim() !== '') {
+      return this.quantity || null;
     } else if (
       this.item.quantity !== null &&
-      this.item.quantity.trim() !== ''
+      this.item.quantity?.trim() !== ''
     ) {
-      return this.item.quantity;
+      return this.item.quantity || null;
     }
     return null;
   }
@@ -123,19 +135,14 @@ export class TripPackingListItem extends AbstractPackingListItem {
   /**
    * Returns the best i18n fit for the required attribute.
    */
-  geti18nAttribute(name: string) {
-    // console.log(`Translating attribute ${name}, lang is ${this.lang}`);
-
-    let localizedName = '';
-
+  geti18nAttribute(name: keyof TripPackingListItem) {
     if (this.lang && this.lang.indexOf('zh') !== -1) {
-      localizedName = name + 'Zh';
+      const localizedName = (name + 'Zh') as keyof TripPackingListItem;
       const val = this.getAttribute(localizedName);
       if (val !== null) {
         return val;
       }
     }
-
     // If not localized version is found return default
     return this.getAttribute(name);
   }
@@ -143,24 +150,24 @@ export class TripPackingListItem extends AbstractPackingListItem {
   /**
    * Return the best possible match for
    */
-  private getAttribute(name: string): string {
+  private getAttribute(name: keyof TripPackingListItem): any {
     if (!this.empty(this[name])) {
       return this[name];
-    } else if (!this.empty(this.item[name])) {
-      return this.item[name];
-    } else {
-      return null;
     }
+    const plAttrName = name as keyof PackingListItem;
+    if (!this.empty(this.item[plAttrName])) {
+      return this.item[plAttrName];
+    }
+    return null;
   }
 
   /**
    * Returns whether the parameter is empty
    */
-  private empty(value: string): boolean {
-    if (value === null || value.trim() === '') {
+  private empty(value: any): boolean {
+    if (value === undefined || value === null || value.trim() === '') {
       return true;
     }
-
     return false;
   }
 }

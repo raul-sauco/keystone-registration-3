@@ -2,11 +2,11 @@
  * Guide model class
  */
 export class Guide {
-  private nameEn?: string;
+  private nameEn: string;
   private nameZh?: string;
-  private bioEn?: string;
+  private bioEn: string;
   private bioZh?: string;
-  private avatar?: string;
+  private avatar: string;
 
   constructor(guide: any) {
     this.nameEn = guide.nickname;

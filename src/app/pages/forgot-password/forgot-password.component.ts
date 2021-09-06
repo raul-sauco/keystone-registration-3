@@ -22,8 +22,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent implements OnInit {
-  passwordRecoveryForm: FormGroup;
-  loading: boolean;
+  passwordRecoveryForm!: FormGroup;
+  loading: boolean = false;
 
   constructor(
     private api: ApiService,

@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./guides.component.scss'],
 })
 export class GuidesComponent implements OnInit {
-  guide$: Observable<Guide[]>;
+  guide$!: Observable<Guide[]>;
   url: string;
   lang: string;
   needsLogin = false;
@@ -49,9 +49,9 @@ export class GuidesComponent implements OnInit {
       } else {
         // If we don't have a trip id parameter, request for the current user
         this.auth.checkAuthenticated().then((res: boolean) => {
-          if (res && this.auth.getCredentials().accessToken) {
+          if (res && this.auth.getCredentials()?.accessToken) {
             headers.authorization = `Bearer ${
-              this.auth.getCredentials().accessToken
+              this.auth.getCredentials()?.accessToken
             }`;
             this.fetch(null, headers);
             // this.guide$ = this.guideService.fetchGuides();
@@ -81,7 +81,7 @@ export class GuidesComponent implements OnInit {
         // Sort the guides and map them to Guide models
         return res
           .sort((a: any, b: any) => a.nickname.localeCompare(b.nickname))
-          .map((guideJSON) => new Guide(guideJSON));
+          .map((guideJSON: any) => new Guide(guideJSON));
       })
     );
   }

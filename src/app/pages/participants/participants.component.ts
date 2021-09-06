@@ -24,7 +24,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class ParticipantsComponent implements OnInit {
-  participant$: Observable<Student[]>;
+  participant$!: Observable<Student[]>;
   displayedColumns: string[] = [
     'index',
     'type',
@@ -69,7 +69,7 @@ export class ParticipantsComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
     this.participant$ = this.api.get(endpoint, null, options).pipe(
@@ -80,7 +80,7 @@ export class ParticipantsComponent implements OnInit {
             // Sort by type first and then last name.
             // Strings can be null strings do not use localCompare
             (a: Student, b: Student) => {
-              const t = b.type - a.type;
+              const t = (b.type || 0) - (a.type || 0);
               if (t) {
                 return t;
               }
@@ -97,7 +97,7 @@ export class ParticipantsComponent implements OnInit {
         // Add an index value to all
         let ti = 1;
         let si = 1;
-        const indexedStudentArray = [];
+        const indexedStudentArray: Student[] = [];
         studentsArray.forEach((student: Student) => {
           if (!student.type) {
             student.index = ti++;
@@ -158,15 +158,19 @@ export class ParticipantsComponent implements OnInit {
   /**
    * Handle focus out event on inline content-editable fields.
    */
-  handleFocusOut(event, attr: string, student: Student) {
-    const updatedValue = event.currentTarget.textContent.trim();
-    const attrSnakeCase = attr.replace(
-      /[A-Z]/g,
-      (letter) => `_${letter.toLowerCase()}`
-    );
-    if (updatedValue !== student[attr]) {
-      student[attr] = updatedValue;
-      this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
+  handleFocusOut(event: any, attr: string, student: Student) {
+    if (attr in student) {
+      const studentKey = attr as keyof Student;
+      const updatedValue: string = event.currentTarget.textContent.trim();
+      const attrSnakeCase = attr.replace(
+        /[A-Z]/g,
+        (letter) => `_${letter.toLowerCase()}`
+      );
+      if (updatedValue !== student[studentKey]) {
+        // TODO check if this line could be removed using Angular binding
+        student.setAttribute(studentKey, updatedValue);
+        this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
+      }
     }
   }
 
@@ -176,14 +180,17 @@ export class ParticipantsComponent implements OnInit {
    * @param attr string, the attribute the select.
    * @param student Student.
    */
-  handleSelectFocusOut(event, attr: string, student: Student) {
-    const updatedValue = student[attr];
-    const attrSnakeCase = attr.replace(
-      /[A-Z]/g,
-      (letter) => `_${letter.toLowerCase()}`
-    );
-    // TODO this update happens twice, find a way to only update when the value has changed.
-    this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
+  handleSelectFocusOut(_: any, attr: string, student: Student) {
+    if (attr in student) {
+      const studentKey = attr as keyof Student;
+      const updatedValue = student[studentKey];
+      const attrSnakeCase = attr.replace(
+        /[A-Z]/g,
+        (letter) => `_${letter.toLowerCase()}`
+      );
+      // TODO this update happens twice, find a way to only update when the value has changed.
+      this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
+    }
   }
 
   /**
@@ -191,14 +198,14 @@ export class ParticipantsComponent implements OnInit {
    * @param event DateChange event.
    * @param student Student.
    */
-  handleDobChange(event, student: Student): void {
+  handleDobChange(event: any, student: Student): void {
     // The event contains a moment date object.
     const dob = event.value;
     if (moment.isMoment(dob) && dob.isValid()) {
       this.updateStudentInfo(student, { dob: dob.format('YYYY-MM-DD') });
     } else {
       // The date object is not valid.
-      this.snackBar.open(this.translate.instant('DATE_NOT_VALID'), null, {
+      this.snackBar.open(this.translate.instant('DATE_NOT_VALID'), undefined, {
         duration: 3000,
       });
     }
@@ -214,22 +221,22 @@ export class ParticipantsComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
-    this.api.patch(endpoint, data, options).subscribe(
-      (res: any) => {
+    this.api.patch(endpoint, data, options).subscribe({
+      next: (res: any) => {
         this.snackBar.open(
           this.translate.instant('INFORMATION_UPDATED'),
-          null,
+          undefined,
           { duration: 2000 }
         );
       },
-      (error: any) => {
+      error: (error: any) => {
         this.logger.error(`Error updating student ${student.id}`, error);
-        this.snackBar.open(error.error.message, null, { duration: 2000 });
-      }
-    );
+        this.snackBar.open(error.error.message, undefined, { duration: 2000 });
+      },
+    });
   }
 
   /**
@@ -248,7 +255,7 @@ export class ParticipantsComponent implements OnInit {
         this.fetch();
         this.snackBar.open(
           this.translate.instant('PARTICIPANT_DELETED'),
-          null,
+          undefined,
           { duration: 2000 }
         );
       }
@@ -284,7 +291,7 @@ export class DeleteStudentConfirmationDialogComponent {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
     this.api.delete(endpoint, options).subscribe(

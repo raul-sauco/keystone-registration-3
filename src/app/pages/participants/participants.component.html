@@ -55,7 +55,7 @@
             </mat-form-field>
             <mat-form-field *ngSwitchCase="'dob'">
               <input
-                [(value)]="student.dob"
+                [value]="student.dob"
                 (dateChange)="handleDobChange($event, student)"
                 type="text"
                 matInput

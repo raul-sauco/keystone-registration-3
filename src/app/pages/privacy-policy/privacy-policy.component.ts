@@ -14,8 +14,8 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
   styleUrls: ['./privacy-policy.component.scss'],
 })
 export class PrivacyPolicyComponent implements OnInit {
-  content$: Observable<any>;
-  lang: string;
+  content$!: Observable<any>;
+  lang!: string;
 
   constructor(
     private logger: NGXLogger,

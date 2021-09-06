@@ -59,7 +59,7 @@
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker touchUi #picker></mat-datepicker>
-          <mat-error *ngIf="dob.errors?.matDatepickerParse">
+          <mat-error *ngIf="dob?.errors?.matDatepickerParse">
             {{ "PIF_ERROR_INVALID_DATE" | translate }}
           </mat-error>
         </mat-form-field>
@@ -69,7 +69,7 @@
         <h2>{{ "LEGAL" | translate }}</h2>
         <mat-form-field
           appearance="outline"
-          *ngIf="auth.getCredentials().type !== 4"
+          *ngIf="auth.getCredentials()?.type !== 4"
         >
           <mat-label>{{ student.getAttributeLabel("guardianName") }}</mat-label>
           <input type="text" matInput formControlName="guardianName" />

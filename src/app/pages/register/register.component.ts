@@ -29,7 +29,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     control: FormControl | null,
     form: FormGroupDirective | NgForm | null
   ): boolean {
-    return control.dirty && form.invalid;
+    return (control?.dirty && form?.invalid) || false;
   }
 }
 
@@ -39,9 +39,9 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  loading: boolean;
-  userRegistrationForm: FormGroup;
-  errorMatcher: CrossFieldErrorMatcher;
+  loading: boolean = false;
+  userRegistrationForm!: FormGroup;
+  errorMatcher!: CrossFieldErrorMatcher;
 
   constructor(
     private api: ApiService,
@@ -56,7 +56,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('RegisterComponent OnInit');
-    this.loading = false;
     this.errorMatcher = new CrossFieldErrorMatcher();
     if (!this.trip.code || !this.trip.id) {
       this.router.navigateByUrl('/trip-codes');
@@ -180,12 +179,12 @@ export class ErrorMessageDialogComponent {
   templateUrl: './registration-success-dialog.component.html',
 })
 export class RegistrationSuccessDialogComponent {
-  username: string = null;
+  username: string | null = null;
   constructor(
     public dialogRef: MatDialogRef<RegistrationSuccessDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     auth: AuthService
   ) {
-    this.username = auth.getCredentials().userName;
+    this.username = auth.getCredentials()?.userName || null;
   }
 }

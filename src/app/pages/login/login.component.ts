@@ -21,9 +21,9 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
   loading: boolean;
-  errorMsg: string = null;
+  errorMsg: string | null = null;
 
   constructor(
     private router: Router,
@@ -109,7 +109,7 @@ export class LoginComponent implements OnInit {
   notifyError(msg: string): void {
     this.loading = false;
     this.errorMsg = msg;
-    this.snackbar.open(msg, null, {
+    this.snackbar.open(msg, undefined, {
       duration: 6000,
     });
     this.loginForm.reset();

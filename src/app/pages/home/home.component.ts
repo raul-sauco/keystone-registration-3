@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onResize(event) {
+  onResize(event: any) {
     this.columns = this.calculateColumns(event.target.innerWidth);
   }
 

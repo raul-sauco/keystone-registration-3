@@ -8,8 +8,8 @@ import { GlobalsService } from 'src/app/services/globals/globals.service';
   styleUrls: ['./packing-list-item.component.scss'],
 })
 export class PackingListItemComponent implements OnInit {
-  @Input() pli: TripPackingListItem;
-  url: string;
+  @Input() pli!: TripPackingListItem;
+  url!: string;
 
   constructor(private globals: GlobalsService) {}
 

@@ -16,7 +16,7 @@ import { Supplier } from './../../models/supplier';
   styleUrls: ['./accommodation.component.scss'],
 })
 export class AccommodationComponent implements OnInit {
-  supplier$: Observable<Supplier>;
+  supplier$!: Observable<Supplier[]>;
   needsLogin = false;
 
   constructor(
@@ -43,9 +43,9 @@ export class AccommodationComponent implements OnInit {
         this.fetch(requestParams, headers);
       } else {
         this.auth.checkAuthenticated().then((res: boolean) => {
-          if (res && this.auth.getCredentials().accessToken) {
+          if (res && this.auth.getCredentials()?.accessToken) {
             headers.authorization = `Bearer ${
-              this.auth.getCredentials().accessToken
+              this.auth.getCredentials()?.accessToken
             }`;
             this.fetch(params, headers);
           } else {

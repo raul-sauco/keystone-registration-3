@@ -36,7 +36,7 @@
     mat-icon-button
     (click)="logout()"
     title="{{ 'LOGOUT' | translate | uppercase }} ({{
-      auth.getCredentials().userName
+      auth.getCredentials()?.userName
     }})"
   >
     <mat-icon aria-label="Logout icon">open_in_new</mat-icon>
@@ -82,7 +82,7 @@
 
       <!-- This links should only be available for teachers -->
       <ng-container
-        *ngIf="(auth.auth$ | async) && auth.getCredentials().type === 4"
+        *ngIf="(auth.auth$ | async) && auth.getCredentials()?.type === 4"
       >
         <h3 matSubheader>{{ "TEACHER_AREA" | translate | uppercase }}</h3>
         <a
@@ -120,7 +120,7 @@
 
   <mat-sidenav-content>
     <ng-container
-      *ngIf="(auth.auth$ | async) && auth.getCredentials().type === 8"
+      *ngIf="(auth.auth$ | async) && auth.getCredentials()?.type === 8"
     >
       <app-admin-banner></app-admin-banner>
     </ng-container>

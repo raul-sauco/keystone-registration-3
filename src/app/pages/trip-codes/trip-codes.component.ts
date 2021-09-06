@@ -23,9 +23,9 @@ export interface DialogData {
   styleUrls: ['./trip-codes.component.scss'],
 })
 export class TripCodesComponent implements OnInit {
-  tripCodeForm: FormGroup;
-  tripId: string = null;
-  loading: boolean;
+  tripCodeForm!: FormGroup;
+  tripId: string | null = null;
+  loading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,

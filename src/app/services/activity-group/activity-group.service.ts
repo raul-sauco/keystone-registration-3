@@ -43,7 +43,7 @@ export class ActivityGroupService {
    *
    * @param tripId optional parameter if we don't have a logged in user
    */
-  fetchActivityGroups(tripId: string = null) {
+  fetchActivityGroups(tripId: string | null = null) {
     // Reset the activity group array.
     this.activityGroups = [];
     const endpoint = 'activity-groups';
@@ -55,10 +55,10 @@ export class ActivityGroupService {
       fetch = true;
     } else if (
       this.auth.authenticated &&
-      this.auth.getCredentials().accessToken
+      this.auth.getCredentials()?.accessToken
     ) {
       headers.authorization =
-        ' Bearer ' + this.auth.getCredentials().accessToken;
+        ' Bearer ' + this.auth.getCredentials()?.accessToken;
       fetch = true;
     }
 
@@ -119,7 +119,7 @@ export class ActivityGroupService {
      * https://www.learnrxjs.io/learn-rxjs/operators/combination/forkjoin
      * https://rxjs.dev/api/index/function/forkJoin
      */
-    activityGroups.forEach((ag) => {
+    activityGroups.forEach((ag: any) => {
       this.eventService.fetchEvents(ag.id);
 
       // Check if the activity group is already in the array

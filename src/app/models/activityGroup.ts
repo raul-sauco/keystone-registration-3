@@ -7,7 +7,7 @@ import { Event } from './event';
  */
 export class ActivityGroup {
   id: number;
-  name?: string;
+  name: string;
   tripId: number;
 
   /** The events in this activity group's itinerary */
@@ -20,9 +20,10 @@ export class ActivityGroup {
    */
   constructor(ag: any) {
     this.id = ag.id;
-    this.name = ag.name;
+    this.name = ag.name || '';
     this.tripId = ag.trip_id;
     this.formattedItinerary = {};
+    this.events = [];
   }
 
   /**
@@ -40,8 +41,9 @@ export class ActivityGroup {
    * in order.
    */
   getOrderedItineraryDates(): string[] {
-    return Object.keys(this.formattedItinerary)
-      .sort((a: string, b: string) => a.localeCompare(b));
+    return Object.keys(this.formattedItinerary).sort((a: string, b: string) =>
+      a.localeCompare(b)
+    );
   }
 
   /**
@@ -69,39 +71,32 @@ export class ActivityGroup {
    *    }
    */
   generateFormattedItinerary() {
-
     // Empty the class property, do not add to existing
     this.formattedItinerary = {};
 
     // Iterate over all events
-    this.events.forEach(event => {
-
+    this.events.forEach((event) => {
       // If the object key for the event date does not exist, add it
       if (!this.formattedItinerary.hasOwnProperty(event.date)) {
         this.formattedItinerary[event.date] = [];
       }
 
       this.formattedItinerary[event.date].push(event);
-
     });
 
     // All the events are in the object, sort them
     this.sortEventsPerDate();
-
   }
 
   /**
    * Sort all the events in each date per startTime
    */
   sortEventsPerDate(): void {
-
     // Go over all the dates and sort the events in them.
-    Object.keys(this.formattedItinerary).forEach( d => {
-
-      this.formattedItinerary[d].sort(
-        (a: Event, b: Event) => a.startTime.localeCompare(b.startTime));
+    Object.keys(this.formattedItinerary).forEach((d) => {
+      this.formattedItinerary[d].sort((a: Event, b: Event) =>
+        a.startTime.localeCompare(b.startTime)
+      );
     });
-
   }
-
 }

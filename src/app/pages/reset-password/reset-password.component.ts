@@ -28,7 +28,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     control: FormControl | null,
     form: FormGroupDirective | NgForm | null
   ): boolean {
-    return control.dirty && form.invalid;
+    return (control?.dirty && form?.invalid) || false;
   }
 }
 
@@ -42,10 +42,10 @@ export class ResetPasswordComponent implements OnInit {
   loading = false;
   isTokenValid = false;
   accountNotFound = false;
-  passwordResetForm: FormGroup;
-  errorMatcher: CrossFieldErrorMatcher;
+  passwordResetForm!: FormGroup;
+  errorMatcher!: CrossFieldErrorMatcher;
   userData: any = null;
-  private token: string = null;
+  private token: string | null = null;
 
   constructor(
     public dialog: MatDialog,

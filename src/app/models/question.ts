@@ -4,7 +4,12 @@ export class Question {
   created_at?: number;
   updated_at?: number;
 
-  constructor(question, answer, askedTime, answeredTime) {
+  constructor(
+    question: string,
+    answer: string,
+    askedTime: number,
+    answeredTime: number
+  ) {
     this.question = question;
     this.answer = answer;
     this.created_at = askedTime;

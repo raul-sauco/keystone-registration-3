@@ -14,7 +14,7 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
 })
 export class ItineraryComponent implements OnInit {
   /** used by the template to iterate a collection */
-  activityGroups: ActivityGroup[] = null;
+  activityGroups: ActivityGroup[] | null = null;
   needsLogin = false;
 
   constructor(

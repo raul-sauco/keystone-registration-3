@@ -8,12 +8,12 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class RouteStateService {
   // Make the BehaviorSubject private to hide the next() method
-  private tripIdParamState = new BehaviorSubject<string>(null);
+  private tripIdParamState = new BehaviorSubject<string | null>(null);
   // Store the last value assigned to tripId
-  private tripId: string;
+  private tripId: string | null;
 
   // Expose tripId as an observable
-  tripIdParam$: Observable<string>;
+  tripIdParam$: Observable<string | null>;
 
   constructor(private logger: NGXLogger, private auth: AuthService) {
     this.logger.trace('Instantiated RouteStateService');

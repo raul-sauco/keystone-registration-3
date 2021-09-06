@@ -10,9 +10,9 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./supplier-item.component.scss'],
 })
 export class SupplierItemComponent implements OnInit {
-  @Input() supplier: Supplier;
-  url: string;
-  lang: string;
+  @Input() supplier!: Supplier;
+  url!: string;
+  lang!: string;
 
   constructor(
     private globals: GlobalsService,

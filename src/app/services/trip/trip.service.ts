@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class TripService {
-  id: number;
-  name: string;
-  code: string;
-  type: string;
+  id!: number;
+  name!: string;
+  code!: string;
+  type!: string;
 
   constructor() {}
 

@@ -91,7 +91,7 @@ export class PackingListComponent implements OnInit, OnDestroy {
           (array: TripPackingListItem[]) => {
             array.sort(
               (a: TripPackingListItem, b: TripPackingListItem) =>
-                a.getOrder() - b.getOrder()
+                (a.getOrder() || 0) - (b.getOrder() || 0)
             );
           }
         );

@@ -10,11 +10,11 @@ import { NGXLogger } from 'ngx-logger';
 export class AuthService {
   private CREDENTIALS_STORAGE_KEY =
     'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY';
-  private credentials: Credentials = null;
+  private credentials: Credentials | null = null;
 
   public authenticated = false;
   auth$: Subject<boolean> = new Subject<boolean>();
-  public redirectUrl: string;
+  public redirectUrl?: string;
 
   constructor(private storage: StorageService, private logger: NGXLogger) {
     this.logger.debug('AuthService constructor');
@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   /** Return the current credentials if any, null otherwise */
-  getCredentials(): Credentials {
+  getCredentials(): Credentials | null {
     return this.credentials ? this.credentials : null;
   }
 
@@ -94,7 +94,11 @@ export class AuthService {
 
   /** Remove all the login info associated with this user */
   logout(): Promise<any> {
-    this.logger.debug(`AuthService; logging out ${this.credentials.userName}`);
+    if (this.credentials) {
+      this.logger.debug(
+        `AuthService; logging out ${this.credentials.userName}`
+      );
+    }
     this.credentials = null;
     this.authenticated = false;
     this.auth$.next(this.authenticated);

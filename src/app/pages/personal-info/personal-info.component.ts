@@ -18,9 +18,9 @@ import * as moment from 'moment';
   styleUrls: ['./personal-info.component.scss'],
 })
 export class PersonalInfoComponent implements OnInit {
-  student$: Observable<Student>;
-  student: Student;
-  personalInfoForm: FormGroup;
+  student$!: Observable<Student>;
+  student?: Student;
+  personalInfoForm!: FormGroup;
   needsLogin = false;
 
   constructor(
@@ -36,8 +36,8 @@ export class PersonalInfoComponent implements OnInit {
     this.logger.debug('PersonalInfoComponent OnInit');
     this.auth.checkAuthenticated().then((res: boolean) => {
       if (res) {
-        if (this.auth.getCredentials().accessToken) {
-          if (this.auth.getCredentials().studentId) {
+        if (this.auth.getCredentials()?.accessToken) {
+          if (this.auth.getCredentials()?.studentId) {
             this.fetch();
           } else {
             this.logger.error(
@@ -61,19 +61,19 @@ export class PersonalInfoComponent implements OnInit {
 
   initPersonalInfoForm(): void {
     this.personalInfoForm = this.formBuilder.group({
-      firstName: [this.student.firstName],
-      lastName: [this.student.lastName],
-      citizenship: [this.student.citizenship],
-      travelDocument: [this.student.travelDocument],
-      gender: [this.student.gender],
-      dob: [this.student.dob],
-      guardianName: [this.student.guardianName],
-      emergencyContact: [this.student.emergencyContact],
-      dietaryRequirements: [this.student.dietaryRequirements],
-      dietaryRequirementsOther: [this.student.dietaryRequirementsOther],
-      allergies: [this.student.allergies],
-      allergiesOther: [this.student.allergiesOther],
-      medicalInformation: [this.student.medicalInformation],
+      firstName: [this.student?.firstName],
+      lastName: [this.student?.lastName],
+      citizenship: [this.student?.citizenship],
+      travelDocument: [this.student?.travelDocument],
+      gender: [this.student?.gender],
+      dob: [this.student?.dob],
+      guardianName: [this.student?.guardianName],
+      emergencyContact: [this.student?.emergencyContact],
+      dietaryRequirements: [this.student?.dietaryRequirements],
+      dietaryRequirementsOther: [this.student?.dietaryRequirementsOther],
+      allergies: [this.student?.allergies],
+      allergiesOther: [this.student?.allergiesOther],
+      medicalInformation: [this.student?.medicalInformation],
       // insurance: [this.student.insurance],
       // insuranceName: [this.student.insuranceName],
       // insurancePolicyNumber: [this.student.insurancePolicyNumber],
@@ -84,11 +84,11 @@ export class PersonalInfoComponent implements OnInit {
    * Have the ApiService request student information.
    */
   fetch(): void {
-    const endpoint = 'students/' + this.auth.getCredentials().studentId;
+    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
     this.student$ = this.api.get(endpoint, null, options).pipe(
@@ -104,11 +104,11 @@ export class PersonalInfoComponent implements OnInit {
 
   /** Handle form submission */
   submitPersonalInfoForm(): void {
-    const endpoint = 'students/' + this.auth.getCredentials().studentId;
+    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
     const studentData = this.sanitizeData(this.personalInfoForm.value);
@@ -118,7 +118,7 @@ export class PersonalInfoComponent implements OnInit {
         this.logger.debug('Updated student data on backend', s);
         this.snackBar.open(
           this.translate.instant('PERSONAL_INFO_UPDATED'),
-          null,
+          undefined,
           { duration: 3000 }
         );
         this.student = s;
@@ -154,7 +154,7 @@ export class PersonalInfoComponent implements OnInit {
       // insurance_name: data.insuranceName,
       // insurance_policy_number: data.insurancePolicyNumber,
     };
-    if (data.dob !== this.student.dob) {
+    if (data.dob !== this.student?.dob) {
       let dob = data.dob;
       if (!moment.isMoment(dob)) {
         dob = moment(dob);

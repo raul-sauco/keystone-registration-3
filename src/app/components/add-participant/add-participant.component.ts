@@ -20,10 +20,10 @@ import { HttpHeaders } from '@angular/common/http';
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
+    control: FormControl,
+    form: FormGroupDirective | NgForm
   ): boolean {
-    return control.dirty && form.invalid;
+    return control.dirty && form.invalid!;
   }
 }
 
@@ -33,9 +33,9 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   styleUrls: ['./add-participant.component.scss'],
 })
 export class AddParticipantComponent implements OnInit {
-  participantForm: FormGroup;
-  errorMatcher: CrossFieldErrorMatcher;
-  loading: false;
+  participantForm!: FormGroup;
+  errorMatcher!: CrossFieldErrorMatcher;
+  loading: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -108,22 +108,22 @@ export class AddParticipantComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials().accessToken,
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
     this.logger.debug('Posting participant data', data);
-    this.api.post('students', data, options).subscribe(
-      (res: any) => {
+    this.api.post('students', data, options).subscribe({
+      next: (res: any) => {
         this.dialogRef.close(true);
       },
-      (error: any) => {
+      error: (error: any) => {
         this.logger.error(
           'Error creating new participant',
           error,
           this.auth.getCredentials()
         );
-      }
-    );
+      },
+    });
   }
 
   cancel(): void {

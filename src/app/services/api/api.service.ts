@@ -83,20 +83,22 @@ export class ApiService {
    * @param headers an HttpHeaders object
    */
   hasNextPage(headers: HttpHeaders): boolean {
-    return headers.get('link').includes('rel=next');
+    return headers.get('link')?.includes('rel=next') || false;
   }
 
   /**
    * Get the link for the next page of results if there are any.
-   *
+   * Otherwise it returns an empty string.
    * @param headers a JSON object with the http response headers
    */
   nextPageUrl(headers: HttpHeaders): string {
-    const links = headers.get('link').split(',');
-    let next = links.find((l) => l.includes('rel=next'));
-    next = next.split(';')[0];
-    next = next.replace(/[<>]/gi, '');
-    return next;
+    const links = headers.get('link')?.split(',') || [];
+    let next = links.find((l) => l.includes('rel=next')) || null;
+    if (next) {
+      next = next.split(';')[0];
+      next = next.replace(/[<>]/gi, '');
+    }
+    return next || '';
   }
 
   /**

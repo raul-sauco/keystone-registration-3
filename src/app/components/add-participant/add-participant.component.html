@@ -16,27 +16,27 @@
     <mat-form-field appearance="outline">
       <mat-label>{{ "USERNAME" | translate }}</mat-label>
       <input type="text" matInput formControlName="username" required />
-      <mat-error *ngIf="username.errors?.required">
+      <mat-error *ngIf="username?.errors?.required">
         {{ "THIS_FIELD_IS_REQUIRED" | translate }}
       </mat-error>
-      <mat-error *ngIf="username.errors?.uniqueUsername">
+      <mat-error *ngIf="username?.errors?.uniqueUsername">
         {{ "USERNAME_IS_TAKEN" | translate }}
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>{{ "EMAIL" | translate }}</mat-label>
       <input type="email" matInput formControlName="email" />
-      <mat-error *ngIf="email.errors?.email">
+      <mat-error *ngIf="email?.errors?.email">
         {{ "EMAIL_IS_NOT_VALID" | translate }}
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>{{ "PASSWORD" | translate }}</mat-label>
       <input type="password" matInput formControlName="password" required />
-      <mat-error *ngIf="password.errors?.required">
+      <mat-error *ngIf="password?.errors?.required">
         {{ "THIS_FIELD_IS_REQUIRED" | translate }}
       </mat-error>
-      <mat-error *ngIf="password.errors?.minlength">
+      <mat-error *ngIf="password?.errors?.minlength">
         {{ "MIN_LENGTH_8_CHAR" | translate }}
       </mat-error>
     </mat-form-field>
@@ -52,10 +52,10 @@
       <mat-error *ngIf="participantForm.errors?.passwordMismatch">
         {{ "PASSWORDS_DO_NOT_MATCH" | translate }}
       </mat-error>
-      <mat-error *ngIf="passwordConfirm.errors?.required">
+      <mat-error *ngIf="passwordConfirm?.errors?.required">
         {{ "THIS_FIELD_IS_REQUIRED" | translate }}
       </mat-error>
-      <mat-error *ngIf="passwordConfirm.errors?.minlength">
+      <mat-error *ngIf="passwordConfirm?.errors?.minlength">
         {{ "MIN_LENGTH_8_CHAR" | translate }}
       </mat-error>
     </mat-form-field>

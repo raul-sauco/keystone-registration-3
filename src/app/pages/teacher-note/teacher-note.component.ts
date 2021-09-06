@@ -11,8 +11,8 @@ import { ApiService } from 'src/app/services/api/api.service';
   styleUrls: ['./teacher-note.component.scss'],
 })
 export class TeacherNoteComponent implements OnInit {
-  content$: Observable<any>;
-  lang: string;
+  content$!: Observable<any>;
+  lang!: string;
 
   constructor(
     private logger: NGXLogger,
