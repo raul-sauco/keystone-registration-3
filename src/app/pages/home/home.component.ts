@@ -1,6 +1,5 @@
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 
@@ -88,7 +87,6 @@ export class HomeComponent implements OnInit {
    * Initialize the component.
    */
   ngOnInit() {
-    this.columns = this.calculateColumns(window.innerWidth);
     this.checkTripIdParam();
   }
 
@@ -105,25 +103,5 @@ export class HomeComponent implements OnInit {
         }
       }
     });
-  }
-
-  onResize(event: any) {
-    this.columns = this.calculateColumns(event.target.innerWidth);
-  }
-
-  /**
-   * Calculate the number of columns that the grid should have
-   * based on the container's width.
-   *
-   * @param width The width of the container
-   */
-  calculateColumns(width: number) {
-    if (width < 768) {
-      return 1;
-    }
-    if (width < 1200) {
-      return 2;
-    }
-    return 3;
   }
 }

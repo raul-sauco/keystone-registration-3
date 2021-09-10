@@ -2,9 +2,7 @@
   <div *ngFor="let card of cards; index as i" class="home-presentation-card">
     <mat-card>
       <img mat-card-image [src]="url + card.image" [alt]="card.image" />
-
       <mat-card-title>{{ card.title | translate }}</mat-card-title>
-
       <mat-card-content
         class="card-content"
         [innerHTML]="card.content | translate | markdown"
