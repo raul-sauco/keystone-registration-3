@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { NGXLogger } from 'ngx-logger';
+import { Subject } from 'rxjs';
 import { Credentials } from '../../models/credentials';
 import { StorageService } from '../storage/storage.service';
-import { Subject } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import { NGXLogger } from 'ngx-logger';
 export class AuthService {
   private CREDENTIALS_STORAGE_KEY =
     'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY';
-  private credentials: Credentials | null = null;
+  private credentials?: Credentials;
 
   public authenticated = false;
   auth$: Subject<boolean> = new Subject<boolean>();
@@ -30,8 +30,8 @@ export class AuthService {
   }
 
   /** Return the current credentials if any, null otherwise */
-  getCredentials(): Credentials | null {
-    return this.credentials ? this.credentials : null;
+  getCredentials(): Credentials | undefined {
+    return this.credentials;
   }
 
   /** Save the current credentials to persistent storage */
@@ -49,7 +49,7 @@ export class AuthService {
       if (this.authenticated) {
         resolve(true);
       }
-      if (this.credentials !== null && this.credentials.accessToken !== null) {
+      if (this.credentials?.accessToken) {
         this.logger.debug(
           'AuthService.checkAuthenticated(); had credentials: ',
           this.credentials
@@ -99,7 +99,7 @@ export class AuthService {
         `AuthService; logging out ${this.credentials.userName}`
       );
     }
-    this.credentials = null;
+    this.credentials = undefined;
     this.authenticated = false;
     this.auth$.next(this.authenticated);
     return this.storage.remove(this.CREDENTIALS_STORAGE_KEY);

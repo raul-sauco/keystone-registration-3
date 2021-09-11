@@ -90,7 +90,7 @@ export class StorageService {
    * @param key the key the value is indexed by
    * @returns Returns a promise that resolves when the value is removed
    */
-  remove(key: string): Promise<any> {
+  remove(key: string): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.storageAvailable('localStorage')) {
         this.logger.debug(`StorageService; removing ${key}`);
@@ -113,7 +113,7 @@ export class StorageService {
    *
    * @param string type localStorage, cacheStorage, sessionStorage type browser storage.
    */
-  storageAvailable(type: string) {
+  storageAvailable(type: string): boolean {
     let storage: any;
     try {
       storage = (window as { [key: string]: any })[type];

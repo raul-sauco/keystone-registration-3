@@ -1,4 +1,3 @@
-import { RouteStateService } from './../../services/route-state/route-state.service';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
@@ -9,8 +8,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { MarkdownModule } from 'ngx-markdown';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Spied } from 'src/app/interfaces/spied';
+import { RouteStateService } from './../../services/route-state/route-state.service';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {

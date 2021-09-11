@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
   url: string;
   columns = 1;
 
+  // cSpell:disable
   cards = [
     {
       title: 'HOME_CARD_TITLE_ABOUT',
@@ -74,6 +75,7 @@ export class HomeComponent implements OnInit {
       image: 'Y8NUMCWKUDIMMPJJCCOM.jpg',
     },
   ];
+  // cSpell: enable
 
   constructor(
     globals: GlobalsService,

@@ -3,14 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-personal-info',
@@ -35,9 +34,10 @@ export class PersonalInfoComponent implements OnInit {
   ngOnInit(): void {
     this.logger.debug('PersonalInfoComponent OnInit');
     this.auth.checkAuthenticated().then((res: boolean) => {
-      if (res) {
-        if (this.auth.getCredentials()?.accessToken) {
-          if (this.auth.getCredentials()?.studentId) {
+      const credentials = this.auth.getCredentials();
+      if (res && credentials) {
+        if (credentials.accessToken) {
+          if (credentials.studentId) {
             this.fetch();
           } else {
             this.logger.error(

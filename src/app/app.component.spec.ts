@@ -29,7 +29,7 @@ describe('AppComponent', () => {
             userName: 'test',
             accessToken: 'test-token',
             type: 8, // School admin type
-            studentId: null,
+            studentId: undefined,
           }),
           checkAuthenticated: Promise.resolve(true),
         },
@@ -102,7 +102,7 @@ describe('AppComponent', () => {
         userName: 'test',
         accessToken: 'test-token',
         type: 6, // Teacher type
-        studentId: null,
+        studentId: undefined,
       })
     );
     fixture.detectChanges();
