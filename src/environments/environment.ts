@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost/ka-apivp1/',
-  resUrl: 'http://localhost/ka-static/',
+  apiUrl: 'http://localhost:24081/',
+  resUrl: 'http://localhost:24084/',
 };
 
 /*
