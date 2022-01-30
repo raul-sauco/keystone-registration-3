@@ -40,6 +40,7 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-nav-list>
+      <!-- Log in/out side menu links -->
       <a
         mat-list-item
         *ngIf="auth.auth$ | async; else login"
@@ -60,6 +61,18 @@
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-template>
+      <!-- Payment tab -->
+      <a
+        mat-list-item
+        *ngIf="
+          (auth.auth$ | async) && auth.getCredentials()?.paymentInfo?.required
+        "
+        routerLink="/payments"
+      >
+        <mat-icon matListIcon color="primary">payments</mat-icon>
+        <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>
+        <mat-divider [inset]="true"></mat-divider
+      ></a>
       <ng-container *ngFor="let page of appPages; last as last">
         <a
           mat-list-item

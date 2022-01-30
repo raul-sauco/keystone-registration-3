@@ -116,6 +116,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'payments',
+    loadChildren: () =>
+      import('./pages/payments/payments.module').then((m) => m.PaymentsModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'privacy-policy',
     loadChildren: () =>
       import('./pages/privacy-policy/privacy-policy.module').then(
