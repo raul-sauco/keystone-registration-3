@@ -12,8 +12,12 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 To generate a new component in its own module with routing, for example, a module called hello-world:
 
-1. ng g module pages/hello-world --routing
-2. ng g component pages/payments --module=hello-world
+1. `ng g module pages/hello-world --routing`
+2. `ng g component pages/payments --module=hello-world`
+
+To generate a new sub-component that will only be used in one module, for example a section of a page, use:
+
+`ng g component pages/hello-world/morning --module=hello-world`
 
 ## Build
 

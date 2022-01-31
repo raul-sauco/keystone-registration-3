@@ -1,16 +1,12 @@
-<ng-container *ngIf="content$ | async as content; else loading">
+<ng-container
+  *ngIf="auth.getCredentials()?.paymentInfo?.termsAccepted; else terms"
+>
   <div class="app-page-wrapper">
     <div class="app-content-wrapper">
-      <div
-        id="payments"
-        class="material-typography"
-        [innerHTML]="
-          (lang === 'zh' ? content.text_zh : content.text) | markdown
-        "
-      ></div>
+      <div id="payments" class="material-typography">Hello World</div>
     </div>
   </div>
 </ng-container>
-<ng-template #loading>
-  <app-loading-spinner-content></app-loading-spinner-content>
+<ng-template #terms>
+  <app-payment-terms></app-payment-terms>
 </ng-template>

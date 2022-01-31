@@ -4,13 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { LoginRequiredMessageModule } from 'src/app/components/login-required-message/login-required-message.module';
+import { PaymentTermsComponent } from './payment-terms/payment-terms.component';
 import { PaymentsRoutingModule } from './payments-routing.module';
 import { PaymentsComponent } from './payments.component';
 
 const routes: Routes = [{ path: '', component: PaymentsComponent }];
 
 @NgModule({
-  declarations: [PaymentsComponent],
+  declarations: [PaymentsComponent, PaymentTermsComponent],
   imports: [
     CommonModule,
     LoadingSpinnerContentModule,
