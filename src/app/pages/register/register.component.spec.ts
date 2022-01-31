@@ -1,3 +1,4 @@
+import { lastValueFrom, of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
@@ -9,6 +10,7 @@ import { RegisterComponent } from './register.component';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TripCodesComponent } from '../trip-codes/trip-codes.component';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -23,7 +25,9 @@ describe('RegisterComponent', () => {
         declarations: [RegisterComponent],
         imports: [
           HttpClientTestingModule,
-          RouterTestingModule,
+          RouterTestingModule.withRoutes([
+            { path: 'trip-codes', component: TripCodesComponent },
+          ]),
           LoggerTestingModule,
           FormsModule,
           ReactiveFormsModule,

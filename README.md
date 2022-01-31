@@ -31,6 +31,26 @@ Regular expressions can be used to only run some tests from the command line, fo
 
 `ng test --no-watch` to only run the tests once and return to the command line prompt.
 
+### Providing test dependencies
+
+#### Missing routes
+
+If the test already imports `RouterTestingModule` but it still fails because of a missing route:
+
+The router method can be mocked as seen [here][2], probably the best option.
+
+```typescript
+spyOn(component.router, "navigate").and.returnValue(lastValueFrom(of(true)));
+```
+
+Or a route can be configured directly on the import, as seen [here][3].
+
+```TypeScript
+RouterTestingModule.withRoutes([
+  { path: 'trip-codes', component: TripCodesComponent },
+]),
+```
+
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
@@ -40,3 +60,5 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 [1]: https://stackoverflow.com/a/63088940/2557030
+[2]: https://stackoverflow.com/a/47201928/2557030
+[3]: https://stackoverflow.com/a/56565810/2557030

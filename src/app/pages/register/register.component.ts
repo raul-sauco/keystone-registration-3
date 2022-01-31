@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit {
     private auth: AuthService,
     private formBuilder: FormBuilder,
     private logger: NGXLogger,
-    private router: Router,
+    public router: Router,
     private usernameValidator: UniqueUsernameValidator,
     public dialog: MatDialog,
     public trip: TripService
