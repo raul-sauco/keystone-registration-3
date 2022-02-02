@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormGroup,
   FormBuilder,
   FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NGXLogger } from 'ngx-logger';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
+import { NGXLogger } from 'ngx-logger';
 import { Credentials } from 'src/app/models/credentials';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
+import { PaymentService } from './../../services/payment/payment.service';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +33,8 @@ export class LoginComponent implements OnInit {
     private logger: NGXLogger,
     private snackbar: MatSnackBar,
     private translate: TranslateService,
-    private routeStateService: RouteStateService
+    private routeStateService: RouteStateService,
+    private paymentService: PaymentService
   ) {
     this.loading = false;
     this.logger.debug('LoginComponent constructor');
@@ -74,6 +75,7 @@ export class LoginComponent implements OnInit {
           const cred = new Credentials(res.credentials);
           // TODO remember where the user was and navigate back
           this.auth.setCredentials(cred).then(() => {
+            this.paymentService.fetchFromServer();
             this.router.navigateByUrl('/home').then(() => {
               // Clean up the page here if needed
             });

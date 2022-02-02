@@ -1,4 +1,9 @@
-#payment-terms {
+#payment-terms-wrapper {
   margin: 16px;
-  padding-bottom: 50vh;
+  #accept-terms-form-container {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    font-size: larger;
+  }
 }

@@ -1,5 +1,5 @@
 <ng-container
-  *ngIf="auth.getCredentials()?.paymentInfo?.termsAccepted; else terms"
+  *ngIf="paymentService.getPaymentInfo()?.termsAccepted; else terms"
 >
   <div class="app-page-wrapper">
     <div class="app-content-wrapper">

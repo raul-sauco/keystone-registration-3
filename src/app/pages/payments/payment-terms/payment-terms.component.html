@@ -1,13 +1,32 @@
 <ng-container *ngIf="content$ | async as content; else loading">
   <div class="app-page-wrapper">
     <div class="app-content-wrapper">
-      <div
-        id="payment-terms"
-        class="material-typography"
-        [innerHTML]="
-          (lang === 'zh' ? content.text_zh : content.text) | markdown
-        "
-      ></div>
+      <div id="payment-terms-wrapper">
+        <div
+          id="payment-terms"
+          class="material-typography"
+          [innerHTML]="
+            (lang === 'zh' ? content.text_zh : content.text) | markdown
+          "
+        ></div>
+        <section
+          id="accept-terms-form-container"
+          *ngIf="!paymentService.getPaymentInfo()?.termsAccepted"
+        >
+          <ng-container *ngIf="!sending; else sendingPost">
+            <mat-checkbox (click)="acceptTerms()" value="" color="primary">{{
+              "I_ACCEPT_PAYMENT_TERMS" | translate
+            }}</mat-checkbox>
+          </ng-container>
+          <ng-template #sendingPost>
+            <mat-progress-spinner
+              mode="indeterminate"
+              diameter="30"
+              strokeWidth="3"
+            ></mat-progress-spinner>
+          </ng-template>
+        </section>
+      </div>
     </div>
   </div>
 </ng-container>
