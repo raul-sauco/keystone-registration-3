@@ -1,1 +1,18 @@
-<div id="payment-qr-codes-wrapper">content here</div>
+<div id="payment-qr-codes-wrapper">
+  <ng-container *ngIf="images$ | async as images; else loadingQrCodes">
+    <div class="qr-code-item" *ngFor="let image of images">
+      <img
+        [src]="staticUrl + 'img/trip/' + image.name"
+        [alt]="image.name"
+      /></div
+  ></ng-container>
+  <ng-template #loadingQrCodes>
+    <div id="loading-wrapper">
+      <mat-progress-spinner
+        mode="indeterminate"
+        strokeWidth="3"
+        diameter="32"
+      ></mat-progress-spinner>
+    </div>
+  </ng-template>
+</div>
