@@ -1,6 +1,8 @@
-# KeystoneRegistration
+# Keystone Registration
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
+The public frontend for Keystone Adventures.
+
+This web application is directed to participants of Keystone Adventures trips. The application has a double purpose, let participants access the latest trip information online, and let them register for the trips, gathering required data, and letting them complete the required steps remotely.
 
 ## Development server
 
@@ -54,10 +56,6 @@ RouterTestingModule.withRoutes([
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 [1]: https://stackoverflow.com/a/63088940/2557030
 [2]: https://stackoverflow.com/a/47201928/2557030

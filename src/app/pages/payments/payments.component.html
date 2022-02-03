@@ -2,8 +2,10 @@
   *ngIf="paymentService.getPaymentInfo()?.termsAccepted; else terms"
 >
   <div class="app-page-wrapper">
-    <div class="app-content-wrapper">
-      <div id="payments" class="material-typography">Hello World</div>
+    <div class="app-content-wrapper material-typography">
+      <app-payment-instructions></app-payment-instructions>
+      <app-payment-qr-codes></app-payment-qr-codes>
+      <div id="payments">Hello World</div>
     </div>
   </div>
 </ng-container>

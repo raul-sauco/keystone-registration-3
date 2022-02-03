@@ -1,0 +1,17 @@
+<ng-container *ngIf="content$ | async as content; else loading">
+  <div id="payment-instructions-wrapper">
+    <div
+      id="payment-instructions"
+      [innerHtml]="(lang === 'zh' ? content.text_zh : content.text) | markdown"
+    ></div>
+  </div>
+</ng-container>
+<ng-template #loading>
+  <div id="loading-wrapper">
+    <mat-progress-spinner
+      mode="indeterminate"
+      strokeWidth="3"
+      diameter="32"
+    ></mat-progress-spinner>
+  </div>
+</ng-template>
