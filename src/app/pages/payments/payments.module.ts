@@ -15,6 +15,7 @@ import { PaymentTermsComponent } from './payment-terms/payment-terms.component';
 import { PaymentUploadProofComponent } from './payment-upload-proof/payment-upload-proof.component';
 import { PaymentsRoutingModule } from './payments-routing.module';
 import { PaymentsComponent } from './payments.component';
+import { PaymentUploadedComponent } from './payment-uploaded/payment-uploaded.component';
 
 const routes: Routes = [{ path: '', component: PaymentsComponent }];
 
@@ -25,6 +26,7 @@ const routes: Routes = [{ path: '', component: PaymentsComponent }];
     PaymentQrCodesComponent,
     PaymentInstructionsComponent,
     PaymentUploadProofComponent,
+    PaymentUploadedComponent,
   ],
   imports: [
     CommonModule,
