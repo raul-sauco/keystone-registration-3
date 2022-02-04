@@ -1,9 +1,14 @@
-#payment-qr-codes-wrapper {
+#payment-qr-codes-container {
   margin: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+  #payment-qr-codes-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    .qr-code-item {
+      margin: 8px;
+    }
+  }
   #loading-wrapper {
     display: flex;
     justify-content: center;

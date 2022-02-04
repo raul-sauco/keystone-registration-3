@@ -1,4 +1,13 @@
-#payments {
+#payment-take-screenshot {
   margin: 16px;
-  padding-bottom: 50vh;
+  #screenshot-image-wrapper {
+    display: flex;
+    justify-content: center;
+    mat-icon {
+      font-size: 200px;
+    }
+    #example-payment-proof {
+      margin: 8px;
+    }
+  }
 }
