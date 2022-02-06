@@ -12,9 +12,11 @@ import { PaymentService } from 'src/app/services/payment/payment.service';
   styleUrls: ['./payment-upload-proof.component.scss'],
 })
 export class PaymentUploadProofComponent implements OnInit {
-  fileName = '';
+  file: File | null = null;
+  imgSrc: string | ArrayBuffer | null = null;
   uploadProgress: number | null = null;
   uploadSub: Subscription | null = null;
+  success = false;
 
   constructor(
     private auth: AuthService,
@@ -28,32 +30,56 @@ export class PaymentUploadProofComponent implements OnInit {
     this.logger.debug('PaymentUploadProofComponent on init');
   }
 
-  // https://blog.angular-university.io/angular-file-upload/
+  /**
+   * Handle the user selecting a file.
+   * It stores the file to allow uploading to the server and it displays a
+   * preview on the component.
+   * @param event
+   */
   onFileSelected(event: any) {
     this.logger.debug('File Selected');
-    const file: File = event.target.files[0];
-    if (file) {
-      this.fileName = file.name;
+    this.file = event.target.files[0];
+    if (this.file) {
+      const reader = new FileReader();
+      reader.onload = (_) => (this.imgSrc = reader.result);
+      reader.readAsDataURL(this.file);
+    } else {
+      // TODO warn the user that the file is empty.
+    }
+  }
+
+  /**
+   * Handle uploading the stored file to the server.
+   */
+  uploadFile(): void {
+    if (this.file) {
       const formData = new FormData();
       const url = this.globals.getApiUrl() + 'trip-direct-payment-proof';
       const headers = new HttpHeaders({
         // 'Content-Type': Automatically assigned by the browser when it detects form data.
         Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       });
-      formData.append('image', file);
+      formData.append('image', this.file);
       const upload$ = this.http
         .post(url, formData, {
           headers,
           reportProgress: true,
           observe: 'events',
         })
-        .pipe(finalize(() => this.reset()));
+        .pipe(
+          finalize(() => {
+            this.success = true;
+            this.reset();
+          })
+        );
 
       this.uploadSub = upload$.subscribe((event) => {
         if (event.type == HttpEventType.UploadProgress && event.total) {
           this.uploadProgress = Math.round(100 * (event.loaded / event.total));
         }
       });
+    } else {
+      this.logger.error('Trying to upload an empty file');
     }
   }
 
@@ -73,5 +99,7 @@ export class PaymentUploadProofComponent implements OnInit {
     this.uploadProgress = null;
     this.uploadSub = null;
     this.paymentService.fetchPaymentProofs();
+    this.file = null;
+    this.imgSrc = null;
   }
 }

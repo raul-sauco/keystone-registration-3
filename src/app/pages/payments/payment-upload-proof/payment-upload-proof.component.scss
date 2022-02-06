@@ -1,7 +1,49 @@
+$activeElementsWidth: 70%;
 #payment-upload-proof {
   margin: 16px;
-
-  #file-input {
-    display: none;
+  #file-upload-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    #file-input {
+      display: none;
+    }
+    #file-preview-container {
+      position: relative;
+      margin: 8px;
+      height: 20vh;
+      width: $activeElementsWidth;
+      background-color: white;
+      border-radius: 16px;
+      border: #ccc 3px dashed;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.3rem;
+      img#image-preview {
+        max-height: 90%;
+        max-width: 90%;
+      }
+      div#uploading-message {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #eee;
+      }
+    }
+    #progress {
+      width: $activeElementsWidth;
+    }
+    .primary-action-button {
+      width: $activeElementsWidth;
+    }
   }
 }
