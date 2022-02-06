@@ -4,6 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { finalize, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
+import { PaymentService } from 'src/app/services/payment/payment.service';
 
 @Component({
   selector: 'app-payment-upload-proof',
@@ -19,7 +20,8 @@ export class PaymentUploadProofComponent implements OnInit {
     private auth: AuthService,
     private http: HttpClient,
     private globals: GlobalsService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private paymentService: PaymentService
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +36,6 @@ export class PaymentUploadProofComponent implements OnInit {
       this.fileName = file.name;
       const formData = new FormData();
       const url = this.globals.getApiUrl() + 'trip-direct-payment-proof';
-      console.log('posting to ' + url);
       const headers = new HttpHeaders({
         // 'Content-Type': Automatically assigned by the browser when it detects form data.
         Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
@@ -56,13 +57,21 @@ export class PaymentUploadProofComponent implements OnInit {
     }
   }
 
+  /**
+   * Cancel the image upload currently in progress.
+   */
   cancelUpload() {
     this.uploadSub?.unsubscribe();
     this.reset();
   }
 
+  /**
+   * Reset the component.
+   * This method works for both successful and failed upload attempts.
+   */
   reset() {
     this.uploadProgress = null;
     this.uploadSub = null;
+    this.paymentService.fetchPaymentProofs();
   }
 }

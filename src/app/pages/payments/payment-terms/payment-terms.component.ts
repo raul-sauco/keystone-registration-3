@@ -5,7 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { PaymentService } from './../../../services/payment/payment.service';
+import { PaymentService } from 'src/app/services/payment/payment.service';
 
 @Component({
   selector: 'app-payment-terms',
@@ -57,7 +57,7 @@ export class PaymentTermsComponent implements OnInit {
         }
       },
       error: (err: any) => {
-        console.error(err);
+        this.logger.error(err);
         this.sending = false;
       },
       complete: () => {

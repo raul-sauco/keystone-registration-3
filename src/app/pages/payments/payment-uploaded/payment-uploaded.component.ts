@@ -1,10 +1,8 @@
-import { GlobalsService } from 'src/app/services/globals/globals.service';
+import { Component, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ApiService } from 'src/app/services/api/api.service';
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
+import { PaymentService } from 'src/app/services/payment/payment.service';
 
 @Component({
   selector: 'app-payment-uploaded',
@@ -12,13 +10,12 @@ import { HttpHeaders } from '@angular/common/http';
   styleUrls: ['./payment-uploaded.component.scss'],
 })
 export class PaymentUploadedComponent implements OnInit {
-  images$!: Observable<any>;
   staticUrl: string;
 
   constructor(
-    private api: ApiService,
     private auth: AuthService,
     private logger: NGXLogger,
+    public paymentService: PaymentService,
     globals: GlobalsService
   ) {
     this.staticUrl =
@@ -30,17 +27,6 @@ export class PaymentUploadedComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('PaymentUploadedComponent on init');
-    this.fetchImages();
-  }
-
-  fetchImages() {
-    const endpoint = 'trip-direct-payment-proof';
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-      }),
-    };
-    this.images$ = this.api.get(endpoint, null, options);
+    this.paymentService.fetchPaymentProofs();
   }
 }
