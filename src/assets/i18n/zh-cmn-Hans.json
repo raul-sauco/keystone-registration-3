@@ -187,6 +187,7 @@
   "PAYMENT_INSTRUCTIONS_2": "2.支付成功截图",
   "PAYMENT_INSTRUCTIONS_3": "3.上传付款证明",
   "PAYMENT_INSTRUCTIONS_4": "4.检查下方上传的文件是否正确",
+  "PAYMENT_INSTRUCTIONS_5": "上传的图片会显示在这里",
   "PARENT_GUARDIAN": "家长/法定监护人姓名",
   "PARTICIPANT_DELETED": "参加者已删除",
   "PARTICIPANT_ID_IS": "参加者ID为 {{id}} 的名字是 {{firstName}} {{lastName}}",

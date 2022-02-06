@@ -7,8 +7,21 @@
     mat-icon {
       font-size: 200px;
     }
+    margin-bottom: 50vh;
     .payment-proof-item {
       margin: 8px;
+    }
+    #no-proof-uploaded {
+      margin: 32px;
+      height: 20vh;
+      width: 70%;
+      background-color: white;
+      border-radius: 16px;
+      border: #ccc 3px dashed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.3rem;
     }
   }
 }

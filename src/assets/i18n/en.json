@@ -187,6 +187,7 @@
   "PAYMENT_INSTRUCTIONS_2": "2. Take a screenshot of the successful payment",
   "PAYMENT_INSTRUCTIONS_3": "3. Upload proof of payment",
   "PAYMENT_INSTRUCTIONS_4": "4. Check below that the file uploaded is correct",
+  "PAYMENT_INSTRUCTIONS_5": "Uploaded images will show here",
   "PARENT_GUARDIAN": "Parent/Legal Guardian Name",
   "PARTICIPANT_DELETED": "Participant deleted",
   "PARTICIPANT_ID_IS": "Participant ID is {{id}} and name is {{firstName}} {{lastName}}",

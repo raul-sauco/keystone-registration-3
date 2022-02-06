@@ -7,13 +7,21 @@
         else loadingQrCodes
       "
     >
-      <div class="qr-code-item" *ngFor="let image of images">
-        <img
-          class="mat-elevation-z8 payment-proof-item"
-          [src]="staticUrl + image.name"
-          [alt]="image.name"
-        /></div
-    ></ng-container>
+      <ng-container *ngIf="images.length > 0; else noImages">
+        <div class="payment-proof-item" *ngFor="let image of images">
+          <img
+            class="mat-elevation-z8 payment-proof-item"
+            [src]="staticUrl + image.name"
+            [alt]="image.name"
+          />
+        </div>
+      </ng-container>
+      <ng-template #noImages>
+        <div id="no-proof-uploaded" class="mat-elevation-z2">
+          {{ "PAYMENT_INSTRUCTIONS_5" | translate }}
+        </div>
+      </ng-template>
+    </ng-container>
     <ng-template #loadingQrCodes>
       <div id="loading-wrapper">
         <mat-progress-spinner
