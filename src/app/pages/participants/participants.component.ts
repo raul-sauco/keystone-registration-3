@@ -7,15 +7,15 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment';
-
 import { AddParticipantComponent } from 'src/app/components/add-participant/add-participant.component';
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { PaymentService } from 'src/app/services/payment/payment.service';
 
 @Component({
   selector: 'app-participants',
@@ -25,35 +25,42 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class ParticipantsComponent implements OnInit {
   participant$!: Observable<Student[]>;
-  displayedColumns: string[] = [
-    'index',
-    'type',
-    'firstName',
-    'lastName',
-    'citizenship',
-    'travelDocument',
-    'gender',
-    'dob',
-    'guardianName',
-    'emergencyContact',
-    'waiverAccepted',
-    'waiverSignedOn',
-    'dietaryRequirements',
-    'dietaryRequirementsOther',
-    'allergies',
-    'allergiesOther',
-    'medicalInformation',
-    'delete',
-  ];
+  displayedColumns: string[];
 
   constructor(
     private api: ApiService,
     private auth: AuthService,
     private logger: NGXLogger,
     private dialog: MatDialog,
+    private paymentService: PaymentService,
     private translate: TranslateService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.displayedColumns = [
+      'index',
+      'type',
+      'firstName',
+      'lastName',
+      ...(this.paymentService.getPaymentInfo()?.required ? ['paid'] : []),
+      ...(this.paymentService.getPaymentInfo()?.required
+        ? ['paymentVerified']
+        : []),
+      'citizenship',
+      'travelDocument',
+      'gender',
+      'dob',
+      'guardianName',
+      'emergencyContact',
+      'waiverAccepted',
+      'waiverSignedOn',
+      'dietaryRequirements',
+      'dietaryRequirementsOther',
+      'allergies',
+      'allergiesOther',
+      'medicalInformation',
+      'delete',
+    ];
+  }
 
   ngOnInit(): void {
     this.logger.debug('Participants component OnInit');

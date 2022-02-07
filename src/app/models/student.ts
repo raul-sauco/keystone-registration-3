@@ -21,6 +21,8 @@ export class Student {
   allergies?: number;
   allergiesOther?: string;
   medicalInformation?: string;
+  paid: boolean | null = null;
+  paymentVerified: boolean | null = null;
   // insurance: boolean;
   // insuranceName: string;
   // insurancePolicyNumber: string;
@@ -71,6 +73,8 @@ export class Student {
         'ALLERGIES',
         'ALLERGIES_OTHER',
         'MEDICAL_INFORMATION',
+        'PAID',
+        'PAYMENT_VERIFIED',
         // 'INSURANCE',
         // 'I',
         // 'INSURANCE_NAME',
@@ -120,6 +124,12 @@ export class Student {
     this.allergies = json.allergies;
     this.allergiesOther = json.allergies_other;
     this.medicalInformation = json.medical_information;
+    this.paid = json.paid ? true : json.paid === 0 ? false : null;
+    this.paymentVerified = json.payment_verified
+      ? true
+      : json.payment_verified === 0
+      ? false
+      : null;
     // this.insurance = json.insurance;
     // this.insuranceName = json.insurance_name;
     // this.insurancePolicyNumber = json.insurance_policy_number;
@@ -146,6 +156,8 @@ export class Student {
       allergies: this.translations.ALLERGIES,
       allergiesOther: this.translations.ALLERGIES_OTHER,
       medicalInformation: this.translations.MEDICAL_INFORMATION,
+      paid: this.translations.PAID,
+      paymentVerified: this.translations.PAYMENT_VERIFIED,
       // insurance: this.translations.INSURANCE,
       // insuranceName: this.translations.INSURANCE_NAME,
       // insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER,

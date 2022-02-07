@@ -20,6 +20,32 @@
             >
               {{ student.getParticipantTableDisplayValue(attr) }}
             </div>
+            <ng-container *ngSwitchCase="'paid'">
+              <ng-container *ngIf="student.paid; else noPaid">
+                <mat-icon color="primary" class="icon-container-cell"
+                  >done</mat-icon
+                >
+              </ng-container>
+              <ng-template #noPaid
+                ><mat-icon color="error" class="icon-container-cell"
+                  >clear</mat-icon
+                ></ng-template
+              >
+            </ng-container>
+            <ng-container *ngSwitchCase="'paymentVerified'">
+              <ng-container
+                *ngIf="student.paymentVerified; else noPaymentVerified"
+              >
+                <mat-icon color="primary" class="icon-container-cell"
+                  >done</mat-icon
+                >
+              </ng-container>
+              <ng-template #noPaymentVerified
+                ><mat-icon color="error" class="icon-container-cell"
+                  >clear</mat-icon
+                ></ng-template
+              >
+            </ng-container>
             <mat-form-field *ngSwitchCase="'gender'">
               <mat-select
                 [(value)]="student.gender"
