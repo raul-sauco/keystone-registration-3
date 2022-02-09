@@ -61,7 +61,24 @@
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-template>
-      <!-- Payment tab -->
+      <a mat-list-item routerLink="/home">
+        <mat-icon matListIcon color="primary">home</mat-icon>
+        <p matLine>{{ "HOME" | translate | uppercase }}</p>
+        <mat-divider [inset]="true"></mat-divider>
+      </a>
+
+      <!-- Registration links -->
+      <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
+      <a mat-list-item *ngIf="auth.auth$" routerLink="/personal-info">
+        <mat-icon matListIcon color="primary">person</mat-icon>
+        <p matLine>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</p>
+        <mat-divider [inset]="true"></mat-divider
+      ></a>
+      <a mat-list-item *ngIf="auth.auth$" routerLink="/waiver">
+        <mat-icon matListIcon color="primary">verified_user</mat-icon>
+        <p matLine>{{ "WAIVER" | translate | uppercase }}</p>
+        <mat-divider [inset]="true"></mat-divider
+      ></a>
       <a
         mat-list-item
         *ngIf="paymentService.getPaymentInfo()?.required"
@@ -71,6 +88,9 @@
         <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>
         <mat-divider [inset]="true"></mat-divider
       ></a>
+
+      <!-- General information links -->
+      <h3 matSubheader>{{ "GENERAL_INFORMATION" | translate | uppercase }}</h3>
       <ng-container *ngFor="let page of appPages; last as last">
         <a
           mat-list-item
@@ -106,7 +126,7 @@
       </ng-container>
 
       <!-- Policy pages -->
-      <h3 matSubheader>{{ "POLICY" | translate | uppercase }}</h3>
+      <h3 matSubheader>{{ "KA_POLICY" | translate | uppercase }}</h3>
       <ng-container *ngFor="let page of policyPages; last as last">
         <a
           mat-list-item

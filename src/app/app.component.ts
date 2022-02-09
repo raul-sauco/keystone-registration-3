@@ -29,13 +29,6 @@ export class AppComponent implements OnInit {
   tripId: string | null = null;
 
   public appPages = [
-    { title: 'HOME', url: '/home', icon: 'home', render: of(true) },
-    {
-      title: 'PERSONAL_INFORMATION',
-      url: '/personal-info',
-      icon: 'person',
-      render: this.auth.auth$,
-    },
     { title: 'ITINERARY', url: '/itinerary', icon: 'list', render: of(true) },
     {
       title: 'ACCOMMODATION',
@@ -56,16 +49,10 @@ export class AppComponent implements OnInit {
   public teacherPages = [
     { title: 'PARTICIPANT_INFORMATION', url: '/participants', icon: 'groups' },
     { title: 'NOTE_TO_TEACHER', url: '/teacher-note', icon: 'note' },
-    { title: 'FEEDBACK', url: '/feedback', icon: 'rate_review' },
+    { title: 'VIEW_FEEDBACK', url: '/feedback', icon: 'rate_review' },
   ];
 
   public policyPages = [
-    {
-      title: 'WAIVER',
-      url: '/waiver',
-      icon: 'verified_user',
-      render: this.auth.auth$,
-    },
     {
       title: 'COVID_POLICY',
       url: '/covid-policy',
