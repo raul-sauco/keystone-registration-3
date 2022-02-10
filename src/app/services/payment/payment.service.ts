@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { Image } from 'src/app/models/image';
 import { PaymentInfo } from 'src/app/models/paymentInfo';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -15,6 +15,9 @@ export class PaymentService {
   private PAYMENT_INFO_STORAGE_KEY =
     'KEYSTONE_ADVENTURES_PAYMENT_INFO_STORAGE_KEY';
   private paymentInfo?: PaymentInfo;
+  paymentInfo$: BehaviorSubject<PaymentInfo> = new BehaviorSubject(
+    new PaymentInfo({})
+  );
   paymentProof$: Subject<Image[]> = new Subject();
 
   constructor(
@@ -28,14 +31,17 @@ export class PaymentService {
   }
 
   /**
-   * Load the current value of
+   * Refresh the stored payment info value.
+   * It will first load from local storage and then, if the user is authenticated,
+   * initiate a request to refresh the data from the server.
    */
   loadFromStorage(): void {
     this.storage.get(this.PAYMENT_INFO_STORAGE_KEY).then((json) => {
       if (json) {
         this.logger.debug('PaymentService found info in storage', json);
-        this.paymentInfo = new PaymentInfo(json);
+        this.setPaymentInfo(new PaymentInfo(json));
       }
+      this.fetchFromServer();
     });
   }
 
@@ -47,6 +53,7 @@ export class PaymentService {
   setPaymentInfo(paymentInfo: PaymentInfo): Promise<any> {
     this.logger.debug('PaymentService; saving info to storage');
     this.paymentInfo = paymentInfo;
+    this.paymentInfo$.next(paymentInfo);
     return this.storage.set(this.PAYMENT_INFO_STORAGE_KEY, paymentInfo);
   }
 
@@ -62,25 +69,30 @@ export class PaymentService {
    * Fetch the payment information for the current user from the server.
    */
   fetchFromServer() {
-    const endpoint = 'payment-info/' + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-      }),
-    };
-    this.api.get(endpoint, null, options).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.logger.debug('PaymentService got info from server', res);
-          this.setPaymentInfo(new PaymentInfo(res));
-        } else {
-          this.logger.warn('Unexpected response from server', res);
-        }
-      },
-      error: (err: any) => {
-        this.logger.warn('Unexpected response from server', err);
-      },
+    this.auth.checkAuthenticated().then((res) => {
+      if (res) {
+        const endpoint =
+          'payment-info/' + this.auth.getCredentials()?.studentId;
+        const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+          }),
+        };
+        this.api.get(endpoint, null, options).subscribe({
+          next: (res: any) => {
+            if (res) {
+              this.logger.debug('PaymentService got info from server', res);
+              this.setPaymentInfo(new PaymentInfo(res));
+            } else {
+              this.logger.warn('Unexpected response from server', res);
+            }
+          },
+          error: (err: any) => {
+            this.logger.warn('Unexpected response from server', err);
+          },
+        });
+      }
     });
   }
 

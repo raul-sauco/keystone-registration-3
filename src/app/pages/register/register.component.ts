@@ -1,27 +1,28 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { TripService } from 'src/app/services/trip/trip.service';
-import { Router } from '@angular/router';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
-  FormGroup,
   FormControl,
-  Validators,
+  FormGroup,
   FormGroupDirective,
   NgForm,
+  Validators,
 } from '@angular/forms';
-import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
-import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
-import { ApiService } from 'src/app/services/api/api.service';
-import { Credentials } from 'src/app/models/credentials';
-import { NGXLogger } from 'ngx-logger';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { ErrorStateMatcher } from '@angular/material/core';
 import {
+  MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialog,
 } from '@angular/material/dialog';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
+import { NGXLogger } from 'ngx-logger';
+import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
+import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
 import { DialogData } from 'src/app/interfaces/dialog-data';
+import { Credentials } from 'src/app/models/credentials';
+import { ApiService } from 'src/app/services/api/api.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { PaymentService } from 'src/app/services/payment/payment.service';
+import { TripService } from 'src/app/services/trip/trip.service';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -46,6 +47,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private api: ApiService,
     private auth: AuthService,
+    private paymentService: PaymentService,
     private formBuilder: FormBuilder,
     private logger: NGXLogger,
     public router: Router,
@@ -135,6 +137,7 @@ export class RegisterComponent implements OnInit {
           const cred = new Credentials(response.credentials);
           this.auth.setCredentials(cred).then(() => {
             this.loading = false;
+            this.paymentService.fetchFromServer();
             this.displayRegistrationSuccess();
           });
         }

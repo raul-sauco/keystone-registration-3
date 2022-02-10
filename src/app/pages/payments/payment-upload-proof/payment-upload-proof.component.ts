@@ -98,6 +98,7 @@ export class PaymentUploadProofComponent implements OnInit {
   reset() {
     this.uploadProgress = null;
     this.uploadSub = null;
+    this.paymentService.fetchFromServer();
     this.paymentService.fetchPaymentProofs();
     this.file = null;
     this.imgSrc = null;

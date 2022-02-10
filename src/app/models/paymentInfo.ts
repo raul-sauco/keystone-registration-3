@@ -8,14 +8,14 @@ export class PaymentInfo {
   paidDate: string | null;
 
   constructor(json: {
-    required: boolean;
-    termsAccepted: boolean;
-    paid: boolean;
+    required?: boolean;
+    termsAccepted?: boolean;
+    paid?: boolean;
     paidDate?: string;
   }) {
-    this.required = json.required;
-    this.termsAccepted = json.termsAccepted;
-    this.paid = json.paid;
+    this.required = json.required ?? false;
+    this.termsAccepted = json.termsAccepted ?? false;
+    this.paid = json.paid ?? false;
     this.paidDate = json.paidDate ? json.paidDate : null;
   }
 }

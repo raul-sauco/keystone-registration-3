@@ -81,7 +81,7 @@
       ></a>
       <a
         mat-list-item
-        *ngIf="paymentService.getPaymentInfo()?.required"
+        *ngIf="(paymentService.paymentInfo$ | async)?.required"
         routerLink="/payments"
       >
         <mat-icon
@@ -89,7 +89,7 @@
           color="primary"
           matBadge="!"
           matBadgeColor="warn"
-          [matBadgeHidden]="paymentService.getPaymentInfo()?.paid"
+          [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
           >payments</mat-icon
         >
         <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>

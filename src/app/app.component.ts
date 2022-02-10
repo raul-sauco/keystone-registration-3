@@ -101,18 +101,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // Subscribe to the routeStateService to get updates on the trip ID parameter
     this.tripId$ = this.routeStateService.tripIdParam$.pipe(delay(0));
-    this.refreshData();
-  }
-
-  /**
-   * Refresh data that may be out of synch with the server.
-   */
-  refreshData() {
-    this.auth.checkAuthenticated().then((res) => {
-      if (res) {
-        this.paymentService.fetchFromServer();
-      }
-    });
   }
 
   initTranslate() {
