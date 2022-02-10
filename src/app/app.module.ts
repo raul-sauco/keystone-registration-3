@@ -1,23 +1,23 @@
-import { AdminBannerModule } from './components/admin-banner/admin-banner.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { MarkdownModule } from 'ngx-markdown';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { MarkdownModule } from 'ngx-markdown';
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { AdminBannerModule } from './components/admin-banner/admin-banner.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -36,6 +36,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     LayoutModule,
     MatToolbarModule,
+    MatBadgeModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,

@@ -84,7 +84,14 @@
         *ngIf="paymentService.getPaymentInfo()?.required"
         routerLink="/payments"
       >
-        <mat-icon matListIcon color="primary">payments</mat-icon>
+        <mat-icon
+          matListIcon
+          color="primary"
+          matBadge="!"
+          matBadgeColor="warn"
+          [matBadgeHidden]="paymentService.getPaymentInfo()?.paid"
+          >payments</mat-icon
+        >
         <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>
         <mat-divider [inset]="true"></mat-divider
       ></a>
