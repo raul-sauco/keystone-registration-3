@@ -75,7 +75,14 @@
         <mat-divider [inset]="true"></mat-divider
       ></a>
       <a mat-list-item *ngIf="auth.auth$" routerLink="/waiver">
-        <mat-icon matListIcon color="primary">verified_user</mat-icon>
+        <mat-icon
+          matListIcon
+          color="primary"
+          matBadge="!"
+          matBadgeColor="warn"
+          [matBadgeHidden]="(studentService.student$ | async)?.waiverAccepted"
+          >verified_user</mat-icon
+        >
         <p matLine>{{ "WAIVER" | translate | uppercase }}</p>
         <mat-divider [inset]="true"></mat-divider
       ></a>

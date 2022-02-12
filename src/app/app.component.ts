@@ -1,3 +1,4 @@
+import { StudentService } from './services/student/student.service';
 import { PaymentService } from './services/payment/payment.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -87,7 +88,8 @@ export class AppComponent implements OnInit {
     private routeStateService: RouteStateService,
     private router: Router,
     public auth: AuthService,
-    public paymentService: PaymentService
+    public paymentService: PaymentService,
+    public studentService: StudentService
   ) {
     this.initTranslate();
     router.events
