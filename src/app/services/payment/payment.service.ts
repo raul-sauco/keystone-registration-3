@@ -39,7 +39,9 @@ export class PaymentService {
     this.storage.get(this.PAYMENT_INFO_STORAGE_KEY).then((json) => {
       if (json) {
         this.logger.debug('PaymentService found info in storage', json);
-        this.setPaymentInfo(new PaymentInfo(json));
+        const paymentInfo = new PaymentInfo(json);
+        this.paymentInfo = paymentInfo;
+        this.paymentInfo$.next(paymentInfo);
       }
       this.fetchFromServer();
     });

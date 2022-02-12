@@ -79,22 +79,26 @@
         <p matLine>{{ "WAIVER" | translate | uppercase }}</p>
         <mat-divider [inset]="true"></mat-divider
       ></a>
-      <a
-        mat-list-item
-        *ngIf="(paymentService.paymentInfo$ | async)?.required"
-        routerLink="/payments"
+      <ng-container
+        *ngIf="(auth.auth$ | async) && auth.getCredentials()?.type === 6"
       >
-        <mat-icon
-          matListIcon
-          color="primary"
-          matBadge="!"
-          matBadgeColor="warn"
-          [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
-          >payments</mat-icon
+        <a
+          mat-list-item
+          *ngIf="(paymentService.paymentInfo$ | async)?.required"
+          routerLink="/payments"
         >
-        <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>
-        <mat-divider [inset]="true"></mat-divider
-      ></a>
+          <mat-icon
+            matListIcon
+            color="primary"
+            matBadge="!"
+            matBadgeColor="warn"
+            [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
+            >payments</mat-icon
+          >
+          <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>
+          <mat-divider [inset]="true"></mat-divider
+        ></a>
+      </ng-container>
 
       <!-- General information links -->
       <h3 matSubheader>{{ "GENERAL_INFORMATION" | translate | uppercase }}</h3>
