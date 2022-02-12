@@ -2,7 +2,9 @@
   <app-login-required-message></app-login-required-message>
 </ng-container>
 <ng-template #app>
-  <ng-container *ngIf="student$ | async as student; else loading">
+  <ng-container
+    *ngIf="studentService.student$ | async as student; else loading"
+  >
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
         <div id="waiver-page-container">

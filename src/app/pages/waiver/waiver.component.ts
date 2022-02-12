@@ -1,3 +1,4 @@
+import { StudentService } from './../../services/student/student.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -31,6 +32,7 @@ export class WaiverComponent implements OnInit {
     private logger: NGXLogger,
     private router: Router,
     private snackBar: MatSnackBar,
+    public studentService: StudentService,
     public translate: TranslateService
   ) {}
 
@@ -40,7 +42,19 @@ export class WaiverComponent implements OnInit {
       if (res) {
         if (this.auth.getCredentials()?.accessToken) {
           if (this.auth.getCredentials()?.studentId) {
-            this.fetch();
+            this.studentService.student$.subscribe({
+              next: (student) => {
+                this.logger.debug('WaiverComponent next student$', student);
+                this.initWaiverForm(student);
+              },
+              error: (error) => {
+                this.logger.error(
+                  'WaiverComponent studentService.student$ error',
+                  error
+                );
+              },
+            });
+            this.studentService.refreshStudent();
           } else {
             this.logger.error(
               'Authentication error, expected valid student ID.'
@@ -78,35 +92,8 @@ export class WaiverComponent implements OnInit {
     });
   }
 
-  /**
-   * Have the ApiService request student information.
-   */
-  fetch(): void {
-    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-      }),
-    };
-    this.student$ = this.api.get(endpoint, null, options).pipe(
-      map((studentJson: any) => {
-        const s = new Student(studentJson, this.translate, this.logger);
-        this.initWaiverForm(s);
-        return s;
-      })
-    );
-  }
-
   /** Mark the student as having accepted the waiver today. */
   acceptWaiver(): void {
-    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-      }),
-    };
     const studentData = {
       first_name: this.waiverForm.value.firstName,
       last_name: this.waiverForm.value.lastName,
@@ -115,11 +102,9 @@ export class WaiverComponent implements OnInit {
       waiver_signed_on: moment().format('YYYY-MM-DD'),
     };
     this.posting = true;
-    this.api.patch(endpoint, studentData, options).subscribe(
-      (res: any) => {
+    this.studentService.updateStudent(studentData).subscribe({
+      next: (res: any) => {
         this.posting = false;
-        // Try to construct a Student to get error reporting.
-        const s = new Student(res, this.translate, this.logger);
         const snackBar = this.snackBar.open(
           this.translate.instant('WAIVER_ACCEPTED'),
           undefined,
@@ -129,9 +114,9 @@ export class WaiverComponent implements OnInit {
           this.router.navigateByUrl('/personal-info');
         });
       },
-      (error: any) => {
+      error: (error: any) => {
         this.logger.error(`Error sending waiver`, error);
-      }
-    );
+      },
+    });
   }
 }
