@@ -334,4 +334,28 @@ export class Student {
         break;
     }
   }
+
+  /**
+   * Check if this participant has already provided, at least, the minimum amount of
+   * information required by the trip organizers.
+   * Use this method to centralize updates to company policy on what information is required and
+   * to support different values for different trips.
+   * @returns boolean yes/no
+   */
+  public hasProvidedInformation(): boolean {
+    let provided = true;
+    const attrs = [
+      'firstName',
+      'lastName',
+      'citizenship',
+      'travelDocument',
+      'guardianName',
+    ];
+    attrs.forEach((attr) => {
+      if (this.isAttributeEmpty(attr as keyof Student)) {
+        provided = false;
+      }
+    });
+    return provided;
+  }
 }

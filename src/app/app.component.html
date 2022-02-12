@@ -70,7 +70,16 @@
       <!-- Registration links -->
       <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
       <a mat-list-item *ngIf="auth.auth$" routerLink="/personal-info">
-        <mat-icon matListIcon color="primary">person</mat-icon>
+        <mat-icon
+          matListIcon
+          color="primary"
+          matBadge="!"
+          matBadgeColor="warn"
+          [matBadgeHidden]="
+            (studentService.student$ | async)?.hasProvidedInformation()
+          "
+          >person</mat-icon
+        >
         <p matLine>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</p>
         <mat-divider [inset]="true"></mat-divider
       ></a>
