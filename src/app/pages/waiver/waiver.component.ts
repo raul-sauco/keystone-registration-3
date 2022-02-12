@@ -1,18 +1,14 @@
-import { StudentService } from './../../services/student/student.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import * as moment from 'moment';
-
 import { Student } from 'src/app/models/student';
-import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { StudentService } from 'src/app/services/student/student.service';
 
 @Component({
   selector: 'app-waiver',
@@ -26,7 +22,6 @@ export class WaiverComponent implements OnInit {
   waiverForm!: FormGroup;
 
   constructor(
-    private api: ApiService,
     public auth: AuthService,
     private formBuilder: FormBuilder,
     private logger: NGXLogger,

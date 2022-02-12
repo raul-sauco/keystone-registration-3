@@ -1,15 +1,12 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Student } from 'src/app/models/student';
-import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { StudentService } from 'src/app/services/student/student.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -17,17 +14,15 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./personal-info.component.scss'],
 })
 export class PersonalInfoComponent implements OnInit {
-  student$!: Observable<Student>;
-  student?: Student;
   personalInfoForm!: FormGroup;
   needsLogin = false;
 
   constructor(
-    private api: ApiService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private logger: NGXLogger,
     private translate: TranslateService,
+    public studentService: StudentService,
     public auth: AuthService
   ) {}
 
@@ -38,7 +33,22 @@ export class PersonalInfoComponent implements OnInit {
       if (res && credentials) {
         if (credentials.accessToken) {
           if (credentials.studentId) {
-            this.fetch();
+            this.studentService.refreshStudent();
+            this.studentService.student$.subscribe({
+              next: (student: Student) => {
+                this.logger.debug(
+                  'PersonalInfoComponent StudentService.student$.next',
+                  student
+                );
+                this.initPersonalInfoForm(student);
+              },
+              error: (error: any) => {
+                this.logger.error(
+                  'PersonalInfoComponent StudentService student$ error',
+                  error
+                );
+              },
+            });
           } else {
             this.logger.error(
               'Authentication error, expected valid student ID.'
@@ -59,73 +69,43 @@ export class PersonalInfoComponent implements OnInit {
     return this.personalInfoForm.get('dob');
   }
 
-  initPersonalInfoForm(): void {
+  initPersonalInfoForm(student: Student): void {
     this.personalInfoForm = this.formBuilder.group({
-      firstName: [this.student?.firstName],
-      lastName: [this.student?.lastName],
-      citizenship: [this.student?.citizenship],
-      travelDocument: [this.student?.travelDocument],
-      gender: [this.student?.gender],
-      dob: [this.student?.dob],
-      guardianName: [this.student?.guardianName],
-      emergencyContact: [this.student?.emergencyContact],
-      dietaryRequirements: [this.student?.dietaryRequirements],
-      dietaryRequirementsOther: [this.student?.dietaryRequirementsOther],
-      allergies: [this.student?.allergies],
-      allergiesOther: [this.student?.allergiesOther],
-      medicalInformation: [this.student?.medicalInformation],
+      firstName: [student.firstName],
+      lastName: [student.lastName],
+      citizenship: [student.citizenship],
+      travelDocument: [student.travelDocument],
+      gender: [student.gender],
+      dob: [student.dob],
+      guardianName: [student.guardianName],
+      emergencyContact: [student.emergencyContact],
+      dietaryRequirements: [student.dietaryRequirements],
+      dietaryRequirementsOther: [student.dietaryRequirementsOther],
+      allergies: [student.allergies],
+      allergiesOther: [student.allergiesOther],
+      medicalInformation: [student.medicalInformation],
       // insurance: [this.student.insurance],
       // insuranceName: [this.student.insuranceName],
       // insurancePolicyNumber: [this.student.insurancePolicyNumber],
     });
   }
 
-  /**
-   * Have the ApiService request student information.
-   */
-  fetch(): void {
-    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-      }),
-    };
-    this.student$ = this.api.get(endpoint, null, options).pipe(
-      map((studentJson: any) => {
-        const s = new Student(studentJson, this.translate, this.logger);
-        this.logger.debug('Fetched student from backend', s);
-        this.student = s;
-        this.initPersonalInfoForm();
-        return s;
-      })
-    );
-  }
-
   /** Handle form submission */
   submitPersonalInfoForm(): void {
-    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-      }),
-    };
     const studentData = this.sanitizeData(this.personalInfoForm.value);
-    this.student$ = this.api.patch(endpoint, studentData, options).pipe(
-      map((studentJson: any) => {
-        const s = new Student(studentJson, this.translate, this.logger);
-        this.logger.debug('Updated student data on backend', s);
+    this.studentService.updateStudent(studentData).subscribe({
+      next: (student) => {
+        this.logger.debug(
+          'PersonalInfoComponent updated student data',
+          student
+        );
         this.snackBar.open(
           this.translate.instant('PERSONAL_INFO_UPDATED'),
           undefined,
           { duration: 3000 }
         );
-        this.student = s;
-        this.initPersonalInfoForm();
-        return s;
-      })
-    );
+      },
+    });
   }
 
   /** Compare number select values to determine if we have a value already. */
@@ -154,7 +134,7 @@ export class PersonalInfoComponent implements OnInit {
       // insurance_name: data.insuranceName,
       // insurance_policy_number: data.insurancePolicyNumber,
     };
-    if (data.dob !== this.student?.dob) {
+    if (data.dob) {
       let dob = data.dob;
       if (!moment.isMoment(dob)) {
         dob = moment(dob);
