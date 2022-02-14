@@ -20,7 +20,7 @@
             [src]="imgSrc || '../assets/img/placeholder.png'"
             [alt]="file.name"
           />
-          <div id="uploading-message" *ngIf="uploadProgress">
+          <div id="uploading-message" *ngIf="uploadSub">
             {{ "UPLOADING" | translate }}...
           </div>
         </ng-container>
@@ -31,11 +31,11 @@
     </div>
     <ng-container *ngIf="!success">
       <ng-container *ngIf="file; else selectFile">
-        <ng-container *ngIf="uploadProgress; else uploadPrompt">
+        <ng-container *ngIf="uploadSub; else uploadPrompt">
           <div id="progress">
             <mat-progress-bar
               class="progress-bar"
-              mode="determinate"
+              [mode]="uploadProgress ? 'determinate' : 'indeterminate'"
               [value]="uploadProgress"
             >
             </mat-progress-bar>
