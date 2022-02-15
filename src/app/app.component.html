@@ -68,52 +68,52 @@
       </a>
 
       <!-- Registration links -->
-      <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
-      <a mat-list-item *ngIf="auth.auth$" routerLink="/personal-info">
-        <mat-icon
-          matListIcon
-          color="primary"
-          matBadge="!"
-          matBadgeColor="warn"
-          [matBadgeHidden]="
-            (studentService.student$ | async)?.hasProvidedInformation()
-          "
-          >person</mat-icon
-        >
-        <p matLine>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</p>
-        <mat-divider [inset]="true"></mat-divider
-      ></a>
-      <a mat-list-item *ngIf="auth.auth$" routerLink="/waiver">
-        <mat-icon
-          matListIcon
-          color="primary"
-          matBadge="!"
-          matBadgeColor="warn"
-          [matBadgeHidden]="(studentService.student$ | async)?.waiverAccepted"
-          >verified_user</mat-icon
-        >
-        <p matLine>{{ "WAIVER" | translate | uppercase }}</p>
-        <mat-divider [inset]="true"></mat-divider
-      ></a>
-      <ng-container
-        *ngIf="(auth.auth$ | async) && auth.getCredentials()?.type === 6"
-      >
-        <a
-          mat-list-item
-          *ngIf="(paymentService.paymentInfo$ | async)?.required"
-          routerLink="/payments"
-        >
+      <ng-container *ngIf="auth.auth$ | async">
+        <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
+        <a mat-list-item routerLink="/personal-info">
           <mat-icon
             matListIcon
             color="primary"
             matBadge="!"
             matBadgeColor="warn"
-            [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
-            >payments</mat-icon
+            [matBadgeHidden]="
+              (studentService.student$ | async)?.hasProvidedInformation()
+            "
+            >person</mat-icon
           >
-          <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>
+          <p matLine>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</p>
           <mat-divider [inset]="true"></mat-divider
         ></a>
+        <a mat-list-item routerLink="/waiver">
+          <mat-icon
+            matListIcon
+            color="primary"
+            matBadge="!"
+            matBadgeColor="warn"
+            [matBadgeHidden]="(studentService.student$ | async)?.waiverAccepted"
+            >verified_user</mat-icon
+          >
+          <p matLine>{{ "WAIVER" | translate | uppercase }}</p>
+          <mat-divider [inset]="true"></mat-divider
+        ></a>
+        <ng-container *ngIf="auth.getCredentials()?.type === 6">
+          <a
+            mat-list-item
+            *ngIf="(paymentService.paymentInfo$ | async)?.required"
+            routerLink="/payments"
+          >
+            <mat-icon
+              matListIcon
+              color="primary"
+              matBadge="!"
+              matBadgeColor="warn"
+              [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
+              >payments</mat-icon
+            >
+            <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>
+            <mat-divider [inset]="true"></mat-divider
+          ></a>
+        </ng-container>
       </ng-container>
 
       <!-- General information links -->
