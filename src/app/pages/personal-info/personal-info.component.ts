@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
+import { Subscription } from 'rxjs';
 import { Student } from 'src/app/models/student';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { StudentService } from 'src/app/services/student/student.service';
@@ -13,9 +14,10 @@ import { StudentService } from 'src/app/services/student/student.service';
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss'],
 })
-export class PersonalInfoComponent implements OnInit {
+export class PersonalInfoComponent implements OnInit, OnDestroy {
   personalInfoForm!: FormGroup;
   needsLogin = false;
+  private student$?: Subscription | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,7 +36,7 @@ export class PersonalInfoComponent implements OnInit {
         if (credentials.accessToken) {
           if (credentials.studentId) {
             this.studentService.refreshStudent();
-            this.studentService.student$.subscribe({
+            this.student$ = this.studentService.student$.subscribe({
               next: (student: Student) => {
                 this.logger.debug(
                   'PersonalInfoComponent StudentService.student$.next',
@@ -63,6 +65,11 @@ export class PersonalInfoComponent implements OnInit {
         this.logger.error('Authentication error, expected having auth info.');
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.logger.debug('PersonalInfoComponent on destroy');
+    this.student$?.unsubscribe();
   }
 
   get dob() {

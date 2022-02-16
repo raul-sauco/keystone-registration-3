@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Student } from 'src/app/models/student';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { StudentService } from 'src/app/services/student/student.service';
@@ -15,11 +15,11 @@ import { StudentService } from 'src/app/services/student/student.service';
   templateUrl: './waiver.component.html',
   styleUrls: ['./waiver.component.scss'],
 })
-export class WaiverComponent implements OnInit {
+export class WaiverComponent implements OnInit, OnDestroy {
   needsLogin = false;
   posting = false;
-  student$!: Observable<Student>;
   waiverForm!: FormGroup;
+  private student$?: Subscription | null;
 
   constructor(
     public auth: AuthService,
@@ -37,7 +37,7 @@ export class WaiverComponent implements OnInit {
       if (res) {
         if (this.auth.getCredentials()?.accessToken) {
           if (this.auth.getCredentials()?.studentId) {
-            this.studentService.student$.subscribe({
+            this.student$ = this.studentService.student$.subscribe({
               next: (student) => {
                 this.logger.debug('WaiverComponent next student$', student);
                 this.initWaiverForm(student);
@@ -64,6 +64,11 @@ export class WaiverComponent implements OnInit {
         this.logger.error('Authentication error, expected having auth info.');
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.logger.debug('WaiverComponent on destroy');
+    this.student$?.unsubscribe();
   }
 
   get firstName() {

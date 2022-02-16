@@ -55,6 +55,12 @@ export class StudentService {
     });
   }
 
+  /**
+   * Performs a request to the student/update endpoint and returns the
+   * HttpClient.patch observable.
+   * @param data
+   * @returns An HttpClient observable that will close on response.
+   */
   updateStudent(data: any): Observable<void> {
     const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
     const options = {
