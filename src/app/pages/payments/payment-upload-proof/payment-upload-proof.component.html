@@ -1,5 +1,10 @@
 <div id="payment-upload-proof">
-  <h1>{{ "PAYMENT_INSTRUCTIONS_3" | translate }}</h1>
+  <h1>
+    {{
+      (success ? "PAYMENT_INSTRUCTIONS_3_SUCCESS" : "PAYMENT_INSTRUCTIONS_3")
+        | translate
+    }}
+  </h1>
   <div id="file-upload-wrapper">
     <input
       type="file"
@@ -29,7 +34,7 @@
         </ng-template>
       </ng-template>
     </div>
-    <ng-container *ngIf="!success">
+    <ng-container *ngIf="!success; else done">
       <ng-container *ngIf="file; else selectFile">
         <ng-container *ngIf="uploadSub; else uploadPrompt">
           <div id="progress">
@@ -64,5 +69,15 @@
         </button></ng-template
       >
     </ng-container>
+    <ng-template #done>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="navigateAway()"
+        class="primary-action-button"
+      >
+        <mat-icon>upload</mat-icon> {{ "SUBMIT" | translate }}
+      </button>
+    </ng-template>
   </div>
 </div>

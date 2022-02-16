@@ -1,30 +1,45 @@
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { finalize, Subscription } from 'rxjs';
+import { Student } from 'src/app/models/student';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
+import { StudentService } from 'src/app/services/student/student.service';
 
 @Component({
   selector: 'app-payment-upload-proof',
   templateUrl: './payment-upload-proof.component.html',
   styleUrls: ['./payment-upload-proof.component.scss'],
 })
-export class PaymentUploadProofComponent implements OnInit {
+export class PaymentUploadProofComponent implements OnInit, OnDestroy {
   file: File | null = null;
   imgSrc: string | ArrayBuffer | null = null;
   uploadProgress: number | null = null;
   uploadSub: Subscription | null = null;
+  private student$: Subscription | null = null;
   success = false;
 
   constructor(
     private auth: AuthService,
     private http: HttpClient,
     private globals: GlobalsService,
+    private snackBar: MatSnackBar,
     private logger: NGXLogger,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private router: Router,
+    private studentService: StudentService,
+    private translate: TranslateService
   ) {}
+
+  ngOnDestroy(): void {
+    this.student$?.unsubscribe();
+    this.uploadSub?.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.logger.debug('PaymentUploadProofComponent on init');
@@ -32,8 +47,7 @@ export class PaymentUploadProofComponent implements OnInit {
 
   /**
    * Handle the user selecting a file.
-   * It stores the file to allow uploading to the server and it displays a
-   * preview on the component.
+   * It
    * @param event
    */
   onFileSelected(event: any) {
@@ -43,8 +57,9 @@ export class PaymentUploadProofComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (_) => (this.imgSrc = reader.result);
       reader.readAsDataURL(this.file);
+      this.uploadFile();
     } else {
-      // TODO warn the user that the file is empty.
+      this.snackBar.open(this.translate.instant('SELECT_VALID_FILE'));
     }
   }
 
@@ -72,7 +87,6 @@ export class PaymentUploadProofComponent implements OnInit {
             this.reset();
           })
         );
-
       this.uploadSub = upload$.subscribe((event) => {
         if (event.type == HttpEventType.UploadProgress && event.total) {
           this.uploadProgress = Math.round(100 * (event.loaded / event.total));
@@ -102,5 +116,20 @@ export class PaymentUploadProofComponent implements OnInit {
     this.paymentService.fetchPaymentProofs();
     this.file = null;
     this.imgSrc = null;
+  }
+
+  navigateAway() {
+    // ReplayBehaviour should give a value synchronously.
+    this.student$ = this.studentService.student$.subscribe({
+      next: (student: Student) => {
+        if (!student.hasProvidedInformation()) {
+          this.router.navigateByUrl('/personal-info');
+        } else if (!student.waiverAccepted) {
+          this.router.navigateByUrl('/waiver');
+        } else {
+          this.router.navigateByUrl('/home');
+        }
+      },
+    });
   }
 }

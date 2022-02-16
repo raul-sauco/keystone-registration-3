@@ -5,6 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MarkdownModule } from 'ngx-markdown';
@@ -39,6 +40,7 @@ const routes: Routes = [{ path: '', component: PaymentsComponent }];
     MatIconModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatSnackBarModule,
     PaymentsRoutingModule,
     RouterModule.forChild(routes),
     TranslateModule,
