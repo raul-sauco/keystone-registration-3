@@ -1,0 +1,9 @@
+@use "@angular/material" as mat;
+
+@mixin alert-dialog($color: rgba(255, 255, 10, 0.3), $elevation: 8) {
+  @include mat.elevation($elevation);
+  margin: 16px;
+  padding: 16px;
+  text-align: center;
+  background-color: $color;
+}
