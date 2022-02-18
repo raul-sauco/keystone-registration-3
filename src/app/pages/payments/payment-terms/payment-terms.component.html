@@ -1,10 +1,13 @@
 <ng-container *ngIf="content$ | async as content; else loading">
-  <div class="app-page-wrapper">
+  <div class="app-page-wrapper material-typography">
     <div class="app-content-wrapper">
+      <div id="agree-to-terms-prompt">
+        <h2 [innerHtml]="'READ_AND_AGREE_TO_TERMS' | translate"></h2>
+        <div [innerHtml]="'READ_AND_AGREE_TO_TERMS_DETAILS' | translate"></div>
+      </div>
       <div id="payment-terms-wrapper">
         <div
           id="payment-terms"
-          class="material-typography"
           [innerHTML]="
             (lang === 'zh' ? content.text_zh : content.text) | markdown
           "

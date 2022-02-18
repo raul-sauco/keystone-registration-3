@@ -1,9 +1,16 @@
+@import "~src/sass/mixins";
+
 #payment-terms-wrapper {
   margin: 16px;
+  margin-bottom: 25vh;
   #accept-terms-form-container {
     padding: 16px;
     display: flex;
     justify-content: center;
     font-size: larger;
   }
+}
+
+#agree-to-terms-prompt {
+  @include alert-dialog;
 }

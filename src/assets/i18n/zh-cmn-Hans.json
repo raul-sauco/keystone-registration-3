@@ -222,6 +222,8 @@
   "PRIVACY_POLICY": "隐私条款",
   "PROOF_OF_PAYMENT_UPLOADED": "正确上传的付款证明",
   "QUESTION_RECEIVED": "您的问题已注册",
+  "READ_AND_AGREE_TO_TERMS": "阅读并同意条款",
+  "READ_AND_AGREE_TO_TERMS_DETAILS": "在继续付款之前，您需要滚动到此页面底部并<strong>接受条款和条件</strong>。",
   "RECOVER_PASSWORD": "找回密码",
   "REGISTER": "注册",
   "REGISTERED_ON": "登记时间",

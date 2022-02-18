@@ -222,6 +222,8 @@
   "PRIVACY_POLICY": "Privacy Policy",
   "PROOF_OF_PAYMENT_UPLOADED": "Proof of payment uploaded correctly",
   "QUESTION_RECEIVED": "Your question was registered",
+  "READ_AND_AGREE_TO_TERMS": "Read and agree to the terms",
+  "READ_AND_AGREE_TO_TERMS_DETAILS": "Before proceeding with payment, you need to scroll to the bottom of this page and <strong>accept the terms & conditions</strong>.",
   "RECOVER_PASSWORD": "Password recovery",
   "REGISTER": "Register",
   "REGISTERED_ON": "Registered on",
