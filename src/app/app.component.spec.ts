@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -42,11 +44,13 @@ describe('AppComponent', () => {
         ],
         imports: [
           RouterTestingModule,
+          HttpClientTestingModule,
           LoggerTestingModule,
           TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
           }),
           BrowserAnimationsModule, // Material needs animations
+          MatBadgeModule,
           MatIconModule,
           MatToolbarModule,
           MatSidenavModule,
@@ -55,11 +59,14 @@ describe('AppComponent', () => {
         ],
         declarations: [AppComponent],
       });
-      fixture = TestBed.createComponent(AppComponent);
-      component = fixture.componentInstance;
-      appElement = fixture.nativeElement;
     })
   );
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    appElement = fixture.nativeElement;
+  });
 
   it('should create the app', () => {
     expect(component).toBeDefined();

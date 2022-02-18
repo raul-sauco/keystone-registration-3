@@ -1,27 +1,44 @@
-import { AuthServiceStub } from './../../../testing/src/stubs/auth-service-stub';
-import { AuthService } from './../../services/auth/auth.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-
+import { of } from 'rxjs';
+import { Spied } from 'src/app/interfaces/spied';
+import { Credentials } from 'src/app/models/credentials';
+import { LoadingSpinnerContentModule } from './../../components/loading-spinner-content/loading-spinner-content.module';
+import { AuthService } from './../../services/auth/auth.service';
 import { ParticipantsComponent } from './participants.component';
 
 describe('ParticipantsComponent', () => {
   let component: ParticipantsComponent;
   let fixture: ComponentFixture<ParticipantsComponent>;
+  let authServiceSpy: Spied<AuthService>;
 
   beforeEach(
     waitForAsync(() => {
+      authServiceSpy = jasmine.createSpyObj(
+        'AuthService',
+        {
+          getCredentials: new Credentials({
+            userName: 'test',
+            accessToken: 'test-token',
+            type: 8, // School admin type
+            studentId: undefined,
+          }),
+          checkAuthenticated: Promise.resolve(true),
+        },
+        { auth$: of(true) }
+      );
       TestBed.configureTestingModule({
-        providers: [{ provide: AuthService, useClass: AuthServiceStub }],
+        providers: [{ provide: AuthService, useValue: authServiceSpy }],
         declarations: [ParticipantsComponent],
         imports: [
           HttpClientTestingModule,
           RouterTestingModule,
+          LoadingSpinnerContentModule,
           LoggerTestingModule,
           TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),

@@ -1,5 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslateService } from '@ngx-translate/core';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
 import { PaymentInstructionsComponent } from './payment-instructions.component';
 
 describe('PaymentInstructionsComponent', () => {
@@ -8,9 +12,16 @@ describe('PaymentInstructionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PaymentInstructionsComponent ]
-    })
-    .compileComponents();
+      providers: [
+        { provide: TranslateService, useClass: TranslateServiceStub },
+      ],
+      imports: [
+        HttpClientTestingModule,
+        MatProgressSpinnerModule,
+        LoggerTestingModule,
+      ],
+      declarations: [PaymentInstructionsComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

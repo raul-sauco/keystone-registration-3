@@ -10,8 +10,12 @@ import {
   TranslateService,
 } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { of } from 'rxjs';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
+import { Spied } from 'src/app/interfaces/spied';
+import { Credentials } from 'src/app/models/credentials';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentTermsComponent } from './payment-terms/payment-terms.component';
 import { PaymentsComponent } from './payments.component';
 
@@ -20,11 +24,28 @@ describe('PaymentsComponent', () => {
   let fixture: ComponentFixture<PaymentsComponent>;
   let translate: TranslateService;
   let http: HttpTestingController;
+  let authServiceSpy: Spied<AuthService>;
 
   beforeEach(
     waitForAsync(() => {
+      authServiceSpy = jasmine.createSpyObj(
+        'AuthService',
+        {
+          getCredentials: new Credentials({
+            userName: 'test',
+            accessToken: 'test-token',
+            type: 8, // School admin type
+            studentId: undefined,
+          }),
+          checkAuthenticated: Promise.resolve(true),
+        },
+        { auth$: of(true) }
+      );
       TestBed.configureTestingModule({
-        providers: [TranslateService],
+        providers: [
+          TranslateService,
+          { provide: AuthService, useValue: authServiceSpy },
+        ],
         declarations: [PaymentsComponent, PaymentTermsComponent],
         imports: [
           LoadingSpinnerContentModule,

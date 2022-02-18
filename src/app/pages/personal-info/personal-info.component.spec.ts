@@ -70,43 +70,43 @@ describe('PersonalInfoComponent', () => {
           { provide: NGXLogger, useValue: loggerSpy },
         ],
       }).compileComponents();
-      fixture = TestBed.createComponent(PersonalInfoComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
     })
   );
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(PersonalInfoComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display a loading spinner while fetching the information', () => {
+  it('should display a loading spinner while fetching the information', (done) => {
     fixture.detectChanges();
     const spinner = element.querySelector('app-loading-spinner-content');
     expect(spinner).toBeTruthy();
+    done();
   });
 
-  it('ngOnInit should call fetch', fakeAsync(() => {
-    spyOn(component, 'fetch').and.returnValue();
+  it('ngOnInit should call student service refresh', fakeAsync(() => {
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledOnceWith();
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
     tick();
     expect(authServiceSpy.getCredentials).toHaveBeenCalled();
-    expect(component.fetch).toHaveBeenCalled();
     tick();
   }));
 
   it('ngOnInit should not mark login required', fakeAsync(() => {
-    spyOn(component, 'fetch').and.returnValue();
     authServiceSpy.checkAuthenticated.and.returnValue(Promise.resolve(false));
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledOnceWith();
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
     tick();
     expect(component.needsLogin).toEqual(true);
   }));
 
   it('ngOnInit should not mark login required when no auth token', fakeAsync(() => {
-    spyOn(component, 'fetch').and.returnValue();
     authServiceSpy.getCredentials.and.returnValue(
       new Credentials({
         userName: 'test',
@@ -116,7 +116,7 @@ describe('PersonalInfoComponent', () => {
       })
     );
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledOnceWith();
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
     tick();
     expect(component.needsLogin).toEqual(true);
     expect(loggerSpy.error).toHaveBeenCalledOnceWith(
@@ -125,7 +125,6 @@ describe('PersonalInfoComponent', () => {
   }));
 
   it('ngOnInit should not mark login required when no student id', fakeAsync(() => {
-    spyOn(component, 'fetch').and.returnValue();
     authServiceSpy.getCredentials.and.returnValue(
       new Credentials({
         userName: 'test',
@@ -135,7 +134,7 @@ describe('PersonalInfoComponent', () => {
       })
     );
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledOnceWith();
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
     tick();
     // We have auth token, it is an error but not a need-login error
     expect(component.needsLogin).toEqual(false);
@@ -145,10 +144,9 @@ describe('PersonalInfoComponent', () => {
   }));
 
   it('ngOnInit should mark login required when no credentials', fakeAsync(() => {
-    spyOn(component, 'fetch').and.returnValue();
     authServiceSpy.getCredentials.and.returnValue(undefined);
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledOnceWith();
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
     tick();
     // We have auth token, it is an error but not a need-login error
     expect(component.needsLogin).toEqual(true);
