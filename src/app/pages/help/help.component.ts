@@ -27,7 +27,7 @@ export class HelpComponent implements OnInit {
   }
 
   fetchContent(): void {
-    const endpoint = 'documents/106';
+    const endpoint = 'documents/131';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
