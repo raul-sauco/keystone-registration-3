@@ -1,29 +1,48 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+} from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
-
+import { HttpLoaderFactory } from 'src/app/app.module';
+import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { CovidPolicyComponent } from './covid-policy.component';
 
 describe('CovidPolicyComponent', () => {
   let component: CovidPolicyComponent;
   let fixture: ComponentFixture<CovidPolicyComponent>;
+  let translate: TranslateService;
+  let http: HttpTestingController;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        providers: [
-          { provide: TranslateService, useClass: TranslateServiceStub },
-        ],
         declarations: [CovidPolicyComponent],
         imports: [
           HttpClientTestingModule,
-          RouterTestingModule,
+          LoadingSpinnerContentModule,
           LoggerTestingModule,
+          RouterTestingModule,
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useFactory: HttpLoaderFactory,
+              deps: [HttpClient],
+            },
+          }),
         ],
       }).compileComponents();
+      translate = TestBed.inject(TranslateService);
+      translate.setDefaultLang('en');
+      translate.use('en');
+      http = TestBed.inject(HttpTestingController);
     })
   );
 
