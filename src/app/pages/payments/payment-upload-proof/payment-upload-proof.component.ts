@@ -1,15 +1,12 @@
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { finalize, Subscription } from 'rxjs';
-import { Student } from 'src/app/models/student';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
-import { StudentService } from 'src/app/services/student/student.service';
 
 @Component({
   selector: 'app-payment-upload-proof',
@@ -21,7 +18,6 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
   imgSrc: string | ArrayBuffer | null = null;
   uploadProgress: number | null = null;
   uploadSub: Subscription | null = null;
-  private student$: Subscription | null = null;
   success = false;
 
   constructor(
@@ -31,13 +27,10 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private logger: NGXLogger,
     private paymentService: PaymentService,
-    private router: Router,
-    private studentService: StudentService,
     private translate: TranslateService
   ) {}
 
   ngOnDestroy(): void {
-    this.student$?.unsubscribe();
     this.uploadSub?.unsubscribe();
   }
 
@@ -116,20 +109,5 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
     this.paymentService.fetchPaymentProofs();
     this.file = null;
     this.imgSrc = null;
-  }
-
-  navigateAway() {
-    // ReplayBehaviour should give a value synchronously.
-    this.student$ = this.studentService.student$.subscribe({
-      next: (student: Student) => {
-        if (!student.hasProvidedInformation()) {
-          this.router.navigateByUrl('/personal-info');
-        } else if (!student.waiverAccepted) {
-          this.router.navigateByUrl('/waiver');
-        } else {
-          this.router.navigateByUrl('/home');
-        }
-      },
-    });
   }
 }

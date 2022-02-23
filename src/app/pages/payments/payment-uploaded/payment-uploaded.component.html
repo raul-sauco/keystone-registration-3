@@ -15,6 +15,16 @@
             [alt]="image.name"
           />
         </div>
+        <div id="complete-payment-button-container">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="navigateAway()"
+            class="primary-action-button"
+          >
+            <mat-icon>upload</mat-icon> {{ "SUBMIT" | translate }}
+          </button>
+        </div>
       </ng-container>
       <ng-template #noImages>
         <div id="no-proof-uploaded" class="mat-elevation-z2">

@@ -1,12 +1,17 @@
+$activeElementsWidth: 70%;
 #payment-uploaded-proof-container {
   margin: 16px;
+  #complete-payment-button-container {
+    width: 100%;
+    text-align: center;
+  }
+  .primary-action-button {
+    width: $activeElementsWidth;
+  }
   #payment-uploaded-images-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    mat-icon {
-      font-size: 200px;
-    }
     margin-bottom: 50vh;
     .payment-proof-item {
       margin: 8px;
@@ -14,7 +19,7 @@
     #no-proof-uploaded {
       margin: 32px;
       height: 20vh;
-      width: 70%;
+      width: $activeElementsWidth;
       background-color: white;
       border-radius: 16px;
       border: #ccc 3px dashed;
