@@ -1,3 +1,4 @@
+import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -15,6 +16,7 @@ describe('PaymentUploadedComponent', () => {
       imports: [
         HttpClientTestingModule,
         LoggerTestingModule,
+        MatDialogModule,
         MatProgressSpinnerModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({

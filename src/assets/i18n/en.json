@@ -199,6 +199,7 @@
   "PASSWORD_REPEAT": "Repeat password",
   "PASSWORD_RESET_COMPLETE": "Your password has been reset, you can start using it",
   "PAYMENTS": "Payments",
+  "PAYMENT_CONFIRMED": "Your payment is confirmed",
   "PAYMENT_INSTRUCTIONS_1": "1. Scan one of the QR codes below",
   "PAYMENT_INSTRUCTIONS_2": "2. Take a screenshot of the successful payment",
   "PAYMENT_INSTRUCTIONS_3": "3. Upload proof of payment screenshot here",

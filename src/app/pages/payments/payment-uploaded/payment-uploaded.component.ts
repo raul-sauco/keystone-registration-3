@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
@@ -22,6 +23,7 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
     private logger: NGXLogger,
     private router: Router,
     private studentService: StudentService,
+    public dialog: MatDialog,
     public paymentService: PaymentService,
     globals: GlobalsService
   ) {
@@ -42,16 +44,34 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
   }
 
   navigateAway() {
-    this.student$ = this.studentService.student$.subscribe({
-      next: (student: Student) => {
-        if (!student.hasProvidedInformation()) {
-          this.router.navigateByUrl('/personal-info');
-        } else if (!student.waiverAccepted) {
-          this.router.navigateByUrl('/waiver');
-        } else {
-          this.router.navigateByUrl('/home');
-        }
-      },
-    });
+    this.logger.debug('User navigating away from payment-uploaded component');
+    this.dialog
+      .open(PaymentCompletedConfirmationDialogComponent)
+      .afterClosed()
+      .subscribe({
+        next: () => {
+          this.student$ = this.studentService.student$.subscribe({
+            next: (student: Student) => {
+              if (!student.hasProvidedInformation()) {
+                this.router.navigateByUrl('/personal-info');
+              } else if (!student.waiverAccepted) {
+                this.router.navigateByUrl('/waiver');
+              } else {
+                this.router.navigateByUrl('/home');
+              }
+            },
+          });
+        },
+      });
   }
+}
+
+@Component({
+  selector: 'app-payment-completed-confirmation-dialog-component',
+  templateUrl: './payment-completed-confirmation-dialog.component.html',
+})
+export class PaymentCompletedConfirmationDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<PaymentCompletedConfirmationDialogComponent>
+  ) {}
 }
