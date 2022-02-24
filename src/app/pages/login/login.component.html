@@ -1,5 +1,11 @@
-<div id="login-form-container">
+<div class="app-page-wrapper">
   <mat-card id="login-form-mat-card-container">
+    <div id="register-first-warning">
+      <mat-icon color="warn">warning</mat-icon>
+      <div>
+        {{ "REGISTER_BEFORE_LOGIN_PROMPT" | translate }}
+      </div>
+    </div>
     <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" id="login-form">
       <mat-form-field appearance="outline">
         <mat-label>{{ "USERNAME" | translate }}</mat-label>

@@ -228,6 +228,7 @@
   "REGISTER": "注册",
   "REGISTERED_ON": "登记时间",
   "REGISTERING_FOR": "登记人",
+  "REGISTER_BEFORE_LOGIN_PROMPT": "新用户请先点击注册。",
   "REGISTRATION": "注册",
   "REGISTRATION_COMPLETE_MESSAGE": "<p>您已成功注册以下用户名： \"<strong>{{name}}</strong>\" 请检查您的收件箱中的确认邮件。</p><p>请点击下面的“继续”按钮，然后继续进行其余的注册过程。</p>",
   "REGISTRATION_IS_COMPLETE": "已成功完成报名登记",

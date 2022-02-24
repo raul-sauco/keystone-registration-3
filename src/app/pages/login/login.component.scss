@@ -1,23 +1,4 @@
-#login-form-container {
-  position: fixed;
-  top: 56px;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  background: top 24px right 16px / 150px no-repeat
-      url(https://static.keystone-adventures.com/img/kalogo.png),
-    center / cover no-repeat
-      url(https://static.keystone-adventures.com/img/portal/bg/f/FM54269YGLNS.png);
-  @media screen and (min-width: 960px) {
-    left: 320px;
-  }
-  // @media screen and (min-width: 1200px) { padding: 10% 320px 10% 16px; }
-}
+@import "~src/sass/mixins";
 
 #login-form-mat-card-container {
   background-color: rgba(255, 255, 255, 0.93);
@@ -37,6 +18,14 @@
   @media screen and (min-width: 1900px) {
     width: 40%;
   }
+}
+
+#register-first-warning {
+  @include alert-dialog;
+  margin: 0 0 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 form#login-form {

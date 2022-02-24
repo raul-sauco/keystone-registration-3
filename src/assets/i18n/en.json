@@ -228,6 +228,7 @@
   "REGISTER": "Register",
   "REGISTERED_ON": "Registered on",
   "REGISTERING_FOR": "Registering for",
+  "REGISTER_BEFORE_LOGIN_PROMPT": "New users should first register by clicking the button below.",
   "REGISTRATION": "Registration",
   "REGISTRATION_COMPLETE_MESSAGE": "<p>You have successfully registered the following username: \"<strong>{{name}}</strong>\" Please check your inbox for a confirmation e-mail.</p><p>Please click the \"Continue\" button below, and proceed through the rest of the registration process.</p>",
   "REGISTRATION_IS_COMPLETE": "Registration is complete",

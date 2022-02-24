@@ -1,15 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { HttpLoaderFactory } from 'src/app/app.module';
-import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
+import { LoadingSpinnerContentModule } from './../../../components/loading-spinner-content/loading-spinner-content.module';
 import { PaymentTermsComponent } from './payment-terms.component';
 
 describe('PaymentTermsComponent', () => {
@@ -23,6 +17,7 @@ describe('PaymentTermsComponent', () => {
         declarations: [PaymentTermsComponent],
         imports: [
           HttpClientTestingModule,
+          LoadingSpinnerContentModule,
           LoggerTestingModule,
           TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
