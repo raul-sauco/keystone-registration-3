@@ -1,5 +1,11 @@
 <div id="trip-codes-form-container">
   <mat-card id="trip-codes-form-mat-card-container">
+    <div id="register-first-warning">
+      <mat-icon color="warn">warning</mat-icon>
+      <div>
+        {{ "REGISTRATION_REQUIRES_CODES" | translate }}
+      </div>
+    </div>
     <form
       [formGroup]="tripCodeForm"
       id="trip-codes-form"

@@ -1,3 +1,5 @@
+@import "~src/sass/mixins";
+
 #trip-codes-form-container {
   position: fixed;
   top: 56px;
@@ -39,6 +41,17 @@
   }
 }
 
+#register-first-warning {
+  @include alert-dialog;
+  margin: 0 0 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mat-icon {
+    margin-right: 16px;
+  }
+}
+
 form#trip-codes-form {
   display: flex;
   flex-direction: column;
@@ -53,6 +66,7 @@ form#trip-codes-form {
   text-align: center;
   a,
   button {
+    font-size: 1rem;
     color: #2a872c;
     cursor: pointer;
     text-decoration: underline;

@@ -1,3 +1,5 @@
+@import "~src/sass/mixins";
+
 #registration-form-container {
   overflow: scroll;
   position: fixed;
@@ -51,7 +53,5 @@ form#registration-form {
 .navigation-links {
   margin-top: 16px;
   text-align: center;
-  a {
-    color: #2a872c;
-  }
+  @include navigation-links;
 }

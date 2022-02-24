@@ -26,6 +26,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  mat-icon {
+    margin-right: 16px;
+  }
 }
 
 form#login-form {
@@ -41,4 +44,5 @@ form#login-form {
 .navigation-links {
   margin-top: 16px;
   text-align: center;
+  @include navigation-links;
 }

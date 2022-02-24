@@ -7,3 +7,16 @@
   text-align: center;
   background-color: $color;
 }
+
+@mixin navigation-links {
+  a,
+  button {
+    font-size: 1rem;
+    color: #2a872c;
+    cursor: pointer;
+    text-decoration: underline;
+    border: none;
+    background: none;
+    padding: 0;
+  }
+}
