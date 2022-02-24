@@ -1,22 +1,16 @@
+@import "~src/sass/mixins";
+
 #waiver-page-container {
   padding: 16px 16px 30vh 16px;
+}
+
+#scroll-to-bottom-prompt {
+  @include alert-dialog;
 }
 
 #waiver-form {
   display: flex;
   flex-direction: column;
-  width: 100%;
-
-  mat-form-field {
-    margin: 8px 0;
-    width: 100%;
-  }
-  .progress-bar {
-    margin-bottom: 16px;
-  }
-}
-
-#waiver-form-container {
   width: 90%;
   @media screen and (min-width: 900px) {
     width: 80%;
@@ -30,4 +24,18 @@
   @media screen and (min-width: 1900px) {
     width: 50%;
   }
+
+  mat-form-field {
+    margin: 8px 0;
+    width: 100%;
+  }
+  .progress-bar {
+    margin-bottom: 16px;
+  }
+}
+
+#waiver-form-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

@@ -5,20 +5,24 @@
   <ng-container
     *ngIf="studentService.student$ | async as student; else loading"
   >
-    <div class="app-page-wrapper">
+    <div class="app-page-wrapper material-typography">
       <div class="app-content-wrapper">
+        <div id="scroll-to-bottom-prompt" *ngIf="!student.waiverAccepted">
+          <div
+            [innerHtml]="'READ_AND_AGREE_TO_WAIVER_DETAILS' | translate"
+          ></div>
+        </div>
         <div id="waiver-page-container">
           <p *ngIf="student.waiverAccepted">
             {{ "WAIVER_SIGNED_ON" | translate }}
             <strong>{{ student.waiverSignedOn | date }}</strong>
           </p>
           <app-waiver-content></app-waiver-content>
-          <div id="waiver-form-container">
-            <form
-              [formGroup]="waiverForm"
-              id="waiver-form"
-              *ngIf="!student.waiverAccepted"
-            >
+          <div
+            id="waiver-form-container"
+            *ngIf="waiverForm && !student.waiverAccepted"
+          >
+            <form [formGroup]="waiverForm" id="waiver-form">
               <mat-form-field appearance="outline">
                 <mat-label>{{
                   student.getAttributeLabel("firstName")
