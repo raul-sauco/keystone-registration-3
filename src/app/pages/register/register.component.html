@@ -1,12 +1,8 @@
 <div id="registration-form-container" *ngIf="userRegistrationForm">
   <mat-card id="registration-form-mat-card-container">
-    <h1>{{ "WELCOME_TO_KA" | translate }}</h1>
-    <div *ngIf="trip.name">
-      {{ "REGISTERING_FOR" | translate }}:
-      <div class="trip-name">{{ trip.name }}</div>
-    </div>
-    <p>{{ "ADVENTURE_OF_A_LIFETIME" | translate }}</p>
-    <p>{{ "NO_HITCHES" | translate }}</p>
+    <h1>{{ "REGISTRATION_INFORMATION" | translate }}</h1>
+    <h2 class="trip-name" *ngIf="trip.name">{{ trip.name }}</h2>
+    <div>{{ "REGISTER_NEW_USERNAME_PASSWORD" | translate }}</div>
     <form
       [formGroup]="userRegistrationForm"
       id="registration-form"
