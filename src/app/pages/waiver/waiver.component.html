@@ -24,9 +24,7 @@
           >
             <form [formGroup]="waiverForm" id="waiver-form">
               <mat-form-field appearance="outline">
-                <mat-label>{{
-                  student.getAttributeLabel("firstName")
-                }}</mat-label>
+                <mat-label>{{ "STUDENT_FIRST_NAME" | translate }}</mat-label>
                 <input
                   type="text"
                   matInput
@@ -41,9 +39,7 @@
                 appearance="outline"
                 [hintLabel]="'PIF_HINT_NAME' | translate"
               >
-                <mat-label>{{
-                  student.getAttributeLabel("lastName")
-                }}</mat-label>
+                <mat-label>{{ "STUDENT_LAST_NAME" | translate }}</mat-label>
                 <input
                   type="text"
                   matInput
