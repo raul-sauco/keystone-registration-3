@@ -1,12 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
+import { PaymentInfo } from 'src/app/models/paymentInfo';
 import { Student } from 'src/app/models/student';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { PaymentService } from 'src/app/services/payment/payment.service';
 import { StudentService } from 'src/app/services/student/student.service';
 
 @Component({
@@ -15,15 +18,19 @@ import { StudentService } from 'src/app/services/student/student.service';
   styleUrls: ['./personal-info.component.scss'],
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
+  private student$?: Subscription | null = null;
+  private paymentInfo?: PaymentInfo | null = null;
+  private paymentInfo$?: Subscription | null = null;
   personalInfoForm!: FormGroup;
   needsLogin = false;
-  private student$?: Subscription | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private logger: NGXLogger,
+    private router: Router,
     private translate: TranslateService,
+    private paymentService: PaymentService,
     public studentService: StudentService,
     public auth: AuthService
   ) {}
@@ -51,6 +58,11 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
                 );
               },
             });
+            this.paymentInfo$ = this.paymentService.paymentInfo$.subscribe({
+              next: (paymentInfo: PaymentInfo) => {
+                this.paymentInfo = paymentInfo;
+              },
+            });
           } else {
             this.logger.error(
               'Authentication error, expected valid student ID.'
@@ -70,6 +82,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.logger.debug('PersonalInfoComponent on destroy');
     this.student$?.unsubscribe();
+    this.paymentInfo$?.unsubscribe();
   }
 
   get dob() {
@@ -106,11 +119,24 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
           'PersonalInfoComponent updated student data',
           student
         );
-        this.snackBar.open(
-          this.translate.instant('PERSONAL_INFO_UPDATED'),
-          undefined,
-          { duration: 3000 }
-        );
+        this.snackBar
+          .open(this.translate.instant('PERSONAL_INFO_UPDATED'), undefined, {
+            duration: 3000,
+          })
+          .afterDismissed()
+          .subscribe({
+            next: () => {
+              if (
+                this.auth.getCredentials()?.type === 6 &&
+                this.paymentInfo?.required &&
+                !this.paymentInfo.paid
+              ) {
+                this.router.navigateByUrl('/payments');
+              } else {
+                this.router.navigateByUrl('/home');
+              }
+            },
+          });
       },
     });
   }

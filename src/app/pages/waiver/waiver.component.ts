@@ -22,8 +22,6 @@ export class WaiverComponent implements OnInit, OnDestroy {
   posting = false;
   waiverForm!: FormGroup;
   private student$?: Subscription | null = null;
-  private paymentInfo?: PaymentInfo | null = null;
-  private paymentInfo$?: Subscription | null = null;
 
   constructor(
     public auth: AuthService,
@@ -31,7 +29,6 @@ export class WaiverComponent implements OnInit, OnDestroy {
     private logger: NGXLogger,
     private router: Router,
     private snackBar: MatSnackBar,
-    private paymentService: PaymentService,
     public studentService: StudentService,
     public translate: TranslateService
   ) {}
@@ -55,11 +52,6 @@ export class WaiverComponent implements OnInit, OnDestroy {
               },
             });
             this.studentService.refreshStudent();
-            this.paymentInfo$ = this.paymentService.paymentInfo$.subscribe({
-              next: (paymentInfo: PaymentInfo) => {
-                this.paymentInfo = paymentInfo;
-              },
-            });
           } else {
             this.logger.error(
               'Authentication error, expected valid student ID.'
@@ -79,7 +71,6 @@ export class WaiverComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.logger.debug('WaiverComponent on destroy');
     this.student$?.unsubscribe();
-    this.paymentInfo$?.unsubscribe();
   }
 
   get firstName() {
@@ -114,7 +105,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
     };
     this.posting = true;
     this.studentService.updateStudent(studentData).subscribe({
-      next: (res: any) => {
+      next: () => {
         this.posting = false;
         const snackBar = this.snackBar.open(
           this.translate.instant('WAIVER_ACCEPTED'),
@@ -122,13 +113,11 @@ export class WaiverComponent implements OnInit, OnDestroy {
           { duration: 2000 }
         );
         snackBar.afterDismissed().subscribe(() => {
-          const url = this.paymentInfo?.required
-            ? '/payments'
-            : '/personal-info';
-          this.router.navigateByUrl(url);
+          this.router.navigateByUrl('/personal-info');
         });
       },
       error: (error: any) => {
+        this.posting = false;
         this.logger.error(`Error sending waiver`, error);
       },
     });
