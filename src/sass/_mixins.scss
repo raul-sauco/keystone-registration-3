@@ -20,3 +20,23 @@
     padding: 0;
   }
 }
+
+// Give some elements a base width that decreases as screen size increases.
+@mixin active-elements-width {
+  width: 100%;
+  @media screen and (min-width: 900px) {
+    width: 90%;
+  }
+  @media screen and (min-width: 1300px) {
+    width: 80%;
+  }
+  @media screen and (min-width: 1500px) {
+    width: 70%;
+  }
+  @media screen and (min-width: 1700px) {
+    width: 60%;
+  }
+  @media screen and (min-width: 1900px) {
+    width: 50%;
+  }
+}

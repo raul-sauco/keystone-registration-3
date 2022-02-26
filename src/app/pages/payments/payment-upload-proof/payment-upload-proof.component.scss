@@ -1,6 +1,5 @@
 @import "~src/sass/mixins";
 
-$activeElementsWidth: 70%;
 #payment-upload-proof {
   margin: 16px;
   #file-upload-wrapper {
@@ -15,7 +14,7 @@ $activeElementsWidth: 70%;
       position: relative;
       margin: 8px;
       height: 20vh;
-      width: $activeElementsWidth;
+      @include active-elements-width;
       background-color: white;
       border-radius: 16px;
       border: #ccc 3px dashed;
@@ -41,11 +40,9 @@ $activeElementsWidth: 70%;
         color: #eee;
       }
     }
-    #progress {
-      width: $activeElementsWidth;
-    }
+    #progress,
     .primary-action-button {
-      width: $activeElementsWidth;
+      @include active-elements-width;
     }
   }
   #payment-upload-done-message-prompt-wrapper {
@@ -54,7 +51,7 @@ $activeElementsWidth: 70%;
     align-items: center;
     width: 100%;
     #payment-upload-done-message-prompt {
-      width: $activeElementsWidth;
+      @include active-elements-width;
       @include alert-dialog;
     }
   }

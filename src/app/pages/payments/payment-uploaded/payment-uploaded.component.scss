@@ -1,4 +1,5 @@
-$activeElementsWidth: 70%;
+@import "~src/sass/mixins";
+
 #payment-uploaded-proof-container {
   margin: 16px;
   #complete-payment-button-container {
@@ -6,7 +7,7 @@ $activeElementsWidth: 70%;
     text-align: center;
   }
   .primary-action-button {
-    width: $activeElementsWidth;
+    @include active-elements-width;
   }
   #payment-uploaded-images-wrapper {
     display: flex;
@@ -14,12 +15,13 @@ $activeElementsWidth: 70%;
     align-items: center;
     margin-bottom: 50vh;
     .payment-proof-item {
-      margin: 8px;
+      margin-bottom: 8px;
+      max-width: 100%;
     }
     #no-proof-uploaded {
       margin: 32px;
       height: 20vh;
-      width: $activeElementsWidth;
+      @include active-elements-width;
       background-color: white;
       border-radius: 16px;
       border: #ccc 3px dashed;

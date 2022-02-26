@@ -6,7 +6,8 @@
     align-items: center;
     width: 100%;
     .qr-code-item {
-      margin: 8px;
+      margin-bottom: 16px;
+      max-width: 100%;
     }
   }
   #loading-wrapper {
