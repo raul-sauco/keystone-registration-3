@@ -44,7 +44,12 @@ export class AppComponent implements OnInit {
       render: of(true),
     },
     { title: 'FAQ', url: '/faq', icon: 'chatbubbles', render: of(true) },
-    { title: 'STAFF', url: '/guides', icon: 'contacts', render: of(true) },
+    {
+      title: 'STAFF_INFORMATION',
+      url: '/guides',
+      icon: 'contacts',
+      render: of(true),
+    },
   ];
 
   public teacherPages = [

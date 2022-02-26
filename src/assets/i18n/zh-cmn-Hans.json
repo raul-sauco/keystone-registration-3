@@ -256,6 +256,7 @@
   "SERVER_ERROR": "服务器错误",
   "SERVER_ERROR_TRY_LATER": "在发送您的请求时发生错误，请稍后重试",
   "STAFF": "教练",
+  "STAFF_INFORMATION": "卡赛教练信息",
   "STRONG_PASSWORD": "请您在下方设置一个至少有8位字符的密码，以便我们更好地保护您的个人信息和隐私，方便您日后再次登陆。",
   "STUDENT": "学生",
   "STUDENT_FIRST_NAME": "学生的名字",

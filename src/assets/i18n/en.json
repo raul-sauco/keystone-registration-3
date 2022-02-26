@@ -256,6 +256,7 @@
   "SERVER_ERROR": "Server error",
   "SERVER_ERROR_TRY_LATER": "There was an error processing your request, please try again later",
   "STAFF": "Staff",
+  "STAFF_INFORMATION": "KA Staff Information",
   "STRONG_PASSWORD": "So that we can verify your identity and protect your privacy when you login in the future, you will need to enter in a password below, which should be at least 8 characters long.",
   "STUDENT": "Student",
   "STUDENT_FIRST_NAME": "Student's First Name",
