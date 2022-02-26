@@ -102,7 +102,11 @@ export class AppComponent implements OnInit {
         withLatestFrom(this.isHandset$),
         filter(([a, b]) => b && a instanceof NavigationEnd)
       )
-      .subscribe((_) => this.drawer.toggle());
+      .subscribe((_) => {
+        if (this.drawer.opened) {
+          this.drawer.close();
+        }
+      });
   }
 
   ngOnInit() {
