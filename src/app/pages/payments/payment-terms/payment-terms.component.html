@@ -17,9 +17,9 @@
           *ngIf="!paymentService.getPaymentInfo()?.termsAccepted"
         >
           <ng-container *ngIf="!sending; else sendingPost">
-            <mat-checkbox (click)="acceptTerms()" value="" color="primary">{{
-              "I_ACCEPT_PAYMENT_TERMS" | translate
-            }}</mat-checkbox>
+            <button mat-raised-button (click)="acceptTerms()" color="primary">
+              {{ "I_AGREE_TO_TERMS_BUTTON_LABEL" | translate }}
+            </button>
           </ng-container>
           <ng-template #sendingPost>
             <mat-progress-spinner

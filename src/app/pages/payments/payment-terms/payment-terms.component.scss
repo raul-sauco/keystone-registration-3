@@ -4,10 +4,12 @@
   margin: 16px;
   margin-bottom: 25vh;
   #accept-terms-form-container {
-    padding: 16px;
     display: flex;
     justify-content: center;
     font-size: larger;
+    button {
+      width: 100%;
+    }
   }
 }
 

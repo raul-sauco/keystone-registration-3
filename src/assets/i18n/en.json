@@ -132,6 +132,7 @@
   "INVALID_TOKEN_REQUEST_NEW_ONE": "<p>The password reset token provided is invalid</p><p>Tokens expire one hour after requesting them</p><p>If you think that could the problem, please request a new one using the button below</p>",
   "ITINERARY": "Itinerary",
   "I_ACCEPT_PAYMENT_TERMS": "I have read and agree with the terms and conditions",
+  "I_AGREE_TO_TERMS_BUTTON_LABEL": "I Agree to The Terms",
   "KA": "Keystone Adventures",
   "KA_POLICY": "KA Policy",
   "KOSHER": "Kosher",
