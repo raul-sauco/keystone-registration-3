@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -85,18 +85,38 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.paymentInfo$?.unsubscribe();
   }
 
+  get firstName() {
+    return this.personalInfoForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.personalInfoForm.get('lastName');
+  }
+
+  get citizenship() {
+    return this.personalInfoForm.get('citizenship');
+  }
+
+  get travelDocument() {
+    return this.personalInfoForm.get('travelDocument');
+  }
+
+  get gender() {
+    return this.personalInfoForm.get('gender');
+  }
+
   get dob() {
     return this.personalInfoForm.get('dob');
   }
 
   initPersonalInfoForm(student: Student): void {
     this.personalInfoForm = this.formBuilder.group({
-      firstName: [student.firstName],
-      lastName: [student.lastName],
-      citizenship: [student.citizenship],
-      travelDocument: [student.travelDocument],
-      gender: [student.gender],
-      dob: [student.dob],
+      firstName: [student.firstName, Validators.required],
+      lastName: [student.lastName, Validators.required],
+      citizenship: [student.citizenship, Validators.required],
+      travelDocument: [student.travelDocument, Validators.required],
+      gender: [student.gender, Validators.required],
+      dob: [student.dob, Validators.required],
       guardianName: [student.guardianName],
       emergencyContact: [student.emergencyContact],
       dietaryRequirements: [student.dietaryRequirements],
@@ -104,9 +124,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       allergies: [student.allergies],
       allergiesOther: [student.allergiesOther],
       medicalInformation: [student.medicalInformation],
-      // insurance: [this.student.insurance],
-      // insuranceName: [this.student.insuranceName],
-      // insurancePolicyNumber: [this.student.insurancePolicyNumber],
     });
   }
 

@@ -20,6 +20,9 @@
                 student.getAttributeLabel("firstName")
               }}</mat-label>
               <input type="text" matInput formControlName="firstName" />
+              <mat-error *ngIf="firstName?.errors?.required">
+                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field
               appearance="outline"
@@ -27,6 +30,9 @@
             >
               <mat-label>{{ student.getAttributeLabel("lastName") }}</mat-label>
               <input type="text" matInput formControlName="lastName" />
+              <mat-error *ngIf="lastName?.errors?.required">
+                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field
               appearance="outline"
@@ -36,6 +42,9 @@
                 student.getAttributeLabel("citizenship")
               }}</mat-label>
               <input type="text" matInput formControlName="citizenship" />
+              <mat-error *ngIf="citizenship?.errors?.required">
+                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field
               appearance="outline"
@@ -45,6 +54,9 @@
                 student.getAttributeLabel("travelDocument")
               }}</mat-label>
               <input type="text" matInput formControlName="travelDocument" />
+              <mat-error *ngIf="travelDocument?.errors?.required">
+                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("gender") }}</mat-label>
@@ -56,6 +68,9 @@
                   {{ "G." + i | translate }}</mat-option
                 >
               </mat-select>
+              <mat-error *ngIf="gender?.errors?.required">
+                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+              </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("dob") }}</mat-label>
@@ -72,6 +87,9 @@
               <mat-datepicker touchUi #picker></mat-datepicker>
               <mat-error *ngIf="dob?.errors?.matDatepickerParse">
                 {{ "PIF_ERROR_INVALID_DATE" | translate }}
+              </mat-error>
+              <mat-error *ngIf="dob?.errors?.required">
+                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>
             <!-- END Personal information section -->
@@ -94,10 +112,10 @@
               <input type="text" matInput formControlName="emergencyContact" />
             </mat-form-field>
             <h2>{{ "DIETARY_REQUIREMENTS" | translate }}</h2>
-            <mat-form-field
-              appearance="outline"
-              [hintLabel]="'PIF_HINT_DIETARY' | translate"
-            >
+            <p class="form-field-extra-hint">
+              {{ "PIF_HINT_DIETARY" | translate }}
+            </p>
+            <mat-form-field appearance="outline">
               <mat-label>{{
                 student.getAttributeLabel("dietaryRequirements")
               }}</mat-label>
@@ -131,10 +149,10 @@
 
             <!-- START Medical information section -->
             <h2>{{ "MEDICAL_INFORMATION" | translate }}</h2>
-            <mat-form-field
-              appearance="outline"
-              [hintLabel]="'PIF_HINT_ALLERGIES' | translate"
-            >
+            <p class="form-field-extra-hint">
+              {{ "PIF_HINT_ALLERGIES" | translate }}
+            </p>
+            <mat-form-field appearance="outline">
               <mat-label>{{
                 student.getAttributeLabel("allergies")
               }}</mat-label>
@@ -160,10 +178,10 @@
                 <input type="text" matInput formControlName="allergiesOther" />
               </mat-form-field>
             </ng-container>
-            <mat-form-field
-              appearance="outline"
-              [hintLabel]="'PIF_HINT_MEDICAL' | translate"
-            >
+            <p class="form-field-extra-hint">
+              {{ "PIF_HINT_MEDICAL" | translate }}
+            </p>
+            <mat-form-field appearance="outline">
               <mat-label>{{
                 student.getAttributeLabel("medicalInformation")
               }}</mat-label>

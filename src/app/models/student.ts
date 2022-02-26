@@ -349,7 +349,8 @@ export class Student {
       'lastName',
       'citizenship',
       'travelDocument',
-      'guardianName',
+      'gender',
+      'dob',
     ];
     attrs.forEach((attr) => {
       if (this.isAttributeEmpty(attr as keyof Student)) {
