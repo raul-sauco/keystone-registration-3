@@ -64,6 +64,10 @@
                 formControlName="gender"
                 [compareWith]="intValueCompare"
               >
+                <mat-option value="" *ngIf="gender?.value === null">
+                  <!-- Acts as a placeholder when gender is null -->
+                  {{ "SELECT_GENDER" | translate }}</mat-option
+                >
                 <mat-option *ngFor="let i of [0, 1, 2, 3]" [value]="i">
                   {{ "G." + i | translate }}</mat-option
                 >
