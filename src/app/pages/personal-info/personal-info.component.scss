@@ -1,8 +1,12 @@
 @import "~src/sass/mixins";
 
+#required-fields-prompt {
+  @include alert-dialog;
+}
+
 #personal-info-form-container {
   box-sizing: border-box;
-  padding: 16px 16px 16px 16px;
+  padding: 0 16px 16px 16px;
   width: 100%;
   display: flex;
   justify-content: center;

@@ -7,6 +7,10 @@
   >
     <div class="app-page-wrapper material-typography">
       <div class="app-content-wrapper">
+        <div id="required-fields-prompt">
+          <p [innerHtml]="'REQUIRED_FIELDS_PROMPT' | translate"></p>
+          <p [innerHtml]="'SCROLL_TO_BOTTOM_CLICK_UPDATE' | translate"></p>
+        </div>
         <div id="personal-info-form-container" *ngIf="personalInfoForm">
           <form
             [formGroup]="personalInfoForm"
