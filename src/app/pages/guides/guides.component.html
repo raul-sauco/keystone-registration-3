@@ -9,7 +9,7 @@
           <li class="guide-item" *ngFor="let guide of guides">
             <div class="avatar-container">
               <img
-                [src]="url + 'img/users/40x40/' + guide.getAvatar()"
+                [src]="url + 'img/users/' + guide.getAvatar()"
                 alt="{{ guide.getName(lang) }} profile image"
               />
             </div>
