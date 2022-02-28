@@ -1,21 +1,27 @@
 <div class="supplier-item-container">
   <mat-card>
-    <mat-card-title class="supplier-item-name">
-      {{ lang === "en" ? supplier.name : supplier.nameZh }}
-      <ng-container *ngIf="lang === 'en'">
-        ( {{ supplier.nameZh }} )
-      </ng-container>
-    </mat-card-title>
-    <div class="supplier-item-images-container" *ngIf="supplier.images">
-      <div
-        *ngFor="let image of supplier.images"
-        class="supplier-item-image-container"
-      >
-        <img
-          class="supplier-item-image"
-          [src]="url + 'img/supplier/' + image.name"
-          [alt]="image.name"
-        />
+    <div class="supplier-item-wrapper">
+      <div class="supplier-item-details">
+        <mat-card-content>
+          <h2 class="supplier-item-name">
+            {{ lang === "en" ? supplier.name : supplier.nameZh }}
+            <ng-container *ngIf="lang === 'en'">
+              ( {{ supplier.nameZh }} )
+            </ng-container>
+          </h2>
+          <div [innerText]="supplier.addressZh"></div>
+          <div [innerText]="supplier.phone"></div>
+        </mat-card-content>
+      </div>
+      <div class="supplier-item-c-trip-link">
+        <a [href]="supplier.cTripUrl" *ngIf="supplier.cTripUrl">
+          <div class="">
+            <img
+              class="c-trip-logo"
+              [src]="url + 'img/portal/c-trip-logo-zh.png'"
+              alt=""
+            /></div
+        ></a>
       </div>
     </div>
   </mat-card>

@@ -1,26 +1,20 @@
 .supplier-item-container {
-  margin: 16px;
-}
-
-.supplier-item-name {
-  margin-bottom: 16px;
-}
-
-.supplier-item-images-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  .supplier-item-image-container {
-    width: 250px;
-    height: 250px;
-    margin: 0 16px 16px 0;
-    overflow: hidden;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    .supplier-item-image {
-      height: 100%;
-      width: 100%;
+  margin: 8px;
+  .supplier-item-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    .supplier-item-details,
+    .supplier-item-c-trip-link {
+      flex: 1 1 0px;
+      min-width: 320px;
+    }
+    .supplier-item-c-trip-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img.c-trip-logo {
+        width: 150px;
+      }
     }
   }
 }
