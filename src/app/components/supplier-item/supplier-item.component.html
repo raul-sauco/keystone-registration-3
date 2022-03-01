@@ -4,13 +4,26 @@
       <div class="supplier-item-details">
         <mat-card-content>
           <h2 class="supplier-item-name">
-            {{ lang === "en" ? supplier.name : supplier.nameZh }}
-            <ng-container *ngIf="lang === 'en'">
-              ( {{ supplier.nameZh }} )
-            </ng-container>
+            <span>
+              {{ lang === "en" ? supplier.name : supplier.nameZh }}
+              <ng-container *ngIf="lang === 'en'">
+                ( {{ supplier.nameZh }} )
+              </ng-container></span
+            >
+            <a href="tel:{{ supplier.phone }}" *ngIf="supplier.phone">
+              <button
+                mat-mini-fab
+                color="primary"
+                aria-label="Call support directly"
+              >
+                <mat-icon>phone</mat-icon>
+              </button></a
+            >
           </h2>
           <div [innerText]="supplier.addressZh"></div>
-          <div [innerText]="supplier.phone"></div>
+          <a href="tel:{{ supplier.phone }}" *ngIf="supplier.phone">
+            <span [innerText]="supplier.phone"></span
+          ></a>
         </mat-card-content>
       </div>
       <div class="supplier-item-c-trip-link">

@@ -1,9 +1,12 @@
-import { Supplier } from './../../models/supplier';
-import { TranslateService } from '@ngx-translate/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { SupplierItemComponent } from './supplier-item.component';
+import { Supplier } from 'src/app/models/supplier';
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
+import { SupplierItemComponent } from './supplier-item.component';
 
 describe('SupplierItemComponent', () => {
   let component: SupplierItemComponent;
@@ -17,6 +20,9 @@ describe('SupplierItemComponent', () => {
           { provide: TranslateService, useClass: TranslateServiceStub },
         ],
         imports: [
+          MatButtonModule,
+          MatCardModule,
+          MatIconModule,
           TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
           }),

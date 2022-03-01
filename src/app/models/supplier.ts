@@ -18,7 +18,7 @@ export class Supplier {
     name: string;
     name_zh: string;
     images: any;
-    phone?: string;
+    official_phone?: string;
     address?: string;
     address_zh?: string;
     c_trip_url?: string;
@@ -29,7 +29,7 @@ export class Supplier {
     if (supplierJson.images) {
       this.images = supplierJson.images.map((i: any) => new Image(i));
     }
-    this.phone = supplierJson.phone;
+    this.phone = supplierJson.official_phone;
     this.address = supplierJson.address;
     this.addressZh = supplierJson.address_zh;
     this.cTripUrl = supplierJson.c_trip_url;

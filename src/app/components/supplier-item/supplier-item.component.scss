@@ -3,6 +3,10 @@
   .supplier-item-wrapper {
     display: flex;
     flex-wrap: wrap;
+    .supplier-item-name {
+      display: flex;
+      justify-content: space-between;
+    }
     .supplier-item-details,
     .supplier-item-c-trip-link {
       flex: 1 1 0px;
