@@ -70,7 +70,9 @@
       </a>
 
       <!-- Registration links -->
-      <ng-container *ngIf="auth.auth$ | async">
+      <ng-container
+        *ngIf="(auth.auth$ | async) && auth.getCredentials()?.type !== 8"
+      >
         <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
         <a mat-list-item routerLink="/personal-info">
           <mat-icon

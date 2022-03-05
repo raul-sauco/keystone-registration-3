@@ -33,7 +33,7 @@ export class RouteStateService {
   /**
    * Routed components will use this method to update the service value.
    * The method only works if we do not have an authenticated user.
-   * @param string tripId the new value of the trip Id route parameter
+   * @param tripId tripId the new value of the trip Id route parameter
    */
   updateTripIdParamState(tripId: string) {
     this.logger.debug(`RouteStateService; updated tripIdParam to ${tripId}`);
