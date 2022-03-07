@@ -95,25 +95,4 @@ describe('AppComponent', () => {
       expect(result).toBeTruthy();
     });
   });
-
-  it('admins should see the admin banner', () => {
-    fixture.detectChanges();
-    const banner = appElement.querySelector('#admin-banner-container');
-    expect(banner).toBeTruthy();
-    expect(banner!.textContent).toContain('Placeholder Trip name');
-  });
-
-  it('teachers should not see the admin banner', () => {
-    authServiceSpy.getCredentials.and.returnValue(
-      new Credentials({
-        userName: 'test',
-        accessToken: 'test-token',
-        type: 6, // Teacher type
-        studentId: undefined,
-      })
-    );
-    fixture.detectChanges();
-    const banner = appElement.querySelector('#admin-banner-container');
-    expect(banner).toBeFalsy();
-  });
 });

@@ -1,3 +1,4 @@
+import { SchoolAdminGuard } from './guards/school-admin.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TeacherGuard } from './guards/teacher.guard';
@@ -196,17 +197,25 @@ const routes: Routes = [
     canActivate: [NoAuthGuard],
   },
   {
-    path: 'waiver',
-    loadChildren: () =>
-      import('./pages/waiver/waiver.module').then((m) => m.WaiverModule),
-  },
-  {
     path: 'trip-codes/:id',
     loadChildren: () =>
       import('./pages/trip-codes/trip-codes.module').then(
         (m) => m.TripCodesModule
       ),
     canActivate: [NoAuthGuard],
+  },
+  {
+    path: 'waiver',
+    loadChildren: () =>
+      import('./pages/waiver/waiver.module').then((m) => m.WaiverModule),
+  },
+  {
+    path: 'trip-switcher',
+    loadChildren: () =>
+      import('./pages/trip-switcher/trip-switcher.module').then(
+        (m) => m.TripSwitcherModule
+      ),
+    canActivate: [SchoolAdminGuard],
   },
   {
     path: 'forgot-password',

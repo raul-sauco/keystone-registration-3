@@ -269,6 +269,7 @@
   "SUCCESS": "Success",
   "SURE_DELETE_PARTICIPANT": "Are you sure you want to delete this participant from the trip?",
   "SWITCH": "Switch",
+  "SWITCH_TRIP": "Switch trip",
   "TEACHER": "Teacher",
   "TEACHER_AREA": "Teacher area",
   "THIS_FIELD_IS_REQUIRED": "This field cannot be empty",

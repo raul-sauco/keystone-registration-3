@@ -92,7 +92,7 @@ describe('PersonalInfoComponent', () => {
 
   it('ngOnInit should call student service refresh', fakeAsync(() => {
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
     tick();
     expect(authServiceSpy.getCredentials).toHaveBeenCalled();
     tick();
@@ -101,7 +101,7 @@ describe('PersonalInfoComponent', () => {
   it('ngOnInit should not mark login required', fakeAsync(() => {
     authServiceSpy.checkAuthenticated.and.returnValue(Promise.resolve(false));
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
     tick();
     expect(component.needsLogin).toEqual(true);
   }));
@@ -116,7 +116,7 @@ describe('PersonalInfoComponent', () => {
       })
     );
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
     tick();
     expect(component.needsLogin).toEqual(true);
     expect(loggerSpy.error).toHaveBeenCalledOnceWith(
@@ -134,7 +134,7 @@ describe('PersonalInfoComponent', () => {
       })
     );
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
     tick();
     // We have auth token, it is an error but not a need-login error
     expect(component.needsLogin).toEqual(false);
@@ -146,7 +146,7 @@ describe('PersonalInfoComponent', () => {
   it('ngOnInit should mark login required when no credentials', fakeAsync(() => {
     authServiceSpy.getCredentials.and.returnValue(undefined);
     fixture.detectChanges();
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledTimes(2);
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
     tick();
     // We have auth token, it is an error but not a need-login error
     expect(component.needsLogin).toEqual(true);
