@@ -132,7 +132,7 @@
   "INVALID_TOKEN_REQUEST_NEW_ONE": "提供的密码重置令牌无效，令牌在请求后一小时后失效。 如果您认为这是问题所在，请再提出一个。",
   "ITINERARY": "行程",
   "I_ACCEPT_PAYMENT_TERMS": "我已阅读并同意条款和条件",
-  "I_AGREE_TO_TERMS_BUTTON_LABEL": "I Agree to The Terms",
+  "I_AGREE_TO_TERMS_BUTTON_LABEL": "我同意条款",
   "KA": "卡赛探险",
   "KA_POLICY": "公司政策",
   "KOSHER": "犹太教食品",
