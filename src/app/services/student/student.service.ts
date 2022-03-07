@@ -25,7 +25,7 @@ export class StudentService {
 
   init(): void {
     this.auth.checkAuthenticated().then((res) => {
-      if (res) {
+      if (res && this.auth.getCredentials()?.type !== 8) {
         this.refreshStudent();
       }
     });
