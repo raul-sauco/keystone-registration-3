@@ -156,7 +156,7 @@
 
       <!-- Policy pages -->
       <h3 matSubheader>{{ "KA_POLICY" | translate | uppercase }}</h3>
-      <ng-container *ngFor="let page of policyPages; last as last">
+      <ng-container *ngFor="let page of policyPages">
         <a
           mat-list-item
           [routerLink]="
@@ -170,6 +170,14 @@
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-container>
+      <a
+        mat-list-item
+        routerLink="/payment-policy"
+        *ngIf="(paymentService.paymentInfo$ | async)?.required"
+      >
+        <mat-icon matListIcon color="primary">paid</mat-icon>
+        <p matLine>{{ "PAYMENT_TERMS" | translate | uppercase }}</p>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 

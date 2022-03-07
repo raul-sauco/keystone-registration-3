@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { TeacherGuard } from './guards/teacher.guard';
+import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { NoAuthGuard } from './guards/no-auth.guard';
+import { TeacherGuard } from './guards/teacher.guard';
 
 const routes: Routes = [
   {
@@ -120,6 +120,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/payments/payments.module').then((m) => m.PaymentsModule),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'payment-policy',
+    loadChildren: () =>
+      import('./pages/payment-policy/payment-policy.module').then(
+        (m) => m.PaymentPolicyModule
+      ),
   },
   {
     path: 'privacy-policy',
