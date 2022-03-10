@@ -2,15 +2,25 @@
  * Trip model
  */
 export class Trip {
-  private id: number;
-  private name: string;
+  private _id: number;
+  private _nameEn: string | null;
+  private _nameZh: string | null;
 
   constructor(tripJson: any) {
-    this.id = tripJson.id;
-    this.name = tripJson.name;
+    this._id = tripJson.id;
+    this._nameEn = tripJson.name_en;
+    this._nameZh = tripJson.name_zh;
   }
 
-  getName(): string {
-    return this.name;
+  get nameEn(): string {
+    return this._nameEn ?? '';
+  }
+
+  get nameZh(): string {
+    return this._nameZh ?? '';
+  }
+
+  get id(): number {
+    return this._id;
   }
 }

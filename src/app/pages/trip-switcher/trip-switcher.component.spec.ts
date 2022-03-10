@@ -1,6 +1,8 @@
-import { TranslateTestingModule } from 'ngx-translate-testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { TripSwitcherComponent } from './trip-switcher.component';
 
 describe('TripSwitcherComponent', () => {
@@ -11,6 +13,8 @@ describe('TripSwitcherComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TripSwitcherComponent],
       imports: [
+        HttpClientTestingModule,
+        LoadingSpinnerContentModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
           en: require('src/assets/i18n/en.json'),
