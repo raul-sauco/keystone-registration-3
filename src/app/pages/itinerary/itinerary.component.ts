@@ -1,9 +1,12 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ActivityGroup } from 'src/app/models/activityGroup';
-import { ActivityGroupService } from 'src/app/services/activity-group/activity-group.service';
+import { TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
+import { Observable } from 'rxjs';
+import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 
 @Component({
@@ -13,17 +16,23 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
   encapsulation: ViewEncapsulation.None,
 })
 export class ItineraryComponent implements OnInit {
-  /** used by the template to iterate a collection */
-  activityGroups: ActivityGroup[] | null = null;
+  itineraries$: Observable<any> | null = null;
+  url: string;
+  lang: string;
   needsLogin = false;
 
   constructor(
-    private activityGroupService: ActivityGroupService,
+    private api: ApiService,
+    private auth: AuthService,
+    private globals: GlobalsService,
+    private logger: NGXLogger,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
     private routeStateService: RouteStateService,
-    private auth: AuthService
-  ) {}
+    private translate: TranslateService
+  ) {
+    this.url = this.globals.getResUrl();
+    this.lang = this.translate.currentLang;
+  }
 
   /**
    * Try to get an optional trip-id parameter and have the
@@ -35,7 +44,7 @@ export class ItineraryComponent implements OnInit {
    * groups for the trip they are a participant on.
    */
   ngOnInit() {
-    // Try to find a trip ID parameter
+    this.logger.debug('ItineraryComponent OnInit');
     this.route.paramMap.subscribe((params: ParamMap) => {
       const tripId = params.get('trip-id');
       if (tripId !== null) {
@@ -60,23 +69,14 @@ export class ItineraryComponent implements OnInit {
   }
 
   fetch(tripId?: string): void {
-    this.activityGroupService.fetchActivityGroups(tripId);
-
-    // Subscribe to the ActivityGroupService Subject
-    this.activityGroupService.activityGroup$.subscribe({
-      next: (resp) => {
-        this.activityGroups = resp;
-      },
-      error: (err: string) => {
-        // Notify the user of the error
-        const snackBarRef = this.snackBar.open(err, 'Retry', {
-          duration: 5000,
-        });
-
-        snackBarRef.onAction().subscribe(() => {
-          this.activityGroupService.fetchActivityGroups(tripId);
-        });
-      },
-    });
+    const endpoint =
+      'files?tagged=itinerary' + (tripId ? `&trip-id=${tripId}` : '');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+      }),
+    };
+    this.itineraries$ = this.api.get(endpoint, null, options);
   }
 }
