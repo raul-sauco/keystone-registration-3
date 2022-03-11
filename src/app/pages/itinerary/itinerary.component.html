@@ -31,10 +31,7 @@
             </a>
           </ng-container>
           <ng-template #noItems>
-            <div id="no-items-found">
-              <mat-icon color="accent">info</mat-icon>
-              {{ "NO_RESULTS_FOUND" | translate }}
-            </div>
+            <app-no-results></app-no-results>
           </ng-template>
         </ul>
       </div>
