@@ -34,6 +34,21 @@ export class AuthService {
     return this.credentials;
   }
 
+  /** Return whether the current user is type teacher */
+  get isTeacher(): boolean {
+    return this.credentials?.type === 4;
+  }
+
+  /** Return whether the current user is type student */
+  get isStudent(): boolean {
+    return this.credentials?.type === 6;
+  }
+
+  /** Return whether the current user is type school admin */
+  get isSchoolAdmin(): boolean {
+    return this.credentials?.type === 8;
+  }
+
   /** Save the current credentials to persistent storage */
   saveCredentials(): Promise<any> {
     this.logger.debug('AuthService; saving credentials to storage');
