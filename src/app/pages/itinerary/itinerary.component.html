@@ -7,8 +7,9 @@
       <div class="app-content-wrapper">
         <app-admin-banner></app-admin-banner>
         <ul class="itineraries-list mat-typography">
-          <ng-container *ngFor="let itinerary of itineraries">
+          <ng-container *ngIf="itineraries.length > 0; else noItems">
             <a
+              *ngFor="let itinerary of itineraries"
               [href]="url + 'files/' + itinerary.link"
               target="_blank"
               class="itinerary-item-wrapper"
@@ -29,6 +30,12 @@
               </li>
             </a>
           </ng-container>
+          <ng-template #noItems>
+            <div id="no-items-found">
+              <mat-icon color="accent">info</mat-icon>
+              {{ "NO_RESULTS_FOUND" | translate }}
+            </div>
+          </ng-template>
         </ul>
       </div>
     </div>

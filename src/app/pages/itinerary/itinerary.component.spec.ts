@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,6 +21,7 @@ describe('ItineraryComponent', () => {
           HttpClientTestingModule,
           LoggerTestingModule,
           RouterTestingModule,
+          MatIconModule,
           MatSnackBarModule,
           BrowserAnimationsModule,
           LoadingSpinnerContentModule,

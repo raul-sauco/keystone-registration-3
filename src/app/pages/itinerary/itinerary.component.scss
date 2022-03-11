@@ -35,3 +35,14 @@
   font-size: 1.5rem;
   text-decoration: none;
 }
+
+#no-items-found {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  mat-icon {
+    margin-right: 8px;
+  }
+}
