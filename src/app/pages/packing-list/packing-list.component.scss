@@ -1,36 +1,34 @@
 /* Component has ViewEncapsulation.None to access .mat-tab-label-active,
  * styles should be placed inside a page element selector
  */
-$background: #eee;
-.app-content-wrapper {
-  background-color: $background;
-}
-#pl-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  background-color: $background;
+#packing-list-outer-wrapper {
+  background-color: #eee;
+  #pl-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
 
-  #pl-container {
-    max-width: 100%;
-  }
+    #pl-container {
+      max-width: 100%;
+    }
 
-  .tab-icon {
-    margin-right: 8px;
-  }
-  .tab-content {
-    padding: 16px;
-  }
-  .pli-list {
-    padding-left: 0;
-    padding-bottom: 50vh;
-    list-style: none;
-  }
-  .pli-item {
-    margin: 32px 0;
-  }
-  .mat-tab-label-active {
-    background-color: #efefef;
+    .tab-icon {
+      margin-right: 8px;
+    }
+    .tab-content {
+      padding: 16px;
+    }
+    .pli-list {
+      padding-left: 0;
+      padding-bottom: 50vh;
+      list-style: none;
+    }
+    .pli-item {
+      margin: 32px 0;
+    }
+    .mat-tab-label-active {
+      background-color: #efefef;
+    }
   }
 }
