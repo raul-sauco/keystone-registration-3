@@ -3,11 +3,33 @@
     <div class="app-content-wrapper">
       <div id="trip-switcher" class="material-typography">
         <h1>{{ "SWITCH_TRIP" | translate }}</h1>
-        <ng-container *ngFor="let trip of trips">
-          <div>
-            {{ trip.id }} - {{ trip.nameEn }} - - {{ trip.nameZh }}
-          </div></ng-container
+        <ng-container
+          *ngIf="
+            tripSwitcher.selectedTrip$ | async as selectedTrip;
+            else noTripSelected
+          "
         >
+          <div id="selected-trip-wrapper">
+            <header>{{ "SELECTED" | translate }}</header>
+            <div [innerText]="selectedTrip.getName(lang)"></div>
+          </div>
+        </ng-container>
+        <ng-template #noTripSelected>
+          <div id="no-trip-selected-wrapper">
+            <h2>{{ "NO_TRIP_SELECTED" | translate }}</h2>
+            <div>{{ "SELECT_ONE_BELOW" | translate }}</div>
+          </div>
+        </ng-template>
+        <div id="trip-list-wrapper">
+          <ng-container *ngFor="let trip of trips">
+            <div
+              matRipple
+              class="trip-item-wrapper"
+              (click)="tripSwitcher.selectTrip(trip.id)"
+              [innerText]="trip.getName(lang)"
+            ></div
+          ></ng-container>
+        </div>
       </div>
     </div>
   </div>

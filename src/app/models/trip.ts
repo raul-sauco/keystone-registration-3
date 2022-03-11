@@ -23,4 +23,13 @@ export class Trip {
   get id(): number {
     return this._id;
   }
+
+  /**
+   * Return an i18n version of the trip's name.
+   * @param lang the language to display.
+   * @returns
+   */
+  getName(lang: string): string {
+    return (lang.includes('zh') ? this._nameZh : this._nameEn) ?? '';
+  }
 }

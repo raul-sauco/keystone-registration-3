@@ -5,6 +5,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { Trip } from 'src/app/models/trip';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +13,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class TripSwitcherService {
   private trips: Trip[] = [];
   trips$: Subject<Trip[]> = new ReplaySubject();
-  private selectedTrip: Trip | null = null;
+  selectedTrip$: Subject<Trip> = new ReplaySubject();
 
   constructor(
     private api: ApiService,
     private auth: AuthService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private routeStateService: RouteStateService
   ) {
     this.logger.debug('TripSwitcherService constructor');
     this.init();
@@ -59,5 +61,24 @@ export class TripSwitcherService {
         this.trips$.next(this.trips);
       },
     });
+  }
+
+  /**
+   * Update the currently selected trip.
+   * @param id the trip id
+   * @returns
+   */
+  selectTrip(id: number): boolean {
+    this.logger.debug(`TripSwitcher Service selecting trip ${id}`);
+    const trip = this.trips.find((t) => t.id === id);
+    if (!trip) {
+      this.logger.warn(
+        `Tried selecting trip ${id} - not found in service's trip array`
+      );
+      return false;
+    }
+    this.selectedTrip$.next(trip);
+    this.routeStateService.updateTripIdParamState(`${trip.id}`);
+    return true;
   }
 }
