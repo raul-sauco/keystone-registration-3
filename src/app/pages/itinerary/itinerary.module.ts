@@ -1,3 +1,4 @@
+import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -9,17 +10,17 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-
 @NgModule({
   declarations: [ItineraryComponent],
   imports: [
+    AdminBannerModule,
     CommonModule,
     ItineraryRoutingModule,
     LoadingSpinnerContentModule,
     LoginRequiredMessageModule,
     MatListModule,
     MatTabsModule,
-    MatSnackBarModule
-  ]
+    MatSnackBarModule,
+  ],
 })
-export class ItineraryModule { }
+export class ItineraryModule {}

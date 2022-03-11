@@ -5,6 +5,7 @@
   <ng-container *ngIf="itineraries$ | async as itineraries; else loading">
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
+        <app-admin-banner></app-admin-banner>
         <ul class="itineraries-list mat-typography">
           <ng-container *ngFor="let itinerary of itineraries">
             <a

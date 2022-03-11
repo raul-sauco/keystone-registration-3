@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
@@ -11,6 +12,7 @@ describe('AdminBannerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AdminBannerComponent],
       imports: [
+        HttpClientTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
           en: require('src/assets/i18n/en.json'),

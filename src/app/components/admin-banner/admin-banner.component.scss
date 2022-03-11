@@ -1,6 +1,15 @@
 #admin-banner-container {
   padding: 16px;
-  mat-card-header {
+  #admin-banner-content-wrapper {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    mat-card-header {
+      justify-content: space-between;
+      mat-card-subtitle {
+        margin-bottom: 8px;
+      }
+    }
   }
 }
