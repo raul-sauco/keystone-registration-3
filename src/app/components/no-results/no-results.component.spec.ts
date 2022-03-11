@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatIconModule } from '@angular/material/icon';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 import { NoResultsComponent } from './no-results.component';
 
 describe('NoResultsComponent', () => {
@@ -8,9 +10,15 @@ describe('NoResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NoResultsComponent ]
-    })
-    .compileComponents();
+      imports: [
+        LoggerTestingModule,
+        MatIconModule,
+        TranslateTestingModule.withTranslations({
+          en: require('src/assets/i18n/en.json'),
+        }),
+      ],
+      declarations: [NoResultsComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

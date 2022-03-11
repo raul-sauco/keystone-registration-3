@@ -3,9 +3,18 @@
 </ng-container>
 <ng-template #app>
   <ng-container *ngIf="supplier$ | async as suppliers; else loading">
-    <div class="accommodation-page-container">
-      <div *ngFor="let supplier of suppliers">
-        <app-supplier-item [supplier]="supplier"></app-supplier-item>
+    <div class="app-page-wrapper">
+      <div class="app-content-wrapper">
+        <app-admin-banner></app-admin-banner>
+        <div class="accommodation-page-container">
+          <ng-container *ngIf="suppliers.length; else noResults">
+            <div *ngFor="let supplier of suppliers">
+              <app-supplier-item [supplier]="supplier"></app-supplier-item></div
+          ></ng-container>
+          <ng-template #noResults
+            ><app-no-results></app-no-results
+          ></ng-template>
+        </div>
       </div>
     </div>
   </ng-container>
