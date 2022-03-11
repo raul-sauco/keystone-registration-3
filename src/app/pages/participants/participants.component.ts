@@ -1,3 +1,4 @@
+import { Trip } from 'src/app/models/trip';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import {
@@ -10,12 +11,13 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, timeout } from 'rxjs/operators';
 import { AddParticipantComponent } from 'src/app/components/add-participant/add-participant.component';
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
+import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-participants',
@@ -26,6 +28,7 @@ import { PaymentService } from 'src/app/services/payment/payment.service';
 export class ParticipantsComponent implements OnInit {
   participant$!: Observable<Student[]>;
   displayedColumns: string[];
+  canDetermineTrip = true;
 
   constructor(
     private api: ApiService,
@@ -34,6 +37,7 @@ export class ParticipantsComponent implements OnInit {
     private dialog: MatDialog,
     private paymentService: PaymentService,
     private translate: TranslateService,
+    private tripSwitcher: TripSwitcherService,
     private snackBar: MatSnackBar
   ) {
     this.displayedColumns = [
@@ -63,16 +67,26 @@ export class ParticipantsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.logger.debug('Participants component OnInit');
-    this.fetch();
+    this.logger.debug('ParticipantsComponent OnInit');
+    // School administrators should be able to see multiple trips.
+    if (this.auth.isSchoolAdmin) {
+      if (this.tripSwitcher.selectedTrip) {
+        this.fetch(this.tripSwitcher.selectedTrip.id);
+      } else {
+        this.canDetermineTrip = false;
+        this.logger.debug('Cant determine trip');
+      }
+    } else {
+      this.fetch();
+    }
   }
 
   /**
    * Subscribe to the ApiService to get student data
    */
-  fetch(): void {
-    this.logger.debug('FeedbackComponent fetch() called');
-    const endpoint = 'students';
+  fetch(tripId?: number): void {
+    this.logger.debug('ParticipantsComponent fetch() called');
+    const endpoint = tripId ? `students?trip-id=${tripId}` : 'students';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

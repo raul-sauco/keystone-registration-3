@@ -1,133 +1,143 @@
-<!-- https://material.angular.io/components/table/overview -->
-<ng-container *ngIf="participant$ | async as participants; else loading">
-  <div id="participants-table-container">
-    <table
-      id="participants-table"
-      mat-table
-      [dataSource]="participants"
-      class="mat-elevation-z8"
-    >
-      <ng-container *ngFor="let attr of displayedColumns" [matColumnDef]="attr">
-        <th mat-header-cell *matHeaderCellDef>
-          {{ attr | camelToSnake | translate }}
-        </th>
-        <td mat-cell *matCellDef="let student">
-          <ng-container [ngSwitch]="getAttrType(attr)">
-            <div
-              *ngSwitchCase="'inline'"
-              (focusout)="handleFocusOut($event, attr, student)"
-              contenteditable="true"
-            >
-              {{ student.getParticipantTableDisplayValue(attr) }}
-            </div>
-            <ng-container *ngSwitchCase="'paid'">
-              <ng-container *ngIf="student.paid; else noPaid">
-                <mat-icon color="primary" class="icon-container-cell"
-                  >done</mat-icon
+<ng-container *ngIf="canDetermineTrip; else selectTrip">
+  <!-- https://material.angular.io/components/table/overview -->
+  <ng-container *ngIf="participant$ | async as participants; else loading">
+    <div id="participants-table-container">
+      <app-admin-banner></app-admin-banner>
+      <table
+        id="participants-table"
+        mat-table
+        [dataSource]="participants"
+        class="mat-elevation-z8"
+      >
+        <ng-container
+          *ngFor="let attr of displayedColumns"
+          [matColumnDef]="attr"
+        >
+          <th mat-header-cell *matHeaderCellDef>
+            {{ attr | camelToSnake | translate }}
+          </th>
+          <td mat-cell *matCellDef="let student">
+            <ng-container [ngSwitch]="getAttrType(attr)">
+              <div
+                *ngSwitchCase="'inline'"
+                (focusout)="handleFocusOut($event, attr, student)"
+                contenteditable="true"
+              >
+                {{ student.getParticipantTableDisplayValue(attr) }}
+              </div>
+              <ng-container *ngSwitchCase="'paid'">
+                <ng-container *ngIf="student.paid; else noPaid">
+                  <mat-icon color="primary" class="icon-container-cell"
+                    >done</mat-icon
+                  >
+                </ng-container>
+                <ng-template #noPaid
+                  ><mat-icon color="error" class="icon-container-cell"
+                    >clear</mat-icon
+                  ></ng-template
                 >
               </ng-container>
-              <ng-template #noPaid
-                ><mat-icon color="error" class="icon-container-cell"
-                  >clear</mat-icon
-                ></ng-template
-              >
-            </ng-container>
-            <ng-container *ngSwitchCase="'paymentVerified'">
-              <ng-container
-                *ngIf="student.paymentVerified; else noPaymentVerified"
-              >
-                <mat-icon color="primary" class="icon-container-cell"
-                  >done</mat-icon
+              <ng-container *ngSwitchCase="'paymentVerified'">
+                <ng-container
+                  *ngIf="student.paymentVerified; else noPaymentVerified"
+                >
+                  <mat-icon color="primary" class="icon-container-cell"
+                    >done</mat-icon
+                  >
+                </ng-container>
+                <ng-template #noPaymentVerified
+                  ><mat-icon color="error" class="icon-container-cell"
+                    >clear</mat-icon
+                  ></ng-template
                 >
               </ng-container>
-              <ng-template #noPaymentVerified
-                ><mat-icon color="error" class="icon-container-cell"
-                  >clear</mat-icon
-                ></ng-template
-              >
-            </ng-container>
-            <mat-form-field *ngSwitchCase="'gender'">
-              <mat-select
-                [(value)]="student.gender"
-                (focusout)="handleSelectFocusOut($event, attr, student)"
-                [compareWith]="intValueCompare"
-              >
-                <mat-option *ngFor="let i of [0, 1, 2, 3]" [value]="i">
-                  {{ "G." + i | translate }}</mat-option
+              <mat-form-field *ngSwitchCase="'gender'">
+                <mat-select
+                  [(value)]="student.gender"
+                  (focusout)="handleSelectFocusOut($event, attr, student)"
+                  [compareWith]="intValueCompare"
                 >
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngSwitchCase="'dietaryRequirements'">
-              <mat-select
-                [(value)]="student.dietaryRequirements"
-                (focusout)="handleSelectFocusOut($event, attr, student)"
-                [compareWith]="intValueCompare"
-              >
-                <mat-option *ngFor="let i of [0, 2, 3, 4, 5, 1]" [value]="i">
-                  {{ "DR." + i | translate }}</mat-option
+                  <mat-option *ngFor="let i of [0, 1, 2, 3]" [value]="i">
+                    {{ "G." + i | translate }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field *ngSwitchCase="'dietaryRequirements'">
+                <mat-select
+                  [(value)]="student.dietaryRequirements"
+                  (focusout)="handleSelectFocusOut($event, attr, student)"
+                  [compareWith]="intValueCompare"
                 >
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngSwitchCase="'allergies'">
-              <mat-select
-                [(value)]="student.allergies"
-                (focusout)="handleSelectFocusOut($event, attr, student)"
-                [compareWith]="intValueCompare"
-              >
-                <mat-option *ngFor="let i of [0, 2, 3, 1]" [value]="i">
-                  {{ "ALLER." + i | translate }}</mat-option
+                  <mat-option *ngFor="let i of [0, 2, 3, 4, 5, 1]" [value]="i">
+                    {{ "DR." + i | translate }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field *ngSwitchCase="'allergies'">
+                <mat-select
+                  [(value)]="student.allergies"
+                  (focusout)="handleSelectFocusOut($event, attr, student)"
+                  [compareWith]="intValueCompare"
                 >
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngSwitchCase="'dob'">
-              <input
-                [value]="student.dob"
-                (dateChange)="handleDobChange($event, student)"
-                type="text"
-                matInput
-                [matDatepicker]="picker"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker touchUi #picker></mat-datepicker>
-            </mat-form-field>
-            <ng-container *ngSwitchCase="'delete'">
-              <button
-                mat-icon-button
-                color="warn"
-                aria-label="Delete this participant"
-                (click)="showDeleteConfirm(student)"
-              >
-                <mat-icon>delete_forever</mat-icon>
-              </button>
+                  <mat-option *ngFor="let i of [0, 2, 3, 1]" [value]="i">
+                    {{ "ALLER." + i | translate }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field *ngSwitchCase="'dob'">
+                <input
+                  [value]="student.dob"
+                  (dateChange)="handleDobChange($event, student)"
+                  type="text"
+                  matInput
+                  [matDatepicker]="picker"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+              </mat-form-field>
+              <ng-container *ngSwitchCase="'delete'">
+                <button
+                  mat-icon-button
+                  color="warn"
+                  aria-label="Delete this participant"
+                  (click)="showDeleteConfirm(student)"
+                >
+                  <mat-icon>delete_forever</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                {{ student.getParticipantTableDisplayValue(attr) }}
+              </ng-container>
             </ng-container>
-            <ng-container *ngSwitchDefault>
-              {{ student.getParticipantTableDisplayValue(attr) }}
-            </ng-container>
-          </ng-container>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; let even = even; columns: displayedColumns"
-        [ngClass]="{ gray: even }"
-      ></tr>
-    </table>
-    <button
-      id="add-participant-button"
-      mat-fab
-      color="primary"
-      [title]="'ADD_PARTICIPANT' | translate"
-      aria-label="Add participant button"
-      (click)="addParticipant()"
-    >
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
+          </td>
+        </ng-container>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; let even = even; columns: displayedColumns"
+          [ngClass]="{ gray: even }"
+        ></tr>
+      </table>
+      <button
+        id="add-participant-button"
+        mat-fab
+        color="primary"
+        [title]="'ADD_PARTICIPANT' | translate"
+        aria-label="Add participant button"
+        (click)="addParticipant()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
+  </ng-template>
 </ng-container>
-<ng-template #loading>
-  <app-loading-spinner-content></app-loading-spinner-content>
-</ng-template>
+<ng-template #selectTrip><app-admin-banner></app-admin-banner></ng-template>

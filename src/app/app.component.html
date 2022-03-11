@@ -148,10 +148,7 @@
         <h3 matSubheader>{{ "TEACHER_AREA" | translate | uppercase }}</h3>
         <a
           mat-list-item
-          [routerLink]="
-            page.url +
-            ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-          "
+          [routerLink]="page.url"
           *ngFor="let page of teacherPages; last as last"
         >
           <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>

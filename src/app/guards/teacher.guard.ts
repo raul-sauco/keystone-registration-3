@@ -30,7 +30,10 @@ export class TeacherGuard implements CanActivate {
    * Check if we have an authenticated user and it is of type teacher.
    */
   checkIsTeacher(url: string): boolean {
-    if (this.auth.authenticated && this.auth.getCredentials()?.type === 4) {
+    if (
+      this.auth.authenticated &&
+      (this.auth.isTeacher || this.auth.isSchoolAdmin)
+    ) {
       return true;
     }
     this.router.navigateByUrl('/home');

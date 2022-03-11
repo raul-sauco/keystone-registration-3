@@ -14,6 +14,7 @@ export class TripSwitcherService {
   private trips: Trip[] = [];
   trips$: Subject<Trip[]> = new ReplaySubject();
   selectedTrip$: Subject<Trip> = new ReplaySubject();
+  selectedTrip: Trip | null = null;
 
   constructor(
     private api: ApiService,
@@ -77,6 +78,7 @@ export class TripSwitcherService {
       );
       return false;
     }
+    this.selectedTrip = trip;
     this.selectedTrip$.next(trip);
     this.routeStateService.updateTripIdParamState(`${trip.id}`);
     return true;

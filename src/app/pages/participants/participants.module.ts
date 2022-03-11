@@ -14,6 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddParticipantModule } from 'src/app/components/add-participant/add-participant.module';
+import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { DirectivesModule } from 'src/app/directives/directives.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
@@ -30,6 +31,7 @@ import {
   ],
   imports: [
     AddParticipantModule,
+    AdminBannerModule,
     CommonModule,
     DirectivesModule,
     FormsModule,
