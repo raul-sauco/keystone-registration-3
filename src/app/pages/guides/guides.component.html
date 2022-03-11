@@ -5,6 +5,7 @@
   <ng-container *ngIf="guide$ | async as guides; else loading">
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
+        <app-admin-banner></app-admin-banner>
         <ul class="guides-list mat-typography">
           <li class="guide-item" *ngFor="let guide of guides">
             <div class="avatar-container">
