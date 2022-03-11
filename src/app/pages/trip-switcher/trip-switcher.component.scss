@@ -1,0 +1,36 @@
+@import "src/sass/_mixins";
+
+#trip-switcher {
+  margin: 16px;
+  h1 {
+    margin-left: 32px;
+  }
+  #no-trip-selected-wrapper,
+  #selected-trip-wrapper {
+    @include alert-dialog;
+    text-align: left;
+  }
+
+  #selected-trip-wrapper {
+    header {
+      font-size: 0.8rem;
+      color: #555;
+    }
+    div {
+      font-weight: bold;
+    }
+  }
+
+  #trip-list-wrapper {
+    margin: 16px;
+  }
+
+  .trip-item-wrapper {
+    cursor: pointer;
+    padding: 16px;
+    border-bottom: 1px solid #ccc;
+    &:first-child {
+      border-top: 1px solid #ccc;
+    }
+  }
+}

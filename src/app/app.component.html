@@ -68,9 +68,19 @@
         <p matLine>{{ "HOME" | translate | uppercase }}</p>
         <mat-divider [inset]="true"></mat-divider>
       </a>
+      <ng-container
+        *ngIf="(auth.auth$ | async) && auth.getCredentials()?.type === 8"
+      >
+        <a mat-list-item routerLink="/trip-switcher">
+          <mat-icon matListIcon color="primary">restart_alt</mat-icon>
+          <p matLine>{{ "SWITCH_TRIP" | translate | uppercase }}</p>
+          <mat-divider [inset]="true"></mat-divider> </a
+      ></ng-container>
 
       <!-- Registration links -->
-      <ng-container *ngIf="auth.auth$ | async">
+      <ng-container
+        *ngIf="(auth.auth$ | async) && auth.getCredentials()?.type !== 8"
+      >
         <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
         <a mat-list-item routerLink="/personal-info">
           <mat-icon
@@ -182,11 +192,6 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <ng-container
-      *ngIf="(auth.auth$ | async) && auth.getCredentials()?.type === 8"
-    >
-      <app-admin-banner></app-admin-banner>
-    </ng-container>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
