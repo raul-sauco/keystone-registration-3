@@ -1,12 +1,16 @@
 /* Component has ViewEncapsulation.None to access .mat-tab-label-active,
  * styles should be placed inside a page element selector
  */
+$background: #eee;
+.app-content-wrapper {
+  background-color: $background;
+}
 #pl-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  background-color: #eee;
+  background-color: $background;
 
   #pl-container {
     max-width: 100%;
