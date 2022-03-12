@@ -50,7 +50,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     MarkdownModule.forRoot({ loader: HttpClient }),
     LoggerModule.forRoot({
-      serverLoggingUrl: environment.apiUrl,
+      serverLoggingUrl: environment.apiUrl + 'portal-logs',
       level: environment.production
         ? NgxLoggerLevel.INFO
         : NgxLoggerLevel.TRACE,
