@@ -68,6 +68,13 @@ export class ParticipantsComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('ParticipantsComponent OnInit');
+    this.loadStudentData();
+  }
+
+  /**
+   * Check component properties before fetch to load student data.
+   */
+  private loadStudentData() {
     // School administrators should be able to see multiple trips.
     if (this.auth.isSchoolAdmin) {
       if (this.tripSwitcher.selectedTrip) {
@@ -84,7 +91,7 @@ export class ParticipantsComponent implements OnInit {
   /**
    * Subscribe to the ApiService to get student data
    */
-  fetch(tripId?: number): void {
+  private fetch(tripId?: number): void {
     this.logger.debug('ParticipantsComponent fetch() called');
     const endpoint = tripId ? `students?trip-id=${tripId}` : 'students';
     const options = {
@@ -139,7 +146,7 @@ export class ParticipantsComponent implements OnInit {
     const dialogRef = this.dialog.open(AddParticipantComponent);
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
-        this.fetch();
+        this.loadStudentData();
       }
     });
   }
@@ -273,7 +280,7 @@ export class ParticipantsComponent implements OnInit {
     );
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
-        this.fetch();
+        this.loadStudentData();
         this.snackBar.open(
           this.translate.instant('PARTICIPANT_DELETED'),
           undefined,
