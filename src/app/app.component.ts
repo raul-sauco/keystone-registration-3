@@ -1,3 +1,4 @@
+import { TripSwitcherService } from './services/trip-switcher/trip-switcher.service';
 import { StudentService } from './services/student/student.service';
 import { PaymentService } from './services/payment/payment.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -94,7 +95,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     public auth: AuthService,
     public paymentService: PaymentService,
-    public studentService: StudentService
+    public studentService: StudentService,
+    public tripSwitcher: TripSwitcherService
   ) {
     this.initTranslate();
     router.events

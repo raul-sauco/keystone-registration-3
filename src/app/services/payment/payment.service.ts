@@ -27,9 +27,9 @@ export class PaymentService {
     private logger: NGXLogger
   ) {
     this.logger.debug('PaymentService constructor');
-    // Check credentials and do not load for School Administrators (type 8)
+    // Check credentials and do not load for School Administrators
     this.auth.checkAuthenticated().then((res) => {
-      if (res && this.auth.getCredentials()?.type !== 8) {
+      if (res && !this.auth.isSchoolAdmin) {
         this.loadFromStorage();
       }
     });

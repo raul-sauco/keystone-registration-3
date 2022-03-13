@@ -176,7 +176,11 @@
       <a
         mat-list-item
         routerLink="/payment-policy"
-        *ngIf="(paymentService.paymentInfo$ | async)?.required"
+        *ngIf="
+          (auth.isSchoolAdmin &&
+            tripSwitcher.selectedTrip?.acceptDirectPayment) ||
+          (paymentService.paymentInfo$ | async)?.required
+        "
       >
         <mat-icon matListIcon color="primary">paid</mat-icon>
         <p matLine>{{ "PAYMENT_TERMS" | translate | uppercase }}</p>

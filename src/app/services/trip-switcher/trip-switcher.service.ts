@@ -32,7 +32,7 @@ export class TripSwitcherService {
    */
   init(): void {
     this.auth.checkAuthenticated().then((res) => {
-      if (res && this.auth.getCredentials()?.type === 8) {
+      if (res && this.auth.isSchoolAdmin) {
         this.refreshTrips();
       }
     });
