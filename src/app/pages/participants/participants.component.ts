@@ -45,10 +45,8 @@ export class ParticipantsComponent implements OnInit {
       'type',
       'firstName',
       'lastName',
-      ...(this.paymentService.getPaymentInfo()?.required ? ['paid'] : []),
-      ...(this.paymentService.getPaymentInfo()?.required
-        ? ['paymentVerified']
-        : []),
+      ...(this.displayPaymentInfoColumns() ? ['paid'] : []),
+      ...(this.displayPaymentInfoColumns() ? ['paymentVerified'] : []),
       'citizenship',
       'travelDocument',
       'gender',
@@ -136,6 +134,15 @@ export class ParticipantsComponent implements OnInit {
         });
         return indexedStudentArray;
       })
+    );
+  }
+
+  private displayPaymentInfoColumns(): boolean {
+    return (
+      (this.paymentService.getPaymentInfo()?.required ||
+        (this.auth.isSchoolAdmin &&
+          this.tripSwitcher.selectedTrip?.acceptDirectPayment)) ??
+      false
     );
   }
 
