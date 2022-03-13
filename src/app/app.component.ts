@@ -144,16 +144,16 @@ export class AppComponent implements OnInit {
   }
 
   /** Logout the current application user */
-  logout() {
+  async logout() {
     const username = this.auth.getCredentials()?.userName;
-    this.auth
-      .logout()
-      .then((res) => {
-        this.logger.debug(`User ${username} logged out`);
-        this.router.navigateByUrl('/login');
-      })
-      .catch((error) => {
-        this.logger.warn('AppComponent error logging out', error);
-      });
+    try {
+      await this.auth.logout();
+      // paymentService.logout();
+      this.tripSwitcher.logout();
+      this.logger.debug(`User ${username} logged out`);
+      this.router.navigateByUrl('/login');
+    } catch (error) {
+      this.logger.warn('AppComponent error logging out', error);
+    }
   }
 }

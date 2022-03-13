@@ -12,8 +12,9 @@ import { NGXLogger } from 'ngx-logger';
 import { Credentials } from 'src/app/models/credentials';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { PaymentService } from 'src/app/services/payment/payment.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { PaymentService } from './../../services/payment/payment.service';
+import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
     private snackbar: MatSnackBar,
     private translate: TranslateService,
     private routeStateService: RouteStateService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private tripSwitcher: TripSwitcherService
   ) {
     this.loading = false;
     this.logger.debug('LoginComponent constructor');
@@ -75,7 +77,11 @@ export class LoginComponent implements OnInit {
           const cred = new Credentials(res.credentials);
           // TODO remember where the user was and navigate back
           this.auth.setCredentials(cred).then(() => {
-            this.paymentService.fetchFromServer();
+            if (!this.auth.isSchoolAdmin) {
+              this.paymentService.fetchFromServer();
+            } else {
+              this.tripSwitcher.refreshTrips();
+            }
             this.router.navigateByUrl('/home').then(() => {
               // Clean up the page here if needed
             });

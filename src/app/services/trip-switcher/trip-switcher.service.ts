@@ -83,4 +83,13 @@ export class TripSwitcherService {
     this.routeStateService.updateTripIdParamState(`${trip.id}`);
     return true;
   }
+
+  /**
+   * Remove all existing component data.
+   */
+  async logout() {
+    this.logger.debug('TripSwitcherService logging out');
+    this.trips = [];
+    this.selectedTrip = null;
+  }
 }
