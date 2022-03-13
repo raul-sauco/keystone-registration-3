@@ -1,51 +1,55 @@
-<ng-container *ngIf="feedback$ | async as feedback; else loading">
-  <mat-tab-group
-    dynamicHeight
-    id="feedback-container"
-    *ngIf="feedback.count > 0; else noItems"
-  >
-    <mat-tab [label]="'OVERVIEW' | translate">
-      <div class="charts-container">
-        <ng-container *ngFor="let chart of feedback.charts">
-          <div class="chart-container">
-            <ngx-charts-pie-chart
-              scheme="cool"
-              [results]="chart.data"
-              [gradient]="true"
-              [legend]="true"
-              [legendTitle]="chart.label"
-              [legendPosition]="legendPosition"
-              [labels]="true"
-              [trimLabels]="false"
-              [doughnut]="false"
-            >
-            </ngx-charts-pie-chart>
-          </div>
-        </ng-container>
-      </div>
-    </mat-tab>
+<ng-container *ngIf="canDetermineTrip; else selectTrip">
+  <ng-container *ngIf="feedback$ | async as feedback; else loading">
+    <app-admin-banner></app-admin-banner>
+    <mat-tab-group
+      dynamicHeight
+      id="feedback-container"
+      *ngIf="feedback.count > 0; else noItems"
+    >
+      <mat-tab [label]="'OVERVIEW' | translate">
+        <div class="charts-container">
+          <ng-container *ngFor="let chart of feedback.charts">
+            <div class="chart-container">
+              <ngx-charts-pie-chart
+                scheme="cool"
+                [results]="chart.data"
+                [gradient]="true"
+                [legend]="true"
+                [legendTitle]="chart.label"
+                [legendPosition]="legendPosition"
+                [labels]="true"
+                [trimLabels]="false"
+                [doughnut]="false"
+              >
+              </ngx-charts-pie-chart>
+            </div>
+          </ng-container>
+        </div>
+      </mat-tab>
 
-    <mat-tab [label]="'DETAILS' | translate">
-      <div
-        *ngFor="let item of feedback.questions"
-        class="question-container material-typography"
-      >
-        <h2>{{ item.question }}</h2>
-        <ol class="answer-list">
-          <li *ngFor="let answer of item.answers" class="answer-container">
-            {{ answer }}
-          </li>
-        </ol>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
+      <mat-tab [label]="'DETAILS' | translate">
+        <div
+          *ngFor="let item of feedback.questions"
+          class="question-container material-typography"
+        >
+          <h2>{{ item.question }}</h2>
+          <ol class="answer-list">
+            <li *ngFor="let answer of item.answers" class="answer-container">
+              {{ answer }}
+            </li>
+          </ol>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
 
-  <ng-template #noItems>
-    <app-no-items-notification
-      message="NO_FEEDBACK_FOR_TRIP"
-    ></app-no-items-notification>
+    <ng-template #noItems>
+      <app-no-items-notification
+        message="NO_FEEDBACK_FOR_TRIP"
+      ></app-no-items-notification>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
   </ng-template>
 </ng-container>
-<ng-template #loading>
-  <app-loading-spinner-content></app-loading-spinner-content>
-</ng-template>
+<ng-template #selectTrip><app-admin-banner></app-admin-banner></ng-template>

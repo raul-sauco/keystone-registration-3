@@ -81,7 +81,7 @@ export class ParticipantsComponent implements OnInit {
         this.fetch(this.tripSwitcher.selectedTrip.id);
       } else {
         this.canDetermineTrip = false;
-        this.logger.debug('Cant determine trip');
+        this.logger.debug('ParticipantsComponent cannot determine trip');
       }
     } else {
       this.fetch();

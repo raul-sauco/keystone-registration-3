@@ -5,6 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-feedback',
@@ -15,11 +16,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class FeedbackComponent implements OnInit {
   feedback$!: Observable<any>;
   legendPosition: LegendPosition = LegendPosition.Below;
+  canDetermineTrip = true;
 
   constructor(
     private logger: NGXLogger,
     private api: ApiService,
-    private auth: AuthService
+    private auth: AuthService,
+    private tripSwitcher: TripSwitcherService
   ) {}
 
   ngOnInit(): void {
@@ -27,31 +30,46 @@ export class FeedbackComponent implements OnInit {
     if (
       this.auth.authenticated &&
       this.auth.getCredentials()?.accessToken &&
-      this.auth.getCredentials()?.type === 4
+      (this.auth.isSchoolAdmin || this.auth.isTeacher)
     ) {
-      this.fetch();
+      if (this.auth.isSchoolAdmin) {
+        if (this.tripSwitcher.selectedTrip) {
+          this.fetch(this.tripSwitcher.selectedTrip.id);
+        } else {
+          this.canDetermineTrip = false;
+          this.logger.debug('FeedbackComponent cannot determine trip');
+          this.setEmptyContent();
+        }
+      } else {
+        this.fetch();
+      }
     } else {
       this.logger.error(
         'Called FeedbackComponent OnInit without valid ' +
           'authentication status. AuthGuard failure?',
         this.auth.getCredentials()
       );
-
-      // Return an empty result set to display the 'No Feedback' message
-      this.feedback$ = of({
-        count: 0,
-        charts: [],
-        questions: [],
-      });
+      this.setEmptyContent();
     }
+  }
+
+  /**
+   * Set the component content to an empty result set to display correctly.
+   */
+  protected setEmptyContent(): void {
+    this.feedback$ = of({
+      count: 0,
+      charts: [],
+      questions: [],
+    });
   }
 
   /**
    * Subscribe to the ApiService to get feedback data
    */
-  fetch(): void {
+  fetch(tripId?: number): void {
     this.logger.debug('FeedbackComponent fetch() called');
-    const endpoint = 'feedbacks';
+    const endpoint = tripId ? `feedbacks?trip-id=${tripId}` : 'feedbacks';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

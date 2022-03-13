@@ -1,19 +1,19 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { FeedbackRoutingModule } from './feedback-routing.module';
-import { FeedbackComponent } from './feedback.component';
-import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { TranslateModule } from '@ngx-translate/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
+import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { NoItemsNotificationModule } from 'src/app/components/no-items-notification/no-items-notification.module';
-
+import { FeedbackRoutingModule } from './feedback-routing.module';
+import { FeedbackComponent } from './feedback.component';
 
 @NgModule({
   declarations: [FeedbackComponent],
   imports: [
+    AdminBannerModule,
     CommonModule,
     FeedbackRoutingModule,
     LoadingSpinnerContentModule,
@@ -21,7 +21,7 @@ import { NoItemsNotificationModule } from 'src/app/components/no-items-notificat
     TranslateModule,
     MatIconModule,
     MatTabsModule,
-    NgxChartsModule
-  ]
+    NgxChartsModule,
+  ],
 })
-export class FeedbackModule { }
+export class FeedbackModule {}
