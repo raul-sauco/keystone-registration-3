@@ -1,14 +1,14 @@
-import { RouteStateService } from './../../services/route-state/route-state.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
-
-import { ApiService } from './../../services/api/api.service';
-import { AuthService } from './../../services/auth/auth.service';
-import { Supplier } from './../../models/supplier';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Supplier } from 'src/app/models/supplier';
+import { ApiService } from 'src/app/services/api/api.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { RouteStateService } from 'src/app/services/route-state/route-state.service';
+import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-accommodation',
@@ -24,7 +24,8 @@ export class AccommodationComponent implements OnInit {
     private auth: AuthService,
     private logger: NGXLogger,
     private route: ActivatedRoute,
-    private routeStateService: RouteStateService
+    private routeStateService: RouteStateService,
+    private tripSwitcher: TripSwitcherService
   ) {}
 
   ngOnInit(): void {
@@ -44,10 +45,20 @@ export class AccommodationComponent implements OnInit {
       } else {
         this.auth.checkAuthenticated().then((res: boolean) => {
           if (res && this.auth.getCredentials()?.accessToken) {
-            headers.authorization = `Bearer ${
-              this.auth.getCredentials()?.accessToken
-            }`;
-            this.fetch(params, headers);
+            // School admins do not have a trip by default.
+            if (this.auth.isSchoolAdmin) {
+              if (this.tripSwitcher.selectedTrip) {
+                requestParams['trip-id'] = this.tripSwitcher.selectedTrip.id;
+                this.fetch(requestParams, headers);
+              } else {
+                this.supplier$ = of([]);
+              }
+            } else {
+              headers.authorization = `Bearer ${
+                this.auth.getCredentials()?.accessToken
+              }`;
+              this.fetch(params, headers);
+            }
           } else {
             this.needsLogin = true;
           }
