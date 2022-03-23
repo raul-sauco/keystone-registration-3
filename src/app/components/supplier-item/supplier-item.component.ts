@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-
-import { Supplier } from './../../models/supplier';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Supplier } from 'src/app/models/supplier';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
 
 @Component({
   selector: 'app-supplier-item',

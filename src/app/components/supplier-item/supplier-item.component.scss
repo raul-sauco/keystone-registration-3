@@ -1,23 +1,43 @@
 .supplier-item-container {
   margin: 8px;
-  .supplier-item-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    .supplier-item-name {
-      display: flex;
-      justify-content: space-between;
+  mat-card-header {
+    background-color: #efefef;
+    mat-card-title {
+      margin-top: 16px;
     }
-    .supplier-item-details,
-    .supplier-item-c-trip-link {
-      flex: 1 1 0px;
-      min-width: 320px;
+  }
+  mat-card-content {
+    & > div {
+      margin-top: 8px;
     }
-    .supplier-item-c-trip-link {
+    .supplier-item-contact-actions {
       display: flex;
-      justify-content: center;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
       align-items: center;
-      img.c-trip-logo {
-        width: 150px;
+      margin-bottom: -16px;
+      .supplier-item-phone-number,
+      .supplier-item-c-trip-link {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1 1 0px;
+        min-width: 320px;
+        margin-bottom: 16px;
+        a {
+          line-height: 2rem;
+          padding: 8px 16px;
+        }
+      }
+      .supplier-item-phone-number a mat-icon {
+        margin-right: 8px;
+      }
+      .supplier-item-c-trip-link {
+        img.c-trip-logo {
+          max-width: 150px;
+          padding: 4px;
+        }
       }
     }
   }

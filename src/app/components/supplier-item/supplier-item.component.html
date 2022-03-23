@@ -1,41 +1,33 @@
 <div class="supplier-item-container">
   <mat-card>
-    <div class="supplier-item-wrapper">
-      <div class="supplier-item-details">
-        <mat-card-content>
-          <h2 class="supplier-item-name">
-            <span>
-              {{ lang === "en" ? supplier.name : supplier.nameZh }}
-              <ng-container *ngIf="lang === 'en'">
-                ( {{ supplier.nameZh }} )
-              </ng-container></span
-            >
-            <a href="tel:{{ supplier.phone }}" *ngIf="supplier.phone">
-              <button
-                mat-mini-fab
-                color="primary"
-                aria-label="Call support directly"
-              >
-                <mat-icon>phone</mat-icon>
-              </button></a
-            >
-          </h2>
-          <div [innerText]="supplier.addressZh"></div>
-          <a href="tel:{{ supplier.phone }}" *ngIf="supplier.phone">
+    <mat-card-header>
+      <mat-card-title>
+        <h2>{{ lang === "en" ? supplier.name : supplier.nameZh }}</h2>
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ lang === "en" ? supplier.nameZh : supplier.name }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div [innerText]="supplier.addressZh"></div>
+      <div class="supplier-item-contact-actions">
+        <div class="supplier-item-phone-number" *ngIf="supplier.phone">
+          <a href="tel:{{ supplier.phone }}" mat-raised-button>
+            <div>{{ "CALL" | translate }}</div>
+            <mat-icon class="mat-18">phone</mat-icon>
             <span [innerText]="supplier.phone"></span
           ></a>
-        </mat-card-content>
-      </div>
-      <div class="supplier-item-c-trip-link">
-        <a [href]="supplier.cTripUrl" *ngIf="supplier.cTripUrl">
-          <div class="">
+        </div>
+        <div class="supplier-item-c-trip-link" *ngIf="supplier.cTripUrl">
+          <a [href]="supplier.cTripUrl" mat-raised-button>
+            <div>{{ "CLICK_HERE_FOR_MORE_INFORMATION" | translate }}</div>
             <img
-              class="c-trip-logo"
+              class="c-trip-logo mat-elevation-z1"
               [src]="url + 'img/portal/c-trip-logo-zh.png'"
               alt=""
-            /></div
-        ></a>
+          /></a>
+        </div>
       </div>
-    </div>
+    </mat-card-content>
   </mat-card>
 </div>
