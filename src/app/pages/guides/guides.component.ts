@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { TranslateService } from '@ngx-translate/core';
-import { Guide } from 'src/app/models/guide';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { ApiService } from 'src/app/services/api/api.service';
 import { HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Guide } from 'src/app/models/guide';
+import { ApiService } from 'src/app/services/api/api.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
+import { RouteStateService } from 'src/app/services/route-state/route-state.service';
+import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-guides',
@@ -29,6 +30,7 @@ export class GuidesComponent implements OnInit {
     private routeStateService: RouteStateService,
     private logger: NGXLogger,
     private translate: TranslateService,
+    private tripSwitcher: TripSwitcherService,
     globals: GlobalsService
   ) {
     this.url = globals.getResUrl();
@@ -50,11 +52,21 @@ export class GuidesComponent implements OnInit {
         // If we don't have a trip id parameter, request for the current user
         this.auth.checkAuthenticated().then((res: boolean) => {
           if (res && this.auth.getCredentials()?.accessToken) {
-            headers.authorization = `Bearer ${
-              this.auth.getCredentials()?.accessToken
-            }`;
-            this.fetch(null, headers);
-            // this.guide$ = this.guideService.fetchGuides();
+            if (this.auth.isSchoolAdmin) {
+              if (this.tripSwitcher.selectedTrip) {
+                this.fetch(
+                  { 'trip-id': this.tripSwitcher.selectedTrip.id },
+                  headers
+                );
+              } else {
+                this.guide$ = of([]);
+              }
+            } else {
+              headers.authorization = `Bearer ${
+                this.auth.getCredentials()?.accessToken
+              }`;
+              this.fetch(null, headers);
+            }
           } else {
             this.needsLogin = true;
           }
