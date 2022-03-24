@@ -3,11 +3,12 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
+import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-itinerary',
@@ -28,7 +29,8 @@ export class ItineraryComponent implements OnInit {
     private logger: NGXLogger,
     private route: ActivatedRoute,
     private routeStateService: RouteStateService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private tripSwitcher: TripSwitcherService
   ) {
     this.url = this.globals.getResUrl();
     this.lang = this.translate.currentLang;
@@ -57,8 +59,15 @@ export class ItineraryComponent implements OnInit {
         // No trip id router parameter
         this.auth.checkAuthenticated().then((res: boolean) => {
           if (res) {
-            // Fetch data using access_token
-            this.fetch();
+            if (this.auth.isSchoolAdmin) {
+              if (this.tripSwitcher.selectedTrip) {
+                this.fetch(`${this.tripSwitcher.selectedTrip.id}`);
+              } else {
+                this.itineraries$ = of([]);
+              }
+            } else {
+              this.fetch();
+            }
           } else {
             // We are not fetching anything, inform the user
             this.needsLogin = true;
