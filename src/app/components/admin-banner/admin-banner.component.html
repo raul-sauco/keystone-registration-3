@@ -1,32 +1,26 @@
 <ng-container *ngIf="auth.getCredentials()?.type === 8"
   ><div id="admin-banner-container">
-    <mat-card>
-      <div id="admin-banner-content-wrapper">
-        <mat-card-header>
-          <mat-card-subtitle
-            *ngIf="tripService.selectedTrip$ | async"
-            [innerText]="'BROWSING' | translate"
-          ></mat-card-subtitle>
-          <mat-card-title>
-            <ng-container
-              *ngIf="
-                tripService.selectedTrip$ | async as trip;
-                else noTripSelected
-              "
-              >{{ trip.getName(lang) }}</ng-container
-            >
-            <ng-template #noTripSelected>No trip selected</ng-template>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-actions>
-          <button mat-raised-button color="primary" routerLink="/trip-switcher">
-            {{
-              ((tripService.selectedTrip$ | async) ? "SWITCH" : "SELECT")
-                | translate
-            }}
-          </button>
-        </mat-card-actions>
+    <div
+      id="admin-banner-content-wrapper"
+      [classList]="
+        (tripService.selectedTrip$ | async) ? '' : 'no-trip-admin-banner'
+      "
+    >
+      <div
+        *ngIf="tripService.selectedTrip$ | async as trip; else noTripSelected"
+      >
+        <div class="browsing-header">{{ "BROWSING" | translate }}</div>
+        <div class="trip-name">{{ trip.getName(lang) }}</div>
       </div>
-    </mat-card>
+      <ng-template #noTripSelected>
+        <div class="no-trip-selected">{{ "NO_TRIP_SELECTED" | translate }}</div>
+      </ng-template>
+      <button mat-raised-button color="primary" routerLink="/trip-switcher">
+        {{
+          ((tripService.selectedTrip$ | async) ? "SWITCH" : "SELECT")
+            | translate
+        }}
+      </button>
+    </div>
   </div>
 </ng-container>

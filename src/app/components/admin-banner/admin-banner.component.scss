@@ -1,15 +1,25 @@
+@use "@angular/material" as mat;
+
 #admin-banner-container {
   padding: 16px;
   #admin-banner-content-wrapper {
+    @include mat.elevation(4);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    mat-card-header {
-      justify-content: space-between;
-      mat-card-subtitle {
-        margin-bottom: 8px;
-      }
+    padding: 16px;
+    border-radius: 4px;
+    .browsing-header {
+      color: #888;
     }
+    .no-trip-selected,
+    .trip-name {
+      font-weight: bold;
+    }
+  }
+  .no-trip-admin-banner {
+    @include mat.elevation(8);
+    background-color: rgba(255, 255, 10, 0.3);
   }
 }
