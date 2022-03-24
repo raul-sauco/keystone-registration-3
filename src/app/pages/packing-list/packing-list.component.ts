@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { PackingListService } from 'src/app/services/packing-list/packing-list.service';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 import { NGXLogger } from 'ngx-logger';
 import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { PackingListService } from 'src/app/services/packing-list/packing-list.service';
+import { RouteStateService } from 'src/app/services/route-state/route-state.service';
+import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-packing-list',
@@ -17,13 +19,16 @@ export class PackingListComponent implements OnInit, OnDestroy {
   itemsOptional: TripPackingListItem[] = [];
   itemsDoNotBring: TripPackingListItem[] = [];
   needsLogin = false;
+  fetching = false;
 
   constructor(
-    private packingListService: PackingListService,
+    private auth: AuthService,
     private route: ActivatedRoute,
-    private routeStateService: RouteStateService,
+    private packingListService: PackingListService,
     private logger: NGXLogger,
-    private auth: AuthService
+    private routeStateService: RouteStateService,
+    private tripSwitcher: TripSwitcherService,
+    public sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +44,14 @@ export class PackingListComponent implements OnInit, OnDestroy {
       } else {
         this.auth.checkAuthenticated().then((res: boolean) => {
           if (res) {
-            this.fetch();
+            if (this.auth.isSchoolAdmin) {
+              if (this.tripSwitcher.selectedTrip) {
+                this.fetch(`${this.tripSwitcher.selectedTrip.id}`);
+              }
+              // Nothing to do for school admins that haven't selected a trip.
+            } else {
+              this.fetch();
+            }
           } else {
             this.needsLogin = true;
           }
@@ -55,6 +67,7 @@ export class PackingListComponent implements OnInit, OnDestroy {
    * @param tripId string the id of the trip to fetch for.
    */
   fetch(tripId?: string): void {
+    this.fetching = true;
     this.packingListService.fetchItems(tripId);
     this.subscribe();
   }
@@ -64,9 +77,10 @@ export class PackingListComponent implements OnInit, OnDestroy {
    */
   subscribe(): void {
     // Subscribe to the service observable
-    this.packingListService.item$.subscribe(
-      (items: TripPackingListItem[]) => {
+    this.packingListService.item$.subscribe({
+      next: (items: TripPackingListItem[]) => {
         this.logger.debug(`Got ${items.length} items from the service`);
+        this.fetching = false;
 
         // Assign the items to the corresponding properties
         items.forEach((i: TripPackingListItem) => {
@@ -96,10 +110,10 @@ export class PackingListComponent implements OnInit, OnDestroy {
           }
         );
       },
-      (err: string) => {
+      error: (err: string) => {
         this.logger.error(`Error fetching packing list items`, err);
-      }
-    );
+      },
+    });
   }
 
   /**
