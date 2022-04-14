@@ -1,19 +1,19 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { PaymentTermsComponent } from './payment-terms.component';
+import { PaymentClosedComponent } from './payment-closed.component';
 
-describe('PaymentTermsComponent', () => {
-  let component: PaymentTermsComponent;
-  let fixture: ComponentFixture<PaymentTermsComponent>;
+describe('PaymentClosedComponent', () => {
+  let component: PaymentClosedComponent;
+  let fixture: ComponentFixture<PaymentClosedComponent>;
   let translate: TranslateService;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [PaymentTermsComponent],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [PaymentClosedComponent],
       imports: [
         HttpClientTestingModule,
         LoadingSpinnerContentModule,
@@ -26,10 +26,10 @@ describe('PaymentTermsComponent', () => {
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-  }));
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PaymentTermsComponent);
+    fixture = TestBed.createComponent(PaymentClosedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

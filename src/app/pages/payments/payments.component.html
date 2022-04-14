@@ -1,26 +1,31 @@
-<ng-container
-  *ngIf="paymentService.getPaymentInfo()?.termsAccepted; else terms"
->
-  <div class="app-page-wrapper">
-    <div class="app-content-wrapper material-typography">
-      <app-payment-instructions></app-payment-instructions>
-      <app-payment-qr-codes></app-payment-qr-codes>
-      <div id="payment-take-screenshot">
-        <h1>{{ "PAYMENT_INSTRUCTIONS_2" | translate }}</h1>
-        <div id="screenshot-image-wrapper">
-          <img
-            id="example-payment-proof"
-            class="mat-elevation-z8"
-            [src]="staticUrl + 'img/portal/TH2HOJ70N83UMAH14LTD.jpg'"
-            alt="WeChat payment example screenshot"
-          />
+<ng-container *ngIf="paymentService.getPaymentInfo()?.open; else closed">
+  <ng-container
+    *ngIf="paymentService.getPaymentInfo()?.termsAccepted; else terms"
+  >
+    <div class="app-page-wrapper">
+      <div class="app-content-wrapper material-typography">
+        <app-payment-instructions></app-payment-instructions>
+        <app-payment-qr-codes></app-payment-qr-codes>
+        <div id="payment-take-screenshot">
+          <h1>{{ "PAYMENT_INSTRUCTIONS_2" | translate }}</h1>
+          <div id="screenshot-image-wrapper">
+            <img
+              id="example-payment-proof"
+              class="mat-elevation-z8"
+              [src]="staticUrl + 'img/portal/TH2HOJ70N83UMAH14LTD.jpg'"
+              alt="WeChat payment example screenshot"
+            />
+          </div>
         </div>
+        <app-payment-upload-proof></app-payment-upload-proof>
+        <app-payment-uploaded></app-payment-uploaded>
       </div>
-      <app-payment-upload-proof></app-payment-upload-proof>
-      <app-payment-uploaded></app-payment-uploaded>
     </div>
-  </div>
+  </ng-container>
+  <ng-template #terms>
+    <app-payment-terms></app-payment-terms>
+  </ng-template>
 </ng-container>
-<ng-template #terms>
-  <app-payment-terms></app-payment-terms>
+<ng-template #closed>
+  <app-payment-closed></app-payment-closed>
 </ng-template>
