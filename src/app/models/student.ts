@@ -14,6 +14,7 @@ export class Student {
   dob?: string;
   guardianName?: string;
   emergencyContact?: string;
+  wechatId?: string;
   waiverAccepted: boolean | null = null;
   waiverSignedOn?: string;
   dietaryRequirements?: number;
@@ -64,6 +65,7 @@ export class Student {
         'DOB',
         'GUARDIAN_NAME',
         'EMERGENCY_CONTACT',
+        'WECHAT_ID',
         'WAIVER_ACCEPTED',
         'WAIVER_SIGNED_ON',
         'DR',
@@ -113,6 +115,7 @@ export class Student {
     this.dob = json.dob;
     this.guardianName = json.guardian_name;
     this.emergencyContact = json.emergency_contact;
+    this.wechatId = json.wechat_id;
     this.waiverAccepted = json.waiver_accepted
       ? true
       : json.waiver_accepted === 0
@@ -149,6 +152,7 @@ export class Student {
       dob: this.translations.DOB,
       guardianName: this.translations.GUARDIAN_NAME,
       emergencyContact: this.translations.EMERGENCY_CONTACT,
+      wechatId: this.translations.WECHAT_ID,
       waiverAccepted: this.translations.WAIVER_ACCEPTED,
       waiverSignedOn: this.translations.WAIVER_SIGNED_ON,
       dietaryRequirements: this.translations.DIETARY_REQUIREMENTS,
@@ -316,6 +320,9 @@ export class Student {
         break;
       case 'emergencyContact':
         this.emergencyContact = value;
+        break;
+      case 'wechatId':
+        this.wechatId = value;
         break;
       case 'dietaryRequirements':
         this.dietaryRequirements = +value;

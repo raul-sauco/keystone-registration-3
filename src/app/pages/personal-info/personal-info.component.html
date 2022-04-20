@@ -119,6 +119,10 @@
               }}</mat-label>
               <input type="text" matInput formControlName="emergencyContact" />
             </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ student.getAttributeLabel("wechatId") }}</mat-label>
+              <input type="text" matInput formControlName="wechatId" />
+            </mat-form-field>
             <h2>{{ "DIETARY_REQUIREMENTS" | translate }}</h2>
             <p class="form-field-extra-hint">
               {{ "PIF_HINT_DIETARY" | translate }}
