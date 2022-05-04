@@ -2,41 +2,75 @@
   <app-login-required-message></app-login-required-message>
 </ng-container>
 <ng-template #app>
-  <ng-container *ngIf="itineraries$ | async as itineraries; else loading">
-    <div class="app-page-wrapper">
-      <div class="app-content-wrapper">
-        <app-admin-banner></app-admin-banner>
-        <ul class="itineraries-list mat-typography">
-          <ng-container *ngIf="itineraries.length > 0; else noItems">
-            <a
-              *ngFor="let itinerary of itineraries"
-              [href]="url + 'files/' + itinerary.link"
-              target="_blank"
-              class="itinerary-item-wrapper"
-            >
-              <li class="itinerary-item">
-                <div class="icon-container">
-                  <img [src]="url + 'file-icons/48px/pdf.png'" alt="pdf icon" />
-                </div>
-                <div class="file-details">
-                  <header class="file-name">
-                    {{
-                      lang.includes("zh")
-                        ? itinerary.name_zh
-                        : itinerary.name_en
-                    }}
-                  </header>
-                </div>
-              </li>
-            </a>
-          </ng-container>
-          <ng-template #noItems>
-            <app-no-results></app-no-results>
-          </ng-template>
-        </ul>
+  <ng-container *ngIf="showPDF; else dataIt">
+    <ng-container *ngIf="itineraries$ | async as itineraries; else loading">
+      <div class="app-page-wrapper">
+        <div class="app-content-wrapper">
+          <app-admin-banner></app-admin-banner>
+          <ul class="itineraries-list mat-typography">
+            <ng-container *ngIf="itineraries.length > 0; else noItems">
+              <a
+                *ngFor="let itinerary of itineraries"
+                [href]="url + 'files/' + itinerary.link"
+                target="_blank"
+                class="itinerary-item-wrapper"
+              >
+                <li class="itinerary-item">
+                  <div class="icon-container">
+                    <img
+                      [src]="url + 'file-icons/48px/pdf.png'"
+                      alt="pdf icon"
+                    />
+                  </div>
+                  <div class="file-details">
+                    <header class="file-name">
+                      {{
+                        lang.includes("zh")
+                          ? itinerary.name_zh
+                          : itinerary.name_en
+                      }}
+                    </header>
+                  </div>
+                </li>
+              </a>
+            </ng-container>
+            <ng-template #noItems>
+              <app-no-results></app-no-results>
+            </ng-template>
+          </ul>
+        </div>
       </div>
-    </div>
+    </ng-container>
   </ng-container>
+  <ng-template #dataIt>
+    <ng-container *ngIf="activityGroups; else loading">
+      <mat-tab-group dynamicHeight id="itinerary-tabs">
+        <mat-tab *ngFor="let ag of activityGroups" [label]="ag.name">
+          <mat-list>
+            <ng-container *ngFor="let d of ag.getOrderedItineraryDates()">
+              <h1 class="date-header" matSubheader>
+                {{ d | date: "EEE, MMMM d " }}
+              </h1>
+              <mat-divider></mat-divider>
+              <mat-list-item *ngFor="let event of ag.getFormattedItinerary(d)">
+                <p matLine>
+                  {{ event.getFormattedTimes() }} {{ event.getName() }}
+                </p>
+                <p
+                  matLine
+                  *ngIf="event.getNotes()"
+                  class="event-notes"
+                  height="fit-contents"
+                >
+                  {{ event.getNotes() }}
+                </p>
+              </mat-list-item>
+            </ng-container>
+          </mat-list>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
+  </ng-template>
   <ng-template #loading>
     <app-loading-spinner-content></app-loading-spinner-content>
   </ng-template>
