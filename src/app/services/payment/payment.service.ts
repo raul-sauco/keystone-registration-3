@@ -108,7 +108,7 @@ export class PaymentService {
    */
   fetchPaymentProofs() {
     this.logger.debug('PaymentService fetching payment proof images');
-    const endpoint = 'trip-direct-payment-proof';
+    const endpoint = 'trip-direct-payment-proof?expand=image';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export class PaymentService {
         this.logger.debug(
           `PaymentService received ${res.length} payment proof images from the server`
         );
-        const images: Image[] = res.map((e: any) => new Image(e));
+        const images: Image[] = res.map((e: any) => new Image(e.image));
         this.paymentProof$.next(images);
       },
       error: (err: any) => {
