@@ -1,7 +1,22 @@
 <div class="app-page-wrapper">
   <div class="app-content-wrapper material-typography">
     <div id="health-codes">
-      <p>{{ "HEALTH_CODES" | translate }}</p>
+      <h1>{{ "HEALTH_CODES" | translate }}</h1>
+      <input
+        type="file"
+        id="file-input"
+        (change)="onFileSelected($event)"
+        #fileUpload
+      />
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="fileUpload.click()"
+        class="primary-action-button"
+      >
+        <mat-icon>attach_file</mat-icon>
+        {{ "SELECT_IMAGE_PROMPT" | translate }}
+      </button>
     </div>
   </div>
 </div>
