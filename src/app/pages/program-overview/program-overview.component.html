@@ -1,1 +1,41 @@
-<p>program-overview works!</p>
+<ng-container *ngIf="needsLogin; else app">
+  <app-login-required-message></app-login-required-message>
+</ng-container>
+<ng-template #app>
+  <ng-container *ngIf="document$ | async as documents; else loading">
+    <div class="app-page-wrapper">
+      <div class="app-content-wrapper">
+        <app-admin-banner></app-admin-banner>
+        <ul class="documents-list mat-typography">
+          <ng-container *ngIf="documents.length > 0; else noItems">
+            <a
+              *ngFor="let document of documents"
+              [href]="url + 'files/' + document.link"
+              target="_blank"
+              class="document-item-wrapper"
+            >
+              <li class="document-item">
+                <div class="icon-container">
+                  <img [src]="url + 'file-icons/48px/pdf.png'" alt="pdf icon" />
+                </div>
+                <div class="file-details">
+                  <header class="file-name">
+                    {{
+                      lang.includes("zh") ? document.name_zh : document.name_en
+                    }}
+                  </header>
+                </div>
+              </li>
+            </a>
+          </ng-container>
+          <ng-template #noItems>
+            <app-no-results></app-no-results>
+          </ng-template>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading-spinner-content></app-loading-spinner-content>
+  </ng-template>
+</ng-template>
