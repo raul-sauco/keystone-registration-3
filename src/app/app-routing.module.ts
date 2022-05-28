@@ -1,8 +1,8 @@
-import { SchoolAdminGuard } from './guards/school-admin.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { NoAuthGuard } from './guards/no-auth.guard';
+import { SchoolAdminGuard } from './guards/school-admin.guard';
 import { TeacherGuard } from './guards/teacher.guard';
 
 const routes: Routes = [
@@ -28,6 +28,20 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/itinerary/itinerary.module').then(
         (m) => m.ItineraryModule
+      ),
+  },
+  {
+    path: 'program-overview',
+    loadChildren: () =>
+      import('./pages/program-overview/program-overview.module').then(
+        (m) => m.ProgramOverviewModule
+      ),
+  },
+  {
+    path: 'program-overview/:trip-id',
+    loadChildren: () =>
+      import('./pages/program-overview/program-overview.module').then(
+        (m) => m.ProgramOverviewModule
       ),
   },
   {

@@ -1,22 +1,22 @@
-import { TripSwitcherService } from './services/trip-switcher/trip-switcher.service';
-import { StudentService } from './services/student/student.service';
-import { PaymentService } from './services/payment/payment.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import {
-  map,
-  shareReplay,
-  delay,
-  withLatestFrom,
-  filter,
-} from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { RouteStateService } from './services/route-state/route-state.service';
-import { NavigationEnd, Router } from '@angular/router';
-import { MatSidenav } from '@angular/material/sidenav';
+import { Observable, of } from 'rxjs';
+import {
+  delay,
+  filter,
+  map,
+  shareReplay,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { AuthService } from './services/auth/auth.service';
+import { PaymentService } from './services/payment/payment.service';
+import { RouteStateService } from './services/route-state/route-state.service';
+import { StudentService } from './services/student/student.service';
+import { TripSwitcherService } from './services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +31,12 @@ export class AppComponent implements OnInit {
   tripId: string | null = null;
 
   public appPages = [
+    {
+      title: 'OVERVIEW',
+      url: '/program-overview',
+      icon: 'preview',
+      render: of(true),
+    },
     { title: 'ITINERARY', url: '/itinerary', icon: 'list', render: of(true) },
     {
       title: 'ACCOMMODATION',
