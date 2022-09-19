@@ -131,14 +131,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'health-codes',
-    loadChildren: () =>
-      import('./pages/health-codes/health-codes.module').then(
-        (m) => m.HealthCodesModule
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'payments',
     loadChildren: () =>
       import('./pages/payments/payments.module').then((m) => m.PaymentsModule),
