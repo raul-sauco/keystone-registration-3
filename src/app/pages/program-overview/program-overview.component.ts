@@ -70,12 +70,14 @@ export class ProgramOverviewComponent implements OnInit {
   fetchPdfData(tripId?: string): void {
     const endpoint =
       'files?tagged=itinerary' + (tripId ? `&trip-id=${tripId}` : '');
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-      }),
-    };
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (this.auth.getCredentials()?.accessToken) {
+      headers = headers.append(
+        'Authorization',
+        `Bearer ${this.auth.getCredentials()?.accessToken}`
+      );
+    }
+    const options = { headers };
     this.document$ = this.api.get(endpoint, null, options);
   }
 }
