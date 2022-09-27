@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -27,7 +27,7 @@ import { TripService } from 'src/app/services/trip/trip.service';
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(
-    control: FormControl | null,
+    control: UntypedFormControl | null,
     form: FormGroupDirective | NgForm | null
   ): boolean {
     return (control?.dirty && form?.invalid) || false;
@@ -41,14 +41,14 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 })
 export class RegisterComponent implements OnInit {
   loading: boolean = false;
-  userRegistrationForm!: FormGroup;
+  userRegistrationForm!: UntypedFormGroup;
   errorMatcher!: CrossFieldErrorMatcher;
 
   constructor(
     private api: ApiService,
     private auth: AuthService,
     private paymentService: PaymentService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
     public router: Router,
     private usernameValidator: UniqueUsernameValidator,
@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
   initUserRegistrationForm(): void {
     this.userRegistrationForm = this.formBuilder.group(
       {
-        username: new FormControl('', {
+        username: new UntypedFormControl('', {
           validators: [Validators.required],
           asyncValidators: [
             this.usernameValidator.validate.bind(this.usernameValidator),

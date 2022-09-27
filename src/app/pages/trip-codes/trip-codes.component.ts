@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { ApiService } from 'src/app/services/api/api.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { TripService } from 'src/app/services/trip/trip.service';
 import {
@@ -23,7 +23,7 @@ export interface DialogData {
   styleUrls: ['./trip-codes.component.scss'],
 })
 export class TripCodesComponent implements OnInit {
-  tripCodeForm!: FormGroup;
+  tripCodeForm!: UntypedFormGroup;
   tripId: string | null = null;
   loading: boolean = true;
 
@@ -32,7 +32,7 @@ export class TripCodesComponent implements OnInit {
     private api: ApiService,
     private router: Router,
     private translate: TranslateService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private trip: TripService,
     private logger: NGXLogger,
     public dialog: MatDialog

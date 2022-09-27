@@ -1,9 +1,9 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -20,7 +20,7 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(
-    control: FormControl,
+    control: UntypedFormControl,
     form: FormGroupDirective | NgForm
   ): boolean {
     return control.dirty && form.invalid!;
@@ -33,7 +33,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   styleUrls: ['./add-participant.component.scss'],
 })
 export class AddParticipantComponent implements OnInit {
-  participantForm!: FormGroup;
+  participantForm!: UntypedFormGroup;
   errorMatcher!: CrossFieldErrorMatcher;
   loading: boolean = false;
 
@@ -41,7 +41,7 @@ export class AddParticipantComponent implements OnInit {
     private api: ApiService,
     private auth: AuthService,
     public dialogRef: MatDialogRef<AddParticipantComponent>,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
     private uniqueUsernameValidator: UniqueUsernameValidator,
     private tripSwitcher: TripSwitcherService
@@ -56,7 +56,7 @@ export class AddParticipantComponent implements OnInit {
   initParticipantForm(): void {
     this.participantForm = this.formBuilder.group(
       {
-        username: new FormControl('', {
+        username: new UntypedFormControl('', {
           validators: [Validators.required],
           asyncValidators: [
             this.uniqueUsernameValidator.validate.bind(

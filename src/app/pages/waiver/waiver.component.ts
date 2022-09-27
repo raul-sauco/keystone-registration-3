@@ -1,7 +1,7 @@
 import { PaymentInfo } from 'src/app/models/paymentInfo';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,12 +20,12 @@ import { StudentService } from 'src/app/services/student/student.service';
 export class WaiverComponent implements OnInit, OnDestroy {
   needsLogin = false;
   posting = false;
-  waiverForm!: FormGroup;
+  waiverForm!: UntypedFormGroup;
   private student$?: Subscription | null = null;
 
   constructor(
     public auth: AuthService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
     private router: Router,
     private snackBar: MatSnackBar,

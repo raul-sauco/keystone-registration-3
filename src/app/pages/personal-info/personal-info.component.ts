@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -21,11 +21,11 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   private student$?: Subscription | null = null;
   private paymentInfo?: PaymentInfo | null = null;
   private paymentInfo$?: Subscription | null = null;
-  personalInfoForm!: FormGroup;
+  personalInfoForm!: UntypedFormGroup;
   needsLogin = false;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private snackBar: MatSnackBar,
     private logger: NGXLogger,
     private router: Router,

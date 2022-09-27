@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -22,12 +22,12 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent implements OnInit {
-  passwordRecoveryForm!: FormGroup;
+  passwordRecoveryForm!: UntypedFormGroup;
   loading: boolean = false;
 
   constructor(
     private api: ApiService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public dialog: MatDialog,
     private logger: NGXLogger,
     private router: Router
@@ -41,7 +41,7 @@ export class ForgotPasswordComponent implements OnInit {
   /** Initialize the form */
   initPasswordRecoveryForm(): void {
     this.passwordRecoveryForm = this.formBuilder.group({
-      email: new FormControl(
+      email: new UntypedFormControl(
         '',
         Validators.compose([Validators.required, Validators.email])
       ),

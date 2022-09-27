@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,7 +22,7 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
+  loginForm!: UntypedFormGroup;
   loading: boolean;
   errorMsg: string | null = null;
 
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private api: ApiService,
     private auth: AuthService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
     private snackbar: MatSnackBar,
     private translate: TranslateService,
@@ -52,8 +52,8 @@ export class LoginComponent implements OnInit {
   /** Initialize the login form with 2 fields, both required */
   initLoginForm() {
     this.loginForm = this.formBuilder.group({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+      username: new UntypedFormControl('', Validators.required),
+      password: new UntypedFormControl('', Validators.required),
     });
   }
 

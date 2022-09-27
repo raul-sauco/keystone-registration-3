@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -25,7 +25,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(
-    control: FormControl | null,
+    control: UntypedFormControl | null,
     form: FormGroupDirective | NgForm | null
   ): boolean {
     return (control?.dirty && form?.invalid) || false;
@@ -42,7 +42,7 @@ export class ResetPasswordComponent implements OnInit {
   loading = false;
   isTokenValid = false;
   accountNotFound = false;
-  passwordResetForm!: FormGroup;
+  passwordResetForm!: UntypedFormGroup;
   errorMatcher!: CrossFieldErrorMatcher;
   userData: any = null;
   private token: string | null = null;
@@ -53,7 +53,7 @@ export class ResetPasswordComponent implements OnInit {
     private auth: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger
   ) {}
 
