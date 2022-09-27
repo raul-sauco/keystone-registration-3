@@ -204,7 +204,21 @@
               ></textarea>
             </mat-form-field>
             <!-- END Medical information section -->
-
+            <!-- START School information section -->
+            <ng-container *ngIf="auth.getCredentials()?.type !== 4">
+              <h2>{{ "SCHOOL_INFORMATION" | translate }}</h2>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ student.getAttributeLabel("house") }}</mat-label>
+                <input type="text" matInput formControlName="house" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{
+                  student.getAttributeLabel("roomNumber")
+                }}</mat-label>
+                <input type="text" matInput formControlName="roomNumber" />
+              </mat-form-field>
+            </ng-container>
+            <!-- END School information section -->
             <button
               id="submit-personal-info"
               mat-raised-button

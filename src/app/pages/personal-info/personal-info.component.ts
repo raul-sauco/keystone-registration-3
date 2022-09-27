@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -119,6 +123,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       dob: [student.dob, Validators.required],
       guardianName: [student.guardianName],
       emergencyContact: [student.emergencyContact],
+      house: [student.house],
+      roomNumber: [student.roomNumber],
       wechatId: [student.wechatId],
       dietaryRequirements: [student.dietaryRequirements],
       dietaryRequirementsOther: [student.dietaryRequirementsOther],
@@ -174,6 +180,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       gender: data.gender,
       guardian_name: data.guardianName,
       emergency_contact: data.emergencyContact,
+      house: data.house,
+      room_number: data.roomNumber,
       wechat_id: data.wechatId,
       waiver_accepted: data.waiverAccepted,
       waiver_signed_on: data.waiverSignedOn,
