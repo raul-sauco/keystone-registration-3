@@ -120,6 +120,7 @@
   "HOME_CARD_TITLE_STAFF": "教练",
   "HOME_CARD_TITLE_TRANSPORTATION": "交通",
   "HOME_CARD_WELCOME_MESSAGE": "Keystone Adventures是中国户外教育的先驱之一。\n\n与中国其他户外教育提供商相比，我们提供的活动最广泛，编程方式也最丰富。",
+  "HOUSE": "住宿",
   "I": {
     "0": "否",
     "1": "是",
@@ -251,6 +252,8 @@
   "RESETTING_PASSWORD_FOR_USER_WITH_EMAIL": "使用电子邮件 <strong>{{email}}</strong> 为用户 <strong>{{username}}</strong> 重置密码",
   "RESET_PASSWORD": "重设密码",
   "RISK_MANAGEMENT": "风险管理",
+  "ROOM_NUMBER": "房间号",
+  "SCHOOL_HOUSE": "校舍",
   "SAFEGUARDING": "保障措施",
   "SAVE": "保存",
   "SCROLL_TO_BOTTOM_CLICK_SUBMIT": "滚动到底部并点击'提交'",

@@ -24,6 +24,8 @@ export class Student {
   medicalInformation?: string;
   paid: boolean | null = null;
   paymentVerified: boolean | null = null;
+  house: string | null = null;
+  roomNumber: string | null = null;
   // insurance: boolean;
   // insuranceName: string;
   // insurancePolicyNumber: string;
@@ -77,6 +79,8 @@ export class Student {
         'MEDICAL_INFORMATION',
         'PAID',
         'PAYMENT_VERIFIED',
+        'SCHOOL_HOUSE',
+        'ROOM_NUMBER',
         // 'INSURANCE',
         // 'I',
         // 'INSURANCE_NAME',
@@ -133,6 +137,8 @@ export class Student {
       : json.payment_verified === 0
       ? false
       : null;
+    this.house = json.house;
+    this.roomNumber = json.room_number;
     // this.insurance = json.insurance;
     // this.insuranceName = json.insurance_name;
     // this.insurancePolicyNumber = json.insurance_policy_number;
@@ -162,6 +168,8 @@ export class Student {
       medicalInformation: this.translations.MEDICAL_INFORMATION,
       paid: this.translations.PAID,
       paymentVerified: this.translations.PAYMENT_VERIFIED,
+      house: this.translations.SCHOOL_HOUSE,
+      roomNumber: this.translations.ROOM_NUMBER,
       // insurance: this.translations.INSURANCE,
       // insuranceName: this.translations.INSURANCE_NAME,
       // insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER,
@@ -338,6 +346,12 @@ export class Student {
         break;
       case 'medicalInformation':
         this.medicalInformation = value;
+        break;
+      case 'house':
+        this.house = value;
+        break;
+      case 'roomNumber':
+        this.roomNumber = value;
         break;
     }
   }

@@ -120,6 +120,7 @@
   "HOME_CARD_TITLE_STAFF": "Staff",
   "HOME_CARD_TITLE_TRANSPORTATION": "Transportation",
   "HOME_CARD_WELCOME_MESSAGE": "Keystone Adventures is one of the pioneers of outdoor education in China.\n\nCompared to other providers of outdoor education in China, we offer the broadest array of activities and the greatest variety in programming.",
+  "HOUSE": "House",
   "I": {
     "0": "No",
     "1": "Yes",
@@ -251,8 +252,10 @@
   "RESETTING_PASSWORD_FOR_USER_WITH_EMAIL": "Resetting password for user <strong>{{username}}</strong> with email <strong>{{email}}</strong>",
   "RESET_PASSWORD": "Reset password",
   "RISK_MANAGEMENT": "Risk management",
+  "ROOM_NUMBER": "Room number",
   "SAFEGUARDING": "Safeguarding",
   "SAVE": "Save",
+  "SCHOOL_HOUSE": "School House",
   "SCROLL_TO_BOTTOM_CLICK_SUBMIT": "Scroll to the bottom and click 'submit'",
   "SCROLL_TO_BOTTOM_CLICK_UPDATE": "Scroll to the bottom and click <strong>Update</strong> to submit",
   "SECURITY_CODE": "Security Code",

@@ -1,4 +1,3 @@
-import { Trip } from 'src/app/models/trip';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import {
@@ -11,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { map, timeout } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AddParticipantComponent } from 'src/app/components/add-participant/add-participant.component';
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -45,6 +44,8 @@ export class ParticipantsComponent implements OnInit {
       'type',
       'firstName',
       'lastName',
+      'house',
+      'roomNumber',
       ...(this.displayPaymentInfoColumns() ? ['paid'] : []),
       ...(this.displayPaymentInfoColumns() ? ['paymentVerified'] : []),
       'citizenship',
@@ -172,6 +173,8 @@ export class ParticipantsComponent implements OnInit {
     if (
       attr === 'firstName' ||
       attr === 'lastName' ||
+      attr === 'house' ||
+      attr === 'roomNumber' ||
       attr === 'citizenship' ||
       attr === 'travelDocument' ||
       attr === 'guardianName' ||
