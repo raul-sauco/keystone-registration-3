@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddParticipantModule } from 'src/app/components/add-participant/add-participant.module';
@@ -46,6 +47,7 @@ import {
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatSortModule,
     MatTableModule,
     ParticipantsRoutingModule,
     PipesModule,

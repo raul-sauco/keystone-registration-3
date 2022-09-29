@@ -6,6 +6,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Sort } from '@angular/material/sort';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
@@ -29,8 +30,10 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
 export class ParticipantsComponent implements OnInit {
   participant$!: Observable<Student[]>;
   displayedColumns: string[];
+  sortableColumns: string[];
   canDetermineTrip = true;
   school: School | null = null;
+  sortedParticipants: Student[] = [];
 
   constructor(
     private api: ApiService,
@@ -44,6 +47,30 @@ export class ParticipantsComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.displayedColumns = this.getDisplayedColumns();
+    this.sortableColumns = [
+      'index',
+      'type',
+      'firstName',
+      'lastName',
+      'house',
+      'roomNumber',
+      'paid',
+      'paymentVerified',
+      'citizenship',
+      // 'travelDocument',
+      // 'gender',
+      // 'dob',
+      // 'guardianName',
+      // 'emergencyContact',
+      'waiverAccepted',
+      'waiverSignedOn',
+      // 'dietaryRequirements',
+      // 'dietaryRequirementsOther',
+      // 'allergies',
+      // 'allergiesOther',
+      // 'medicalInformation',
+      // 'delete',
+    ];
   }
 
   ngOnInit(): void {
@@ -101,6 +128,14 @@ export class ParticipantsComponent implements OnInit {
    * Keep this subscriptions alive for the lifetime of the component.
    */
   private subscribeToUpdates(): void {
+    this.participant$.subscribe({
+      next: (students: Student[]) => {
+        this.logger.debug('ParticipantsComponent participant$ next', students);
+        this.sortedParticipants = students;
+      },
+      error: (err: any) => this.logger.warn(err),
+    });
+    // School service updates.
     this.schoolService.school$.subscribe({
       next: (school: School) => {
         this.logger.debug('ParticipantsComponent school$ next', school);
@@ -333,6 +368,46 @@ export class ParticipantsComponent implements OnInit {
         );
       }
     });
+  }
+
+  /**
+   * Sort the participant data based on the selected column content and
+   * selected direction.
+   */
+  sortData(event: Sort) {
+    this.logger.debug(`Sorting data by ${event.active} ${event.direction}`);
+    const data = this.sortedParticipants.slice();
+    if (!event.active || event.direction === '') {
+      this.sortedParticipants = data;
+      return;
+    }
+
+    this.sortedParticipants = data.sort((a, b) => {
+      const isAsc = event.direction === 'asc';
+      if (this.sortableColumns.includes(event.active)) {
+        return this.compareStudentAttributeValues(
+          a.getAttributeText(event.active as keyof Student),
+          b.getAttributeText(event.active as keyof Student),
+          isAsc
+        );
+      }
+      return 0;
+    });
+  }
+
+  /**
+   * Compare two values of the same type obtained from a Student attribute.
+   * @param a the first value.
+   * @param b the second value.
+   * @param isAsc whether to sort in ascending order.
+   * @returns number indicating the order of the values.
+   */
+  compareStudentAttributeValues(
+    a: number | string,
+    b: number | string,
+    isAsc: boolean
+  ): number {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
 
