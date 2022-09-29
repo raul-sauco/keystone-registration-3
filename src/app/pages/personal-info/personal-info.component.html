@@ -204,19 +204,32 @@
               ></textarea>
             </mat-form-field>
             <!-- END Medical information section -->
-            <!-- START School information section -->
-            <ng-container *ngIf="auth.getCredentials()?.type !== 4">
-              <h2>{{ "SCHOOL_INFORMATION" | translate }}</h2>
-              <mat-form-field appearance="outline">
-                <mat-label>{{ student.getAttributeLabel("house") }}</mat-label>
-                <input type="text" matInput formControlName="house" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>{{
-                  student.getAttributeLabel("roomNumber")
-                }}</mat-label>
-                <input type="text" matInput formControlName="roomNumber" />
-              </mat-form-field>
+            <!-- START School information section, wait until we have school info -->
+            <ng-container *ngIf="schoolService.school$ | async as school">
+              <!-- Only display this section to students and only when the school requires it -->
+              <ng-container
+                *ngIf="
+                  auth.getCredentials()?.type === 6 &&
+                  (school.useHouse || school.useRoomNumber)
+                "
+              >
+                <h2>{{ "SCHOOL_INFORMATION" | translate }}</h2>
+                <mat-form-field appearance="outline" *ngIf="school.useHouse">
+                  <mat-label>{{
+                    student.getAttributeLabel("house")
+                  }}</mat-label>
+                  <input type="text" matInput formControlName="house" />
+                </mat-form-field>
+                <mat-form-field
+                  appearance="outline"
+                  *ngIf="school.useRoomNumber"
+                >
+                  <mat-label>{{
+                    student.getAttributeLabel("roomNumber")
+                  }}</mat-label>
+                  <input type="text" matInput formControlName="roomNumber" />
+                </mat-form-field>
+              </ng-container>
             </ng-container>
             <!-- END School information section -->
             <button

@@ -58,7 +58,7 @@ export class ParticipantsComponent implements OnInit {
       'type',
       'firstName',
       'lastName',
-      ...(this.school ? ['house'] : ['room']),
+      ...(this.school?.useHouse ? ['house'] : []),
       ...(this.school?.useRoomNumber ? ['roomNumber'] : []),
       ...(this.displayPaymentInfoColumns() ? ['paid'] : []),
       ...(this.displayPaymentInfoColumns() ? ['paymentVerified'] : []),

@@ -14,6 +14,7 @@ import { PaymentInfo } from 'src/app/models/paymentInfo';
 import { Student } from 'src/app/models/student';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
+import { SchoolService } from 'src/app/services/school/school.service';
 import { StudentService } from 'src/app/services/student/student.service';
 
 @Component({
@@ -35,6 +36,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     private router: Router,
     private translate: TranslateService,
     private paymentService: PaymentService,
+    public schoolService: SchoolService,
     public studentService: StudentService,
     public auth: AuthService
   ) {}

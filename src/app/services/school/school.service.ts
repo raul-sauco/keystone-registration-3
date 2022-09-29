@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -87,7 +87,9 @@ export class SchoolService {
             // Send the new school data to the subscribers.
             this.school$.next(this.school);
             // Add a TTL field to the school data, 10 minutes.
-            schoolData.ttl = Date.now() + 1000 * 60 * 10;
+            schoolData.ttl = isDevMode()
+              ? Date.now()
+              : Date.now() + 1000 * 60 * 10;
             // Save the school data to local storage. Use JSON format.
             this.storage.set(this.SCHOOL_SERVICE_STORAGE_KEY, schoolData);
           },
