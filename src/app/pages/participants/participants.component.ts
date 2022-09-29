@@ -12,10 +12,12 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AddParticipantComponent } from 'src/app/components/add-participant/add-participant.component';
+import { School } from 'src/app/models/school';
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
+import { SchoolService } from 'src/app/services/school/school.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
@@ -28,6 +30,7 @@ export class ParticipantsComponent implements OnInit {
   participant$!: Observable<Student[]>;
   displayedColumns: string[];
   canDetermineTrip = true;
+  school: School | null = null;
 
   constructor(
     private api: ApiService,
@@ -35,17 +38,28 @@ export class ParticipantsComponent implements OnInit {
     private logger: NGXLogger,
     private dialog: MatDialog,
     private paymentService: PaymentService,
+    private schoolService: SchoolService,
     private translate: TranslateService,
     private tripSwitcher: TripSwitcherService,
     private snackBar: MatSnackBar
   ) {
-    this.displayedColumns = [
+    this.displayedColumns = this.getDisplayedColumns();
+  }
+
+  ngOnInit(): void {
+    this.logger.debug('ParticipantsComponent OnInit');
+    this.loadStudentData();
+    this.subscribeToUpdates();
+  }
+
+  private getDisplayedColumns(): string[] {
+    return [
       'index',
       'type',
       'firstName',
       'lastName',
-      'house',
-      'roomNumber',
+      ...(this.school ? ['house'] : ['room']),
+      ...(this.school?.useRoomNumber ? ['roomNumber'] : []),
       ...(this.displayPaymentInfoColumns() ? ['paid'] : []),
       ...(this.displayPaymentInfoColumns() ? ['paymentVerified'] : []),
       'citizenship',
@@ -65,11 +79,6 @@ export class ParticipantsComponent implements OnInit {
     ];
   }
 
-  ngOnInit(): void {
-    this.logger.debug('ParticipantsComponent OnInit');
-    this.loadStudentData();
-  }
-
   /**
    * Check component properties before fetch to load student data.
    */
@@ -85,6 +94,23 @@ export class ParticipantsComponent implements OnInit {
     } else {
       this.fetch();
     }
+  }
+
+  /**
+   * Subscribe to updates from the services used by the component.
+   * Keep this subscriptions alive for the lifetime of the component.
+   */
+  private subscribeToUpdates(): void {
+    this.schoolService.school$.subscribe({
+      next: (school: School) => {
+        this.logger.debug('ParticipantsComponent school$ next', school);
+        this.school = school;
+        // Some of the columns are displayed conditionally based on the school
+        // data. Refresh the list of displayed columns.
+        this.displayedColumns = this.getDisplayedColumns();
+      },
+      error: (err: any) => this.logger.warn(err),
+    });
   }
 
   /**
@@ -138,6 +164,15 @@ export class ParticipantsComponent implements OnInit {
     );
   }
 
+  /**
+   * The payment info columns are displayed conditionally, encapsulate the
+   * display logic in a function.
+   *
+   * There are two situations under which the payment info columns are displayed:
+   * - For regular users, the payment service determines that payment information is required.
+   * - For school administrators, the trip.acceptDirectPayment attribute is set to true for
+   * the trip that they are currently visualizing.
+   */
   private displayPaymentInfoColumns(): boolean {
     return (
       (this.paymentService.getPaymentInfo()?.required ||
