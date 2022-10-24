@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { Spied } from 'src/app/interfaces/spied';
 import { Credentials } from 'src/app/models/credentials';
 import { School } from 'src/app/models/school';
@@ -101,6 +101,12 @@ describe('SchoolService', () => {
       useRoomNumber: true,
       ttl: Date.now() - 1000,
     };
+    const apiSchoolData = {
+      name: 'API School',
+      nameZh: 'API學校',
+      useHouse: true,
+      useRoomNumber: true,
+    };
     beforeEach(() => {
       // Expired school data
       expiredSchoolData.ttl = Date.now();
@@ -119,6 +125,10 @@ describe('SchoolService', () => {
       );
       storageServiceSpy = jasmine.createSpyObj('StorageService', {
         get: Promise.resolve(expiredSchoolData),
+        set: Promise.resolve(true),
+      });
+      apiServiceSpy = jasmine.createSpyObj('ApiService', {
+        get: of(apiSchoolData),
       });
       loggerSpy = jasmine.createSpyObj('NGXLogger', { debug: null });
       TestBed.configureTestingModule({
@@ -127,6 +137,7 @@ describe('SchoolService', () => {
           { provide: AuthService, useValue: authServiceSpy },
           { provide: StorageService, useValue: storageServiceSpy },
           { provide: NGXLogger, useValue: loggerSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       });
     });
@@ -136,10 +147,27 @@ describe('SchoolService', () => {
       expect(service).toBeTruthy();
       tick();
       expect(authServiceSpy.getCredentials).toHaveBeenCalled();
+      tick();
+      expect(service.getSchool()?.name)
+        .withContext(
+          'The school in the service should be the one fetched from the API'
+        )
+        .toEqual('API School');
+      expect(storageServiceSpy.set).toHaveBeenCalledWith(
+        'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY',
+        apiSchoolData
+      );
     }));
   });
 
   describe('with no school data', () => {
+    const apiSchoolData = {
+      name: 'API School',
+      nameZh: 'API學校',
+      useHouse: true,
+      useRoomNumber: true,
+    };
+
     beforeEach(() => {
       authServiceSpy = jasmine.createSpyObj(
         'AuthService',
@@ -156,14 +184,19 @@ describe('SchoolService', () => {
       );
       storageServiceSpy = jasmine.createSpyObj('StorageService', {
         get: Promise.resolve(null),
+        set: Promise.resolve(true),
       });
       loggerSpy = jasmine.createSpyObj('NGXLogger', { debug: null });
+      apiServiceSpy = jasmine.createSpyObj('ApiService', {
+        get: of(apiSchoolData),
+      });
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, LoggerTestingModule],
         providers: [
           { provide: AuthService, useValue: authServiceSpy },
           { provide: StorageService, useValue: storageServiceSpy },
           { provide: NGXLogger, useValue: loggerSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       });
     });
@@ -172,8 +205,65 @@ describe('SchoolService', () => {
       service = TestBed.inject(SchoolService);
       expect(service).toBeTruthy();
       tick();
-      expect(loggerSpy.debug).toHaveBeenCalledWith(
-        'SchoolService found no info in storage'
+      expect(authServiceSpy.getCredentials).toHaveBeenCalled();
+      tick();
+      expect(service.getSchool()?.name)
+        .withContext(
+          'The school in the service should be the one fetched from the API'
+        )
+        .toEqual('API School');
+      expect(storageServiceSpy.set).toHaveBeenCalledWith(
+        'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY',
+        apiSchoolData
+      );
+    }));
+  });
+
+  describe('when api returns error', () => {
+    beforeEach(() => {
+      authServiceSpy = jasmine.createSpyObj(
+        'AuthService',
+        {
+          getCredentials: new Credentials({
+            userName: 'test',
+            accessToken: 'test-token',
+            type: 8, // School admin type
+            studentId: undefined,
+          }),
+          checkAuthenticated: Promise.resolve(true),
+        },
+        { auth$: of(true) }
+      );
+      storageServiceSpy = jasmine.createSpyObj('StorageService', {
+        get: Promise.resolve(null),
+        set: Promise.resolve(true),
+      });
+      loggerSpy = jasmine.createSpyObj('NGXLogger', {
+        debug: null,
+        warn: null,
+      });
+      apiServiceSpy = jasmine.createSpyObj('ApiService', {
+        get: throwError(() => new Error('API error')),
+      });
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule, LoggerTestingModule],
+        providers: [
+          { provide: AuthService, useValue: authServiceSpy },
+          { provide: StorageService, useValue: storageServiceSpy },
+          { provide: NGXLogger, useValue: loggerSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+        ],
+      });
+    });
+
+    it('should fetch data from the server', fakeAsync(() => {
+      service = TestBed.inject(SchoolService);
+      expect(service).toBeTruthy();
+      tick();
+      expect(authServiceSpy.getCredentials).toHaveBeenCalled();
+      expect(loggerSpy.warn).toHaveBeenCalledWith(
+        'SchoolService error fetching school data',
+        new Error('API error')
       );
     }));
   });
