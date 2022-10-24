@@ -35,7 +35,9 @@
               "src/sass/styles.scss",
               "src/sass/themes/ka.scss"
             ],
-            "scripts": ["node_modules/marked/marked.min.js"],
+            "scripts": [
+              "node_modules/marked/marked.min.js"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -145,7 +147,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         },
         "e2e": {
