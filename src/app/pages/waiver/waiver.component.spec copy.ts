@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -13,23 +12,17 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { of } from 'rxjs';
-import { HttpLoaderFactory } from 'src/app/app.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { Spied } from 'src/app/interfaces/spied';
 import { Credentials } from 'src/app/models/credentials';
 import { Student } from 'src/app/models/student';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { StudentService } from 'src/app/services/student/student.service';
-import { WaiverContentComponent } from './waiver-content/waiver-content.component';
 import { WaiverComponent } from './waiver.component';
 
 describe('WaiverComponent', () => {
@@ -61,18 +54,18 @@ describe('WaiverComponent', () => {
       debug: null,
       error: null,
     });
-    studentSpy = jasmine.createSpyObj('Student', {
-      getAttributeText: 'Mocked attribute text',
-    });
-    studentServiceSpy = jasmine.createSpyObj(
-      'StudentService',
-      { refreshStudent: null },
-      {
-        student$: of(studentSpy),
-      }
-    );
+    // studentSpy = jasmine.createSpyObj('Student', {
+    //   getAttributeText: 'Mocked attribute text',
+    // });
+    // studentServiceSpy = jasmine.createSpyObj(
+    //   'StudentService',
+    //   { refreshStudent: null },
+    //   {
+    //     student$: of(studentSpy),
+    //   }
+    // );
     TestBed.configureTestingModule({
-      declarations: [WaiverComponent, WaiverContentComponent],
+      declarations: [WaiverComponent],
       imports: [
         FormsModule,
         HttpClientTestingModule,
@@ -84,31 +77,30 @@ describe('WaiverComponent', () => {
         TranslateTestingModule.withTranslations({
           en: require('src/assets/i18n/en.json'),
         }),
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: HttpLoaderFactory,
-            deps: [HttpClient],
-          },
-        }),
+        // TranslateModule.forRoot({
+        //   loader: {
+        //     provide: TranslateLoader,
+        //     useFactory: HttpLoaderFactory,
+        //     deps: [HttpClient],
+        //   },
+        // }),
       ],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: NGXLogger, useValue: loggerSpy },
-        { provide: StudentService, useValue: studentServiceSpy },
+        // { provide: StudentService, useValue: studentServiceSpy },
       ],
     }).compileComponents();
-    translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
-    translate.use('en');
-    http = TestBed.inject(HttpTestingController);
+    // translate = TestBed.inject(TranslateService);
+    // translate.setDefaultLang('en');
+    // translate.use('en');
+    // http = TestBed.inject(HttpTestingController);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WaiverComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -120,10 +112,13 @@ describe('WaiverComponent', () => {
   });
 
   it('should get the credentials from the auth service', fakeAsync(() => {
-    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
+    fixture.detectChanges();
     tick();
-    // TODO: Fix this test
+    expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
+    // tick();
     // expect(authServiceSpy.getCredentials).toHaveBeenCalled();
-    // expect(loggerSpy.error).toHaveBeenCalledWith('W');
+    // expect(loggerSpy.error).toHaveBeenCalledWith(
+    //   'WaiverComponent next student$'
+    // );
   }));
 });

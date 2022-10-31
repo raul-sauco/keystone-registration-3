@@ -1,7 +1,9 @@
-import { PaymentInfo } from 'src/app/models/paymentInfo';
-import { PaymentService } from 'src/app/services/payment/payment.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,6 +38,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.logger.debug('WaiverComponent OnInit');
     this.auth.checkAuthenticated().then((res: boolean) => {
+      this.logger.debug('WaiverComponent Resolved Authenticated');
       if (res) {
         if (this.auth.getCredentials()?.accessToken) {
           if (this.auth.getCredentials()?.studentId) {

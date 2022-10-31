@@ -2,6 +2,11 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
   "cSpell.words": [
     "chatbubbles",
     "Contenteditable",
