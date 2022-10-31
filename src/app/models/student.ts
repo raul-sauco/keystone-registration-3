@@ -101,15 +101,6 @@ export class Student {
    * Use JSON data to set this student's attributes.
    */
   private setFromJSON(json: any) {
-    // Prevent updates if the JSON id does not match
-    if (this.id && this.id !== json.id) {
-      this.logger.error(
-        'Trying to update student with wrong ID parameter',
-        json
-      );
-      return false;
-    }
-
     // Use the id attribute for creation scenarios
     this.id = json.id;
     this.type = json.type;
@@ -194,10 +185,8 @@ export class Student {
     if (typeof this[attr] === 'boolean') {
       if (this[attr] === true) {
         return this.translations.YES;
-      } else if (this[attr] === false) {
-        return this.translations.NO;
       } else {
-        return '';
+        return this.translations.NO;
       }
     }
     if (attr === 'gender') {
@@ -245,13 +234,13 @@ export class Student {
    */
   isAttributeEmpty(attr: keyof Student): boolean {
     if (typeof this[attr] === 'boolean') {
-      return !(this[attr] === true || this[attr] === false);
+      return false;
     }
 
     if (typeof this[attr] === 'number') {
       return this[attr] === null;
     }
-
+    // This works as expected for empty booleans.
     return !this[attr];
   }
 
