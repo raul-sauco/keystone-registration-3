@@ -40,6 +40,15 @@
             </mat-form-field>
             <mat-form-field
               appearance="outline"
+              [hintLabel]="'PIF_HINT_ENGLISH_NAME' | translate"
+            >
+              <mat-label>{{
+                student.getAttributeLabel("englishName")
+              }}</mat-label>
+              <input type="text" matInput formControlName="englishName" />
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
               [hintLabel]="'PIF_HINT_CITIZENSHIP' | translate"
             >
               <mat-label>{{

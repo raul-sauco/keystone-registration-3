@@ -99,6 +99,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     return this.personalInfoForm.get('lastName');
   }
 
+  get englishName() {
+    return this.personalInfoForm.get('englishName');
+  }
+
   get citizenship() {
     return this.personalInfoForm.get('citizenship');
   }
@@ -119,6 +123,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.personalInfoForm = this.formBuilder.group({
       firstName: [student.firstName, Validators.required],
       lastName: [student.lastName, Validators.required],
+      englishName: [student.englishName],
       citizenship: [student.citizenship, Validators.required],
       travelDocument: [student.travelDocument, Validators.required],
       gender: [student.gender, Validators.required],
@@ -177,6 +182,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     const sanitizedData: any = {
       first_name: data.firstName,
       last_name: data.lastName,
+      english_name: data.englishName,
       citizenship: data.citizenship,
       travel_document: data.travelDocument,
       gender: data.gender,

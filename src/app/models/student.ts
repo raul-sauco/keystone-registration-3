@@ -8,6 +8,7 @@ export class Student {
   type?: number; // 1 for teacher, 0 for student
   firstName?: string;
   lastName?: string;
+  englishName?: string;
   citizenship?: string;
   travelDocument?: string;
   gender?: number;
@@ -59,6 +60,7 @@ export class Student {
         'INDEX',
         'FIRST_NAME',
         'LAST_NAME',
+        'ENGLISH_NAME',
         'CITIZENSHIP',
         'TRAVEL_DOCUMENT',
         'TRAVEL_DOCUMENT_NUMBER',
@@ -113,6 +115,7 @@ export class Student {
     this.type = json.type;
     this.firstName = json.first_name;
     this.lastName = json.last_name;
+    this.englishName = json.english_name;
     this.citizenship = json.citizenship;
     this.travelDocument = json.travel_document;
     this.gender = json.gender;
@@ -152,6 +155,7 @@ export class Student {
       id: this.translations.ID,
       firstName: this.translations.FIRST_NAME,
       lastName: this.translations.LAST_NAME,
+      englishName: this.translations.ENGLISH_NAME,
       citizenship: this.translations.COUNTRY_OF_CITIZENSHIP,
       travelDocument: this.translations.TRAVEL_DOCUMENT_NUMBER,
       gender: this.translations.GENDER,
@@ -274,6 +278,7 @@ export class Student {
     this.personalAttributes = [
       { name: 'firstName', visible: true },
       { name: 'lastName', visible: true },
+      { name: 'englishName', visible: true },
       { name: 'citizenship', visible: true },
       { name: 'travelDocument', visible: true },
       { name: 'gender', visible: true },
@@ -316,6 +321,9 @@ export class Student {
         break;
       case 'lastName':
         this.lastName = value;
+        break;
+      case 'englishName':
+        this.englishName = value;
         break;
       case 'citizenship':
         this.citizenship = value;
