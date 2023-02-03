@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { NGXLogger } from 'ngx-logger';
 import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
 import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
