@@ -1,6 +1,6 @@
 <div id="home-slides-container">
   <div *ngFor="let card of cards; index as i" class="home-presentation-card">
-    <mat-card>
+    <mat-card appearance="outlined">
       <img mat-card-image [src]="url + card.image" [alt]="card.image" />
       <mat-card-title>{{ card.title | translate }}</mat-card-title>
       <mat-card-content
