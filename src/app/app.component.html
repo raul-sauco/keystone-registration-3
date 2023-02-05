@@ -48,30 +48,30 @@
         *ngIf="auth.auth$ | async; else login"
         (click)="logout()"
       >
-        <mat-icon matListIcon color="primary">open_in_new</mat-icon>
-        <p matLine>
+        <mat-icon matListItemIcon color="primary">open_in_new</mat-icon>
+        <span>
           {{ "LOG_OUT" | translate | uppercase }} ({{
             auth.getCredentials()?.userName
           }})
-        </p>
+        </span>
         <mat-divider [inset]="true"></mat-divider>
       </a>
       <ng-template #login>
         <a mat-list-item routerLink="/login">
-          <mat-icon matListIcon color="primary">exit_to_app</mat-icon>
-          <p matLine>{{ "LOG_IN" | translate | uppercase }}</p>
+          <mat-icon matListItemIcon color="primary">exit_to_app</mat-icon>
+          <span>{{ "LOG_IN" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-template>
       <a mat-list-item routerLink="/home">
-        <mat-icon matListIcon color="primary">home</mat-icon>
-        <p matLine>{{ "HOME" | translate | uppercase }}</p>
+        <mat-icon matListItemIcon color="primary">home</mat-icon>
+        <span>{{ "HOME" | translate | uppercase }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </a>
       <ng-container *ngIf="(auth.auth$ | async) && auth.isSchoolAdmin">
         <a mat-list-item routerLink="/trip-switcher">
-          <mat-icon matListIcon color="primary">restart_alt</mat-icon>
-          <p matLine>{{ "SWITCH_TRIP" | translate | uppercase }}</p>
+          <mat-icon matListItemIcon color="primary">restart_alt</mat-icon>
+          <span>{{ "SWITCH_TRIP" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider> </a
       ></ng-container>
 
@@ -80,7 +80,7 @@
         <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
         <a mat-list-item routerLink="/personal-info">
           <mat-icon
-            matListIcon
+            matListItemIcon
             color="primary"
             matBadge="!"
             matBadgeColor="warn"
@@ -89,19 +89,19 @@
             "
             >person</mat-icon
           >
-          <p matLine>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</p>
+          <span>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider
         ></a>
         <a mat-list-item routerLink="/waiver">
           <mat-icon
-            matListIcon
+            matListItemIcon
             color="primary"
             matBadge="!"
             matBadgeColor="warn"
             [matBadgeHidden]="(studentService.student$ | async)?.waiverAccepted"
             >verified_user</mat-icon
           >
-          <p matLine>{{ "WAIVER" | translate | uppercase }}</p>
+          <span>{{ "WAIVER" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider
         ></a>
         <ng-container *ngIf="auth.isStudent">
@@ -111,14 +111,14 @@
             routerLink="/payments"
           >
             <mat-icon
-              matListIcon
+              matListItemIcon
               color="primary"
               matBadge="!"
               matBadgeColor="warn"
               [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
               >payments</mat-icon
             >
-            <p matLine>{{ "PAYMENTS" | translate | uppercase }}</p>
+            <span>{{ "PAYMENTS" | translate | uppercase }}</span>
             <mat-divider [inset]="true"></mat-divider
           ></a>
         </ng-container>
@@ -135,8 +135,8 @@
           "
           *ngIf="page.render | async"
         >
-          <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
-          <p matLine>{{ page.title | translate | uppercase }}</p>
+          <mat-icon matListItemIcon color="primary">{{ page.icon }}</mat-icon>
+          <span>{{ page.title | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-container>
@@ -151,8 +151,8 @@
           [routerLink]="page.url"
           *ngFor="let page of teacherPages; last as last"
         >
-          <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
-          <p matLine>{{ page.title | translate | uppercase }}</p>
+          <mat-icon matListItemIcon color="primary">{{ page.icon }}</mat-icon>
+          <span>{{ page.title | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-container>
@@ -168,8 +168,8 @@
           "
           *ngIf="page.render | async"
         >
-          <mat-icon matListIcon color="primary">{{ page.icon }}</mat-icon>
-          <p matLine>{{ page.title | translate | uppercase }}</p>
+          <mat-icon matListItemIcon color="primary">{{ page.icon }}</mat-icon>
+          <span>{{ page.title | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-container>
@@ -182,8 +182,8 @@
           (paymentService.paymentInfo$ | async)?.required
         "
       >
-        <mat-icon matListIcon color="primary">paid</mat-icon>
-        <p matLine>{{ "PAYMENT_TERMS" | translate | uppercase }}</p>
+        <mat-icon matListItemIcon color="primary">paid</mat-icon>
+        <span>{{ "PAYMENT_TERMS" | translate | uppercase }}</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>
