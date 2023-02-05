@@ -20,55 +20,53 @@ describe('HomeComponent', () => {
   let activatedRouteSpy: Spied<ActivatedRoute>;
   let routeStateServiceSpy: Spied<RouteStateService>;
 
-  beforeEach(
-    waitForAsync(() => {
-      activatedRouteSpy = jasmine.createSpyObj(
-        'ActivatedRoute',
+  beforeEach(waitForAsync(() => {
+    activatedRouteSpy = jasmine.createSpyObj(
+      'ActivatedRoute',
+      {
+        checkAuthenticated: Promise.resolve(true),
+      },
+      {
+        paramMap: of(
+          convertToParamMap({
+            'trip-id': 111,
+          })
+        ),
+      }
+    );
+    routeStateServiceSpy = jasmine.createSpyObj('RouteStateService', {
+      getTripId: '112',
+      updateTripIdParamState: null,
+      setNullTripIdParamState: null,
+    });
+    TestBed.configureTestingModule({
+      declarations: [HomeComponent],
+      imports: [
+        BrowserAnimationsModule,
+        RouterTestingModule,
+        LoggerTestingModule,
+        TranslateTestingModule.withTranslations({
+          en: require('src/assets/i18n/en.json'),
+        }),
+        MarkdownModule.forRoot(),
+        MatCardModule,
+      ],
+      providers: [
         {
-          checkAuthenticated: Promise.resolve(true),
+          provide: ActivatedRoute,
+          useValue: activatedRouteSpy,
         },
         {
-          paramMap: of(
-            convertToParamMap({
-              'trip-id': 111,
-            })
-          ),
-        }
-      );
-      routeStateServiceSpy = jasmine.createSpyObj('RouteStateService', {
-        getTripId: '112',
-        updateTripIdParamState: null,
-        setNullTripIdParamState: null,
-      });
-      TestBed.configureTestingModule({
-        declarations: [HomeComponent],
-        imports: [
-          BrowserAnimationsModule,
-          RouterTestingModule,
-          LoggerTestingModule,
-          TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-          }),
-          MarkdownModule.forRoot(),
-          MatCardModule,
-        ],
-        providers: [
-          {
-            provide: ActivatedRoute,
-            useValue: activatedRouteSpy,
-          },
-          {
-            provide: RouteStateService,
-            useValue: routeStateServiceSpy,
-          },
-        ],
-      }).compileComponents();
-      fixture = TestBed.createComponent(HomeComponent);
-      component = fixture.componentInstance;
-      element = fixture.debugElement;
-      // fixture.detectChanges();
-    })
-  );
+          provide: RouteStateService,
+          useValue: routeStateServiceSpy,
+        },
+      ],
+    }).compileComponents();
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+    element = fixture.debugElement;
+    // fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -76,30 +74,27 @@ describe('HomeComponent', () => {
 
   it('should have 12 material cards', () => {
     fixture.detectChanges();
-    const cards = element.queryAll(By.css('mat-card.mat-card'));
+    const cards = element.queryAll(By.css('mat-card'));
     expect(cards.length).toEqual(12);
   });
 
   it('should have a first card with title About Keystone Adventures', () => {
     fixture.detectChanges();
     const nativeElement: HTMLElement = fixture.nativeElement;
-    const firstCard = nativeElement.querySelector('mat-card.mat-card');
+    const firstCard = nativeElement.querySelector('mat-card');
     expect(firstCard).toBeTruthy();
-    const title = firstCard?.querySelector('mat-card-title.mat-card-title');
+    const title = firstCard?.querySelector('mat-card-title');
     expect(title).toBeTruthy();
     expect(title?.textContent).toBeTruthy('About Keystone Adventures');
   });
 
-  it(
-    'paramMap should return 111 trip-id',
-    waitForAsync(() => {
-      const paramMap =
-        activatedRouteSpy.paramMap as unknown as Observable<ParamMap>;
-      paramMap.subscribe((params: ParamMap) => {
-        expect(params.get('trip-id')?.toString()).toEqual('111');
-      });
-    })
-  );
+  it('paramMap should return 111 trip-id', waitForAsync(() => {
+    const paramMap =
+      activatedRouteSpy.paramMap as unknown as Observable<ParamMap>;
+    paramMap.subscribe((params: ParamMap) => {
+      expect(params.get('trip-id')?.toString()).toEqual('111');
+    });
+  }));
 
   it('should call checkTripIdParam and update trip Id', () => {
     spyOn(component, 'checkTripIdParam').and.callThrough();
