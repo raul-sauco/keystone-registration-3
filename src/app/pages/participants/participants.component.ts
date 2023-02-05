@@ -48,10 +48,11 @@ export class ParticipantsComponent implements OnInit {
   ) {
     this.displayedColumns = this.getDisplayedColumns();
     this.sortableColumns = [
-      'index',
+      // 'index',
       'type',
       'firstName',
       'lastName',
+      'englishName',
       'house',
       'roomNumber',
       'paid',
@@ -85,6 +86,7 @@ export class ParticipantsComponent implements OnInit {
       'type',
       'firstName',
       'lastName',
+      'englishName',
       ...(this.school?.useHouse ? ['house'] : []),
       ...(this.school?.useRoomNumber ? ['roomNumber'] : []),
       ...(this.displayPaymentInfoColumns() ? ['paid'] : []),
@@ -243,6 +245,7 @@ export class ParticipantsComponent implements OnInit {
     if (
       attr === 'firstName' ||
       attr === 'lastName' ||
+      attr === 'englishName' ||
       attr === 'house' ||
       attr === 'roomNumber' ||
       attr === 'citizenship' ||
