@@ -1,37 +1,54 @@
-import { LoadingSpinnerContentComponent } from './../../components/loading-spinner-content/loading-spinner-content.component';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { LoggerTestingModule } from 'ngx-logger/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+} from '@ngx-translate/core';
+import { LoggerTestingModule } from 'ngx-logger/testing';
+import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
+import { LoadingSpinnerContentComponent } from './../../components/loading-spinner-content/loading-spinner-content.component';
 
+import { HttpClient } from '@angular/common/http';
+import { HttpLoaderFactory } from 'src/app/app.module';
 import { FaqComponent } from './faq.component';
-import { TranslateService } from '@ngx-translate/core';
-import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('FaqComponent', () => {
   let component: FaqComponent;
   let fixture: ComponentFixture<FaqComponent>;
+  let translate: TranslateService;
+  let http: HttpTestingController;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          { provide: TranslateService, useClass: TranslateServiceStub },
-          { provide: LoadingSpinnerContentComponent, use: {} },
-        ],
-        imports: [
-          HttpClientTestingModule,
-          LoggerTestingModule,
-          RouterTestingModule,
-          TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-          }),
-        ],
-        declarations: [FaqComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        TranslateService,
+        { provide: LoadingSpinnerContentComponent, use: {} },
+      ],
+      imports: [
+        HttpClientTestingModule,
+        LoadingSpinnerContentModule,
+        LoggerTestingModule,
+        RouterTestingModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient],
+          },
+        }),
+      ],
+      declarations: [FaqComponent],
+    }).compileComponents();
+    translate = TestBed.inject(TranslateService);
+    translate.setDefaultLang('en');
+    translate.use('en');
+    http = TestBed.inject(HttpTestingController);
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FaqComponent);
