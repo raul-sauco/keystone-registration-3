@@ -5,7 +5,7 @@
   <ng-container
     *ngIf="studentService.student$ | async as student; else loading"
   >
-    <div class="app-page-wrapper material-typography">
+    <div class="app-page-wrapper mat-typography">
       <div class="app-content-wrapper">
         <div id="scroll-to-bottom-prompt" *ngIf="!student.waiverAccepted">
           <div
