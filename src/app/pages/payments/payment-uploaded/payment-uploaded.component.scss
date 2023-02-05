@@ -1,4 +1,4 @@
-@import "~src/sass/mixins";
+@use "../../../../sass/mixins" as mixins;
 
 #payment-uploaded-proof-container {
   margin: 16px;
@@ -7,7 +7,7 @@
     text-align: center;
   }
   .primary-action-button {
-    @include active-elements-width;
+    @include mixins.active-elements-width;
   }
   #payment-uploaded-images-wrapper {
     display: flex;
@@ -21,7 +21,7 @@
     #no-proof-uploaded {
       margin: 32px;
       height: 20vh;
-      @include active-elements-width;
+      @include mixins.active-elements-width;
       background-color: white;
       border-radius: 16px;
       border: #ccc 3px dashed;

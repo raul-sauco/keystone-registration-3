@@ -1,7 +1,7 @@
-@import "~src/sass/mixins";
+@use "../../../sass/mixins" as mixins;
 
 #required-fields-prompt {
-  @include alert-dialog;
+  @include mixins.alert-dialog;
 }
 
 #personal-info-form-container {

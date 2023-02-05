@@ -1,4 +1,4 @@
-@import "~src/sass/mixins";
+@use "../../../sass/mixins" as mixins;
 
 #trip-codes-form-container {
   position: fixed;
@@ -45,7 +45,7 @@
 }
 
 #register-first-warning {
-  @include alert-dialog;
+  @include mixins.alert-dialog;
   margin: 0 0 32px 0;
   display: flex;
   align-items: center;

@@ -1,11 +1,11 @@
-@import "~src/sass/mixins";
+@use "../../../sass/mixins" as mixins;
 
 #waiver-page-container {
   padding: 16px 16px 30vh 16px;
 }
 
 #scroll-to-bottom-prompt {
-  @include alert-dialog;
+  @include mixins.alert-dialog;
 }
 
 #waiver-form {

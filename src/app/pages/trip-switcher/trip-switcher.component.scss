@@ -1,4 +1,4 @@
-@import "src/sass/_mixins";
+@use "/src/sass/mixins" as mixins;
 
 #trip-switcher {
   margin: 16px;
@@ -7,7 +7,7 @@
   }
   #no-trip-selected-wrapper,
   #selected-trip-wrapper {
-    @include alert-dialog;
+    @include mixins.alert-dialog;
     text-align: left;
   }
 

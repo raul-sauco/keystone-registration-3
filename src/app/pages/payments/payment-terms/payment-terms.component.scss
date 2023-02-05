@@ -1,4 +1,4 @@
-@import "~src/sass/mixins";
+@use "../../../../sass/mixins" as mixins;
 
 #payment-terms-wrapper {
   margin: 16px;
@@ -14,5 +14,5 @@
 }
 
 #agree-to-terms-prompt {
-  @include alert-dialog;
+  @include mixins.alert-dialog;
 }

@@ -1,4 +1,4 @@
-@import "~src/sass/mixins";
+@use "../../../sass/mixins" as mixins;
 
 #registration-form-container {
   overflow: scroll;
@@ -56,5 +56,5 @@ form#registration-form {
 .navigation-links {
   margin-top: 16px;
   text-align: center;
-  @include navigation-links;
+  @include mixins.navigation-links;
 }
