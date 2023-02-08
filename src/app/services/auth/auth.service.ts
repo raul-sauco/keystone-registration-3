@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subject } from 'rxjs';
-import { Credentials } from '../../models/credentials';
-import { StorageService } from '../storage/storage.service';
+import { Credentials } from 'src/app/models/credentials';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class AuthService {
 
   constructor(private storage: StorageService, private logger: NGXLogger) {
     this.logger.debug('AuthService constructor');
-    this.checkAuthenticated();
+    this.checkAuthenticated().catch((error) => this.logger.warn(error));
   }
 
   /** Set the auth credentials */
@@ -90,8 +90,7 @@ export class AuthService {
               resolve(true);
             } else {
               this.logger.debug(
-                'AuthService.checkAuthenticated(); did not get credentials from StorageService',
-                cred
+                'AuthService.checkAuthenticated(); did not get credentials from StorageService'
               );
               resolve(false);
             }
