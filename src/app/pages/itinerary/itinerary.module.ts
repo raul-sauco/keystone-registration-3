@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,7 +18,6 @@ import { ItineraryComponent } from './itinerary.component';
     ItineraryRoutingModule,
     LoadingSpinnerContentModule,
     LoginRequiredMessageModule,
-    MatListModule,
     MatTabsModule,
     MatSnackBarModule,
     NoResultsModule,

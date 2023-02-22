@@ -6,31 +6,30 @@
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
         <app-admin-banner></app-admin-banner>
-        <mat-tab-group dynamicHeight id="itinerary-tabs">
+        <mat-tab-group dynamicHeight id="itinerary-tabs" class="mat-typography">
           <mat-tab *ngFor="let ag of activityGroups" [label]="ag.name">
-            <mat-list>
-              <ng-container *ngFor="let d of ag.getOrderedItineraryDates()">
-                <h1 class="date-header" matSubheader>
-                  {{ d | date: "EEE, MMMM d " }}
-                </h1>
-                <mat-divider></mat-divider>
-                <mat-list-item
+            <div class="tab-wrapper">
+              <div
+                *ngFor="let d of ag.getOrderedItineraryDates()"
+                class="date-container"
+              >
+                <h3 class="date-header" matSubheader>
+                  {{ d | date : "EEE, MMMM d " }}
+                </h3>
+                <hr />
+                <div
+                  class="itinerary-event-container"
                   *ngFor="let event of ag.getFormattedItinerary(d)"
                 >
-                  <p matLine>
+                  <div class="event-title">
                     {{ event.getFormattedTimes() }} {{ event.getName() }}
-                  </p>
-                  <p
-                    matLine
-                    *ngIf="event.getNotes()"
-                    class="event-notes"
-                    height="fit-contents"
-                  >
+                  </div>
+                  <div *ngIf="event.getNotes()" class="event-notes">
                     {{ event.getNotes() }}
-                  </p>
-                </mat-list-item>
-              </ng-container>
-            </mat-list>
+                  </div>
+                </div>
+              </div>
+            </div>
           </mat-tab>
         </mat-tab-group>
       </div>
