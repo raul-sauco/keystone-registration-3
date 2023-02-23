@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
@@ -12,7 +12,6 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
   selector: 'app-packing-list',
   templateUrl: './packing-list.component.html',
   styleUrls: ['./packing-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class PackingListComponent implements OnInit, OnDestroy {
   itemsBring: TripPackingListItem[] = [];
