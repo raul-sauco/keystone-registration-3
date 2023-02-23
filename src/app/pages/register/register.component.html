@@ -1,75 +1,77 @@
 <div id="registration-form-container" *ngIf="userRegistrationForm">
   <mat-card appearance="outlined" id="registration-form-mat-card-container">
-    <h1>{{ "REGISTRATION_INFORMATION" | translate }}</h1>
-    <h2 class="trip-name" *ngIf="trip.name">{{ trip.name }}</h2>
-    <div>{{ "REGISTER_NEW_USERNAME_PASSWORD" | translate }}</div>
-    <form
-      [formGroup]="userRegistrationForm"
-      id="registration-form"
-      (ngSubmit)="submitUserRegistration()"
-    >
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "USERNAME" | translate }}</mat-label>
-        <input type="text" matInput formControlName="username" required />
-        <mat-error *ngIf="username?.errors?.required">
-          {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-        </mat-error>
-        <mat-error *ngIf="username?.errors?.uniqueUsername">
-          {{ "USERNAME_IS_TAKEN" | translate }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "EMAIL" | translate }}</mat-label>
-        <input type="email" matInput formControlName="email" />
-        <mat-error *ngIf="email?.errors?.email">
-          {{ "EMAIL_IS_NOT_VALID" | translate }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "PASSWORD" | translate }}</mat-label>
-        <input type="password" matInput formControlName="password" required />
-        <mat-error *ngIf="password?.errors?.required">
-          {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-        </mat-error>
-        <mat-error *ngIf="password?.errors?.minlength">
-          {{ "MIN_LENGTH_8_CHAR" | translate }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "PASSWORD_CONFIRM" | translate }}</mat-label>
-        <input
-          type="password"
-          matInput
-          formControlName="passwordConfirm"
-          required
-          [errorStateMatcher]="errorMatcher"
-        />
-        <mat-error *ngIf="userRegistrationForm.errors?.passwordMismatch">
-          {{ "PASSWORDS_DO_NOT_MATCH" | translate }}
-        </mat-error>
-        <mat-error *ngIf="passwordConfirm?.errors?.required">
-          {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-        </mat-error>
-        <mat-error *ngIf="passwordConfirm?.errors?.minlength">
-          {{ "MIN_LENGTH_8_CHAR" | translate }}
-        </mat-error>
-      </mat-form-field>
-      <mat-progress-bar
-        mode="indeterminate"
-        *ngIf="loading"
-        class="progress-bar"
-      ></mat-progress-bar>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="!userRegistrationForm.valid || loading"
+    <mat-card-content>
+      <h1>{{ "REGISTRATION_INFORMATION" | translate }}</h1>
+      <h2 class="trip-name" *ngIf="trip.name">{{ trip.name }}</h2>
+      <div>{{ "REGISTER_NEW_USERNAME_PASSWORD" | translate }}</div>
+      <form
+        [formGroup]="userRegistrationForm"
+        id="registration-form"
+        (ngSubmit)="submitUserRegistration()"
       >
-        {{ "SEND" | translate }}
-      </button>
-    </form>
-    <div class="navigation-links">
-      <a routerLink="/login">{{ "LOGIN" | translate }}</a> /
-      <a routerLink="/privacy-policy">{{ "PRIVACY_POLICY" | translate }}</a>
-    </div></mat-card
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "USERNAME" | translate }}</mat-label>
+          <input type="text" matInput formControlName="username" required />
+          <mat-error *ngIf="username?.errors?.required">
+            {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="username?.errors?.uniqueUsername">
+            {{ "USERNAME_IS_TAKEN" | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "EMAIL" | translate }}</mat-label>
+          <input type="email" matInput formControlName="email" />
+          <mat-error *ngIf="email?.errors?.email">
+            {{ "EMAIL_IS_NOT_VALID" | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "PASSWORD" | translate }}</mat-label>
+          <input type="password" matInput formControlName="password" required />
+          <mat-error *ngIf="password?.errors?.required">
+            {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="password?.errors?.minlength">
+            {{ "MIN_LENGTH_8_CHAR" | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "PASSWORD_CONFIRM" | translate }}</mat-label>
+          <input
+            type="password"
+            matInput
+            formControlName="passwordConfirm"
+            required
+            [errorStateMatcher]="errorMatcher"
+          />
+          <mat-error *ngIf="userRegistrationForm.errors?.passwordMismatch">
+            {{ "PASSWORDS_DO_NOT_MATCH" | translate }}
+          </mat-error>
+          <mat-error *ngIf="passwordConfirm?.errors?.required">
+            {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="passwordConfirm?.errors?.minlength">
+            {{ "MIN_LENGTH_8_CHAR" | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-progress-bar
+          mode="indeterminate"
+          *ngIf="loading"
+          class="progress-bar"
+        ></mat-progress-bar>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!userRegistrationForm.valid || loading"
+        >
+          {{ "SEND" | translate }}
+        </button>
+      </form>
+      <div class="navigation-links">
+        <a routerLink="/login">{{ "LOGIN" | translate }}</a> /
+        <a routerLink="/privacy-policy">{{ "PRIVACY_POLICY" | translate }}</a>
+      </div></mat-card-content
+    ></mat-card
   >
 </div>

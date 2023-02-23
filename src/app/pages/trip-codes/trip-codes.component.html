@@ -1,52 +1,54 @@
 <div id="trip-codes-form-container">
   <mat-card appearance="outlined" id="trip-codes-form-mat-card-container">
-    <div id="register-first-warning">
-      <mat-icon color="warn">warning</mat-icon>
-      <div>
-        {{ "REGISTRATION_REQUIRES_CODES" | translate }}
+    <mat-card-content>
+      <div id="register-first-warning">
+        <mat-icon color="warn">warning</mat-icon>
+        <div>
+          {{ "REGISTRATION_REQUIRES_CODES" | translate }}
+        </div>
       </div>
-    </div>
-    <form
-      [formGroup]="tripCodeForm"
-      id="trip-codes-form"
-      (ngSubmit)="submitTripCodes()"
-    >
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "TRIP_ID" | translate }}</mat-label>
-        <input
-          matInput
-          maxlength="6"
-          formControlName="tripId"
-          required
-          type="text"
-        />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "SECURITY_CODE" | translate }}</mat-label>
-        <input
-          matInput
-          maxlength="6"
-          formControlName="code"
-          required
-          type="text"
-        />
-      </mat-form-field>
-      <mat-progress-bar
-        mode="indeterminate"
-        *ngIf="loading"
-        class="progress-bar"
-      ></mat-progress-bar>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="!tripCodeForm.valid || loading"
+      <form
+        [formGroup]="tripCodeForm"
+        id="trip-codes-form"
+        (ngSubmit)="submitTripCodes()"
       >
-        {{ "SEND" | translate }}
-      </button>
-    </form>
-    <div class="navigation-links">
-      <a routerLink="/login">{{ "LOGIN" | translate }}</a> /
-      <button (click)="showHelp()">{{ "HELP" | translate }}</button>
-    </div>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "TRIP_ID" | translate }}</mat-label>
+          <input
+            matInput
+            maxlength="6"
+            formControlName="tripId"
+            required
+            type="text"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "SECURITY_CODE" | translate }}</mat-label>
+          <input
+            matInput
+            maxlength="6"
+            formControlName="code"
+            required
+            type="text"
+          />
+        </mat-form-field>
+        <mat-progress-bar
+          mode="indeterminate"
+          *ngIf="loading"
+          class="progress-bar"
+        ></mat-progress-bar>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!tripCodeForm.valid || loading"
+        >
+          {{ "SEND" | translate }}
+        </button>
+      </form>
+      <div class="navigation-links">
+        <a routerLink="/login">{{ "LOGIN" | translate }}</a> /
+        <button (click)="showHelp()">{{ "HELP" | translate }}</button>
+      </div></mat-card-content
+    >
   </mat-card>
 </div>

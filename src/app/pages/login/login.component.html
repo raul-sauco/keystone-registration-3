@@ -1,38 +1,40 @@
 <div class="app-page-wrapper">
   <mat-card appearance="outlined" id="login-form-mat-card-container">
-    <div id="register-first-warning">
-      <mat-icon color="warn">warning</mat-icon>
-      <div>
-        {{ "REGISTER_BEFORE_LOGIN_PROMPT" | translate }}
+    <mat-card-content>
+      <div id="register-first-warning">
+        <mat-icon color="warn">warning</mat-icon>
+        <div>
+          {{ "REGISTER_BEFORE_LOGIN_PROMPT" | translate }}
+        </div>
       </div>
-    </div>
-    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" id="login-form">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "USERNAME" | translate }}</mat-label>
-        <input matInput formControlName="username" required type="text" />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "PASSWORD" | translate }}</mat-label>
-        <input matInput formControlName="password" type="password" required />
-      </mat-form-field>
-      <mat-progress-bar
-        mode="indeterminate"
-        *ngIf="loading"
-        class="progress-bar"
-      ></mat-progress-bar>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="!loginForm.valid || loading"
-      >
-        {{ "LOGIN" | translate }}
-      </button>
-    </form>
-    <div class="navigation-links">
-      <a routerLink="/trip-codes">{{ "REGISTER" | translate }}</a> /
-      <a routerLink="/forgot-password">{{
-        "FORGOT_MY_PASSWORD" | translate
-      }}</a>
-    </div>
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" id="login-form">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "USERNAME" | translate }}</mat-label>
+          <input matInput formControlName="username" required type="text" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "PASSWORD" | translate }}</mat-label>
+          <input matInput formControlName="password" type="password" required />
+        </mat-form-field>
+        <mat-progress-bar
+          mode="indeterminate"
+          *ngIf="loading"
+          class="progress-bar"
+        ></mat-progress-bar>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!loginForm.valid || loading"
+        >
+          {{ "LOGIN" | translate }}
+        </button>
+      </form>
+      <div class="navigation-links">
+        <a routerLink="/trip-codes">{{ "REGISTER" | translate }}</a> /
+        <a routerLink="/forgot-password">{{
+          "FORGOT_MY_PASSWORD" | translate
+        }}</a>
+      </div></mat-card-content
+    >
   </mat-card>
 </div>
