@@ -1,55 +1,46 @@
 .supplier-item-container {
-  margin: 8px;
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  mat-card-header {
+  margin: 16px;
+  .supplier-card-header {
     background-color: #efefef;
-    /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-    /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-    /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-    mat-card-title {
-      margin-top: 16px;
+    padding: 8px 16px;
+  }
+
+  .supplier-card-content {
+    padding: 16px;
+    .supplier-address {
+      margin-bottom: 16px;
     }
   }
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  mat-card-content {
-    & > div {
-      margin-top: 8px;
+
+  .supplier-item-contact-actions {
+    .supplier-action {
+      height: 100px;
     }
-    .supplier-item-contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    .supplier-item-phone-number,
+    .supplier-item-c-trip-link {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       justify-content: space-evenly;
       align-items: center;
-      margin-bottom: -16px;
-      .supplier-item-phone-number,
-      .supplier-item-c-trip-link {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        flex: 1 1 0px;
-        min-width: 320px;
-        margin-bottom: 16px;
-        a {
-          line-height: 2rem;
-          padding: 8px 16px;
-        }
+      flex: 1 1 0px;
+      min-width: 320px;
+      margin-bottom: 16px;
+      a {
+        line-height: 2rem;
+        padding: 8px 16px;
       }
-      .supplier-item-phone-number a mat-icon {
-        margin-right: 8px;
-      }
-      .supplier-item-c-trip-link {
-        img.c-trip-logo {
-          max-width: 150px;
-          padding: 4px;
-        }
+    }
+    .supplier-item-phone-number a mat-icon {
+      margin-right: 8px;
+    }
+    .supplier-item-c-trip-link {
+      img.c-trip-logo {
+        max-width: 150px;
+        padding: 4px;
       }
     }
   }
