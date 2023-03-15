@@ -35,9 +35,7 @@
               "src/sass/styles.scss",
               "src/sass/themes/ka.scss"
             ],
-            "scripts": [
-              "node_modules/marked/marked.min.js"
-            ],
+            "scripts": ["node_modules/marked/marked.min.js"],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -147,10 +145,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         },
         "e2e": {
@@ -170,9 +165,7 @@
   },
   "cli": {
     "analytics": "9f9138a1-6d44-4052-ad70-b4c8f19b53a2",
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
+    "schematicCollections": ["@angular-eslint/schematics"]
   },
   "schematics": {
     "@angular-eslint/schematics:application": {
