@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api/api.service';
   selector: 'app-help',
   templateUrl: './help.component.html',
   styleUrls: ['./help.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class HelpComponent implements OnInit {
   content$!: Observable<any>;

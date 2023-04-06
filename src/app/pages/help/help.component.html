@@ -3,19 +3,27 @@
     <div class="app-content-wrapper">
       <mat-card appearance="outlined">
         <mat-card-title
-          ><h1>{{ "HELP" | translate }}</h1></mat-card-title
+          ><div id="help-component-card-title-wrapper">
+            <h1>{{ "HELP" | translate }}</h1>
+            <a href="tel:18975223520" id="call-help-button"
+              ><button
+                mat-fab
+                color="primary"
+                aria-label="Call support directly"
+              >
+                <mat-icon>phone</mat-icon>
+              </button></a
+            >
+          </div></mat-card-title
         >
         <mat-card-content
-          [innerHtml]="
-            (lang === 'zh' ? content.text_zh : content.text) | markdown
-          "
-        >
+          ><div
+            id="help-component-card-content-markdown-wrapper"
+            [innerHtml]="
+              (lang === 'zh' ? content.text_zh : content.text) | markdown
+            "
+          ></div>
         </mat-card-content>
-        <a href="tel:18975223520" id="call-help-button"
-          ><button mat-fab color="primary" aria-label="Call support directly">
-            <mat-icon>phone</mat-icon>
-          </button></a
-        >
       </mat-card>
     </div>
   </div>
