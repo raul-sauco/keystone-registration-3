@@ -14,6 +14,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
+import { SchoolService } from 'src/app/services/school/school.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
@@ -36,7 +37,8 @@ export class LoginComponent implements OnInit {
     private translate: TranslateService,
     private routeStateService: RouteStateService,
     private paymentService: PaymentService,
-    private tripSwitcher: TripSwitcherService
+    private tripSwitcher: TripSwitcherService,
+    private schoolService: SchoolService
   ) {
     this.loading = false;
     this.logger.debug('LoginComponent constructor');
@@ -82,6 +84,7 @@ export class LoginComponent implements OnInit {
             } else {
               this.tripSwitcher.refreshTrips();
             }
+            this.schoolService.fetchFromServer();
             this.router.navigateByUrl('/home').then(() => {
               // Clean up the page here if needed
             });

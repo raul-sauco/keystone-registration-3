@@ -1,17 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
+  FormGroupDirective,
+  NgForm,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  FormGroupDirective,
-  NgForm,
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import {
+  MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
@@ -22,6 +22,7 @@ import { Credentials } from 'src/app/models/credentials';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
+import { SchoolService } from 'src/app/services/school/school.service';
 import { TripService } from 'src/app/services/trip/trip.service';
 
 /** Error when the parent is invalid */
@@ -50,6 +51,7 @@ export class RegisterComponent implements OnInit {
     private paymentService: PaymentService,
     private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
+    private schoolService: SchoolService,
     public router: Router,
     private usernameValidator: UniqueUsernameValidator,
     public dialog: MatDialog,
@@ -139,6 +141,7 @@ export class RegisterComponent implements OnInit {
             this.loading = false;
             this.paymentService.fetchFromServer();
             this.displayRegistrationSuccess();
+            this.schoolService.fetchFromServer();
           });
         }
       },
