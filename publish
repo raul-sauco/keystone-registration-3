@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Clean up the dist folder
+rm -rf dist/keystone-adventure
+
+# Check if production or staging
+production=false
+while getopts 'p' opt; do
+  echo "Publishing production version"
+  production=true
+done
+shift "$(($OPTIND -1))"
+
+# Generate the matching bundle
+echo
+echo "»»» Generating $configuration bundle «««"
+ng build --configuration $configuration
+
+# Clean up the remote playground folder
+remote="climbdal@keystone-adventures.com"
+echo
+echo "»»» Cleaning remote directories «««"
+echo
+echo "Local system name: $HOSTNAME"
+echo "Local date and time: $(date)"
+
+configuration="staging"
+folder="public_html/registration"
+if [[ "$production" = true ]]
+then
+  configuration="production"
+  folder="public_html/program"
+  echo
+  echo "*** Running commands on remote host named $remote folder 'public_html/program' ***"
+  echo
+  ssh -T $remote <<'EOL'
+	now="$(date)"
+	name="$HOSTNAME"
+	up="$(uptime)"
+	echo "Server name is $name"
+	echo "Server date and time is $now"
+	echo "Server uptime: $up"
+	cd public_html/program
+	rm *.js manifest.* ngsw.json *.css index.html favicon.ico
+  [ ! -e *.map ] || rm *.map
+  rm -rf assets/
+	echo "Bye"
+EOL
+else
+  echo
+  echo "*** Running commands on remote host named $remote folder 'public_html/registration' ***"
+  echo
+  ssh -T $remote <<'EOL'
+	now="$(date)"
+	name="$HOSTNAME"
+	up="$(uptime)"
+	echo "Server name is $name"
+	echo "Server date and time is $now"
+	echo "Server uptime: $up"
+	cd public_html/registration
+	rm *.js manifest.* ngsw.json *.css index.html favicon.ico
+  [ ! -e *.map ] || rm *.map
+  rm -rf assets/
+	echo "Bye"
+EOL
+favicon
+
+# Publish to the correct subdomain
+echo
+echo "»»» Publishing $configuration bundle to $remote:$folder «««"
+echo
+rsync -azvh dist/keystone-registration/ $remote:$folder
