@@ -1,15 +1,18 @@
 export class School {
+  id: string;
   name: string;
   nameZh: string;
   useHouse: boolean;
   useRoomNumber: boolean;
 
   constructor(json: {
+    id?: string | number | null;
     name?: string;
     nameZh?: string;
     use_house?: boolean | number | string | null;
     use_room_number?: boolean | number | string | null;
   }) {
+    this.id = String(json.id) ?? '';
     this.name = json.name ?? '';
     this.nameZh = json.nameZh ?? '';
     this.useHouse =

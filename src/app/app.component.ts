@@ -15,6 +15,7 @@ import {
 import { AuthService } from './services/auth/auth.service';
 import { PaymentService } from './services/payment/payment.service';
 import { RouteStateService } from './services/route-state/route-state.service';
+import { SchoolService } from './services/school/school.service';
 import { StudentService } from './services/student/student.service';
 import { TripSwitcherService } from './services/trip-switcher/trip-switcher.service';
 
@@ -102,7 +103,8 @@ export class AppComponent implements OnInit {
     public auth: AuthService,
     public paymentService: PaymentService,
     public studentService: StudentService,
-    public tripSwitcher: TripSwitcherService
+    public tripSwitcher: TripSwitcherService,
+    public schoolService: SchoolService
   ) {
     this.initTranslate();
     router.events
