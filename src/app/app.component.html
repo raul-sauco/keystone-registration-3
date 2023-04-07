@@ -90,20 +90,22 @@
             >person</mat-icon
           >
           <span>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider
-        ></a>
-        <a mat-list-item routerLink="/waiver">
-          <mat-icon
-            matListItemIcon
-            color="primary"
-            matBadge="!"
-            matBadgeColor="warn"
-            [matBadgeHidden]="(studentService.student$ | async)?.waiverAccepted"
-            >verified_user</mat-icon
-          >
-          <span>{{ "WAIVER" | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider
-        ></a>
+          <mat-divider [inset]="true"></mat-divider></a
+        ><ng-container *ngIf="schoolService.school$ | async as school">
+          <a mat-list-item routerLink="/waiver" *ngIf="school.id !== '59'">
+            <mat-icon
+              matListItemIcon
+              color="primary"
+              matBadge="!"
+              matBadgeColor="warn"
+              [matBadgeHidden]="
+                (studentService.student$ | async)?.waiverAccepted
+              "
+              >verified_user</mat-icon
+            >
+            <span>{{ "WAIVER" | translate | uppercase }}</span>
+            <mat-divider [inset]="true"></mat-divider></a
+        ></ng-container>
         <ng-container *ngIf="auth.isStudent">
           <a
             mat-list-item
