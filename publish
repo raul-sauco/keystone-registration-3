@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/bin/sh
+
+# Some colors for the output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
 # Clean up the dist folder
 rm -rf dist/keystone-adventure
@@ -6,40 +11,39 @@ rm -rf dist/keystone-adventure
 # Check if production or staging
 production=false
 while getopts 'p' opt; do
-  echo "Publishing production version"
   production=true
 done
 shift "$(($OPTIND -1))"
 
+# Set the configuration variable
+configuration="staging"
+if [[ "$production" = true ]]
+then
+  configuration="production"
+fi
+
 # Generate the matching bundle
-echo
-echo "»»» Generating $configuration bundle «««"
+echo "${GREEN}»»» Generating $configuration bundle «««${NC}"
 ng build --configuration $configuration
 
 # Clean up the remote playground folder
 remote="climbdal@keystone-adventures.com"
-echo
-echo "»»» Cleaning remote directories «««"
-echo
-echo "Local system name: $HOSTNAME"
-echo "Local date and time: $(date)"
+echo "\n${GREEN}»»» Cleaning remote directories «««${NC}\n"
+echo "    » Local system name: $HOSTNAME"
+echo "    » Local date and time: $(date)"
 
-configuration="staging"
 folder="public_html/registration"
 if [[ "$production" = true ]]
 then
-  configuration="production"
   folder="public_html/program"
-  echo
-  echo "*** Running commands on remote host named $remote folder 'public_html/program' ***"
-  echo
+  echo "\n${GREEN}»»» Running commands on remote host named $remote folder 'public_html/program' «««${NC}\n"
   ssh -T $remote <<'EOL'
 	now="$(date)"
 	name="$HOSTNAME"
 	up="$(uptime)"
-	echo "Server name is $name"
-	echo "Server date and time is $now"
-	echo "Server uptime: $up"
+	echo "    » Server name is $name"
+	echo "    » Server date and time is $now"
+	echo "    » Server uptime: $up"
 	cd public_html/program
 	rm *.js manifest.* ngsw.json *.css index.html favicon.ico
   [ ! -e *.map ] || rm *.map
@@ -47,26 +51,22 @@ then
 	echo "Bye"
 EOL
 else
-  echo
-  echo "*** Running commands on remote host named $remote folder 'public_html/registration' ***"
-  echo
+  echo "\n${GREEN}»»» Running commands on remote host named $remote folder 'public_html/registration' «««${NC}\n"
   ssh -T $remote <<'EOL'
 	now="$(date)"
 	name="$HOSTNAME"
 	up="$(uptime)"
-	echo "Server name is $name"
-	echo "Server date and time is $now"
-	echo "Server uptime: $up"
+	echo "    » Server name is $name"
+	echo "    » Server date and time is $now"
+	echo "    » Server uptime: $up"
 	cd public_html/registration
 	rm *.js manifest.* ngsw.json *.css index.html favicon.ico
   [ ! -e *.map ] || rm *.map
   rm -rf assets/
 	echo "Bye"
 EOL
-favicon
+fi
 
 # Publish to the correct subdomain
-echo
-echo "»»» Publishing $configuration bundle to $remote:$folder «««"
-echo
+echo "\n${GREEN}»»» Publishing $configuration bundle to $remote:$folder «««${NC}\n"
 rsync -azvh dist/keystone-registration/ $remote:$folder
