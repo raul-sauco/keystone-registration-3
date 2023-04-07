@@ -48,7 +48,14 @@
         *ngIf="auth.auth$ | async; else login"
         (click)="logout()"
       >
-        <mat-icon matListItemIcon color="primary">open_in_new</mat-icon>
+        <!--
+        Mat icon rendering with color broken in Angular Material >= 15, the
+        following does not work. Workaround wrap icons in a div.
+        <mat-icon matListItemIcon color="primary">paid</mat-icon>
+        -->
+        <div matListItemIcon>
+          <mat-icon color="primary">open_in_new</mat-icon>
+        </div>
         <span>
           {{ "LOG_OUT" | translate | uppercase }} ({{
             auth.getCredentials()?.userName
@@ -58,19 +65,23 @@
       </a>
       <ng-template #login>
         <a mat-list-item routerLink="/login">
-          <mat-icon matListItemIcon color="primary">exit_to_app</mat-icon>
+          <div matListItemIcon>
+            <mat-icon color="primary">exit_to_app</mat-icon>
+          </div>
           <span>{{ "LOG_IN" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-template>
       <a mat-list-item routerLink="/home">
-        <mat-icon matListItemIcon color="primary">home</mat-icon>
+        <div matListItemIcon><mat-icon color="primary">home</mat-icon></div>
         <span>{{ "HOME" | translate | uppercase }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </a>
       <ng-container *ngIf="(auth.auth$ | async) && auth.isSchoolAdmin">
         <a mat-list-item routerLink="/trip-switcher">
-          <mat-icon matListItemIcon color="primary">restart_alt</mat-icon>
+          <div matListItemIcon>
+            <mat-icon color="primary">restart_alt</mat-icon>
+          </div>
           <span>{{ "SWITCH_TRIP" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider> </a
       ></ng-container>
@@ -79,28 +90,32 @@
       <ng-container *ngIf="(auth.auth$ | async) && !auth.isSchoolAdmin">
         <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
         <a mat-list-item routerLink="/personal-info">
-          <mat-icon
-            matListItemIcon
-            color="primary"
-            matBadge="!"
-            matBadgeColor="warn"
-            [matBadgeHidden]="
-              (studentService.student$ | async)?.hasProvidedInformation()
-            "
-            >person</mat-icon
-          >
+          <div matListItemIcon>
+            <mat-icon
+              color="primary"
+              matBadge="!"
+              matBadgeColor="warn"
+              [matBadgeHidden]="
+                (studentService.student$ | async)?.hasProvidedInformation()
+              "
+              >person</mat-icon
+            >
+          </div>
           <span>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider
         ></a>
         <a mat-list-item routerLink="/waiver">
-          <mat-icon
-            matListItemIcon
-            color="primary"
-            matBadge="!"
-            matBadgeColor="warn"
-            [matBadgeHidden]="(studentService.student$ | async)?.waiverAccepted"
-            >verified_user</mat-icon
-          >
+          <div matListItemIcon>
+            <mat-icon
+              color="primary"
+              matBadge="!"
+              matBadgeColor="warn"
+              [matBadgeHidden]="
+                (studentService.student$ | async)?.waiverAccepted
+              "
+              >verified_user</mat-icon
+            >
+          </div>
           <span>{{ "WAIVER" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider
         ></a>
@@ -110,14 +125,15 @@
             *ngIf="(paymentService.paymentInfo$ | async)?.required"
             routerLink="/payments"
           >
-            <mat-icon
-              matListItemIcon
-              color="primary"
-              matBadge="!"
-              matBadgeColor="warn"
-              [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
-              >payments</mat-icon
-            >
+            <div matListItemIcon>
+              <mat-icon
+                color="primary"
+                matBadge="!"
+                matBadgeColor="warn"
+                [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
+                >payments</mat-icon
+              >
+            </div>
             <span>{{ "PAYMENTS" | translate | uppercase }}</span>
             <mat-divider [inset]="true"></mat-divider
           ></a>
@@ -135,7 +151,9 @@
           "
           *ngIf="page.render | async"
         >
-          <mat-icon matListItemIcon color="primary">{{ page.icon }}</mat-icon>
+          <div matListItemIcon>
+            <mat-icon color="primary">{{ page.icon }}</mat-icon>
+          </div>
           <span>{{ page.title | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
@@ -151,7 +169,9 @@
           [routerLink]="page.url"
           *ngFor="let page of teacherPages; last as last"
         >
-          <mat-icon matListItemIcon color="primary">{{ page.icon }}</mat-icon>
+          <div matListItemIcon>
+            <mat-icon color="primary">{{ page.icon }}</mat-icon>
+          </div>
           <span>{{ page.title | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
@@ -168,7 +188,9 @@
           "
           *ngIf="page.render | async"
         >
-          <mat-icon matListItemIcon color="primary">{{ page.icon }}</mat-icon>
+          <div matListItemIcon>
+            <mat-icon color="primary">{{ page.icon }}</mat-icon>
+          </div>
           <span>{{ page.title | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
@@ -182,7 +204,7 @@
           (paymentService.paymentInfo$ | async)?.required
         "
       >
-        <mat-icon matListItemIcon color="primary">paid</mat-icon>
+        <div matListItemIcon><mat-icon color="primary">paid</mat-icon></div>
         <span>{{ "PAYMENT_TERMS" | translate | uppercase }}</span>
       </a>
     </mat-nav-list>
