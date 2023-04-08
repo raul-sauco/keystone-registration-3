@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
 
   public policyPages = [
     {
-      title: 'COVID_POLICY',
+      title: 'INFECTIOUS_DISEASE_POLICY',
       url: '/covid-policy',
       icon: 'coronavirus',
       render: of(true),
