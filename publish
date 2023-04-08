@@ -23,6 +23,7 @@ then
 fi
 
 # Generate the matching bundle
+echo "\n${RED}»»» WATCH OUT THIS SCRIPT WILL PUBLISH TO A SPECIAL FOLDER!!! «««${NC}\n"
 echo "${GREEN}»»» Generating $configuration bundle «««${NC}"
 ng build --configuration $configuration
 
@@ -32,11 +33,10 @@ echo "\n${GREEN}»»» Cleaning remote directories «««${NC}\n"
 echo "    » Local system name: $HOSTNAME"
 echo "    » Local date and time: $(date)"
 
-folder="public_html/registration"
 if [[ "$production" = true ]]
 then
-  folder="public_html/program"
-  echo "\n${GREEN}»»» Running commands on remote host named $remote folder 'public_html/program' «««${NC}\n"
+  folder="public_html/dehong"
+  echo "\n${GREEN}»»» Running commands on remote host named $remote folder 'public_html/${RED}dehong${GREEN}' «««${NC}\n"
   ssh -T $remote <<'EOL'
 	now="$(date)"
 	name="$HOSTNAME"
@@ -44,29 +44,34 @@ then
 	echo "    » Server name is $name"
 	echo "    » Server date and time is $now"
 	echo "    » Server uptime: $up"
-	cd public_html/program
+	cd public_html/dehong
 	rm *.js manifest.* ngsw.json *.css index.html favicon.ico
   [ ! -e *.map ] || rm *.map
   rm -rf assets/
 	echo "Bye"
 EOL
-else
-  echo "\n${GREEN}»»» Running commands on remote host named $remote folder 'public_html/registration' «««${NC}\n"
-  ssh -T $remote <<'EOL'
-	now="$(date)"
-	name="$HOSTNAME"
-	up="$(uptime)"
-	echo "    » Server name is $name"
-	echo "    » Server date and time is $now"
-	echo "    » Server uptime: $up"
-	cd public_html/registration
-	rm *.js manifest.* ngsw.json *.css index.html favicon.ico
-  [ ! -e *.map ] || rm *.map
-  rm -rf assets/
-	echo "Bye"
-EOL
+  # Publish the to production subfolder
+  echo "\n${GREEN}»»» Publishing $configuration bundle to $remote:${RED}$folder${NC} «««${NC}\n"
+  rsync -azvh dist/keystone-registration/ $remote:$folder
 fi
+# Publish to the registration folder both in production and staging
+echo "\n${GREEN}»»» Running commands on remote host named $remote folder 'public_html/registration' «««${NC}\n"
+ssh -T $remote <<'EOL'
+now="$(date)"
+name="$HOSTNAME"
+up="$(uptime)"
+echo "    » Server name is $name"
+echo "    » Server date and time is $now"
+echo "    » Server uptime: $up"
+cd public_html/registration
+rm *.js manifest.* ngsw.json *.css index.html favicon.ico
+[ ! -e *.map ] || rm *.map
+rm -rf assets/
+echo "Bye"
+EOL
 
-# Publish to the correct subdomain
-echo "\n${GREEN}»»» Publishing $configuration bundle to $remote:$folder «««${NC}\n"
-rsync -azvh dist/keystone-registration/ $remote:$folder
+# Publish to the staging subfolder
+folder="public_html/registration"
+target= $remote:$folder
+echo "\n${GREEN}»»» Publishing $configuration bundle to $target «««${NC}\n"
+rsync -azvh dist/keystone-registration/ $target
