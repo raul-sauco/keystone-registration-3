@@ -226,11 +226,6 @@ const routes: Routes = [
     canActivate: [NoAuthGuard],
   },
   {
-    path: 'waiver',
-    loadChildren: () =>
-      import('./pages/waiver/waiver.module').then((m) => m.WaiverModule),
-  },
-  {
     path: 'trip-switcher',
     loadChildren: () =>
       import('./pages/trip-switcher/trip-switcher.module').then(

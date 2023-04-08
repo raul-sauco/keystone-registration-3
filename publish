@@ -72,6 +72,6 @@ EOL
 
 # Publish to the staging subfolder
 folder="public_html/registration"
-target= $remote:$folder
+target="$remote:$folder"
 echo "\n${GREEN}»»» Publishing $configuration bundle to $target «««${NC}\n"
 rsync -azvh dist/keystone-registration/ $target

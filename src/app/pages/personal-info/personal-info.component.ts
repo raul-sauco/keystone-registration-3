@@ -191,8 +191,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       house: data.house,
       room_number: data.roomNumber,
       wechat_id: data.wechatId,
-      waiver_accepted: data.waiverAccepted,
-      waiver_signed_on: data.waiverSignedOn,
       dietary_requirements: data.dietaryRequirements,
       dietary_requirements_other: data.dietaryRequirementsOther,
       allergies: data.allergies,

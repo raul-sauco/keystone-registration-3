@@ -54,8 +54,6 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
             next: (student: Student) => {
               if (!student.hasProvidedInformation()) {
                 this.router.navigateByUrl('/personal-info');
-              } else if (!student.waiverAccepted) {
-                this.router.navigateByUrl('/waiver');
               } else {
                 this.router.navigateByUrl('/home');
               }
