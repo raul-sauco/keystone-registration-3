@@ -164,7 +164,7 @@ export class RegisterComponent implements OnInit {
     this.logger.debug('RegisterComponent registration successful');
     const dialogRef = this.dialog.open(RegistrationSuccessDialogComponent);
     dialogRef.afterClosed().subscribe(() => {
-      this.router.navigateByUrl('/waiver');
+      this.router.navigateByUrl('/home');
     });
   }
 }
