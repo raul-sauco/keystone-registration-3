@@ -90,22 +90,8 @@
             >person</mat-icon
           >
           <span>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider></a
-        ><ng-container *ngIf="schoolService.school$ | async as school">
-          <a mat-list-item routerLink="/waiver" *ngIf="school.id !== '59'">
-            <mat-icon
-              matListItemIcon
-              color="primary"
-              matBadge="!"
-              matBadgeColor="warn"
-              [matBadgeHidden]="
-                (studentService.student$ | async)?.waiverAccepted
-              "
-              >verified_user</mat-icon
-            >
-            <span>{{ "WAIVER" | translate | uppercase }}</span>
-            <mat-divider [inset]="true"></mat-divider></a
-        ></ng-container>
+          <mat-divider [inset]="true"></mat-divider
+        ></a>
         <ng-container *ngIf="auth.isStudent">
           <a
             mat-list-item
@@ -127,67 +113,23 @@
       </ng-container>
 
       <!-- General information links -->
-      <h3 matSubheader>
-        {{ "GENERAL_INFORMATION" | translate | uppercase }}
-      </h3>
-      <ng-container *ngIf="schoolService.school$ | async as school">
+      <h3 matSubheader>{{ "GENERAL_INFORMATION" | translate | uppercase }}</h3>
+      <ng-container *ngFor="let page of appPages; last as last">
         <a
           mat-list-item
           [routerLink]="
-            '/program-overview' +
+            page.url +
             ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
           "
+          *ngIf="page.render | async"
         >
-          <mat-icon matListItemIcon color="primary">preview</mat-icon>
-          <span>{{ "DETAILS" | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
-        <a
-          mat-list-item
-          [routerLink]="
-            '/itinerary' +
-            ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-          "
-          *ngIf="school.id !== '59'"
-        >
-          <mat-icon matListItemIcon color="primary">list</mat-icon>
-          <span>{{ "ITINERARY" | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
-        <a
-          mat-list-item
-          [routerLink]="
-            '/accommodation' +
-            ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-          "
-        >
-          <mat-icon matListItemIcon color="primary">hotel</mat-icon>
-          <span>{{ "ACCOMMODATION" | translate | uppercase }}</span>
+          <div matListItemIcon>
+            <mat-icon color="primary">{{ page.icon }}</mat-icon>
+          </div>
+          <span>{{ page.title | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       </ng-container>
-      <a
-        mat-list-item
-        [routerLink]="
-          '/packing-list' +
-          ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-        "
-      >
-        <mat-icon matListItemIcon color="primary">work</mat-icon>
-        <span>{{ "PACKING_LIST" | translate | uppercase }}</span>
-        <mat-divider [inset]="true"></mat-divider>
-      </a>
-      <a
-        mat-list-item
-        [routerLink]="
-          '/guides' +
-          ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-        "
-      >
-        <mat-icon matListItemIcon color="primary">contacts</mat-icon>
-        <span>{{ "STAFF_INFORMATION" | translate | uppercase }}</span>
-        <mat-divider [inset]="true"></mat-divider>
-      </a>
 
       <!-- This links should only be available for teachers -->
       <ng-container

@@ -15,7 +15,6 @@ import {
 import { AuthService } from './services/auth/auth.service';
 import { PaymentService } from './services/payment/payment.service';
 import { RouteStateService } from './services/route-state/route-state.service';
-import { SchoolService } from './services/school/school.service';
 import { StudentService } from './services/student/student.service';
 import { TripSwitcherService } from './services/trip-switcher/trip-switcher.service';
 
@@ -33,12 +32,11 @@ export class AppComponent implements OnInit {
 
   public appPages = [
     {
-      title: 'OVERVIEW',
+      title: 'DETAILS',
       url: '/program-overview',
       icon: 'preview',
       render: of(true),
     },
-    { title: 'ITINERARY', url: '/itinerary', icon: 'list', render: of(true) },
     {
       title: 'ACCOMMODATION',
       url: '/accommodation',
@@ -103,8 +101,7 @@ export class AppComponent implements OnInit {
     public auth: AuthService,
     public paymentService: PaymentService,
     public studentService: StudentService,
-    public tripSwitcher: TripSwitcherService,
-    public schoolService: SchoolService
+    public tripSwitcher: TripSwitcherService
   ) {
     this.initTranslate();
     router.events
