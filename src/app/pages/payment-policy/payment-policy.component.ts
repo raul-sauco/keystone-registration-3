@@ -1,8 +1,8 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class PaymentPolicyComponent implements OnInit {
     this.logger.debug('PaymentPolicyComponent OnInit');
     this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
     this.content$ = this.api.get(
-      'documents/104',
+      'documents/134',
       null,
       new HttpHeaders({
         'Content-Type': 'application/json',
