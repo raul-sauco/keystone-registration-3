@@ -36,7 +36,7 @@ export class PaymentInstructionsComponent implements OnInit {
       }),
     };
     this.content$ = this.api.get(endpoint, null, options);
-    setTimeout(() => this.displayWarning(), 5000);
+    setTimeout(() => this.displayWarning(), 10000);
   }
 
   displayWarning(): void {
