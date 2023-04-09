@@ -252,6 +252,7 @@
   "REGISTRATION_INFORMATION": "Registration information",
   "REGISTRATION_IS_COMPLETE": "Registration is complete",
   "REGISTRATION_REQUIRES_CODES": "To register a new account, you will need the codes provided to you by your school.",
+  "REMEMBER_PAYMENT_SCREENSHOT_UPLOAD": "Please remember to upload a screenshot of the successful payment",
   "REQUIRED_FIELDS_PROMPT": "Fields marked with <strong>*</strong> are <strong>required</strong>",
   "RESETTING_PASSWORD_FOR_USER_WITH_EMAIL": "Resetting password for user <strong>{{username}}</strong> with email <strong>{{email}}</strong>",
   "RESET_PASSWORD": "Reset password",
