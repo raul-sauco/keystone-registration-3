@@ -6,6 +6,7 @@
   "ACCOUNT_FOR_THAT_EMAIL_NOT_FOUND": "找不到提供的电子邮件帐户，请确保电子邮件正确无误，并且该帐户是您用来注册的电子邮件。",
   "ACCOUNT_INACTIVE": "我们发现该帐户无效。",
   "ADD_PARTICIPANT": "添加参与者",
+  "ADD_PARTICIPANT_INFO_REMINDER": "付款时，请备注孩子的姓名和年级。例如，“王鹏，3年级”",
   "ADVENTURE_OF_A_LIFETIME": "您即将开启一段终身难忘的探险之旅",
   "ALLER": {
     "0": "无",
@@ -127,6 +128,7 @@
     "1": "是",
     "2": "不确定"
   },
+  "IMPORTANT_WARNING": "重要警告！",
   "INDEX": "指数",
   "INFECTIOUS_DISEASE_POLICY": "传染病安全措施",
   "INFORMATION_UPDATED": "信息更新",
@@ -256,10 +258,10 @@
   "RESET_PASSWORD": "重设密码",
   "RISK_MANAGEMENT": "风险管理",
   "ROOM_NUMBER": "房间号",
-  "SCHOOL_HOUSE": "校舍",
-  "SCHOOL_INFORMATION": "学校信息",
   "SAFEGUARDING": "保障措施",
   "SAVE": "保存",
+  "SCHOOL_HOUSE": "校舍",
+  "SCHOOL_INFORMATION": "学校信息",
   "SCROLL_TO_BOTTOM_CLICK_SUBMIT": "滚动到底部并点击'提交'",
   "SCROLL_TO_BOTTOM_CLICK_UPDATE": "滚动到底部并点击<strong>更新</strong>提交",
   "SECURITY_CODE": "安全代码",

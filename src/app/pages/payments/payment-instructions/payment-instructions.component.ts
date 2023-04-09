@@ -1,5 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
@@ -16,6 +17,7 @@ export class PaymentInstructionsComponent implements OnInit {
   content$!: Observable<any>;
 
   constructor(
+    public dialog: MatDialog,
     private api: ApiService,
     private auth: AuthService,
     private logger: NGXLogger,
@@ -34,5 +36,31 @@ export class PaymentInstructionsComponent implements OnInit {
       }),
     };
     this.content$ = this.api.get(endpoint, null, options);
+    setTimeout(() => this.displayWarning(), 5000);
   }
+
+  displayWarning(): void {
+    this.dialog
+      .open(AddParticipantInfoToPaymentReminderDialogComponent)
+      .afterClosed()
+      .subscribe({
+        next: (_) => {
+          this.logger.debug('Add payment info warning closed');
+        },
+      });
+  }
+}
+
+@Component({
+  selector: 'app-add-participant-info-to-payment-reminder-dialog-component',
+  templateUrl:
+    './add-participant-info-to-payment-reminder-dialog.component.html',
+  styleUrls: [
+    './add-participant-info-to-payment-reminder-dialog.component.scss',
+  ],
+})
+export class AddParticipantInfoToPaymentReminderDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>
+  ) {}
 }
