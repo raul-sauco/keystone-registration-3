@@ -1,0 +1,13 @@
+@use "../../../../sass/mixins" as mixins;
+
+#add-participant-info-to-payment-reminder-title {
+  @include mixins.alert-dialog;
+  margin: 0 0 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#add-participant-info-to-payment-reminder-content {
+  font-weight: bold;
+}

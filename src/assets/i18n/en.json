@@ -6,6 +6,7 @@
   "ACCOUNT_FOR_THAT_EMAIL_NOT_FOUND": "No account was found for the email provided, please, make sure the email is correct and it is the one you used to register.",
   "ACCOUNT_INACTIVE": "The account we found is inactive.",
   "ADD_PARTICIPANT": "Add participant",
+  "ADD_PARTICIPANT_INFO_REMINDER": "Remember to type in your child’s name and grade level in the notes section. For example, “Wang Peng, G3”",
   "ADVENTURE_OF_A_LIFETIME": "You are about to embark on the adventure of a lifetime.",
   "ALLER": {
     "0": "None",
@@ -127,6 +128,7 @@
     "1": "Yes",
     "2": "Not sure"
   },
+  "IMPORTANT_WARNING": "Important warning!",
   "INDEX": "Index",
   "INFORMATION_UPDATED": "Information updated",
   "INSURANCE": "Insurance",
