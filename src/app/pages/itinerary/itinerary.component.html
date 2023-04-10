@@ -7,7 +7,12 @@
       <div class="app-content-wrapper">
         <app-admin-banner></app-admin-banner>
         <mat-tab-group dynamicHeight id="itinerary-tabs" class="mat-typography">
-          <mat-tab *ngFor="let ag of activityGroups" [label]="ag.name">
+          <mat-tab
+            *ngFor="let ag of activityGroups"
+            [label]="
+              activityGroups.length > 1 ? ag.name : ('ITINERARY' | translate)
+            "
+          >
             <div class="tab-wrapper">
               <div
                 *ngFor="let d of ag.getOrderedItineraryDates()"
