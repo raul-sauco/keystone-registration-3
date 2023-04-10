@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -17,6 +18,7 @@ describe('PaymentInstructionsComponent', () => {
       ],
       imports: [
         HttpClientTestingModule,
+        MatDialogModule,
         MatProgressSpinnerModule,
         LoggerTestingModule,
       ],
