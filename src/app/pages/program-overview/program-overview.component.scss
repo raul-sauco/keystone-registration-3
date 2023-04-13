@@ -25,9 +25,15 @@
 }
 
 .file-details {
+  display: flex;
+  justify-content: space-between;
   flex: 1 1 auto;
   padding: 8px;
   border-bottom: 1px solid #ccc;
+  .downloadable-element-feedback {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .file-name {

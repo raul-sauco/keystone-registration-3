@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { LoginRequiredMessageModule } from 'src/app/components/login-required-message/login-required-message.module';
@@ -14,8 +16,10 @@ import { ProgramOverviewComponent } from './program-overview.component';
     CommonModule,
     LoadingSpinnerContentModule,
     LoginRequiredMessageModule,
+    MatIconModule,
     NoResultsModule,
     ProgramOverviewRoutingModule,
+    TranslateModule,
   ],
 })
 export class ProgramOverviewModule {}
