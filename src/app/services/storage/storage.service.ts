@@ -85,6 +85,8 @@ export class StorageService {
 
   /**
    * TODO upgrade to use different types of storage.
+   * TODO: subscribe to auth status changes and remove
+   * everything from storage in logout.
    *
    * Remove the key => value pair from storage
    * @param key the key the value is indexed by

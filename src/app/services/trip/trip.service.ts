@@ -1,15 +1,60 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
+import { BehaviorSubject } from 'rxjs';
+import { Trip } from 'src/app/models/trip';
+import { AuthService } from '../auth/auth.service';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripService {
+  private TRIP_DATA_STORAGE_KEY = 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA';
+  public tripName$: BehaviorSubject<string> = new BehaviorSubject('');
   id!: number;
   name!: string;
   code!: string;
   type!: string;
 
-  constructor() {}
+  constructor(
+    private auth: AuthService,
+    private storageService: StorageService,
+    private logger: NGXLogger,
+    private translate: TranslateService
+  ) {
+    this.init();
+  }
+
+  init() {
+    this.logger.debug('TripService::init()');
+    // Subscribe to authentication updates.
+    this.auth.auth$.subscribe((authStatus: boolean) => {
+      this.logger.debug(`Updated authentication status ${authStatus}`);
+      if (!authStatus) {
+        this.clear();
+      }
+    });
+  }
+
+  /**
+   * Clear the data for this service.
+   */
+  clear() {
+    this.logger.debug('TripService::clear()');
+    this.tripName$.next('');
+    this.storageService.remove(this.TRIP_DATA_STORAGE_KEY);
+  }
+
+  /**
+   * Set the trip data.
+   * @param tripData any
+   */
+  setTrip(tripData: any): void {
+    const trip = new Trip(tripData);
+    this.storageService.set(this.TRIP_DATA_STORAGE_KEY, trip);
+    this.tripName$.next(trip.getName(this.translate.currentLang));
+  }
 
   /**
    * Init the providers values with a server's response
