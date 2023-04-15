@@ -3,8 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject } from 'rxjs';
 
+import { HttpHeaders } from '@angular/common/http';
 import { Credentials } from '@models/credentials';
 import { Trip } from '@models/trip';
+import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { StorageService } from '@services/storage/storage.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
@@ -15,13 +17,14 @@ import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.servi
 export class TripService {
   private TRIP_DATA_STORAGE_KEY = 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA';
   private _tripName$: BehaviorSubject<string> = new BehaviorSubject('');
+  private trip: Trip | null = null;
   id!: number;
   name!: string;
   code!: string;
   type!: string;
 
   constructor(
-    // private api: ApiService,
+    private api: ApiService,
     private auth: AuthService,
     private storageService: StorageService,
     private logger: NGXLogger,
@@ -77,6 +80,7 @@ export class TripService {
    */
   clear() {
     this.logger.debug('TripService::clear()');
+    this.trip = null;
     this._tripName$.next('');
     this.storageService.remove(this.TRIP_DATA_STORAGE_KEY);
   }
@@ -86,6 +90,7 @@ export class TripService {
    * @param tripData any
    */
   private setTrip(trip: Trip): void {
+    this.trip = trip;
     this.storageService.set(this.TRIP_DATA_STORAGE_KEY, trip);
     this._tripName$.next(trip.getName(this.translate.currentLang));
   }
@@ -117,5 +122,19 @@ export class TripService {
    */
   private fetch(cred: Credentials): void {
     this.logger.debug('TripService fetching from API');
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: ' Bearer ' + (cred.accessToken || ''),
+      }),
+    };
+    this.api.get('my-trip', null, options).subscribe({
+      next: (res: any) => {
+        this.setTrip(new Trip(res));
+      },
+      error: (err: any) => {
+        this.logger.warn('Error fetching my trip', err);
+      },
+    });
   }
 }
