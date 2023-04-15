@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject } from 'rxjs';
-import { Trip } from 'src/app/models/trip';
-import { AuthService } from '../auth/auth.service';
-import { StorageService } from '../storage/storage.service';
+
+import { Credentials } from '@models/credentials';
+import { Trip } from '@models/trip';
+import { AuthService } from '@services/auth/auth.service';
+import { StorageService } from '@services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +35,14 @@ export class TripService {
       this.logger.debug(`Updated authentication status ${authStatus}`);
       if (!authStatus) {
         this.clear();
+      } else {
+        if (this.auth.isStudent || this.auth.isTeacher) {
+          // If we received auth$ true we should have credentials.
+          const cred: Credentials = this.auth.getCredentials()!;
+        } else {
+          // TODO: Subscribe to updates to TripSwitcher service when
+          // school admins select a trip.
+        }
       }
     });
   }
