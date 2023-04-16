@@ -12,11 +12,13 @@ import {
   shareReplay,
   withLatestFrom,
 } from 'rxjs/operators';
-import { AuthService } from './services/auth/auth.service';
-import { PaymentService } from './services/payment/payment.service';
-import { RouteStateService } from './services/route-state/route-state.service';
-import { StudentService } from './services/student/student.service';
-import { TripSwitcherService } from './services/trip-switcher/trip-switcher.service';
+
+import { AuthService } from '@services/auth/auth.service';
+import { PaymentService } from '@services/payment/payment.service';
+import { RouteStateService } from '@services/route-state/route-state.service';
+import { StudentService } from '@services/student/student.service';
+import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
+import { TripService } from '@services/trip/trip.service';
 
 @Component({
   selector: 'app-root',
@@ -102,7 +104,8 @@ export class AppComponent implements OnInit {
     public auth: AuthService,
     public paymentService: PaymentService,
     public studentService: StudentService,
-    public tripSwitcher: TripSwitcherService
+    public tripSwitcher: TripSwitcherService,
+    public tripService: TripService
   ) {
     this.initTranslate();
     router.events

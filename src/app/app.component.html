@@ -18,7 +18,9 @@
     src="../assets/img/ka-logo-long.jpeg"
     alt="{{ title }}"
   />
-  <span class="toolbar-spacer"></span>
+  <div class="toolbar-spacer">
+    <div class="trip-name-wrapper">{{ tripService.tripName$ | async }}</div>
+  </div>
   <button
     type="button"
     mat-raised-button

@@ -128,10 +128,11 @@ export class TripService {
         Authorization: ' Bearer ' + (cred.accessToken || ''),
       }),
     };
-    this.api.get('my-trip', null, options).subscribe({
+    this.api.get('my-trip', { expand: 'name_zh,name_en' }, options).subscribe({
       next: (res: any) => {
         this.setTrip(new Trip(res));
       },
+
       error: (err: any) => {
         this.logger.warn('Error fetching my trip', err);
       },
