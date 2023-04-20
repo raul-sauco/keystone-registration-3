@@ -1,27 +1,26 @@
 <!--App Component HTML file. App bar and sidebar menu, render router outlet on the rest -->
-<mat-toolbar id="main-header" color="primary">
+<mat-toolbar id="main-header">
   <button
     id="toggle-sidenav-button"
     type="button"
     aria-label="Toggle sidenav"
     mat-icon-button
     (click)="drawer.toggle()"
-    *ngIf="isHandset$ | async"
+    *ngIf="isHandset$ | async; else noHandset"
     class="mat-elevation-z7"
   >
     <mat-icon>menu</mat-icon>
   </button>
-
-  <!-- <span>{{ title }}</span> -->
-  <img
-    id="main-header-logo"
-    src="../assets/img/ka-logo-long.jpeg"
-    alt="{{ title }}"
-  />
+  <ng-template #noHandset><div class="left-spacer"></div></ng-template>
   <div class="toolbar-spacer">
     <div class="trip-name-wrapper">{{ tripService.tripName$ | async }}</div>
   </div>
-  <button
+  <img
+    id="main-header-logo"
+    src="../assets/img/ka-logo-48h.png"
+    alt="{{ title }}"
+  />
+  <!-- <button
     type="button"
     mat-raised-button
     class="help-button"
@@ -30,7 +29,7 @@
   >
     {{ "HELP" | translate | uppercase }}
     <mat-icon aria-label="Help toggle icon" color="primary">help</mat-icon>
-  </button>
+  </button> -->
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">

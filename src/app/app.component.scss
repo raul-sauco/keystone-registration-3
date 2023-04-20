@@ -1,13 +1,28 @@
 .sidenav {
   width: 320px;
 }
-
+#main-header {
+  background-color: rgb(190, 190, 190);
+  #toggle-sidenav-button {
+    mat-icon {
+      color: #fff;
+    }
+    background-color: rgb(35, 114, 32);
+  }
+  justify-content: space-between;
+  .left-spacer {
+    /* Push the trip name to the center in non-mobile */
+    width: 72px;
+  }
+}
+$toolbarSpacerMargin: 8px;
 #main-header.mat-toolbar {
+  align-items: center;
   position: sticky;
   top: 0;
   z-index: 2;
   #toggle-sidenav-button {
-    margin-right: 16px;
+    margin-right: $toolbarSpacerMargin;
   }
   .help-button {
     color: #ccc;
@@ -16,27 +31,42 @@
 }
 
 #main-header-logo {
-  max-height: 52px;
-  max-width: 40%;
-  @media screen and (min-width: 400px) {
-    max-width: 50%;
-  }
-  @media screen and (min-width: 500px) {
-    max-width: 60%;
-  }
-  @media screen and (min-width: 600px) {
-    max-width: 100%;
-  }
+  margin-left: $toolbarSpacerMargin;
+  // max-height: 52px;
+  // max-width: 40%;
+  // @media screen and (min-width: 400px) {
+  //   max-width: 50%;
+  // }
+  // @media screen and (min-width: 500px) {
+  //   max-width: 60%;
+  // }
+  // @media screen and (min-width: 600px) {
+  //   max-width: 100%;
+  // }
 }
 
-.toolbar-spacer {
-  flex: 1 1 auto;
-}
+// .toolbar-spacer {
+//   flex: 1 1 auto;
+// }
 
 .mat-drawer-content {
   min-height: -webkit-fill-available;
 }
 
-.trip-name-wrapper {
-  text-align: center;
+$localRed: rgb(86, 0, 19);
+
+.toolbar-spacer {
+  display: flex;
+  max-width: 100%;
+  overflow: hidden;
+  .trip-name-wrapper {
+    padding: 4px;
+    border: 1px solid $localRed;
+    color: $localRed;
+    display: inline-block;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
