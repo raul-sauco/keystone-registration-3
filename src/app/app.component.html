@@ -1,30 +1,38 @@
 <!--App Component HTML file. App bar and sidebar menu, render router outlet on the rest -->
 <mat-toolbar id="main-header">
-  <button
-    id="toggle-sidenav-button"
-    type="button"
-    aria-label="Toggle sidenav"
-    mat-icon-button
-    (click)="drawer.toggle()"
-    *ngIf="isHandset$ | async; else noHandset"
-    class="mat-elevation-z7"
-  >
-    <mat-icon>menu</mat-icon>
-  </button>
-  <ng-template #noHandset><div class="left-spacer"></div></ng-template>
-  <div class="toolbar-spacer">
-    <div
-      class="trip-name-wrapper"
-      *ngIf="tripService.tripName$ | async as tripName"
+  <ng-container *ngIf="isHandset$ | async; else noHandset">
+    <button
+      id="toggle-sidenav-button"
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.toggle()"
+      class="mat-elevation-z7"
     >
-      {{ tripName }}
-    </div>
-  </div>
-  <img
-    id="main-header-logo"
-    src="../assets/img/ka-logo-text.png"
-    alt="{{ title }}"
-  />
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img
+      id="main-header-logo"
+      src="../assets/img/ka-logo-text.png"
+      alt="{{ title }}"
+    />
+    <div class="toolbar-spacer"></div>
+  </ng-container>
+  <ng-template #noHandset>
+    <img
+      id="main-header-logo"
+      src="../assets/img/ka-logo-long.jpeg"
+      alt="{{ title }}"
+    />
+    <div class="toolbar-spacer">
+      <div
+        class="trip-name-wrapper"
+        *ngIf="tripService.tripName$ | async as tripName"
+      >
+        {{ tripName }}
+      </div>
+    </div></ng-template
+  >
   <button
     type="button"
     mat-raised-button

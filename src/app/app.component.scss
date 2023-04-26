@@ -10,9 +10,8 @@
     background-color: rgb(35, 114, 32);
   }
   justify-content: space-between;
-  .left-spacer {
-    /* Push the trip name to the center in non-mobile */
-    width: 72px;
+  #main-header-logo {
+    height: 52px;
   }
 }
 $toolbarSpacerMargin: 8px;
@@ -31,23 +30,18 @@ $toolbarSpacerMargin: 8px;
 }
 
 #main-header-logo {
-  margin-left: $toolbarSpacerMargin;
-  // max-height: 52px;
-  // max-width: 40%;
-  // @media screen and (min-width: 400px) {
-  //   max-width: 50%;
-  // }
-  // @media screen and (min-width: 500px) {
-  //   max-width: 60%;
-  // }
-  // @media screen and (min-width: 600px) {
-  //   max-width: 100%;
-  // }
+  max-height: 52px;
+  max-width: 40%;
+  @media screen and (min-width: 400px) {
+    max-width: 50%;
+  }
+  @media screen and (min-width: 500px) {
+    max-width: 60%;
+  }
+  @media screen and (min-width: 600px) {
+    max-width: 100%;
+  }
 }
-
-// .toolbar-spacer {
-//   flex: 1 1 auto;
-// }
 
 .mat-drawer-content {
   min-height: -webkit-fill-available;
@@ -56,7 +50,10 @@ $toolbarSpacerMargin: 8px;
 $localRed: rgb(86, 0, 19);
 
 .toolbar-spacer {
+  // Take up all available space in the center.
+  flex: 1 1 auto;
   display: flex;
+  justify-content: center;
   max-width: 100%;
   overflow: hidden;
   .trip-name-wrapper {
@@ -65,7 +62,6 @@ $localRed: rgb(86, 0, 19);
     color: $localRed;
     display: inline-block;
     text-overflow: ellipsis;
-    width: 100%;
     white-space: nowrap;
     overflow: hidden;
   }
