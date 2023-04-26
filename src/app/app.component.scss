@@ -68,8 +68,7 @@ $localRed: rgb(86, 0, 19);
   padding: 4px;
   border: 1px solid $localRed;
   color: $localRed;
-  display: inline-block;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: wrap;
+  text-align: center;
   overflow: hidden;
 }
