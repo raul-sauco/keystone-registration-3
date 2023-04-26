@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { NoItemsNotificationModule } from 'src/app/components/no-items-notification/no-items-notification.module';
@@ -21,7 +20,6 @@ import { FeedbackComponent } from './feedback.component';
     TranslateModule,
     MatIconModule,
     MatTabsModule,
-    NgxChartsModule,
   ],
 })
 export class FeedbackModule {}

@@ -1,6 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { LegendPosition } from '@swimlane/ngx-charts';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -15,7 +14,6 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
 })
 export class FeedbackComponent implements OnInit {
   feedback$!: Observable<any>;
-  legendPosition: LegendPosition = LegendPosition.Below;
   canDetermineTrip = true;
 
   constructor(
