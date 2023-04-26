@@ -13,14 +13,19 @@
   </button>
   <ng-template #noHandset><div class="left-spacer"></div></ng-template>
   <div class="toolbar-spacer">
-    <div class="trip-name-wrapper">{{ tripService.tripName$ | async }}</div>
+    <div
+      class="trip-name-wrapper"
+      *ngIf="tripService.tripName$ | async as tripName"
+    >
+      {{ tripName }}
+    </div>
   </div>
   <img
     id="main-header-logo"
-    src="../assets/img/ka-logo-48h.png"
+    src="../assets/img/ka-logo-text.png"
     alt="{{ title }}"
   />
-  <!-- <button
+  <button
     type="button"
     mat-raised-button
     class="help-button"
@@ -29,7 +34,7 @@
   >
     {{ "HELP" | translate | uppercase }}
     <mat-icon aria-label="Help toggle icon" color="primary">help</mat-icon>
-  </button> -->
+  </button>
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
