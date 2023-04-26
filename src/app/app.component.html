@@ -225,6 +225,15 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <ng-container
+      *ngIf="
+        (isHandset$ | async) && (tripService.tripName$ | async) as tripName
+      "
+    >
+      <div id="content-trip-name-wrapper">
+        <div class="trip-name-wrapper">{{ tripName }}</div>
+      </div>
+    </ng-container>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
