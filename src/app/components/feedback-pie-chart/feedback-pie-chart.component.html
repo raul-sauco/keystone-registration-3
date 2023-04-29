@@ -1,13 +1,15 @@
-<div class="chart-container">
-  <h4>Title here</h4>
-  <canvas
-    baseChart
-    [data]="pieChartData"
-    [labels]="pieChartLabels"
-    [type]="pieChartType"
-    [options]="pieChartOptions"
-    [plugins]="pieChartPlugins"
-    [legend]="pieChartLegend"
-  >
-  </canvas>
+<div class="chart-container mat-typography">
+  <ng-container *ngIf="chartTitle">
+    <h4 class="chart-title">{{ chartTitle }}</h4>
+    <canvas
+      baseChart
+      [data]="pieChartData"
+      [labels]="pieChartLabels"
+      [type]="pieChartType"
+      [options]="pieChartOptions"
+      [plugins]="pieChartPlugins"
+      [legend]="pieChartLegend"
+    >
+    </canvas>
+  </ng-container>
 </div>

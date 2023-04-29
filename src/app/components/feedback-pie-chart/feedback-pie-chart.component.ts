@@ -11,18 +11,11 @@ export class FeedbackPieChartComponent implements OnInit {
   public pieChartOptions: ChartOptions = {
     responsive: true,
   };
-  public pieChartLabels: string[] = [
-    'Download Sales',
-    'In-Store Sales',
-    'Mail Sales',
-  ];
+  public chartTitle: string | null = null;
+  public pieChartLabels: string[] = [];
   public pieChartData: ChartData<'pie', number[], string> = {
-    labels: ['Best experience of my life', 'Good experience', 'It was OK'],
-    datasets: [
-      {
-        data: [300, 500, 100],
-      },
-    ],
+    labels: [],
+    datasets: [{ data: [] }],
   };
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
@@ -31,7 +24,12 @@ export class FeedbackPieChartComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log('Hello pie charts');
-    console.log(this.rawData);
+    // The API data needs to be mapped to the shape expected by the
+    // Charts.js component.
+    this.chartTitle = this.rawData.label;
+    this.rawData.data.forEach((item) => {
+      this.pieChartData.labels?.push(item.name);
+      this.pieChartData.datasets[0].data.push(item.value);
+    });
   }
 }
