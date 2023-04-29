@@ -3,7 +3,7 @@
 }
 $toolbarBackgroundGrey: rgb(190, 190, 190);
 #main-header {
-  background-color: $toolbarBackgroundGrey;
+  background-color: #e6e6e6;
   #toggle-sidenav-button {
     mat-icon {
       color: #fff;
@@ -48,7 +48,7 @@ $toolbarSpacerMargin: 8px;
   min-height: -webkit-fill-available;
 }
 
-$localRed: rgb(86, 0, 19);
+$localRed: #730012;
 
 .toolbar-spacer {
   // Take up all available space in the center.
@@ -59,12 +59,13 @@ $localRed: rgb(86, 0, 19);
   overflow: hidden;
 }
 #content-trip-name-wrapper {
-  background-color: $toolbarBackgroundGrey;
+  background-color: #d8d6d6;
   padding: 8px;
   display: flex;
   justify-content: center;
 }
 .trip-name-wrapper {
+  background-color: #d8d6d6;
   padding: 4px;
   border: 1px solid $localRed;
   color: $localRed;
