@@ -1,6 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ChartData, ChartOptions } from 'chart.js';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -16,25 +15,6 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
 export class FeedbackComponent implements OnInit {
   feedback$!: Observable<any>;
   canDetermineTrip = true;
-  public pieChartOptions: ChartOptions<'pie'> = {
-    responsive: false,
-  };
-  public pieChartLabels = [
-    ['Download', 'Sales'],
-    ['In', 'Store', 'Sales'],
-    'Mail Sales',
-  ];
-
-  public pieChartData: ChartData<'pie', number[], string> = {
-    labels: ['Best experience of my life', 'Good experience', 'It was OK'],
-    datasets: [
-      {
-        data: [300, 500, 100],
-      },
-    ],
-  };
-  public pieChartLegend = true;
-  public pieChartPlugins = [];
 
   constructor(
     private logger: NGXLogger,
