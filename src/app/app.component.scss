@@ -57,6 +57,7 @@ $localRed: #730012;
   justify-content: center;
   max-width: 100%;
   overflow: hidden;
+  padding: 0 8px;
 }
 #content-trip-name-wrapper {
   background-color: #d8d6d6;
@@ -71,5 +72,7 @@ $localRed: #730012;
   color: $localRed;
   white-space: wrap;
   text-align: center;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
