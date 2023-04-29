@@ -3,10 +3,11 @@ import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgChartsModule } from 'ng2-charts';
-import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
-import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { NoItemsNotificationModule } from 'src/app/components/no-items-notification/no-items-notification.module';
+
+import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
+import { FeedbackPieChartModule } from '@components/feedback-pie-chart/feedback-pie-chart.module';
+import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
+import { NoItemsNotificationModule } from '@components/no-items-notification/no-items-notification.module';
 import { FeedbackRoutingModule } from './feedback-routing.module';
 import { FeedbackComponent } from './feedback.component';
 
@@ -15,13 +16,13 @@ import { FeedbackComponent } from './feedback.component';
   imports: [
     AdminBannerModule,
     CommonModule,
+    FeedbackPieChartModule,
     FeedbackRoutingModule,
     LoadingSpinnerContentModule,
     NoItemsNotificationModule,
     TranslateModule,
     MatIconModule,
     MatTabsModule,
-    NgChartsModule,
   ],
 })
 export class FeedbackModule {}

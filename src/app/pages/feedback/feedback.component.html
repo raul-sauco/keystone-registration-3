@@ -8,25 +8,13 @@
     >
       <mat-tab [label]="'OVERVIEW' | translate">
         <div class="charts-container">
-          <ng-container *ngFor="let chart of feedback.charts">
-            <div class="chart-container">
-              <!-- <ngx-charts-pie-chart
-                scheme="cool"
-                [results]="chart.data"
-                [gradient]="true"
-                [legend]="true"
-                [legendTitle]="chart.label"
-                [legendPosition]="legendPosition"
-                [labels]="true"
-                [trimLabels]="false"
-                [doughnut]="false"
-              >
-              </ngx-charts-pie-chart> -->
-            </div>
+          <ng-container *ngFor="let chartData of feedback.charts">
+            <app-feedback-pie-chart
+              [rawData]="chartData"
+            ></app-feedback-pie-chart>
           </ng-container>
         </div>
       </mat-tab>
-
       <mat-tab [label]="'DETAILS' | translate">
         <div
           *ngFor="let item of feedback.questions"
@@ -41,7 +29,6 @@
         </div>
       </mat-tab>
     </mat-tab-group>
-
     <ng-template #noItems>
       <app-no-items-notification
         message="NO_FEEDBACK_FOR_TRIP"
