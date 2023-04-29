@@ -12,7 +12,6 @@ export class FeedbackPieChartComponent implements OnInit {
     responsive: true,
   };
   public chartTitle: string | null = null;
-  public pieChartLabels: string[] = [];
   public pieChartData: ChartData<'pie', number[], string> = {
     labels: [],
     datasets: [{ data: [] }],
