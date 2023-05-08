@@ -7,10 +7,6 @@
   >
     <div class="app-page-wrapper mat-typography">
       <div class="app-content-wrapper">
-        <div id="required-fields-prompt">
-          <p [innerHtml]="'REQUIRED_FIELDS_PROMPT' | translate"></p>
-          <p [innerHtml]="'SCROLL_TO_BOTTOM_CLICK_UPDATE' | translate"></p>
-        </div>
         <div id="personal-info-form-container" *ngIf="personalInfoForm">
           <form
             [formGroup]="personalInfoForm"
@@ -19,6 +15,17 @@
           >
             <!-- START Personal information section -->
             <h2>{{ "PERSONAL_INFORMATION" | translate }}</h2>
+            <div id="required-fields-prompt">
+              <p [innerHtml]="'REQUIRED_FIELDS_PROMPT' | translate"></p>
+              <p [innerHtml]="'SCROLL_TO_BOTTOM_CLICK_UPDATE' | translate"></p>
+            </div>
+            <div
+              *ngIf="namePromptContent$ | async as content"
+              class="inner-form-prompt"
+              [innerHTML]="
+                (lang === 'zh' ? content.text_zh : content.text) | markdown
+              "
+            ></div>
             <mat-form-field appearance="outline">
               <mat-label>{{
                 student.getAttributeLabel("firstName")
@@ -28,29 +35,28 @@
                 {{ "THIS_FIELD_IS_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>
-            <mat-form-field
-              appearance="outline"
-              [hintLabel]="'PIF_HINT_NAME' | translate"
-            >
+            <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("lastName") }}</mat-label>
               <input type="text" matInput formControlName="lastName" />
               <mat-error *ngIf="lastName?.errors?.required">
                 {{ "THIS_FIELD_IS_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>
-            <mat-form-field
-              appearance="outline"
-              [hintLabel]="'PIF_HINT_ENGLISH_NAME' | translate"
-            >
+            <div
+              class="inner-form-prompt"
+              [innerHTML]="'PIF_HINT_ENGLISH_NAME' | translate"
+            ></div>
+            <mat-form-field appearance="outline">
               <mat-label>{{
                 student.getAttributeLabel("englishName")
               }}</mat-label>
               <input type="text" matInput formControlName="englishName" />
             </mat-form-field>
-            <mat-form-field
-              appearance="outline"
-              [hintLabel]="'PIF_HINT_CITIZENSHIP' | translate"
-            >
+            <div
+              class="inner-form-prompt"
+              [innerHTML]="'PIF_HINT_CITIZENSHIP' | translate"
+            ></div>
+            <mat-form-field appearance="outline">
               <mat-label>{{
                 student.getAttributeLabel("citizenship")
               }}</mat-label>
@@ -59,10 +65,11 @@
                 {{ "THIS_FIELD_IS_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>
-            <mat-form-field
-              appearance="outline"
-              [hintLabel]="'PIF_HINT_TRAVEL_DOCUMENT' | translate"
-            >
+            <div
+              class="inner-form-prompt"
+              [innerHTML]="'PIF_HINT_TRAVEL_DOCUMENT' | translate"
+            ></div>
+            <mat-form-field appearance="outline">
               <mat-label>{{
                 student.getAttributeLabel("travelDocument")
               }}</mat-label>

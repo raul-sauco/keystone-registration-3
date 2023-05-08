@@ -1,17 +1,22 @@
 @use "../../../sass/mixins" as mixins;
 
-#required-fields-prompt {
-  @include mixins.alert-dialog;
-}
-
 #personal-info-form-container {
+  h2 {
+    text-align: center;
+  }
+  #required-fields-prompt {
+    @include mixins.alert-dialog;
+  }
   box-sizing: border-box;
   padding: 0 16px 16px 16px;
   width: 100%;
   display: flex;
   justify-content: center;
 }
-
+.inner-form-prompt {
+  @include mixins.alert-dialog;
+  margin-bottom: 24px;
+}
 form#personal-info-form {
   display: flex;
   flex-direction: column;

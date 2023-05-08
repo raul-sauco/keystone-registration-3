@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -7,9 +8,10 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from '@services/api/api.service';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { PaymentInfo } from 'src/app/models/paymentInfo';
 import { Student } from 'src/app/models/student';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -28,8 +30,11 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   private paymentInfo$?: Subscription | null = null;
   personalInfoForm!: UntypedFormGroup;
   needsLogin = false;
+  lang: string = 'en';
+  namePromptContent$!: Observable<any>;
 
   constructor(
+    private api: ApiService,
     private formBuilder: UntypedFormBuilder,
     private snackBar: MatSnackBar,
     private logger: NGXLogger,
@@ -43,6 +48,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.logger.debug('PersonalInfoComponent OnInit');
+    this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
     this.auth.checkAuthenticated().then((res: boolean) => {
       const credentials = this.auth.getCredentials();
       if (res && credentials) {
@@ -83,6 +89,17 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
         this.logger.error('Authentication error, expected having auth info.');
       }
     });
+    this.fetchContents();
+  }
+
+  /**
+   * Fetch content that needs to be displayed in the UI.
+   */
+  fetchContents() {
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    this.namePromptContent$ = this.api.get('documents/141', null, options);
   }
 
   ngOnDestroy(): void {
