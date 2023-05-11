@@ -15,7 +15,12 @@
 }
 .inner-form-prompt {
   @include mixins.alert-dialog;
-  margin-bottom: 24px;
+  margin-top: 0px;
+  /* Fix <p> elements margin adding to padding resulting in too much space */
+  &::ng-deep p:last-child {
+    margin-bottom: 0;
+  }
+  text-align: left;
 }
 form#personal-info-form {
   display: flex;

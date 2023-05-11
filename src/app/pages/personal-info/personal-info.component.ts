@@ -32,6 +32,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   needsLogin = false;
   lang: string = 'en';
   namePromptContent$!: Observable<any>;
+  englishNamePromptContent$!: Observable<any>;
 
   constructor(
     private api: ApiService,
@@ -100,6 +101,11 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
     this.namePromptContent$ = this.api.get('documents/141', null, options);
+    this.englishNamePromptContent$ = this.api.get(
+      'documents/142',
+      null,
+      options
+    );
   }
 
   ngOnDestroy(): void {

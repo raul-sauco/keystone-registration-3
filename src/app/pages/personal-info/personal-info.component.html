@@ -43,8 +43,12 @@
               </mat-error>
             </mat-form-field>
             <div
+              *ngIf="englishNamePromptContent$ | async as englishName"
               class="inner-form-prompt"
-              [innerHTML]="'PIF_HINT_ENGLISH_NAME' | translate"
+              [innerHTML]="
+                (lang === 'zh' ? englishName.text_zh : englishName.text)
+                  | markdown
+              "
             ></div>
             <mat-form-field appearance="outline">
               <mat-label>{{
