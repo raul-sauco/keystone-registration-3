@@ -3,10 +3,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { finalize, Subscription } from 'rxjs';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { PaymentService } from 'src/app/services/payment/payment.service';
+import { Subscription, finalize } from 'rxjs';
+
+import { AuthService } from '@services/auth/auth.service';
+import { GlobalsService } from '@services/globals/globals.service';
+import { PaymentService } from '@services/payment/payment.service';
 
 @Component({
   selector: 'app-payment-upload-proof',
