@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ComponentCanDeactivate } from '@interfaces/component-can-deactivate';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { PaymentService } from 'src/app/services/payment/payment.service';
+
+import { ComponentCanDeactivate } from '@interfaces/component-can-deactivate';
+import { AuthService } from '@services/auth/auth.service';
+import { GlobalsService } from '@services/globals/globals.service';
+import { PaymentService } from '@services/payment/payment.service';
 
 @Component({
   selector: 'app-payments',
@@ -29,6 +30,7 @@ export class PaymentsComponent implements OnInit, ComponentCanDeactivate {
    * Implement canDeactivate condition.
    * @returns False if there are pending actions.
    */
+  @HostListener('window:beforeunload')
   canDeactivate(): boolean | Observable<boolean> {
     this.logger.debug('PaymentComponent canDeactivate');
     return this.paymentService.getPaymentInfo()?.paid === true;
