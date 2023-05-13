@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard';
-import { NoAuthGuard } from './guards/no-auth.guard';
-import { SchoolAdminGuard } from './guards/school-admin.guard';
-import { TeacherGuard } from './guards/teacher.guard';
+
+import { AuthGuard } from '@guards/auth.guard';
+import { NoAuthGuard } from '@guards/no-auth.guard';
+import { SchoolAdminGuard } from '@guards/school-admin.guard';
+import { TeacherGuard } from '@guards/teacher.guard';
 
 const routes: Routes = [
   {
