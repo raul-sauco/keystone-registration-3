@@ -17,8 +17,7 @@ describe('Student', () => {
   };
   const studentData = {
     id: 1,
-    first_name: 'First Name',
-    last_name: 'Last Name',
+    name: 'Test Name',
     type: 0,
     paid: 1,
     payment_verified: 1,
@@ -31,8 +30,7 @@ describe('Student', () => {
   };
   const teacherData = {
     id: 1,
-    first_name: 'First Name',
-    last_name: 'Last Name',
+    name: 'Teacher tName',
     type: 1,
     paid: 0,
     payment_verified: 0,
@@ -145,7 +143,7 @@ describe('Student', () => {
 
     it('listing attributes by type', () => {
       const student = new Student(studentData, translateSpy);
-      expect(student.getPersonalAttributes().length).toEqual(7);
+      expect(student.getPersonalAttributes().length).toEqual(6);
       expect(student.getLegalAttributes().length).toEqual(3);
       expect(student.getDietaryAttributes().length).toEqual(2);
       expect(student.getMedicalAttributes().length).toEqual(3);

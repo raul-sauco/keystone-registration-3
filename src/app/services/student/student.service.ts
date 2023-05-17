@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, ReplaySubject, Subject, of, map } from 'rxjs';
+import { Observable, ReplaySubject, Subject, map } from 'rxjs';
 import { Student } from 'src/app/models/student';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -48,9 +48,7 @@ export class StudentService {
           'StudentService got student json from server',
           studentJson
         );
-        this.student$.next(
-          new Student(studentJson, this.translate, this.logger)
-        );
+        this.student$.next(new Student(studentJson, this.translate));
       },
     });
   }
@@ -71,7 +69,7 @@ export class StudentService {
     };
     return this.api.patch(endpoint, data, options).pipe(
       map((studentJson) => {
-        const student = new Student(studentJson, this.translate, this.logger);
+        const student = new Student(studentJson, this.translate);
         this.student$.next(student);
       })
     );
