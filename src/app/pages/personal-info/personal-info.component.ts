@@ -142,9 +142,9 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.personalInfoForm = this.formBuilder.group({
       name: [student.name, Validators.required],
       englishName: [student.englishName],
-      citizenship: [student.citizenship, Validators.required],
+      citizenship: [student.citizenship],
       travelDocument: [student.travelDocument, Validators.required],
-      gender: [student.gender, Validators.required],
+      gender: [student.gender],
       dob: [student.dob, Validators.required],
       guardianName: [student.guardianName],
       emergencyContact: [student.emergencyContact],
@@ -163,7 +163,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   submitPersonalInfoForm(): void {
     const studentData = this.sanitizeData(this.personalInfoForm.value);
     this.studentService.updateStudent(studentData).subscribe({
-      next: (student) => {
+      next: (student: Student) => {
         this.logger.debug(
           'PersonalInfoComponent updated student data',
           student
@@ -175,14 +175,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
           .afterDismissed()
           .subscribe({
             next: () => {
-              if (
-                this.auth.getCredentials()?.type === 6 &&
-                this.paymentInfo?.required &&
-                !this.paymentInfo.paid
-              ) {
-                this.router.navigateByUrl('/payments');
-              } else {
+              if (student.waiverAccepted) {
                 this.router.navigateByUrl('/home');
+              } else {
+                this.router.navigateByUrl('/waiver');
               }
             },
           });

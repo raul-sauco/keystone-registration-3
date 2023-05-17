@@ -56,9 +56,6 @@
                 student.getAttributeLabel("citizenship")
               }}</mat-label>
               <input type="text" matInput formControlName="citizenship" />
-              <mat-error *ngIf="citizenship?.errors?.required">
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-              </mat-error>
             </mat-form-field>
             <div
               class="inner-form-prompt"
@@ -87,9 +84,6 @@
                   {{ "G." + i | translate }}</mat-option
                 >
               </mat-select>
-              <mat-error *ngIf="gender?.errors?.required">
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-              </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("dob") }}</mat-label>

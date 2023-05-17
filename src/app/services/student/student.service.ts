@@ -59,7 +59,7 @@ export class StudentService {
    * @param data
    * @returns An HttpClient observable that will close on response.
    */
-  updateStudent(data: any): Observable<void> {
+  updateStudent(data: any): Observable<Student> {
     const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
     const options = {
       headers: new HttpHeaders({
@@ -71,6 +71,7 @@ export class StudentService {
       map((studentJson) => {
         const student = new Student(studentJson, this.translate);
         this.student$.next(student);
+        return student;
       })
     );
   }
