@@ -70,11 +70,7 @@
         <div matListItemIcon>
           <mat-icon color="primary">open_in_new</mat-icon>
         </div>
-        <span>
-          {{ "LOG_OUT" | translate | uppercase }} ({{
-            auth.getCredentials()?.username
-          }})
-        </span>
+        <span>{{ "LOG_OUT" | translate | uppercase }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </a>
       <ng-template #login>
