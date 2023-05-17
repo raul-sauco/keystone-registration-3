@@ -22,45 +22,43 @@ describe('AppComponent', () => {
   let appElement: HTMLElement;
   let authServiceSpy: Spied<AuthService>;
 
-  beforeEach(
-    waitForAsync(() => {
-      authServiceSpy = jasmine.createSpyObj(
-        'AuthService',
-        {
-          getCredentials: new Credentials({
-            userName: 'test',
-            accessToken: 'test-token',
-            type: 8, // School admin type
-            studentId: undefined,
-          }),
-          checkAuthenticated: Promise.resolve(true),
-        },
-        { auth$: of(true) }
-      );
-      TestBed.configureTestingModule({
-        providers: [
-          AppComponent,
-          { provide: AuthService, useValue: authServiceSpy },
-        ],
-        imports: [
-          RouterTestingModule,
-          HttpClientTestingModule,
-          LoggerTestingModule,
-          TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-          }),
-          BrowserAnimationsModule, // Material needs animations
-          MatBadgeModule,
-          MatIconModule,
-          MatToolbarModule,
-          MatSidenavModule,
-          MatListModule,
-          AdminBannerModule,
-        ],
-        declarations: [AppComponent],
-      });
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    authServiceSpy = jasmine.createSpyObj(
+      'AuthService',
+      {
+        getCredentials: new Credentials({
+          username: 'test',
+          accessToken: 'test-token',
+          type: 8, // School admin type
+          studentId: undefined,
+        }),
+        checkAuthenticated: Promise.resolve(true),
+      },
+      { auth$: of(true) }
+    );
+    TestBed.configureTestingModule({
+      providers: [
+        AppComponent,
+        { provide: AuthService, useValue: authServiceSpy },
+      ],
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule,
+        LoggerTestingModule,
+        TranslateTestingModule.withTranslations({
+          en: require('src/assets/i18n/en.json'),
+        }),
+        BrowserAnimationsModule, // Material needs animations
+        MatBadgeModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatListModule,
+        AdminBannerModule,
+      ],
+      declarations: [AppComponent],
+    });
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
@@ -84,7 +82,7 @@ describe('AppComponent', () => {
   });
 
   it('should have access to credentials from AuthService', () => {
-    expect(component.auth.getCredentials()?.userName).toBe(
+    expect(component.auth.getCredentials()?.username).toBe(
       'test',
       'wrong username'
     );

@@ -154,7 +154,7 @@ export class AppComponent implements OnInit {
 
   /** Logout the current application user */
   async logout() {
-    const username = this.auth.getCredentials()?.userName;
+    const username = this.auth.getCredentials()?.username;
     try {
       await this.auth.logout();
       // paymentService.logout();

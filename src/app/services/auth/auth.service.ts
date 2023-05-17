@@ -110,7 +110,7 @@ export class AuthService {
   logout(): Promise<any> {
     if (this.credentials) {
       this.logger.debug(
-        `AuthService; logging out ${this.credentials.userName}`
+        `AuthService; logging out ${this.credentials.username}`
       );
     }
     this.credentials = undefined;

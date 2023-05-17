@@ -4,14 +4,14 @@ import { PaymentInfo } from './paymentInfo';
  * Credentials model.
  */
 export class Credentials {
-  userName: string;
+  username: string;
   accessToken: string;
   type: number;
   studentId?: number;
   paymentInfo: PaymentInfo | null;
 
   constructor(cred: {
-    userName: string;
+    username: string;
     accessToken: string;
     type: number;
     studentId?: number;
@@ -22,7 +22,7 @@ export class Credentials {
       paidDate?: string;
     };
   }) {
-    this.userName = cred.userName.trim();
+    this.username = cred.username.trim();
     this.accessToken = cred.accessToken.trim();
     this.type = cred.type;
     this.studentId = cred.studentId;

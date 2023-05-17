@@ -8,7 +8,7 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 import { AuthService } from './auth.service';
 
 const userData = {
-  userName: 'Test Username',
+  username: 'Test Username',
   accessToken: 'test-token',
   type: 0,
   studentId: 1,
@@ -149,22 +149,22 @@ describe('AuthService', () => {
     }));
 
     it('should be able to update credentials', fakeAsync(() => {
-      const credData = { ...userData, ...{ userName: 'updated' } };
+      const credData = { ...userData, ...{ username: 'updated' } };
       service = TestBed.inject(AuthService);
       storageServiceSpy.remove.and.resolveTo(true);
       tick();
       expect(service.authenticated).toBeTrue();
       service.setCredentials(new Credentials(credData));
-      expect(service.getCredentials()?.userName).toBe('updated');
+      expect(service.getCredentials()?.username).toBe('updated');
     }));
 
     it('should correctly identify the user type teacher', fakeAsync(() => {
-      const credData = { ...userData, ...{ userName: 'updated' } };
+      const credData = { ...userData, ...{ username: 'updated' } };
       service = TestBed.inject(AuthService);
       tick();
       expect(service.authenticated).toBeTrue();
       service.setCredentials(new Credentials(credData));
-      expect(service.getCredentials()?.userName).toBe('updated');
+      expect(service.getCredentials()?.username).toBe('updated');
       expect(service.isTeacher)
         .withContext('user type 0 should not be identified as teacher')
         .toBeFalse();

@@ -33,7 +33,7 @@ describe('TripService', () => {
     accept_direct_payment: 0,
   });
   const credentialsA = new Credentials({
-    userName: 'test',
+    username: 'test',
     accessToken: 'test-token',
     type: 8, // School admin type
     studentId: undefined,

@@ -39,7 +39,7 @@ describe('ParticipantsComponent', () => {
       'AuthService',
       {
         getCredentials: new Credentials({
-          userName: 'test',
+          username: 'test',
           accessToken: 'test-token',
           type: 8, // School admin type
           studentId: undefined,

@@ -48,7 +48,7 @@ describe('PersonalInfoComponent', () => {
       'AuthService',
       {
         getCredentials: new Credentials({
-          userName: 'test',
+          username: 'test',
           accessToken: 'test-token',
           type: 4, // Student type
           studentId: 123,
@@ -123,7 +123,7 @@ describe('PersonalInfoComponent', () => {
   it('ngOnInit should not mark login required when no auth token', fakeAsync(() => {
     authServiceSpy.getCredentials.and.returnValue(
       new Credentials({
-        userName: 'test',
+        username: 'test',
         accessToken: '',
         type: 4, // Student type
         studentId: 123,
@@ -141,7 +141,7 @@ describe('PersonalInfoComponent', () => {
   it('ngOnInit should not mark login required when no student id', fakeAsync(() => {
     authServiceSpy.getCredentials.and.returnValue(
       new Credentials({
-        userName: 'test',
+        username: 'test',
         accessToken: 'test-token',
         type: 4, // Student type
         studentId: undefined,

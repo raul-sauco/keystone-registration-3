@@ -5,8 +5,8 @@ import {
 } from '@angular/common/http/testing';
 import {
   ComponentFixture,
-  fakeAsync,
   TestBed,
+  fakeAsync,
   tick,
   waitForAsync,
 } from '@angular/core/testing';
@@ -48,7 +48,7 @@ describe('WaiverComponent', () => {
       'AuthService',
       {
         getCredentials: new Credentials({
-          userName: 'test',
+          username: 'test',
           accessToken: 'test-token',
           type: 4, // Student type
           studentId: 22,

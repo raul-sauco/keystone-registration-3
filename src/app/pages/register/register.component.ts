@@ -225,6 +225,6 @@ export class RegistrationSuccessDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     auth: AuthService
   ) {
-    this.username = auth.getCredentials()?.userName || null;
+    this.username = auth.getCredentials()?.username || null;
   }
 }
