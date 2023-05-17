@@ -157,8 +157,6 @@ export class RegisterComponent implements OnInit {
     };
     this.loading = true;
 
-    // this.api.post('r', params).subscribe({next: })
-
     this.api.post('r', params).subscribe({
       next: (response: any) => {
         this.loading = false;
@@ -199,7 +197,7 @@ export class RegisterComponent implements OnInit {
     this.logger.debug('RegisterComponent registration successful');
     const dialogRef = this.dialog.open(RegistrationSuccessDialogComponent);
     dialogRef.afterClosed().subscribe(() => {
-      this.router.navigateByUrl('/waiver');
+      this.router.navigateByUrl('/personal-info');
     });
   }
 
