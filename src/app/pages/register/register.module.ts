@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslateModule } from '@ngx-translate/core';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { RegisterRoutingModule } from './register-routing.module';
 import {
@@ -27,6 +28,7 @@ import {
   imports: [
     CommonModule,
     FormsModule,
+    MarkdownModule,
     MatButtonModule,
     MatCardModule,
     MatDatepickerModule,

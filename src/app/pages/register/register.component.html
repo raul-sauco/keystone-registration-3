@@ -3,12 +3,18 @@
     <mat-card-content>
       <h1>{{ "REGISTRATION_INFORMATION" | translate }}</h1>
       <h2 class="trip-name" *ngIf="trip.name">{{ trip.name }}</h2>
-      <div>{{ "REGISTER_NEW_USERNAME_PASSWORD" | translate }}</div>
       <form
         [formGroup]="userRegistrationForm"
         id="registration-form"
         (ngSubmit)="submitUserRegistration()"
       >
+        <div
+          class="inner-form-prompt"
+          *ngIf="namePromptContent$ | async as content"
+          [innerHtml]="
+            (lang === 'zh' ? content.text_zh : content.text) | markdown
+          "
+        ></div>
         <mat-form-field appearance="outline">
           <mat-label>{{ "NAME" | translate }}</mat-label>
           <input type="text" matInput formControlName="name" required />
@@ -37,7 +43,7 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>{{ "ID" | translate }}</mat-label>
+          <mat-label>{{ "TRAVEL_DOCUMENT_NUMBER" | translate }}</mat-label>
           <input type="text" matInput formControlName="id" />
           <mat-error *ngIf="id?.errors?.required">
             {{ "THIS_FIELD_IS_REQUIRED" | translate }}
