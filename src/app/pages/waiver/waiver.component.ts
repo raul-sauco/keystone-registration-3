@@ -76,11 +76,8 @@ export class WaiverComponent implements OnInit, OnDestroy {
     this.student$?.unsubscribe();
   }
 
-  get firstName() {
-    return this.waiverForm.get('firstName');
-  }
-  get lastName() {
-    return this.waiverForm.get('lastName');
+  get name() {
+    return this.waiverForm.get('name');
   }
   get guardianName() {
     return this.waiverForm.get('guardianName');
@@ -88,8 +85,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
 
   initWaiverForm(stu: Student): void {
     this.waiverForm = this.formBuilder.group({
-      firstName: [stu.firstName || '', Validators.required],
-      lastName: [stu.lastName || '', Validators.required],
+      name: [stu.name || '', Validators.required],
       guardianName: [
         stu.guardianName || '',
         this.auth.getCredentials()?.type === 4 ? null : Validators.required,
@@ -100,8 +96,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
   /** Mark the student as having accepted the waiver today. */
   acceptWaiver(): void {
     const studentData = {
-      first_name: this.waiverForm.value.firstName,
-      last_name: this.waiverForm.value.lastName,
+      name: this.waiverForm.value.name,
       guardian_name: this.waiverForm.value.guardianName,
       waiver_accepted: 1,
       waiver_signed_on: moment().format('YYYY-MM-DD'),

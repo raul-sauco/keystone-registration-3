@@ -26,35 +26,11 @@
               <mat-form-field appearance="outline">
                 <mat-label>{{
                   auth.getCredentials()?.type !== 4
-                    ? ("STUDENT_FIRST_NAME" | translate)
-                    : student.getAttributeLabel("firstName")
+                    ? ("STUDENT_NAME" | translate)
+                    : student.getAttributeLabel("name")
                 }}</mat-label>
-                <input
-                  type="text"
-                  matInput
-                  formControlName="firstName"
-                  required
-                />
-                <mat-error *ngIf="firstName?.errors?.required">
-                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                [hintLabel]="'PIF_HINT_NAME' | translate"
-              >
-                <mat-label>{{
-                  auth.getCredentials()?.type !== 4
-                    ? ("STUDENT_LAST_NAME" | translate)
-                    : student.getAttributeLabel("lastName")
-                }}</mat-label>
-                <input
-                  type="text"
-                  matInput
-                  formControlName="lastName"
-                  required
-                />
-                <mat-error *ngIf="lastName?.errors?.required">
+                <input type="text" matInput formControlName="name" required />
+                <mat-error *ngIf="name?.errors?.required">
                   {{ "THIS_FIELD_IS_REQUIRED" | translate }}
                 </mat-error>
               </mat-form-field>
