@@ -293,6 +293,7 @@
   "SWITCH_TRIP": "切换行程",
   "TEACHER": "老师",
   "TEACHER_AREA": "教师专区",
+  "TERMS_CONDITIONS": "条款和条件",
   "THIS_FIELD_IS_REQUIRED": "该字段不能为空",
   "TOKEN_EXPIRED": "令牌已过期",
   "TOKEN_EXPIRED_REQUEST_NEW": "使用的令牌已过期，请重新申请一个",
@@ -312,7 +313,6 @@
   "USERNAME_IS_TAKEN": "用户名已存在",
   "VALIDATING_TOKEN": "验证令牌",
   "WELCOME_TO_KA": "欢迎来到卡赛探险",
-
   "WHAT_IS_THIS": "这是什么？",
   "WHERE_TO_GET_THE_CODES": "在哪里可以找到代码？",
   "WRITE_QUESTION_HERE": "请在此写下您的问题...",
