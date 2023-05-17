@@ -1,13 +1,11 @@
 import { formatDate } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
 
 export class Student {
   id: number;
   index?: number;
   type?: number; // 1 for teacher, 0 for student
-  firstName?: string;
-  lastName?: string;
+  name?: string;
   englishName?: string;
   citizenship?: string;
   travelDocument?: string;
@@ -38,11 +36,7 @@ export class Student {
   private dietaryAttributes: any;
   private medicalAttributes: any;
 
-  constructor(
-    json: any,
-    private translate: TranslateService,
-    private logger: NGXLogger
-  ) {
+  constructor(json: any, private translate: TranslateService) {
     // Set the ID attribute only at creation
     this.id = json.id;
     this.setFromJSON(json);
@@ -58,8 +52,7 @@ export class Student {
       .get([
         'ID',
         'INDEX',
-        'FIRST_NAME',
-        'LAST_NAME',
+        'NAME',
         'ENGLISH_NAME',
         'CITIZENSHIP',
         'TRAVEL_DOCUMENT',
@@ -104,8 +97,7 @@ export class Student {
     // Use the id attribute for creation scenarios
     this.id = json.id;
     this.type = json.type;
-    this.firstName = json.first_name;
-    this.lastName = json.last_name;
+    this.name = json.name;
     this.englishName = json.english_name;
     this.citizenship = json.citizenship;
     this.travelDocument = json.travel_document;
@@ -144,8 +136,7 @@ export class Student {
   public getAttributeLabel(attribute: string) {
     const labels: { [key: string]: string } = {
       id: this.translations.ID,
-      firstName: this.translations.FIRST_NAME,
-      lastName: this.translations.LAST_NAME,
+      name: this.translations.NAME,
       englishName: this.translations.ENGLISH_NAME,
       citizenship: this.translations.COUNTRY_OF_CITIZENSHIP,
       travelDocument: this.translations.TRAVEL_DOCUMENT_NUMBER,
@@ -265,8 +256,7 @@ export class Student {
    */
   setAttributeArrays() {
     this.personalAttributes = [
-      { name: 'firstName', visible: true },
-      { name: 'lastName', visible: true },
+      { name: 'name', visible: true },
       { name: 'englishName', visible: true },
       { name: 'citizenship', visible: true },
       { name: 'travelDocument', visible: true },
@@ -305,11 +295,8 @@ export class Student {
    */
   public setAttribute(attr: keyof Student, value: string): void {
     switch (attr) {
-      case 'firstName':
-        this.firstName = value;
-        break;
-      case 'lastName':
-        this.lastName = value;
+      case 'name':
+        this.name = value;
         break;
       case 'englishName':
         this.englishName = value;
@@ -362,14 +349,7 @@ export class Student {
    */
   public hasProvidedInformation(): boolean {
     let provided = true;
-    const attrs = [
-      'firstName',
-      'lastName',
-      'citizenship',
-      'travelDocument',
-      'gender',
-      'dob',
-    ];
+    const attrs = ['name', 'citizenship', 'travelDocument', 'gender', 'dob'];
     attrs.forEach((attr) => {
       if (this.isAttributeEmpty(attr as keyof Student)) {
         provided = false;

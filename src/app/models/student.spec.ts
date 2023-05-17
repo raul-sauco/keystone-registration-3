@@ -54,12 +54,12 @@ describe('Student', () => {
   });
 
   it('should create an instance', () => {
-    const student = new Student(studentData, translateSpy, loggerSpy);
+    const student = new Student(studentData, translateSpy);
     expect(student).toBeTruthy();
   });
 
   it('should return attribute labels', fakeAsync(() => {
-    const student = new Student(studentData, translateSpy, loggerSpy);
+    const student = new Student(studentData, translateSpy);
     expect(translateSpy.get).toHaveBeenCalled();
     tick();
     expect(student.getAttributeLabel('id'))
@@ -72,7 +72,7 @@ describe('Student', () => {
 
   describe('should return attribute content', () => {
     it('for id', fakeAsync(() => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
       expect(student.getAttributeText('id'))
         .withContext("should return the student's id")
         .toEqual(1);
@@ -82,45 +82,45 @@ describe('Student', () => {
     }));
 
     it('for type', () => {
-      const student = new Student(teacherData, translateSpy, loggerSpy);
+      const student = new Student(teacherData, translateSpy);
       expect(student.getAttributeText('type'))
         .withContext("should return the participant's type")
         .toEqual('Teacher');
     });
 
     it('for booleans', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
-      const teacher = new Student(teacherData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
+      const teacher = new Student(teacherData, translateSpy);
       expect(student.getAttributeText('paid')).toEqual('Yes');
       expect(teacher.getAttributeText('paid')).toEqual('No');
       expect(teacher.getAttributeText('waiverAccepted')).toEqual('');
     });
 
     it('for gender', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
       expect(student.getAttributeText('gender')).toEqual('Gender 0');
     });
 
     it('for dietary requirements', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
       expect(student.getAttributeText('dietaryRequirements')).toEqual(
         'Dietary Requirements 1'
       );
     });
 
     it('for allergies', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
       expect(student.getAttributeText('allergies')).toEqual('Allergy 1');
     });
 
     it('for dob', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
       expect(student.getAttributeText('dob')).toEqual('January 1, 2020');
     });
 
     it('for medical info', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
-      const teacher = new Student(teacherData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
+      const teacher = new Student(teacherData, translateSpy);
       expect(
         student.getParticipantTableDisplayValue('medicalInformation')
       ).toEqual('Medical Information');
@@ -134,17 +134,17 @@ describe('Student', () => {
 
   describe('attribute control', () => {
     it('for empty attributes', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
       expect(student.isAttributeEmpty('dob')).toEqual(false);
       expect(student.isAttributeEmpty('paid')).toEqual(false);
       expect(student.isAttributeEmpty('waiverAccepted')).toEqual(false);
       expect(student.isAttributeEmpty('gender')).toEqual(false);
-      const teacher = new Student(teacherData, translateSpy, loggerSpy);
+      const teacher = new Student(teacherData, translateSpy);
       expect(teacher.isAttributeEmpty('waiverAccepted')).toEqual(true);
     });
 
     it('listing attributes by type', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
       expect(student.getPersonalAttributes().length).toEqual(7);
       expect(student.getLegalAttributes().length).toEqual(3);
       expect(student.getDietaryAttributes().length).toEqual(2);
@@ -154,11 +154,9 @@ describe('Student', () => {
 
   describe('setting attributes', () => {
     it('can set', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
-      expect(student.setAttribute('firstName', 'New Name')).toBeUndefined();
-      expect(student.getAttributeText('firstName')).toEqual('New Name');
-      expect(student.setAttribute('lastName', 'New L Name')).toBeUndefined();
-      expect(student.getAttributeText('lastName')).toEqual('New L Name');
+      const student = new Student(studentData, translateSpy);
+      expect(student.setAttribute('name', 'New Name')).toBeUndefined();
+      expect(student.getAttributeText('name')).toEqual('New Name');
       expect(student.setAttribute('englishName', 'New E Name')).toBeUndefined();
       expect(student.getAttributeText('englishName')).toEqual('New E Name');
       expect(
@@ -221,7 +219,7 @@ describe('Student', () => {
 
   describe('required information check', () => {
     it('required information has been provided', () => {
-      const student = new Student(studentData, translateSpy, loggerSpy);
+      const student = new Student(studentData, translateSpy);
       expect(student.hasProvidedInformation()).toEqual(false);
       expect(
         student.setAttribute('citizenship', 'New citizenship')
@@ -238,8 +236,7 @@ describe('Student', () => {
       const student = new Student(
         {
           id: 1,
-          first_name: 'First Name',
-          last_name: 'Last Name',
+          name: 'Test Name',
           type: 0,
           waiver_accepted: 0,
           gender: 0,
@@ -248,8 +245,7 @@ describe('Student', () => {
           dob: null,
           medical_information: 'Medical Information',
         },
-        translateSpy,
-        loggerSpy
+        translateSpy
       );
       expect(student.getAttributeText('waiverSignedOn')).toEqual('');
       expect(student.getAttributeText('dob')).toEqual('');

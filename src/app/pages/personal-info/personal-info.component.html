@@ -27,18 +27,9 @@
               "
             ></div>
             <mat-form-field appearance="outline">
-              <mat-label>{{
-                student.getAttributeLabel("firstName")
-              }}</mat-label>
-              <input type="text" matInput formControlName="firstName" />
-              <mat-error *ngIf="firstName?.errors?.required">
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ student.getAttributeLabel("lastName") }}</mat-label>
-              <input type="text" matInput formControlName="lastName" />
-              <mat-error *ngIf="lastName?.errors?.required">
+              <mat-label>{{ student.getAttributeLabel("name") }}</mat-label>
+              <input type="text" matInput formControlName="name" />
+              <mat-error *ngIf="name?.errors?.required">
                 {{ "THIS_FIELD_IS_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>

@@ -114,12 +114,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.paymentInfo$?.unsubscribe();
   }
 
-  get firstName() {
-    return this.personalInfoForm.get('firstName');
-  }
-
-  get lastName() {
-    return this.personalInfoForm.get('lastName');
+  get name() {
+    return this.personalInfoForm.get('name');
   }
 
   get englishName() {
@@ -144,8 +140,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   initPersonalInfoForm(student: Student): void {
     this.personalInfoForm = this.formBuilder.group({
-      firstName: [student.firstName, Validators.required],
-      lastName: [student.lastName, Validators.required],
+      name: [student.name, Validators.required],
       englishName: [student.englishName],
       citizenship: [student.citizenship, Validators.required],
       travelDocument: [student.travelDocument, Validators.required],
@@ -203,8 +198,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   /** Sanitize the data entered by the user before sending it to the server. */
   sanitizeData(data: any): any {
     const sanitizedData: any = {
-      first_name: data.firstName,
-      last_name: data.lastName,
+      name: data.englishName,
       english_name: data.englishName,
       citizenship: data.citizenship,
       travel_document: data.travelDocument,
