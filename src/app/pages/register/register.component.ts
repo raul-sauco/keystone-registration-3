@@ -14,6 +14,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
@@ -132,7 +133,7 @@ export class RegisterComponent implements OnInit {
       // email: this.userRegistrationForm.value.email,
       name: this.userRegistrationForm.value.name,
       id: this.userRegistrationForm.value.id,
-      dob: this.userRegistrationForm.value.dob,
+      dob: this.sanitizeDate(this.userRegistrationForm.value.dob),
       tripId: this.trip.id,
       code: this.trip.code,
     };
@@ -182,6 +183,23 @@ export class RegisterComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigateByUrl('/waiver');
     });
+  }
+
+  /**
+   * Validate a date and prepare it to be sent to the server.
+   * @param d
+   * @returns
+   */
+  sanitizeDate(d: string | moment.Moment): string | null {
+    // Make sure we are dealing with a moment object.
+    if (!moment.isMoment(d)) {
+      d = moment(d);
+    }
+    if (d.isValid()) {
+      return d.format('YYYY-MM-DD');
+    }
+    this.logger.error(`Trying to format invalid date ${d}`);
+    return null;
   }
 }
 

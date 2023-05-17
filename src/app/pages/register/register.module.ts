@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -32,6 +33,7 @@ import {
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatMomentDateModule,
     MatProgressBarModule,
     ReactiveFormsModule,
     RegisterRoutingModule,
