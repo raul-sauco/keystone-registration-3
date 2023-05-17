@@ -1,28 +1,29 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
+  FormGroupDirective,
+  NgForm,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  FormGroupDirective,
-  NgForm,
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import {
+  MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
-import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
-import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
-import { DialogData } from 'src/app/interfaces/dialog-data';
-import { Credentials } from 'src/app/models/credentials';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { PaymentService } from 'src/app/services/payment/payment.service';
-import { TripService } from 'src/app/services/trip/trip.service';
+
+import { passwordMatchValidator } from '@directives/password-match-validator.directive';
+import { DialogData } from '@interfaces/dialog-data';
+import { Credentials } from '@models/credentials';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { PaymentService } from '@services/payment/payment.service';
+import { TripService } from '@services/trip/trip.service';
+// import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -51,7 +52,7 @@ export class RegisterComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
     public router: Router,
-    private usernameValidator: UniqueUsernameValidator,
+    // private usernameValidator: UniqueUsernameValidator,
     public dialog: MatDialog,
     public trip: TripService
   ) {}
@@ -74,14 +75,18 @@ export class RegisterComponent implements OnInit {
   initUserRegistrationForm(): void {
     this.userRegistrationForm = this.formBuilder.group(
       {
-        username: new UntypedFormControl('', {
-          validators: [Validators.required],
-          asyncValidators: [
-            this.usernameValidator.validate.bind(this.usernameValidator),
-          ],
-          updateOn: 'blur',
-        }),
-        email: ['', Validators.email],
+        // username: new UntypedFormControl('', {
+        //   validators: [Validators.required],
+        //   asyncValidators: [
+        //     this.usernameValidator.validate.bind(this.usernameValidator),
+        //   ],
+        //   updateOn: 'blur',
+        // }),
+        // TODO: Validate unique IDs
+        id: ['', Validators.required],
+        // email: ['', Validators.email],
+        name: ['', Validators.required],
+        dob: ['', Validators.required],
         password: [
           '',
           Validators.compose([Validators.required, Validators.minLength(8)]),
@@ -94,16 +99,24 @@ export class RegisterComponent implements OnInit {
       { validator: passwordMatchValidator }
     );
   }
-
-  get username() {
-    return this.userRegistrationForm.get('username');
+  get id() {
+    return this.userRegistrationForm.get('id');
   }
+  get name() {
+    return this.userRegistrationForm.get('name');
+  }
+  get dob() {
+    return this.userRegistrationForm.get('dob');
+  }
+  // get username() {
+  //   return this.userRegistrationForm.get('username');
+  // }
   get password() {
     return this.userRegistrationForm.get('password');
   }
-  get email() {
-    return this.userRegistrationForm.get('email');
-  }
+  // get email() {
+  //   return this.userRegistrationForm.get('email');
+  // }
   get passwordConfirm() {
     return this.userRegistrationForm.get('passwordConfirm');
   }
@@ -114,16 +127,21 @@ export class RegisterComponent implements OnInit {
    */
   submitUserRegistration(): void {
     const params = {
-      username: this.userRegistrationForm.value.username,
+      // username: this.userRegistrationForm.value.username,
       password: this.userRegistrationForm.value.password,
-      email: this.userRegistrationForm.value.email,
+      // email: this.userRegistrationForm.value.email,
+      name: this.userRegistrationForm.value.name,
+      id: this.userRegistrationForm.value.id,
+      dob: this.userRegistrationForm.value.dob,
       tripId: this.trip.id,
       code: this.trip.code,
     };
     this.loading = true;
 
-    this.api.post('r', params).subscribe(
-      (response: any) => {
+    // this.api.post('r', params).subscribe({next: })
+
+    this.api.post('r', params).subscribe({
+      next: (response: any) => {
         this.loading = false;
 
         if (response.error === true) {
@@ -142,15 +160,16 @@ export class RegisterComponent implements OnInit {
           });
         }
       },
-      (error: any) => {
+      error: (error: any) => {
+        this.logger.error('Error posting registration data', error);
         this.dialog.open(ErrorMessageDialogComponent, {
           data: {
             title: 'ERROR',
             content: 'SERVER_ERROR_TRY_LATER',
           },
         });
-      }
-    );
+      },
+    });
   }
 
   /**

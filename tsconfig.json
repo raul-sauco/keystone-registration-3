@@ -18,6 +18,7 @@
     "useDefineForClassFields": false,
     "paths": {
       "@components/*": ["./src/app/components/*"],
+      "@directives/*": ["./src/app/directives/*"],
       "@guards/*": ["./src/app/guards/*"],
       "@interfaces/*": ["./src/app/interfaces/*"],
       "@models/*": ["./src/app/models/*"],

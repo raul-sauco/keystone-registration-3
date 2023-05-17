@@ -10,20 +10,37 @@
         (ngSubmit)="submitUserRegistration()"
       >
         <mat-form-field appearance="outline">
-          <mat-label>{{ "USERNAME" | translate }}</mat-label>
-          <input type="text" matInput formControlName="username" required />
-          <mat-error *ngIf="username?.errors?.required">
+          <mat-label>{{ "NAME" | translate }}</mat-label>
+          <input type="text" matInput formControlName="name" required />
+          <mat-error *ngIf="name?.errors?.required">
             {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-          </mat-error>
-          <mat-error *ngIf="username?.errors?.uniqueUsername">
-            {{ "USERNAME_IS_TAKEN" | translate }}
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>{{ "EMAIL" | translate }}</mat-label>
-          <input type="email" matInput formControlName="email" />
-          <mat-error *ngIf="email?.errors?.email">
-            {{ "EMAIL_IS_NOT_VALID" | translate }}
+          <mat-label>{{ "DOB" | translate }}</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="dob"
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker touchUi #picker></mat-datepicker>
+          <mat-error *ngIf="dob?.errors?.matDatepickerParse">
+            {{ "PIF_ERROR_INVALID_DATE" | translate }}
+          </mat-error>
+          <mat-error *ngIf="dob?.errors?.required">
+            {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "ID" | translate }}</mat-label>
+          <input type="text" matInput formControlName="id" />
+          <mat-error *ngIf="id?.errors?.required">
+            {{ "THIS_FIELD_IS_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
