@@ -203,7 +203,7 @@
   "PARENT_GUARDIAN": "Parent/Legal Guardian Name",
   "PARTICIPANTS": "Participants",
   "PARTICIPANT_DELETED": "Participant deleted",
-  "PARTICIPANT_ID_IS": "Participant ID is {{id}} and name is {{firstName}} {{lastName}}",
+  "PARTICIPANT_ID_IS": "Participant ID is {{id}} and name is {{name}}",
   "PARTICIPANT_INFORMATION": "Participant information",
   "PARTICIPANT_LIST": "Participants",
   "PASSWORD": "Password",

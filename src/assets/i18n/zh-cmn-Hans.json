@@ -203,7 +203,7 @@
   "PARENT_GUARDIAN": "家长/法定监护人姓名",
   "PARTICIPANTS": "参与者",
   "PARTICIPANT_DELETED": "参加者已删除",
-  "PARTICIPANT_ID_IS": "参加者ID为 {{id}} 的名字是 {{firstName}} {{lastName}}",
+  "PARTICIPANT_ID_IS": "参加者ID为 {{id}} 的名字是 {{name}}",
   "PARTICIPANT_INFORMATION": "参加者信息",
   "PARTICIPANT_LIST": "参与者",
   "PASSWORD": "密码",

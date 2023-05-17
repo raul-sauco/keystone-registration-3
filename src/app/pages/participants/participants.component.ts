@@ -50,8 +50,7 @@ export class ParticipantsComponent implements OnInit {
     this.sortableColumns = [
       // 'index',
       'type',
-      'firstName',
-      'lastName',
+      'name',
       'englishName',
       'house',
       'roomNumber',
@@ -84,8 +83,7 @@ export class ParticipantsComponent implements OnInit {
     return [
       'index',
       'type',
-      'firstName',
-      'lastName',
+      'name',
       'englishName',
       ...(this.school?.useHouse ? ['house'] : []),
       ...(this.school?.useRoomNumber ? ['roomNumber'] : []),
@@ -165,7 +163,7 @@ export class ParticipantsComponent implements OnInit {
     this.participant$ = this.api.get(endpoint, null, options).pipe(
       map((studentsJson: any) => {
         const studentsArray = studentsJson
-          .map((s: any) => new Student(s, this.translate, this.logger))
+          .map((s: any) => new Student(s, this.translate))
           .sort(
             // Sort by type first and then last name.
             // Strings can be null strings do not use localCompare
@@ -174,13 +172,13 @@ export class ParticipantsComponent implements OnInit {
               if (t) {
                 return t;
               }
-              if (!a.lastName) {
+              if (!a.name) {
                 return 1;
               }
-              if (!b.lastName) {
+              if (!b.name) {
                 return -1;
               }
-              return a.lastName.localeCompare(b.lastName);
+              return a.name.localeCompare(b.name);
             }
           );
 
@@ -243,8 +241,7 @@ export class ParticipantsComponent implements OnInit {
       return 'non-editable';
     }
     if (
-      attr === 'firstName' ||
-      attr === 'lastName' ||
+      attr === 'name' ||
       attr === 'englishName' ||
       attr === 'house' ||
       attr === 'roomNumber' ||

@@ -1,11 +1,11 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
+  FormGroupDirective,
+  NgForm,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  FormGroupDirective,
-  NgForm,
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -54,6 +54,7 @@ export class AddParticipantComponent implements OnInit {
   }
 
   initParticipantForm(): void {
+    // TODO: use ID as username.
     this.participantForm = this.formBuilder.group(
       {
         username: new UntypedFormControl('', {
@@ -65,8 +66,7 @@ export class AddParticipantComponent implements OnInit {
           ],
           updateOn: 'blur',
         }),
-        firstName: ['', Validators.maxLength(120)],
-        lastName: ['', Validators.maxLength(120)],
+        name: ['', Validators.maxLength(120)],
         email: ['', Validators.email],
         password: [
           '',
@@ -87,11 +87,8 @@ export class AddParticipantComponent implements OnInit {
   get password() {
     return this.participantForm.get('password');
   }
-  get firstName() {
-    return this.participantForm.get('firstName');
-  }
-  get lastName() {
-    return this.participantForm.get('lastName');
+  get name() {
+    return this.participantForm.get('name');
   }
   get email() {
     return this.participantForm.get('email');
