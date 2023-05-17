@@ -13,11 +13,14 @@ import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { of } from 'rxjs';
-import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { Spied } from 'src/app/interfaces/spied';
-import { Credentials } from 'src/app/models/credentials';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
+
+import { EventEmitter } from '@angular/core';
+import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
+import { Spied } from '@interfaces/spied';
+import { Credentials } from '@models/credentials';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
 import { PersonalInfoComponent } from './personal-info.component';
 
 describe('PersonalInfoComponent', () => {
@@ -27,51 +30,62 @@ describe('PersonalInfoComponent', () => {
   let apiServiceSpy: Spied<ApiService>;
   let loggerSpy: Spied<NGXLogger>;
   let element: HTMLElement;
-
-  beforeEach(
-    waitForAsync(() => {
-      authServiceSpy = jasmine.createSpyObj(
-        'AuthService',
-        {
-          getCredentials: new Credentials({
-            userName: 'test',
-            accessToken: 'test-token',
-            type: 4, // Student type
-            studentId: 123,
-          }),
-          checkAuthenticated: Promise.resolve(true),
-        },
-        { auth$: of(true) }
-      );
-      apiServiceSpy = jasmine.createSpyObj('ApiService', {
-        get: of({ id: 123 }),
-      });
-      loggerSpy = jasmine.createSpyObj('Logger', {
-        debug: undefined,
-        error: undefined,
-      });
-      TestBed.configureTestingModule({
-        declarations: [PersonalInfoComponent],
-        imports: [
-          HttpClientTestingModule,
-          FormsModule,
-          LoadingSpinnerContentModule,
-          LoggerTestingModule,
-          MatSnackBarModule,
-          ReactiveFormsModule,
-          RouterTestingModule,
-          TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-          }),
-        ],
-        providers: [
-          { provide: AuthService, useValue: authServiceSpy },
-          { provide: ApiService, useValue: apiServiceSpy },
-          { provide: NGXLogger, useValue: loggerSpy },
-        ],
-      }).compileComponents();
-    })
+  const translateService = jasmine.createSpyObj<TranslateService>(
+    'translateService',
+    ['instant', 'get']
   );
+  const translateServiceMock = {
+    currentLang: 'de',
+    onLangChange: new EventEmitter<LangChangeEvent>(),
+    use: translateService.get,
+    get: translateService.get.and.returnValue(of('')),
+    onTranslationChange: new EventEmitter(),
+    onDefaultLangChange: new EventEmitter(),
+  };
+
+  beforeEach(waitForAsync(() => {
+    authServiceSpy = jasmine.createSpyObj(
+      'AuthService',
+      {
+        getCredentials: new Credentials({
+          userName: 'test',
+          accessToken: 'test-token',
+          type: 4, // Student type
+          studentId: 123,
+        }),
+        checkAuthenticated: Promise.resolve(true),
+      },
+      { auth$: of(true) }
+    );
+    apiServiceSpy = jasmine.createSpyObj('ApiService', {
+      get: of({ id: 123 }),
+    });
+    loggerSpy = jasmine.createSpyObj('Logger', {
+      debug: undefined,
+      error: undefined,
+    });
+    TestBed.configureTestingModule({
+      declarations: [PersonalInfoComponent],
+      imports: [
+        HttpClientTestingModule,
+        FormsModule,
+        LoadingSpinnerContentModule,
+        LoggerTestingModule,
+        MatSnackBarModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        TranslateTestingModule.withTranslations({
+          en: require('src/assets/i18n/en.json'),
+        }),
+      ],
+      providers: [
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: NGXLogger, useValue: loggerSpy },
+        { provide: TranslateService, useValue: translateServiceMock },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PersonalInfoComponent);
