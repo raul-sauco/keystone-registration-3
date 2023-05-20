@@ -5,6 +5,21 @@ import { NGXLogger } from 'ngx-logger';
   providedIn: 'root',
 })
 export class StorageService {
+  /**
+   * A private map of keys that the storage service uses.
+   * Previously the callers stored the keys, having the storage service
+   * store the keys and making them accessible through a getter we can
+   * improve the reusability while making the storage service aware of
+   * all the keys that can be used.
+   * @since 1.0.2
+   */
+  private _keys = {
+    credentials: 'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY',
+    currentTrip: 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA',
+    paymentInfo: 'KEYSTONE_ADVENTURES_PAYMENT_INFO_STORAGE_KEY',
+    schoolService: 'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY',
+  };
+
   constructor(private logger: NGXLogger) {
     this.logger.debug('StorageService constructor');
   }
@@ -40,6 +55,11 @@ export class StorageService {
         });
       }
     });
+  }
+
+  /** `keys` property getter. */
+  get keys() {
+    return this._keys;
   }
 
   /**
@@ -107,6 +127,22 @@ export class StorageService {
         });
       }
     });
+  }
+
+  /**
+   * Clear all the data found in storage.
+   */
+  async removeAll(): Promise<void> {
+    let count = 0;
+    try {
+      for (const key in this.keys) {
+        await this.remove(key);
+        count++;
+      }
+    } catch (e) {
+      this.logger.warn('StorageService.removeAll() failed', e);
+    }
+    this.logger.debug(`StorageService removed ${count} keys from storage`);
   }
 
   /**
