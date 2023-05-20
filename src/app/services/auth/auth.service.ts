@@ -8,8 +8,6 @@ import { StorageService } from 'src/app/services/storage/storage.service';
   providedIn: 'root',
 })
 export class AuthService {
-  private CREDENTIALS_STORAGE_KEY =
-    'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY';
   private credentials?: Credentials;
 
   public authenticated = false;
@@ -53,7 +51,7 @@ export class AuthService {
   saveCredentials(): Promise<any> {
     this.logger.debug('AuthService; saving credentials to storage');
     const credString = this.credentials;
-    return this.storage.set(this.CREDENTIALS_STORAGE_KEY, credString);
+    return this.storage.set(this.storage.keys.credentials, credString);
   }
 
   /** Checks whether the application has a user currently authenticated */
@@ -77,17 +75,28 @@ export class AuthService {
           'AuthService.checkAuthenticated(); did not have credentials, checking storage'
         );
         this.storage
-          .get(this.CREDENTIALS_STORAGE_KEY)
+          .get(this.storage.keys.credentials)
           .then((cred) => {
             if (cred) {
               this.logger.debug(
                 'AuthService.checkAuthenticated(); got credentials from StorageService',
                 cred
               );
-              this.credentials = new Credentials(cred);
-              this.authenticated = true;
-              this.auth$.next(this.authenticated);
-              resolve(true);
+              // Try parsing the credentials.
+              try {
+                this.credentials = new Credentials(cred);
+                this.authenticated = true;
+                this.auth$.next(this.authenticated);
+                resolve(true);
+              } catch (e) {
+                this.logger.warn(
+                  'AuthService.checkAuthenticated(); Failed to parse credentials',
+                  e,
+                  cred
+                );
+              }
+              // Fail if we cannot create a Credentials object.
+              resolve(false);
             } else {
               this.logger.debug(
                 'AuthService.checkAuthenticated(); did not get credentials from StorageService'
@@ -116,6 +125,7 @@ export class AuthService {
     this.credentials = undefined;
     this.authenticated = false;
     this.auth$.next(this.authenticated);
-    return this.storage.remove(this.CREDENTIALS_STORAGE_KEY);
+    // When the user logs out, we want to remove all of its data.
+    return this.storage.removeAll();
   }
 }

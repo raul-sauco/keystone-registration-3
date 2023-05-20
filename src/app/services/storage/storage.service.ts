@@ -13,7 +13,7 @@ export class StorageService {
    * all the keys that can be used.
    * @since 1.0.2
    */
-  private _keys = {
+  private _keys: { [key: string]: string } = {
     credentials: 'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY',
     currentTrip: 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA',
     paymentInfo: 'KEYSTONE_ADVENTURES_PAYMENT_INFO_STORAGE_KEY',
@@ -136,7 +136,7 @@ export class StorageService {
     let count = 0;
     try {
       for (const key in this.keys) {
-        await this.remove(key);
+        await this.remove(this.keys[key]);
         count++;
       }
     } catch (e) {
