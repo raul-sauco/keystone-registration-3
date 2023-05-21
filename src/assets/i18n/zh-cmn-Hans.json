@@ -257,7 +257,7 @@
   "REGISTERED_ON": "登记时间",
   "REGISTERING_FOR": "登记人",
   "REGISTER_BEFORE_LOGIN_PROMPT": "新用户请先点击注册。",
-  "REGISTER_FIRST_HINT": "首次使用卡赛的的报名平台的用户必须先报名才能登录。",
+  "REGISTER_FIRST_HINT": "首次使用报名平台的用户必须先报名才能登录。",
   "REGISTER_NEW_STUDENT": "注册新学生",
   "REGISTER_NEW_TEACHER": "注册新教师",
   "REGISTER_NEW_USERNAME_PASSWORD": "新用户需要先创建用户名和密码",

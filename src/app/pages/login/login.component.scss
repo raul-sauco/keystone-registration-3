@@ -72,12 +72,8 @@ form#login-form {
   display: flex;
   flex-direction: column;
   width: 100%;
-  mat-form-field {
+  mat-form-field:first-child {
     margin-bottom: 16px;
-  }
-
-  #login-form-spacer {
-    height: 32px;
   }
 
   .progress-bar {

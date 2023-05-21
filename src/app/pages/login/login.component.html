@@ -21,12 +21,11 @@
           <mat-label>{{ "PASSWORD" | translate }}</mat-label>
           <input matInput formControlName="password" type="password" required />
         </mat-form-field>
-        <!-- <div id="forgot-password-link-container">
+        <div id="forgot-password-link-container">
           <a routerLink="/forgot-password">{{
             "FORGOT_MY_PASSWORD" | translate
           }}</a>
-        </div> -->
-        <div id="login-form-spacer"></div>
+        </div>
         <mat-progress-bar
           mode="indeterminate"
           *ngIf="loading"
