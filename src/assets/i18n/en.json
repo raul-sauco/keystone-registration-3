@@ -76,7 +76,7 @@
   "FAQ": "FAQ",
   "FEEDBACK": "Feedback",
   "FIRST_NAME": "First Name",
-  "FORGOT_MY_PASSWORD": "Forgot my password",
+  "FORGOT_MY_PASSWORD": "Forgot password?",
   "G": {
     "0": "Female",
     "1": "Male",
@@ -281,6 +281,7 @@
   "SEND_QUESTION": "Send us a question",
   "SERVER_ERROR": "Server error",
   "SERVER_ERROR_TRY_LATER": "There was an error processing your request, please try again later",
+  "SIGN_IN": "Sign in",
   "STAFF": "Staff",
   "STAFF_INFORMATION": "KA Staff Information",
   "STRONG_PASSWORD": "So that we can verify your identity and protect your privacy when you login in the future, you will need to enter in a password below, which should be at least 8 characters long.",

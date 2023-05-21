@@ -1,10 +1,14 @@
 <div class="app-page-wrapper">
   <mat-card appearance="outlined" id="login-form-mat-card-container">
     <mat-card-content>
-      <div id="register-first-warning">
-        <mat-icon color="warn">warning</mat-icon>
-        <div>
-          {{ "REGISTER_BEFORE_LOGIN_PROMPT" | translate }}
+      <div id="login-form-header">
+        <div id="login-form-header-icon">
+          <mat-icon inline="true">person</mat-icon>
+        </div>
+        <div id="login-form-header-text-container">
+          <div class="login-form-header-sidelines"><hr /></div>
+          <div id="login-form-header-text">{{ "SIGN_IN" | translate }}</div>
+          <div class="login-form-header-sidelines"><hr /></div>
         </div>
       </div>
       <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" id="login-form">
@@ -16,6 +20,11 @@
           <mat-label>{{ "PASSWORD" | translate }}</mat-label>
           <input matInput formControlName="password" type="password" required />
         </mat-form-field>
+        <div id="forgot-password-link-container">
+          <a routerLink="/forgot-password">{{
+            "FORGOT_MY_PASSWORD" | translate
+          }}</a>
+        </div>
         <mat-progress-bar
           mode="indeterminate"
           *ngIf="loading"
@@ -30,10 +39,7 @@
         </button>
       </form>
       <div class="navigation-links">
-        <a routerLink="/trip-codes">{{ "REGISTER" | translate }}</a> /
-        <a routerLink="/forgot-password">{{
-          "FORGOT_MY_PASSWORD" | translate
-        }}</a>
+        <a routerLink="/trip-codes">{{ "REGISTER" | translate }}</a>
       </div></mat-card-content
     >
   </mat-card>
