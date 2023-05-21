@@ -15,10 +15,14 @@
           >
             <!-- START Personal information section -->
             <h2>{{ "PERSONAL_INFORMATION" | translate }}</h2>
-            <div id="required-fields-prompt">
-              <p [innerHtml]="'REQUIRED_FIELDS_PROMPT' | translate"></p>
-              <p [innerHtml]="'SCROLL_TO_BOTTOM_CLICK_UPDATE' | translate"></p>
-            </div>
+            <div
+              id="required-fields-prompt"
+              class="inner-form-prompt"
+              *ngIf="requiredFieldsPromptContent$ | async as content"
+              [innerHTML]="
+                (lang === 'zh' ? content.text_zh : content.text) | markdown
+              "
+            ></div>
             <div
               *ngIf="namePromptContent$ | async as content"
               class="inner-form-prompt"
@@ -49,7 +53,12 @@
             </mat-form-field>
             <div
               class="inner-form-prompt"
-              [innerHTML]="'PIF_HINT_CITIZENSHIP' | translate"
+              [innerHTML]="
+                (auth.isStudent
+                  ? 'PIF_HINT_CITIZENSHIP_STUDENT'
+                  : 'PIF_HINT_CITIZENSHIP'
+                ) | translate
+              "
             ></div>
             <mat-form-field appearance="outline">
               <mat-label>{{
@@ -59,7 +68,12 @@
             </mat-form-field>
             <div
               class="inner-form-prompt"
-              [innerHTML]="'PIF_HINT_TRAVEL_DOCUMENT' | translate"
+              [innerHTML]="
+                (auth.isStudent
+                  ? 'PIF_HINT_TRAVEL_DOCUMENT_STUDENT'
+                  : 'PIF_HINT_TRAVEL_DOCUMENT'
+                ) | translate
+              "
             ></div>
             <mat-form-field appearance="outline">
               <mat-label>{{
@@ -107,8 +121,13 @@
             </mat-form-field>
             <!-- END Personal information section -->
 
-            <!-- START Legal information section -->
-            <h2>{{ "LEGAL" | translate }}</h2>
+            <!-- START Contact information section -->
+            <h2>
+              {{
+                (auth.isStudent ? "CONTACT_DETAILS_STUDENT" : "CONTACT_DETAILS")
+                  | translate
+              }}
+            </h2>
             <mat-form-field
               appearance="outline"
               *ngIf="auth.getCredentials()?.type !== 4"
@@ -243,7 +262,7 @@
               color="primary"
               [disabled]="!personalInfoForm.valid"
             >
-              {{ "UPDATE" | translate }}
+              {{ "SUBMIT" | translate }}
             </button>
           </form>
         </div>

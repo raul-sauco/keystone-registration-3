@@ -8,16 +8,17 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from '@services/api/api.service';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, Subscription } from 'rxjs';
-import { PaymentInfo } from 'src/app/models/paymentInfo';
-import { Student } from 'src/app/models/student';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { PaymentService } from 'src/app/services/payment/payment.service';
-import { SchoolService } from 'src/app/services/school/school.service';
-import { StudentService } from 'src/app/services/student/student.service';
+
+import { PaymentInfo } from '@models/paymentInfo';
+import { Student } from '@models/student';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { PaymentService } from '@services/payment/payment.service';
+import { SchoolService } from '@services/school/school.service';
+import { StudentService } from '@services/student/student.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -33,6 +34,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   lang: string = 'en';
   namePromptContent$!: Observable<any>;
   englishNamePromptContent$!: Observable<any>;
+  requiredFieldsPromptContent$!: Observable<any>;
 
   constructor(
     private api: ApiService,
@@ -100,9 +102,18 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-    this.namePromptContent$ = this.api.get('documents/141', null, options);
+    this.namePromptContent$ = this.api.get(
+      `documents/${this.auth.isStudent ? '145' : '146'}`,
+      null,
+      options
+    );
     this.englishNamePromptContent$ = this.api.get(
-      'documents/142',
+      `documents/${this.auth.isStudent ? '147' : '142'}`,
+      null,
+      options
+    );
+    this.requiredFieldsPromptContent$ = this.api.get(
+      'documents/144',
       null,
       options
     );
