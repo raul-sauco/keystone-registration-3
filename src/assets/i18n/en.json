@@ -130,6 +130,8 @@
     "1": "Yes",
     "2": "Not sure"
   },
+  "ID_ALREADY_IN_USE": "This ID number has already been used to register for a recent program.",
+  "ID_ALREADY_IN_USE_DETAILS": "Please double check the ID number or {{loginLink}} directly using your existing password. Click {{recoverPassword}} to retrieve your password.",
   "ID_NUMBER": "ID Number",
   "ID_NUMBER_HINT": "This is the ID number you provided when you registered.",
   "IMPORTANT_WARNING": "Important warning!",

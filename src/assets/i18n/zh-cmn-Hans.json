@@ -130,6 +130,8 @@
     "1": "是",
     "2": "不确定"
   },
+  "ID_ALREADY_IN_USE": "此证件号已用于报名卡赛的项目。",
+  "ID_ALREADY_IN_USE_DETAILS": "请确认证件号码是准确的，或直接'{{loginLink}}'。请'{{recoverPassword}}'找回您的密码。",
   "ID_NUMBER": "身份证号",
   "ID_NUMBER_HINT": "这是您报名时提供的证件号码",
   "IMPORTANT_WARNING": "温馨提示",

@@ -21,6 +21,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
+import { UniqueUsernameValidator } from '@directives/unique-username-validator.directive';
 import { DialogData } from '@interfaces/dialog-data';
 import { Credentials } from '@models/credentials';
 import { ApiService } from '@services/api/api.service';
@@ -58,10 +59,11 @@ export class RegisterComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
     private translate: TranslateService,
+    private usernameValidator: UniqueUsernameValidator,
     public auth: AuthService,
     public dialog: MatDialog,
     public router: Router,
-    public trip: TripService // private usernameValidator: UniqueUsernameValidator,
+    public trip: TripService
   ) {}
 
   ngOnInit(): void {
@@ -94,15 +96,13 @@ export class RegisterComponent implements OnInit {
   initUserRegistrationForm(): void {
     this.userRegistrationForm = this.formBuilder.group(
       {
-        // username: new UntypedFormControl('', {
-        //   validators: [Validators.required],
-        //   asyncValidators: [
-        //     this.usernameValidator.validate.bind(this.usernameValidator),
-        //   ],
-        //   updateOn: 'blur',
-        // }),
-        // TODO: Validate unique IDs
-        id: ['', Validators.required],
+        id: new UntypedFormControl('', {
+          validators: [Validators.required],
+          asyncValidators: [
+            this.usernameValidator.validate.bind(this.usernameValidator),
+          ],
+          updateOn: 'blur',
+        }),
         // email: ['', Validators.email],
         name: ['', Validators.required],
         dob: ['', Validators.required],

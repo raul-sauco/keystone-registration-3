@@ -64,6 +64,9 @@
           <mat-error *ngIf="id?.errors?.required">
             {{ "THIS_FIELD_IS_REQUIRED" | translate }}
           </mat-error>
+          <mat-error *ngIf="id?.errors?.uniqueUsername">
+            {{ "ID_ALREADY_IN_USE" | translate }}
+          </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>{{ "CREATE_A_PASSWORD" | translate }}</mat-label>
