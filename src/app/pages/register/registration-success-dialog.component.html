@@ -1,18 +1,15 @@
-<h1 mat-dialog-title>
-  {{ "SUCCESS" | translate }}
-</h1>
 <div mat-dialog-content>
-  <h2>
-    {{ "REGISTRATION_IS_COMPLETE" | translate }}
-  </h2>
-  <div
-    [innerHTML]="
-      'REGISTRATION_COMPLETE_MESSAGE' | translate: { name: username }
-    "
-  ></div>
+  <div id="success-content-wrapper">
+    <h2>
+      {{ "REGISTRATION_IS_COMPLETE" | translate }}
+    </h2>
+    <p>{{ "REGISTRATION_IS_COMPLETE_CONTINUE_MSG" | translate }}</p>
+  </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button color="primary" mat-dialog-close>
-    {{ "CONTINUE" | translate }}
-  </button>
+  <div id="success-actions-wrapper">
+    <button mat-raised-button color="primary" mat-dialog-close>
+      {{ "CONTINUE" | translate }}
+    </button>
+  </div>
 </div>

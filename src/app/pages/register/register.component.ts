@@ -233,6 +233,7 @@ export class ErrorMessageDialogComponent {
 @Component({
   selector: 'app-registration-success-dialog-component',
   templateUrl: './registration-success-dialog.component.html',
+  styleUrls: ['./registration-success-dialog.component.scss'],
 })
 export class RegistrationSuccessDialogComponent {
   username: string | null = null;
