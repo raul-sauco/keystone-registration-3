@@ -1,5 +1,10 @@
 .sidenav {
   width: 320px;
+  .disabled-link {
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: #ddd;
+  }
 }
 $toolbarBackgroundGrey: rgb(190, 190, 190);
 #main-header {

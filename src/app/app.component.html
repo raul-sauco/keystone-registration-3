@@ -153,20 +153,30 @@
       <!-- General information links -->
       <h3 matSubheader>{{ "GENERAL_INFORMATION" | translate | uppercase }}</h3>
       <ng-container *ngFor="let page of appPages; last as last">
-        <a
-          mat-list-item
-          [routerLink]="
-            page.url +
-            ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-          "
-          *ngIf="page.render | async"
-        >
-          <div matListItemIcon>
-            <mat-icon color="primary">{{ page.icon }}</mat-icon>
-          </div>
-          <span>{{ page.title | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
+        <ng-container *ngIf="page.render | async">
+          <a
+            mat-list-item
+            [routerLink]="
+              page.url +
+              ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
+            "
+            *ngIf="auth.auth$ | async; else giPlain"
+          >
+            <div matListItemIcon>
+              <mat-icon color="primary">{{ page.icon }}</mat-icon>
+            </div>
+            <span>{{ page.title | translate | uppercase }}</span>
+            <mat-divider [inset]="true"></mat-divider>
+          </a>
+          <ng-template #giPlain>
+            <mat-list-item class="disabled-link">
+              <div matListItemIcon>
+                <mat-icon color="primary">{{ page.icon }}</mat-icon>
+              </div>
+              <span>{{ page.title | translate | uppercase }}</span>
+              <mat-divider [inset]="true"></mat-divider></mat-list-item
+          ></ng-template>
+        </ng-container>
       </ng-container>
 
       <!-- This links should only be available for teachers -->
@@ -189,21 +199,29 @@
 
       <!-- Policy pages -->
       <h3 matSubheader>{{ "KA_POLICY" | translate | uppercase }}</h3>
-      <ng-container *ngFor="let page of policyPages">
-        <a
-          mat-list-item
-          [routerLink]="
-            page.url +
-            ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-          "
-          *ngIf="page.render | async"
-        >
-          <div matListItemIcon>
-            <mat-icon color="primary">{{ page.icon }}</mat-icon>
-          </div>
-          <span>{{ page.title | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
+      <ng-container *ngFor="let page of policyPages"
+        ><ng-container *ngIf="page.render | async">
+          <a
+            mat-list-item
+            [routerLink]="
+              page.url +
+              ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
+            "
+            *ngIf="auth.auth$ | async; else ppPlain"
+          >
+            <div matListItemIcon>
+              <mat-icon color="primary">{{ page.icon }}</mat-icon>
+            </div>
+            <span>{{ page.title | translate | uppercase }}</span>
+            <mat-divider [inset]="true"></mat-divider> </a></ng-container
+        ><ng-template #ppPlain
+          ><mat-list-item class="disabled-link"
+            ><div matListItemIcon>
+              <mat-icon color="primary">{{ page.icon }}</mat-icon>
+            </div>
+            <span>{{ page.title | translate | uppercase }}</span>
+            <mat-divider [inset]="true"></mat-divider></mat-list-item
+        ></ng-template>
       </ng-container>
       <a
         mat-list-item
