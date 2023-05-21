@@ -24,6 +24,7 @@
 #registration-form-mat-card-container {
   background-color: rgba(255, 255, 255, 0.93);
   width: 90%;
+  overflow: scroll;
   @media screen and (min-width: 900px) {
     width: 80%;
   }

@@ -23,14 +23,18 @@
           "
         ></div>
         <mat-form-field appearance="outline">
-          <mat-label>{{ "NAME" | translate }}</mat-label>
+          <mat-label>{{
+            (trip.type === "student" ? "STUDENT_NAME" : "NAME") | translate
+          }}</mat-label>
           <input type="text" matInput formControlName="name" required />
           <mat-error *ngIf="name?.errors?.required">
             {{ "THIS_FIELD_IS_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>{{ "DOB" | translate }}</mat-label>
+          <mat-label>{{
+            (trip.type === "student" ? "STUDENT_DOB" : "DOB") | translate
+          }}</mat-label>
           <input
             type="text"
             matInput
@@ -50,14 +54,19 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>{{ "TRAVEL_DOCUMENT_NUMBER" | translate }}</mat-label>
+          <mat-label>{{
+            (trip.type === "student"
+              ? "STUDENT_ID_NUMBER"
+              : "TRAVEL_DOCUMENT_NUMBER"
+            ) | translate
+          }}</mat-label>
           <input type="text" matInput formControlName="id" />
           <mat-error *ngIf="id?.errors?.required">
             {{ "THIS_FIELD_IS_REQUIRED" | translate }}
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>{{ "PASSWORD" | translate }}</mat-label>
+          <mat-label>{{ "CREATE_A_PASSWORD" | translate }}</mat-label>
           <input type="password" matInput formControlName="password" required />
           <mat-error *ngIf="password?.errors?.required">
             {{ "THIS_FIELD_IS_REQUIRED" | translate }}

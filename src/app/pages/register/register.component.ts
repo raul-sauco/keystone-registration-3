@@ -66,7 +66,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('RegisterComponent OnInit');
-    this.logger.warn(this.trip.code, this.trip.name, this.trip.type);
     this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
     this.errorMatcher = new CrossFieldErrorMatcher();
     if (!this.trip.code || !this.trip.id) {
