@@ -111,7 +111,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
           { duration: 2000 }
         );
         snackBar.afterDismissed().subscribe(() => {
-          this.router.navigateByUrl('/personal-info');
+          this.router.navigateByUrl('/home');
         });
       },
       error: (error: any) => {
