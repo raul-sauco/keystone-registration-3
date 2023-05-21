@@ -72,6 +72,13 @@ form#login-form {
   display: flex;
   flex-direction: column;
   width: 100%;
+  mat-form-field {
+    margin-bottom: 16px;
+  }
+
+  #login-form-spacer {
+    height: 32px;
+  }
 
   .progress-bar {
     margin-bottom: 16px;
@@ -79,7 +86,11 @@ form#login-form {
 }
 
 .navigation-links {
+  display: flex;
+  justify-content: center;
   margin-top: 16px;
-  text-align: center;
   @include mixins.navigation-links;
+  #need-account-hint {
+    margin-right: 8px;
+  }
 }

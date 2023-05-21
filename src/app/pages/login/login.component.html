@@ -13,18 +13,20 @@
       </div>
       <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" id="login-form">
         <mat-form-field appearance="outline">
-          <mat-label>{{ "USERNAME" | translate }}</mat-label>
+          <mat-label>{{ "ID_NUMBER" | translate }}</mat-label>
           <input matInput formControlName="username" required type="text" />
+          <mat-hint>{{ "ID_NUMBER_HINT" | translate }}</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>{{ "PASSWORD" | translate }}</mat-label>
           <input matInput formControlName="password" type="password" required />
         </mat-form-field>
-        <div id="forgot-password-link-container">
+        <!-- <div id="forgot-password-link-container">
           <a routerLink="/forgot-password">{{
             "FORGOT_MY_PASSWORD" | translate
           }}</a>
-        </div>
+        </div> -->
+        <div id="login-form-spacer"></div>
         <mat-progress-bar
           mode="indeterminate"
           *ngIf="loading"
@@ -39,6 +41,9 @@
         </button>
       </form>
       <div class="navigation-links">
+        <div id="need-account-hint">
+          {{ "REGISTER_FIRST_HINT" | translate }}
+        </div>
         <a routerLink="/trip-codes">{{ "REGISTER" | translate }}</a>
       </div></mat-card-content
     >

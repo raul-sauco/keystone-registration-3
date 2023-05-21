@@ -129,6 +129,8 @@
     "1": "Yes",
     "2": "Not sure"
   },
+  "ID_NUMBER": "ID Number",
+  "ID_NUMBER_HINT": "This is the ID number you provided when you registered.",
   "IMPORTANT_WARNING": "Important warning!",
   "INDEX": "Index",
   "INFORMATION_UPDATED": "Information updated",
@@ -247,6 +249,7 @@
   "REGISTERED_ON": "Registered on",
   "REGISTERING_FOR": "Registering for",
   "REGISTER_BEFORE_LOGIN_PROMPT": "New users should first register by clicking the button below.",
+  "REGISTER_FIRST_HINT": "First-time users must first register for KA program before you can log-in.",
   "REGISTER_NEW_USERNAME_PASSWORD": "Please register a new username and password, and write it down in a secure location, so that you can log-in again later.",
   "REGISTRATION": "Registration",
   "REGISTRATION_COMPLETE_MESSAGE": "<p>You have successfully registered, your ID \"<strong>{{name}}</strong>\" is your username.</p><p>Please click the \"Continue\" button below, and proceed through the rest of the registration process.</p>",

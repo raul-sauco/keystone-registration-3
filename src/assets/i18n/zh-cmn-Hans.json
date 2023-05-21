@@ -129,6 +129,8 @@
     "1": "是",
     "2": "不确定"
   },
+  "ID_NUMBER": "身份证号",
+  "ID_NUMBER_HINT": "这是您报名时提供的证件号码",
   "IMPORTANT_WARNING": "温馨提示",
   "INDEX": "指数",
   "INFORMATION_UPDATED": "信息更新",
@@ -247,6 +249,7 @@
   "REGISTERED_ON": "登记时间",
   "REGISTERING_FOR": "登记人",
   "REGISTER_BEFORE_LOGIN_PROMPT": "新用户请先点击注册。",
+  "REGISTER_FIRST_HINT": "首次使用卡赛的的报名平台的用户必须先报名才能登录。",
   "REGISTER_NEW_USERNAME_PASSWORD": "新用户需要先创建用户名和密码",
   "REGISTRATION": "注册",
   "REGISTRATION_COMPLETE_MESSAGE": "<p>您已经注册成功，您的ID“<strong>{{name}}</strong>”就是您的用户名。</p><p>请点击下面的“继续”按钮，然后继续进行其余的注册过程。</p>",
