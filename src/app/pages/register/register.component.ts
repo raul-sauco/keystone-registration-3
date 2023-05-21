@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormGroupDirective,
@@ -14,19 +15,19 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
+import { Observable } from 'rxjs';
 
-import { HttpHeaders } from '@angular/common/http';
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
 import { DialogData } from '@interfaces/dialog-data';
 import { Credentials } from '@models/credentials';
-import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { TripService } from '@services/trip/trip.service';
-import { Observable } from 'rxjs';
+
 // import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
 
 /** Error when the parent is invalid */
@@ -53,19 +54,19 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private api: ApiService,
-    private auth: AuthService,
     private paymentService: PaymentService,
     private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
     private translate: TranslateService,
-    public router: Router,
-    // private usernameValidator: UniqueUsernameValidator,
+    public auth: AuthService,
     public dialog: MatDialog,
-    public trip: TripService
+    public router: Router,
+    public trip: TripService // private usernameValidator: UniqueUsernameValidator,
   ) {}
 
   ngOnInit(): void {
     this.logger.debug('RegisterComponent OnInit');
+    this.logger.warn(this.trip.code, this.trip.name, this.trip.type);
     this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
     this.errorMatcher = new CrossFieldErrorMatcher();
     if (!this.trip.code || !this.trip.id) {

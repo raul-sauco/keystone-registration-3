@@ -250,6 +250,8 @@
   "REGISTERING_FOR": "登记人",
   "REGISTER_BEFORE_LOGIN_PROMPT": "新用户请先点击注册。",
   "REGISTER_FIRST_HINT": "首次使用卡赛的的报名平台的用户必须先报名才能登录。",
+  "REGISTER_NEW_STUDENT": "注册新学生",
+  "REGISTER_NEW_TEACHER": "注册新教师",
   "REGISTER_NEW_USERNAME_PASSWORD": "新用户需要先创建用户名和密码",
   "REGISTRATION": "注册",
   "REGISTRATION_COMPLETE_MESSAGE": "<p>您已经注册成功，您的ID“<strong>{{name}}</strong>”就是您的用户名。</p><p>请点击下面的“继续”按钮，然后继续进行其余的注册过程。</p>",

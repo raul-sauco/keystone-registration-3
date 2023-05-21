@@ -1,7 +1,14 @@
 <div id="registration-form-container" *ngIf="userRegistrationForm">
   <mat-card appearance="outlined" id="registration-form-mat-card-container">
     <mat-card-content>
-      <h1>{{ "REGISTRATION_INFORMATION" | translate }}</h1>
+      <h1>
+        {{
+          (trip.type === "student"
+            ? "REGISTER_NEW_STUDENT"
+            : "REGISTER_NEW_TEACHER"
+          ) | translate
+        }}
+      </h1>
       <h2 class="trip-name" *ngIf="trip.name">{{ trip.name }}</h2>
       <form
         [formGroup]="userRegistrationForm"
@@ -88,7 +95,7 @@
           color="primary"
           [disabled]="!userRegistrationForm.valid || loading"
         >
-          {{ "SEND" | translate }}
+          {{ "SUBMIT" | translate }}
         </button>
       </form>
       <div class="navigation-links">
