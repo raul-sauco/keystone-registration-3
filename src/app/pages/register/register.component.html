@@ -68,6 +68,32 @@
             {{ "ID_ALREADY_IN_USE" | translate }}
           </mat-error>
         </mat-form-field>
+        <div
+          id="duplicate-id-prompt"
+          class="inner-form-prompt"
+          *ngIf="id?.errors?.uniqueUsername"
+        >
+          <ng-container
+            *ngIf="translate.currentLang.includes('zh'); else enPrompt"
+          >
+            请确认证件号码是准确的，或直接'<a routerLink="/login">{{
+              "LOGIN" | translate
+            }}</a
+            >'。请'<a routerLink="/forgot-password">{{
+              "FORGOT_MY_PASSWORD" | translate
+            }}</a
+            >'找回您的密码。
+          </ng-container>
+          <ng-template #enPrompt>
+            <div class="inner-field-prompt has-error">
+              Please double check the ID number or
+              <a routerLink="/login">{{ "LOGIN" | translate }}</a> directly
+              using your existing password. Click
+              <a routerLink="/forgot-password">{{ "HERE" | translate }}</a>
+              to retrieve your password.
+            </div></ng-template
+          >
+        </div>
         <mat-form-field appearance="outline">
           <mat-label>{{ "CREATE_A_PASSWORD" | translate }}</mat-label>
           <input type="password" matInput formControlName="password" required />

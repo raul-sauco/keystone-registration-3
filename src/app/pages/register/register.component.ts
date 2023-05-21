@@ -58,11 +58,11 @@ export class RegisterComponent implements OnInit {
     private paymentService: PaymentService,
     private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
-    private translate: TranslateService,
     private usernameValidator: UniqueUsernameValidator,
     public auth: AuthService,
     public dialog: MatDialog,
     public router: Router,
+    public translate: TranslateService,
     public trip: TripService
   ) {}
 
