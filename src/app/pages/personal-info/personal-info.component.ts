@@ -141,6 +141,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     return this.personalInfoForm.get('travelDocument');
   }
 
+  get email() {
+    return this.personalInfoForm.get('email');
+  }
+
   get gender() {
     return this.personalInfoForm.get('gender');
   }
@@ -155,6 +159,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       englishName: [student.englishName],
       citizenship: [student.citizenship],
       travelDocument: [student.travelDocument, Validators.required],
+      email: ['', Validators.email],
       gender: [student.gender],
       dob: [student.dob, Validators.required],
       guardianName: [student.guardianName],
@@ -209,6 +214,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       english_name: data.englishName,
       citizenship: data.citizenship,
       travel_document: data.travelDocument,
+      email: data.email,
       gender: data.gender,
       guardian_name: data.guardianName,
       emergency_contact: data.emergencyContact,
