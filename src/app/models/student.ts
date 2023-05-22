@@ -251,6 +251,14 @@ export class Student {
     return this.medicalAttributes;
   }
 
+  isStudent(): boolean {
+    return this.type === 0;
+  }
+
+  isTeacher(): boolean {
+    return this.type === 1;
+  }
+
   /**
    * Initialize the class attribute arrays
    */

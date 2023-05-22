@@ -4,7 +4,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import {
   delay,
   filter,
@@ -13,6 +13,8 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { PaymentInfo } from '@models/paymentInfo';
+import { Student } from '@models/student';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { RouteStateService } from '@services/route-state/route-state.service';
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit {
   title = 'Keystone Adventures';
   tripId$!: Observable<string | null>;
   tripId: string | null = null;
+  enableFullNavigation$!: Observable<boolean>;
 
   public appPages = [
     {
@@ -123,6 +126,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // Subscribe to the routeStateService to get updates on the trip ID parameter
     this.tripId$ = this.routeStateService.tripIdParam$.pipe(delay(0));
+    this.setEnableFullNavigationObserver();
   }
 
   initTranslate() {
@@ -149,6 +153,47 @@ export class AppComponent implements OnInit {
 
     this.logger.debug(
       `TranslateService language set to "${this.translate.currentLang}"`
+    );
+  }
+
+  /**
+   * Set a combine latest observer that uses multiple different observers to determine if the app
+   * should let the user navigate to all pages or only a restricted set.
+   */
+  setEnableFullNavigationObserver() {
+    this.logger.debug('AppComponent.setEnableFullNavigationObserver');
+    // Combined observable from several sources.
+    this.enableFullNavigation$ = combineLatest(
+      [this.studentService.student$, this.paymentService.paymentInfo$],
+      (student: Student, paymentInfo: PaymentInfo) => {
+        this.logger.debug(
+          `Payment information ${
+            student.hasProvidedInformation() ? 'yes' : 'no'
+          }`
+        );
+        this.logger.debug(
+          `Student has${
+            student.waiverAccepted ? '' : ' not '
+          }accepted the waiver`
+        );
+        if (paymentInfo.required && student.isStudent()) {
+          this.logger.debug(
+            `Payment is required and student has ${
+              paymentInfo.paid ? '' : 'not '
+            }paid`
+          );
+        }
+        const enableFullNavigation: boolean =
+          student.hasProvidedInformation() &&
+          (student.waiverAccepted ?? false) &&
+          (student.isTeacher() || !paymentInfo.required || paymentInfo.paid);
+        this.logger.debug(
+          `The user has${
+            enableFullNavigation ? '' : ' not '
+          }completed the registration process`
+        );
+        return enableFullNavigation;
+      }
     );
   }
 

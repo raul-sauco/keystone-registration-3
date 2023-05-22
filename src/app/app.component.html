@@ -160,7 +160,7 @@
               page.url +
               ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
             "
-            *ngIf="auth.auth$ | async; else giPlain"
+            *ngIf="enableFullNavigation$ | async; else giPlain"
           >
             <div matListItemIcon>
               <mat-icon color="primary">{{ page.icon }}</mat-icon>
@@ -207,7 +207,7 @@
               page.url +
               ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
             "
-            *ngIf="auth.auth$ | async; else ppPlain"
+            *ngIf="enableFullNavigation$ | async; else ppPlain"
           >
             <div matListItemIcon>
               <mat-icon color="primary">{{ page.icon }}</mat-icon>
