@@ -357,7 +357,7 @@ export class Student {
    */
   public hasProvidedInformation(): boolean {
     let provided = true;
-    const attrs = ['name', 'citizenship', 'travelDocument', 'gender', 'dob'];
+    const attrs = ['name', 'travelDocument', 'dob'];
     attrs.forEach((attr) => {
       if (this.isAttributeEmpty(attr as keyof Student)) {
         provided = false;
