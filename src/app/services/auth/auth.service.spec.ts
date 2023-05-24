@@ -2,9 +2,9 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
-import { Spied } from 'src/app/interfaces/spied';
-import { Credentials } from 'src/app/models/credentials';
-import { StorageService } from 'src/app/services/storage/storage.service';
+import { Spied } from '@interfaces/spied';
+import { Credentials } from '@models/credentials';
+import { StorageService } from '@services/storage/storage.service';
 import { AuthService } from './auth.service';
 
 const userData = {
@@ -14,6 +14,13 @@ const userData = {
   studentId: 1,
 };
 
+const keys = {
+  credentials: 'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY',
+  currentTrip: 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA',
+  paymentInfo: 'KEYSTONE_ADVENTURES_PAYMENT_INFO_STORAGE_KEY',
+  schoolService: 'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY',
+};
+
 describe('AuthService', () => {
   let service: AuthService;
   let storageServiceSpy: Spied<StorageService>;
@@ -21,9 +28,15 @@ describe('AuthService', () => {
 
   describe('creation', () => {
     beforeEach(() => {
-      storageServiceSpy = jasmine.createSpyObj('StorageService', {
-        get: Promise.resolve(userData),
-      });
+      storageServiceSpy = jasmine.createSpyObj(
+        'StorageService',
+        {
+          get: Promise.resolve(userData),
+        },
+        {
+          keys,
+        }
+      );
       loggerSpy = jasmine.createSpyObj('Logger', { debug: null, warn: null });
       TestBed.configureTestingModule({
         providers: [
@@ -97,11 +110,16 @@ describe('AuthService', () => {
 
   describe('after create', () => {
     beforeEach(() => {
-      storageServiceSpy = jasmine.createSpyObj('StorageService', {
-        get: Promise.resolve(userData),
-        set: Promise.resolve(true),
-        remove: Promise.resolve(true),
-      });
+      storageServiceSpy = jasmine.createSpyObj(
+        'StorageService',
+        {
+          get: Promise.resolve(userData),
+          set: Promise.resolve(true),
+          remove: Promise.resolve(true),
+          removeAll: Promise.resolve(true),
+        },
+        { keys }
+      );
       loggerSpy = jasmine.createSpyObj('Logger', { debug: null, warn: null });
       TestBed.configureTestingModule({
         providers: [

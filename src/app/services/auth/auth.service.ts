@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subject } from 'rxjs';
-import { Credentials } from 'src/app/models/credentials';
-import { StorageService } from 'src/app/services/storage/storage.service';
+
+import { Credentials } from '@models/credentials';
+import { StorageService } from '@services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',

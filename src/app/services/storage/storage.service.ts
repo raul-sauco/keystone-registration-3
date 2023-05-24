@@ -131,8 +131,9 @@ export class StorageService {
 
   /**
    * Clear all the data found in storage.
+   * @returns `true` if it can remove all the data from storage, `false` otherwise.
    */
-  async removeAll(): Promise<void> {
+  async removeAll(): Promise<boolean> {
     let count = 0;
     try {
       for (const key in this.keys) {
@@ -141,8 +142,10 @@ export class StorageService {
       }
     } catch (e) {
       this.logger.warn('StorageService.removeAll() failed', e);
+      return false;
     }
     this.logger.debug(`StorageService removed ${count} keys from storage`);
+    return true;
   }
 
   /**
