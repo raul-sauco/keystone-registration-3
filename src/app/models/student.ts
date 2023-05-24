@@ -5,6 +5,7 @@ export class Student {
   id: number;
   index?: number;
   type?: number; // 1 for teacher, 0 for student
+  isSampleAccount!: boolean;
   name?: string;
   englishName?: string;
   citizenship?: string;
@@ -97,6 +98,10 @@ export class Student {
     // Use the id attribute for creation scenarios
     this.id = json.id;
     this.type = json.type;
+    this.isSampleAccount =
+      json.is_sample_account === true ||
+      json.is_sample_account === '1' ||
+      json.is_sample_account === 1;
     this.name = json.name;
     this.englishName = json.english_name;
     this.citizenship = json.citizenship;

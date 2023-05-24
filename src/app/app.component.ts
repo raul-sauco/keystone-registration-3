@@ -171,22 +171,27 @@ export class AppComponent implements OnInit {
             student.hasProvidedInformation() ? 'yes' : 'no'
           }`
         );
-        this.logger.debug(
-          `Student has${
-            student.waiverAccepted ? '' : ' not '
-          }accepted the waiver`
-        );
-        if (paymentInfo.required && student.isStudent()) {
+        if (student.isSampleAccount) {
+          this.logger.debug('Account is sample account');
+        } else {
           this.logger.debug(
-            `Payment is required and student has ${
-              paymentInfo.paid ? '' : 'not '
-            }paid`
+            `Student has${
+              student.waiverAccepted ? '' : ' not '
+            }accepted the waiver`
           );
+          if (paymentInfo.required && student.isStudent()) {
+            this.logger.debug(
+              `Payment is required and student has ${
+                paymentInfo.paid ? '' : 'not '
+              }paid`
+            );
+          }
         }
         const enableFullNavigation: boolean =
-          student.hasProvidedInformation() &&
-          (student.waiverAccepted ?? false) &&
-          (student.isTeacher() || !paymentInfo.required || paymentInfo.paid);
+          student.isSampleAccount ||
+          (student.hasProvidedInformation() &&
+            (student.waiverAccepted ?? false) &&
+            (student.isTeacher() || !paymentInfo.required || paymentInfo.paid));
         this.logger.debug(
           `The user has${
             enableFullNavigation ? '' : ' not '
