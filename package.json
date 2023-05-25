@@ -29,7 +29,7 @@
     "moment": "^2.29.1",
     "ng2-charts": "^4.1.1",
     "ngx-logger": "^5.0.7",
-    "ngx-markdown": "^15.1.1",
+    "ngx-markdown": "^16.0.0",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "^0.13.0"
