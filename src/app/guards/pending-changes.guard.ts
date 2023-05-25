@@ -1,6 +1,7 @@
 import { CanDeactivateFn, UrlTree } from '@angular/router';
-import { ComponentCanDeactivate } from '@interfaces/component-can-deactivate';
 import { Observable } from 'rxjs';
+
+import { ComponentCanDeactivate } from '@interfaces/component-can-deactivate';
 
 /**
  * A guard that prompts the user when they try to navigate away from a component
