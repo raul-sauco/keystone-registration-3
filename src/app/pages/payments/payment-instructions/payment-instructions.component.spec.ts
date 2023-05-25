@@ -4,6 +4,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
 import { PaymentInstructionsComponent } from './payment-instructions.component';
 
@@ -21,6 +23,9 @@ describe('PaymentInstructionsComponent', () => {
         MatDialogModule,
         MatProgressSpinnerModule,
         LoggerTestingModule,
+        TranslateTestingModule.withTranslations({
+          en: require('src/assets/i18n/en.json'),
+        }),
       ],
       declarations: [PaymentInstructionsComponent],
     }).compileComponents();
