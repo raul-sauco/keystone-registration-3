@@ -22,6 +22,8 @@ export class Student {
   allergies?: number;
   allergiesOther?: string;
   medicalInformation?: string;
+  termsAccepted: boolean | null = null;
+  termsAcceptedOn?: string;
   paid: boolean | null = null;
   paymentVerified: boolean | null = null;
   house: string | null = null;
@@ -122,6 +124,12 @@ export class Student {
     this.allergies = json.allergies;
     this.allergiesOther = json.allergies_other;
     this.medicalInformation = json.medical_information;
+    this.termsAccepted = json.terms_accepted
+      ? true
+      : json.terms_accepted === 0
+      ? false
+      : null;
+    this.termsAcceptedOn = json.terms_accepted_on;
     this.paid = json.paid ? true : json.paid === 0 ? false : null;
     this.paymentVerified = json.payment_verified
       ? true

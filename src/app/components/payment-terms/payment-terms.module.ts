@@ -7,5 +7,6 @@ import { PaymentTermsComponent } from './payment-terms.component';
 @NgModule({
   declarations: [PaymentTermsComponent],
   imports: [CommonModule, MarkdownModule],
+  exports: [PaymentTermsComponent],
 })
 export class PaymentTermsModule {}

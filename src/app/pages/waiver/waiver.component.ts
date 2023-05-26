@@ -88,18 +88,21 @@ export class WaiverComponent implements OnInit, OnDestroy {
       name: [stu.name || '', Validators.required],
       guardianName: [
         stu.guardianName || '',
-        this.auth.getCredentials()?.type === 4 ? null : Validators.required,
+        this.auth.isStudent ? Validators.required : null,
       ],
     });
   }
 
-  /** Mark the student as having accepted the waiver today. */
+  /** Mark the student as having accepted the terms&conditions today. */
   acceptWaiver(): void {
+    const today = moment().format('YYYY-MM-DD');
     const studentData = {
       name: this.waiverForm.value.name,
       guardian_name: this.waiverForm.value.guardianName,
       waiver_accepted: 1,
-      waiver_signed_on: moment().format('YYYY-MM-DD'),
+      waiver_signed_on: today,
+      terms_accepted: 1,
+      terms_accepted_on: today,
     };
     this.posting = true;
     this.studentService.updateStudent(studentData).subscribe({

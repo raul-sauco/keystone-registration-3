@@ -8,10 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
 import { LoginRequiredMessageModule } from '@components/login-required-message/login-required-message.module';
-import { MarkdownModule } from 'ngx-markdown';
+import { PaymentTermsModule } from '@components/payment-terms/payment-terms.module';
 import { WaiverContentComponent } from './waiver-content/waiver-content.component';
 import { WaiverRoutingModule } from './waiver-routing.module';
 import { WaiverComponent } from './waiver.component';
@@ -30,6 +31,7 @@ import { WaiverComponent } from './waiver.component';
     MatMomentDateModule,
     MatProgressBarModule,
     MatSnackBarModule,
+    PaymentTermsModule,
     ReactiveFormsModule,
     TranslateModule,
     WaiverRoutingModule,
