@@ -18,7 +18,6 @@ import {
   PaymentInstructionsComponent,
 } from './payment-instructions/payment-instructions.component';
 import { PaymentQrCodesComponent } from './payment-qr-codes/payment-qr-codes.component';
-import { PaymentTermsComponent } from './payment-terms/payment-terms.component';
 import { PaymentUploadProofComponent } from './payment-upload-proof/payment-upload-proof.component';
 import {
   PaymentCompletedConfirmationDialogComponent,
@@ -34,7 +33,6 @@ const routes: Routes = [{ path: '', component: PaymentsComponent }];
     AddParticipantInfoToPaymentReminderDialogComponent,
     PaymentCompletedConfirmationDialogComponent,
     PaymentsComponent,
-    PaymentTermsComponent,
     PaymentQrCodesComponent,
     PaymentInstructionsComponent,
     PaymentUploadProofComponent,

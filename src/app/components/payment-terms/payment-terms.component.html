@@ -1,1 +1,8 @@
-<p>payment-terms works!</p>
+<div
+  id="payment-terms"
+  *ngIf="content$ | async as content"
+  [innerHTML]="
+    (translate.currentLang.includes('zh') ? content.text_zh : content.text)
+      | markdown
+  "
+></div>
