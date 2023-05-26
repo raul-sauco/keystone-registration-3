@@ -3,6 +3,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import { Component } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -22,15 +23,22 @@ import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { of } from 'rxjs';
+
+import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
+import { Spied } from '@interfaces/spied';
+import { Credentials } from '@models/credentials';
+import { Student } from '@models/student';
+import { AuthService } from '@services/auth/auth.service';
+import { StudentService } from '@services/student/student.service';
 import { HttpLoaderFactory } from 'src/app/app.module';
-import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { Spied } from 'src/app/interfaces/spied';
-import { Credentials } from 'src/app/models/credentials';
-import { Student } from 'src/app/models/student';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { StudentService } from 'src/app/services/student/student.service';
 import { WaiverContentComponent } from './waiver-content/waiver-content.component';
 import { WaiverComponent } from './waiver.component';
+
+@Component({
+  selector: 'app-payment-terms',
+  template: '<p>Payment Terms</p>',
+})
+class MockAppPaymentTermsComponent {}
 
 describe('WaiverComponent', () => {
   let component: WaiverComponent;
@@ -72,7 +80,11 @@ describe('WaiverComponent', () => {
       }
     );
     TestBed.configureTestingModule({
-      declarations: [WaiverComponent, WaiverContentComponent],
+      declarations: [
+        MockAppPaymentTermsComponent,
+        WaiverComponent,
+        WaiverContentComponent,
+      ],
       imports: [
         FormsModule,
         HttpClientTestingModule,

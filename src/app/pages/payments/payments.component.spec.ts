@@ -17,7 +17,6 @@ import { Spied } from 'src/app/interfaces/spied';
 import { Credentials } from 'src/app/models/credentials';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentClosedComponent } from './payment-closed/payment-closed.component';
-import { PaymentTermsComponent } from './payment-terms/payment-terms.component';
 import { PaymentsComponent } from './payments.component';
 
 describe('PaymentsComponent', () => {
@@ -46,11 +45,7 @@ describe('PaymentsComponent', () => {
         TranslateService,
         { provide: AuthService, useValue: authServiceSpy },
       ],
-      declarations: [
-        PaymentsComponent,
-        PaymentTermsComponent,
-        PaymentClosedComponent,
-      ],
+      declarations: [PaymentsComponent, PaymentClosedComponent],
       imports: [
         LoadingSpinnerContentModule,
         HttpClientTestingModule,
