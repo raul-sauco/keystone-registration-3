@@ -1,6 +1,5 @@
 <div id="payment-upload-proof">
   <ng-container *ngIf="!success; else done">
-    <h1>{{ "PAYMENT_INSTRUCTIONS_3" | translate }}</h1>
     <div id="file-upload-wrapper">
       <input
         type="file"
@@ -21,7 +20,9 @@
           </div>
         </ng-container>
         <ng-template #noFile>
-          <div id="no-file-message">{{ "NO_IMAGE_SELECTED" | translate }}</div>
+          <div id="no-file-message">
+            {{ "PAYMENT_INSTRUCTIONS_3" | translate }}
+          </div>
         </ng-template>
       </div>
       <ng-container *ngIf="file; else selectFile">
