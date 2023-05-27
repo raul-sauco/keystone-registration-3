@@ -2,11 +2,11 @@
   margin: 16px;
   #payment-qr-codes-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
     width: 100%;
     .qr-code-item {
-      margin-bottom: 16px;
+      margin: 8px;
       max-width: 100%;
     }
   }

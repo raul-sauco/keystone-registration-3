@@ -1,10 +1,11 @@
-import { GlobalsService } from './../../../services/globals/globals.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
+
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
   selector: 'app-payment-qr-codes',
