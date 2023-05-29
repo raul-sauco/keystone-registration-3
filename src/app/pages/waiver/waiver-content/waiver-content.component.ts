@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
+import { Observable } from 'rxjs';
 
 import { HttpHeaders } from '@angular/common/http';
+import { PaymentInfo } from '@models/paymentInfo';
 import { ApiService } from '@services/api/api.service';
-import { Observable } from 'rxjs';
+import { PaymentService } from '@services/payment/payment.service';
 @Component({
   selector: 'app-waiver-content',
   templateUrl: './waiver-content.component.html',
@@ -15,6 +17,7 @@ export class WaiverContentComponent implements OnInit {
 
   constructor(
     private logger: NGXLogger,
+    private paymentService: PaymentService,
     public api: ApiService,
     public translate: TranslateService
   ) {}
@@ -30,6 +33,11 @@ export class WaiverContentComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-    this.content$ = this.api.get('documents/75', null, options);
+    this.paymentService.paymentInfo$.subscribe({
+      next: (paymentInfo: PaymentInfo) => {
+        const endpoint = 'documents/' + (paymentInfo?.required ? '104' : '75');
+        this.content$ = this.api.get(endpoint, null, options);
+      },
+    });
   }
 }

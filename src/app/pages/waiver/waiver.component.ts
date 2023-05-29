@@ -10,9 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
-import { Student } from 'src/app/models/student';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { StudentService } from 'src/app/services/student/student.service';
+
+import { Student } from '@models/student';
+import { AuthService } from '@services/auth/auth.service';
+import { StudentService } from '@services/student/student.service';
 
 @Component({
   selector: 'app-waiver',
