@@ -85,13 +85,6 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
-              <mat-label>{{ "EMAIL" | translate }}</mat-label>
-              <input type="email" matInput formControlName="email" />
-              <mat-error *ngIf="email?.errors?.email">
-                {{ "EMAIL_IS_NOT_VALID" | translate }}
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("gender") }}</mat-label>
               <mat-select
                 formControlName="gender"
@@ -154,6 +147,16 @@
               <mat-label>{{ student.getAttributeLabel("wechatId") }}</mat-label>
               <input type="text" matInput formControlName="wechatId" />
             </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "EMAIL" | translate }}</mat-label>
+              <input type="email" matInput formControlName="email" />
+              <mat-error *ngIf="email?.errors?.email">
+                {{ "EMAIL_IS_NOT_VALID" | translate }}
+              </mat-error>
+            </mat-form-field>
+            <!-- END Contact information section -->
+
+            <!-- START Medical & dietary section -->
             <h2>{{ "DIETARY_REQUIREMENTS" | translate }}</h2>
             <p class="form-field-extra-hint">
               {{ "PIF_HINT_DIETARY" | translate }}
