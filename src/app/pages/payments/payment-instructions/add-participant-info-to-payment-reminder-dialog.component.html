@@ -7,8 +7,13 @@
   <p>{{ "ADD_PARTICIPANT_INFO_REMINDER" | translate }}</p>
   <p>{{ "REMEMBER_PAYMENT_SCREENSHOT_UPLOAD" | translate }}</p>
 </div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>
+<div mat-dialog-actions id="add-participant-info-to-payment-reminder-actions">
+  <button
+    mat-button
+    mat-dialog-close
+    color="primary"
+    id="dismiss-reminder-button"
+  >
     {{ "OK" | translate }}
   </button>
 </div>

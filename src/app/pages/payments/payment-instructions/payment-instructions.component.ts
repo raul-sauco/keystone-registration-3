@@ -39,7 +39,7 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
     this.content$ = this.api.get(endpoint, null, options);
     // Need to use window.setTimeout to differentiate from NodeJS.Timeout.
     // https://stackoverflow.com/q/51040703/2557030
-    this.timeout = window.setTimeout(() => this.displayWarning(), 10000);
+    this.timeout = window.setTimeout(() => this.displayWarning(), 5000);
   }
 
   ngOnDestroy(): void {
