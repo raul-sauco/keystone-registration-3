@@ -1,5 +1,5 @@
 <div id="payment-upload-proof">
-  <ng-container *ngIf="!success; else done">
+  <ng-container *ngIf="!success">
     <div id="file-upload-wrapper">
       <input
         type="file"
@@ -60,14 +60,4 @@
       >
     </div>
   </ng-container>
-  <ng-template #done>
-    <h1>{{ "PAYMENT_INSTRUCTIONS_3_SUCCESS" | translate }}</h1>
-    <div id="payment-upload-done-message-prompt-wrapper">
-      <div id="payment-upload-done-message-prompt">
-        <h2>{{ "SUCCESS" | translate }}!</h2>
-        <div>{{ "PROOF_OF_PAYMENT_UPLOADED" | translate }}</div>
-        <div>{{ "SCROLL_TO_BOTTOM_CLICK_SUBMIT" | translate }}</div>
-      </div>
-    </div>
-  </ng-template>
 </div>

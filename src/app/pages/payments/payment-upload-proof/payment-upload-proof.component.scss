@@ -49,14 +49,4 @@
       @include mixins.active-elements-width;
     }
   }
-  #payment-upload-done-message-prompt-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    #payment-upload-done-message-prompt {
-      @include mixins.active-elements-width;
-      @include mixins.alert-dialog;
-    }
-  }
 }

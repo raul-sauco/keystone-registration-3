@@ -18,17 +18,5 @@
       margin-bottom: 8px;
       max-width: 100%;
     }
-    #no-proof-uploaded {
-      margin: 32px;
-      height: 20vh;
-      @include mixins.active-elements-width;
-      background-color: white;
-      border-radius: 16px;
-      border: #ccc 3px dashed;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.3rem;
-    }
   }
 }

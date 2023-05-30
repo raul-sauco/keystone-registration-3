@@ -1,5 +1,4 @@
 <div id="payment-qr-codes-container">
-  <h1>{{ "PAYMENT_INSTRUCTIONS_1" | translate }}</h1>
   <div id="payment-qr-codes-wrapper">
     <ng-container *ngIf="images$ | async as images; else loadingQrCodes">
       <div class="qr-code-item" *ngFor="let image of images">
