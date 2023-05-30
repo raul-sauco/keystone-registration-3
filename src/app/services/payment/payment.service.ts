@@ -1,19 +1,18 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { Image } from 'src/app/models/image';
-import { PaymentInfo } from 'src/app/models/paymentInfo';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+
+import { Image } from '@models/image';
+import { PaymentInfo } from '@models/paymentInfo';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { StorageService } from '@services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentService {
-  private PAYMENT_INFO_STORAGE_KEY =
-    'KEYSTONE_ADVENTURES_PAYMENT_INFO_STORAGE_KEY';
   private paymentInfo?: PaymentInfo;
   paymentInfo$: BehaviorSubject<PaymentInfo> = new BehaviorSubject(
     new PaymentInfo({})
@@ -41,7 +40,7 @@ export class PaymentService {
    * initiate a request to refresh the data from the server.
    */
   loadFromStorage(): void {
-    this.storage.get(this.PAYMENT_INFO_STORAGE_KEY).then((json) => {
+    this.storage.get(this.storage.keys.paymentInfo).then((json) => {
       if (json) {
         this.logger.debug('PaymentService found info in storage', json);
         const paymentInfo = new PaymentInfo(json);
@@ -61,7 +60,7 @@ export class PaymentService {
     this.logger.debug('PaymentService; saving info to storage');
     this.paymentInfo = paymentInfo;
     this.paymentInfo$.next(paymentInfo);
-    return this.storage.set(this.PAYMENT_INFO_STORAGE_KEY, paymentInfo);
+    return this.storage.set(this.storage.keys.paymentInfo, paymentInfo);
   }
 
   /**
