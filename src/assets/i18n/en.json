@@ -137,7 +137,7 @@
   "ID_ALREADY_IN_USE_DETAILS": "Please double check the ID number or {{loginLink}} directly using your existing password. Click {{recoverPassword}} to retrieve your password.",
   "ID_NUMBER": "ID Number",
   "ID_NUMBER_HINT": "This is the ID number you provided when you registered.",
-  "IMPORTANT_WARNING": "Important warning!",
+  "IMPORTANT_REMINDER": "Important Reminder",
   "INDEX": "Index",
   "INFECTIOUS_DISEASE_POLICY": "Infectious Disease Policy",
   "INFORMATION_UPDATED": "Information updated",

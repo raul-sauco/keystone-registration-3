@@ -137,7 +137,7 @@
   "ID_ALREADY_IN_USE_DETAILS": "请确认证件号码是准确的，或直接'{{loginLink}}'。请'{{recoverPassword}}'找回您的密码。",
   "ID_NUMBER": "身份证号",
   "ID_NUMBER_HINT": "这是您报名时提供的证件号码",
-  "IMPORTANT_WARNING": "温馨提示",
+  "IMPORTANT_REMINDER": "温馨提示",
   "INDEX": "指数",
   "INFECTIOUS_DISEASE_POLICY": "传染病安全措施",
   "INFORMATION_UPDATED": "信息更新",
