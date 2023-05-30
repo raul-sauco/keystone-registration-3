@@ -11,8 +11,10 @@ import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 
+import { PaymentInfo } from '@models/paymentInfo';
 import { Student } from '@models/student';
 import { AuthService } from '@services/auth/auth.service';
+import { PaymentService } from '@services/payment/payment.service';
 import { StudentService } from '@services/student/student.service';
 
 @Component({
@@ -25,11 +27,13 @@ export class WaiverComponent implements OnInit, OnDestroy {
   posting = false;
   waiverForm!: UntypedFormGroup;
   private student$?: Subscription | null = null;
+  private paymentInfo?: PaymentInfo | null = null;
 
   constructor(
     public auth: AuthService,
     private formBuilder: UntypedFormBuilder,
     private logger: NGXLogger,
+    private paymentService: PaymentService,
     private router: Router,
     private snackBar: MatSnackBar,
     public studentService: StudentService,
@@ -70,11 +74,21 @@ export class WaiverComponent implements OnInit, OnDestroy {
         this.logger.error('Authentication error, expected having auth info.');
       }
     });
+    this.listenToPaymentInfoUpdates();
   }
 
   ngOnDestroy(): void {
     this.logger.debug('WaiverComponent on destroy');
     this.student$?.unsubscribe();
+    this.paymentService.paymentInfo$?.unsubscribe();
+  }
+
+  listenToPaymentInfoUpdates(): void {
+    this.paymentService.paymentInfo$.subscribe({
+      next: (paymentInfo: PaymentInfo) => {
+        this.paymentInfo = paymentInfo;
+      },
+    });
   }
 
   get name() {
@@ -115,7 +129,10 @@ export class WaiverComponent implements OnInit, OnDestroy {
           { duration: 2000 }
         );
         snackBar.afterDismissed().subscribe(() => {
-          this.router.navigateByUrl('/home');
+          const destination = this.paymentInfo?.required
+            ? '/payments'
+            : '/home';
+          this.router.navigateByUrl(destination);
         });
       },
       error: (error: any) => {
