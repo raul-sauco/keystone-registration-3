@@ -75,30 +75,28 @@ export class PaymentService {
    * Fetch the payment information for the current user from the server.
    */
   fetchFromServer() {
-    this.auth.checkAuthenticated().then((res) => {
-      if (res) {
-        const endpoint =
-          'payment-info/' + this.auth.getCredentials()?.studentId;
-        const options = {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-          }),
-        };
-        this.api.get(endpoint, null, options).subscribe({
-          next: (res: any) => {
-            if (res) {
-              this.logger.debug('PaymentService got info from server', res);
-              this.setPaymentInfo(new PaymentInfo(res));
-            } else {
-              this.logger.warn('Unexpected response from server', res);
-            }
-          },
-          error: (err: any) => {
-            this.logger.warn('Unexpected response from server', err);
-          },
-        });
-      }
+    const endpoint = 'payment-info/' + this.auth.getCredentials()?.studentId;
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+      }),
+    };
+    this.api.get(endpoint, null, options).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.logger.debug('PaymentService got info from server', res);
+          this.setPaymentInfo(new PaymentInfo(res));
+        } else {
+          this.logger.warn(
+            'PaymentService Unexpected response from the server',
+            res
+          );
+        }
+      },
+      error: (err: any) => {
+        this.logger.warn('PaymentService Fetch payment information error', err);
+      },
     });
   }
 
