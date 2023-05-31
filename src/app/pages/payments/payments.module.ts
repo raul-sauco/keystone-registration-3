@@ -10,11 +10,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MarkdownModule } from 'ngx-markdown';
-import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { LoginRequiredMessageModule } from 'src/app/components/login-required-message/login-required-message.module';
+
+import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
+import { LoginRequiredMessageModule } from '@components/login-required-message/login-required-message.module';
 import { PaymentClosedComponent } from './payment-closed/payment-closed.component';
 import {
   AddParticipantInfoToPaymentReminderDialogComponent,
+  AddStudentNameToPaymentProofHelpDialogComponent,
   PaymentInstructionsComponent,
 } from './payment-instructions/payment-instructions.component';
 import { PaymentQrCodesComponent } from './payment-qr-codes/payment-qr-codes.component';
@@ -31,6 +33,7 @@ const routes: Routes = [{ path: '', component: PaymentsComponent }];
 @NgModule({
   declarations: [
     AddParticipantInfoToPaymentReminderDialogComponent,
+    AddStudentNameToPaymentProofHelpDialogComponent,
     PaymentCompletedConfirmationDialogComponent,
     PaymentsComponent,
     PaymentQrCodesComponent,

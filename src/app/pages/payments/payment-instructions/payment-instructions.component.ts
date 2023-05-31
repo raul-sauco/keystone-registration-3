@@ -63,6 +63,18 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   }
 
   displayPaymentProofHelp(): void {
+    if (!this.helpOpen) {
+      this.helpOpen = true;
+      this.dialog
+        .open(AddStudentNameToPaymentProofHelpDialogComponent)
+        .afterClosed()
+        .subscribe({
+          next: () => {
+            this.helpOpen = false;
+            this.logger.debug('Add student name to payment help closed');
+          },
+        });
+    }
     console.log('TODO: Not implemented yet');
   }
 }
@@ -79,6 +91,26 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
   exampleImgUrl: string;
   constructor(
     public dialogRef: MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>,
+    globals: GlobalsService,
+    translate: TranslateService
+  ) {
+    this.exampleImgUrl =
+      globals.getResUrl() +
+      'img/portal/example-payment-proof-' +
+      (translate.currentLang.includes('zh') ? 'zh' : 'en') +
+      '.png';
+  }
+}
+
+@Component({
+  selector: 'app-add-student-name-to-payment-proof-help-dialog-component',
+  templateUrl: './add-student-name-to-payment-proof-help-dialog.component.html',
+  styleUrls: ['./add-student-name-to-payment-proof-help-dialog.component.scss'],
+})
+export class AddStudentNameToPaymentProofHelpDialogComponent {
+  exampleImgUrl: string;
+  constructor(
+    public dialogRef: MatDialogRef<AddStudentNameToPaymentProofHelpDialogComponent>,
     globals: GlobalsService,
     translate: TranslateService
   ) {
