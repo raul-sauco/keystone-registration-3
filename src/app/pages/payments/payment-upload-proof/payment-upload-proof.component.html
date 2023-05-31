@@ -21,11 +21,24 @@
         </ng-container>
         <ng-template #noFile>
           <div id="no-file-message">
-            {{ "PAYMENT_INSTRUCTIONS_3" | translate }}
+            <mat-icon id="no-file-download-icon">download</mat-icon>
+            <div id="no-file-prompt-container">
+              {{ "PAYMENT_INSTRUCTIONS_3" | translate }}
+            </div>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="fileUpload.click()"
+              class="primary-action-button"
+              id="no-file-select-file-btn"
+            >
+              <mat-icon>attach_file</mat-icon>
+              {{ "SELECT_IMAGE_PROMPT" | translate }}
+            </button>
           </div>
         </ng-template>
       </div>
-      <ng-container *ngIf="file; else selectFile">
+      <ng-container *ngIf="file">
         <ng-container *ngIf="uploadSub; else uploadPrompt">
           <div id="progress">
             <mat-progress-bar
@@ -47,17 +60,6 @@
           </button>
         </ng-template>
       </ng-container>
-      <ng-template #selectFile>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="fileUpload.click()"
-          class="primary-action-button"
-        >
-          <mat-icon>attach_file</mat-icon>
-          {{ "SELECT_IMAGE_PROMPT" | translate }}
-        </button></ng-template
-      >
     </div>
   </ng-container>
 </div>

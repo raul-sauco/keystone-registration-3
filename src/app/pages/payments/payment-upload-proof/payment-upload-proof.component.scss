@@ -1,7 +1,7 @@
 @use "../../../../sass/mixins" as mixins;
 
 #payment-upload-proof {
-  margin: 16px;
+  margin: 16px 0 24px 0;
   #file-upload-wrapper {
     display: flex;
     flex-direction: column;
@@ -13,11 +13,11 @@
     #file-preview-container {
       position: relative;
       margin: 8px;
-      height: 20vh;
+      // height: 20vh;
       @include mixins.active-elements-width;
       background-color: white;
       border-radius: 16px;
-      border: #ccc 3px dashed;
+      border: #b31414 5px dashed;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -42,6 +42,14 @@
       #no-file-message {
         text-align: center;
         padding: 8px;
+        #no-file-download-icon,
+        #no-file-select-file-btn {
+          margin: 24px 0;
+        }
+        #no-file-download-icon {
+          transform: scale(2);
+          color: rgb(77, 87, 111);
+        }
       }
     }
     #progress,
