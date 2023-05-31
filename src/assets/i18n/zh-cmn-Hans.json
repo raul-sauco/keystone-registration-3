@@ -223,7 +223,7 @@
   "PASSWORD_RESET_COMPLETE": "您的密码已重置，可以开始使用",
   "PAYMENTS": "付款",
   "PAYMENT_CONFIRMED": "你已付款成功",
-  "PAYMENT_INSTRUCTIONS_3": "在这里截图并上传付款证明",
+  "PAYMENT_INSTRUCTIONS_3": "付款后，请截图并上传到这里。",
   "PAYMENT_INSTRUCTIONS_5": "上传的图片会显示在这里",
   "PAYMENT_INSTRUCTIONS_6": "确认您上传了正确的付款证明后，点击提交按钮",
   "PAYMENT_TERMS": "付款条件",
