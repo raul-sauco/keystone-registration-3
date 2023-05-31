@@ -1,5 +1,11 @@
 #payment-instructions-wrapper {
+  position: relative;
   margin: 16px;
+  #payment-proof-help-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
 }
 
 #loading-wrapper {

@@ -18,6 +18,7 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   lang!: string;
   content$!: Observable<any>;
   timeout: number | null = null;
+  helpOpen: boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -59,6 +60,10 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
           this.logger.debug('Add payment info warning closed');
         },
       });
+  }
+
+  displayPaymentProofHelp(): void {
+    console.log('TODO: Not implemented yet');
   }
 }
 

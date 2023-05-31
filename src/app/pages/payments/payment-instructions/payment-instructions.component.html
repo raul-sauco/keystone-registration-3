@@ -4,6 +4,14 @@
       id="payment-instructions"
       [innerHtml]="(lang === 'zh' ? content.text_zh : content.text) | markdown"
     ></div>
+    <button
+      id="payment-proof-help-btn"
+      mat-icon-button
+      color="primary"
+      (click)="displayPaymentProofHelp()"
+    >
+      <mat-icon>help</mat-icon>
+    </button>
   </div>
 </ng-container>
 <ng-template #loading>
