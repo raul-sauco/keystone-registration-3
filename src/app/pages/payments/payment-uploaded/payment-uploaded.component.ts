@@ -69,6 +69,7 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
 @Component({
   selector: 'app-payment-completed-confirmation-dialog-component',
   templateUrl: './payment-completed-confirmation-dialog.component.html',
+  styleUrls: ['./payment-completed-confirmation-dialog.component.scss'],
 })
 export class PaymentCompletedConfirmationDialogComponent {
   constructor(
