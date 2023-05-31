@@ -10,6 +10,13 @@
 
 #add-participant-info-to-payment-reminder-content {
   font-weight: bold;
+  #img-wrapper {
+    display: flex;
+    justify-content: center;
+    img {
+      max-width: 100%;
+    }
+  }
 }
 
 #add-participant-info-to-payment-reminder-actions {

@@ -7,6 +7,9 @@
   <div mat-dialog-content id="add-participant-info-to-payment-reminder-content">
     <p>{{ "ADD_PARTICIPANT_INFO_REMINDER" | translate }}</p>
     <p>{{ "REMEMBER_PAYMENT_SCREENSHOT_UPLOAD" | translate }}</p>
+    <div id="img-wrapper">
+      <img [src]="exampleImgUrl" alt="Example payment proof" />
+    </div>
   </div>
   <div mat-dialog-actions id="add-participant-info-to-payment-reminder-actions">
     <button

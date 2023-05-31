@@ -4,8 +4,10 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
+
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
   selector: 'app-payment-instructions',
@@ -69,7 +71,16 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   ],
 })
 export class AddParticipantInfoToPaymentReminderDialogComponent {
+  exampleImgUrl: string;
   constructor(
-    public dialogRef: MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>
-  ) {}
+    public dialogRef: MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>,
+    globals: GlobalsService,
+    translate: TranslateService
+  ) {
+    this.exampleImgUrl =
+      globals.getResUrl() +
+      'img/portal/example-payment-proof-' +
+      (translate.currentLang.includes('zh') ? 'zh' : 'en') +
+      '.png';
+  }
 }
