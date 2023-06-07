@@ -10,6 +10,7 @@ import {
   filter,
   map,
   shareReplay,
+  startWith,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -164,40 +165,62 @@ export class AppComponent implements OnInit {
     this.logger.debug('AppComponent.setEnableFullNavigationObserver');
     // Combined observable from several sources.
     this.enableFullNavigation$ = combineLatest(
-      [this.studentService.student$, this.paymentService.paymentInfo$],
-      (student: Student, paymentInfo: PaymentInfo) => {
-        this.logger.debug(
-          `Payment information ${
-            student.hasProvidedInformation() ? 'yes' : 'no'
-          }`
-        );
-        if (student.isSampleAccount) {
-          this.logger.debug('Account is sample account');
-        } else {
+      [
+        this.studentService.student$.pipe(startWith(null)),
+        this.paymentService.paymentInfo$.pipe(startWith(null)),
+        this.auth.auth$,
+      ],
+      (
+        student: Student | null,
+        paymentInfo: PaymentInfo | null,
+        authenticated: boolean
+      ) => {
+        if (!authenticated) {
           this.logger.debug(
-            `Student has${
-              student.waiverAccepted ? '' : ' not '
-            }accepted the waiver`
+            'AppComponent::setEnableFullNavigationObserver => No user authenticated, preventing full navigation'
           );
-          if (paymentInfo.required && student.isStudent()) {
-            this.logger.debug(
-              `Payment is required and student has ${
-                paymentInfo.paid ? '' : 'not '
-              }paid`
-            );
-          }
+          return false;
         }
-        const enableFullNavigation: boolean =
-          student.isSampleAccount ||
-          (student.hasProvidedInformation() &&
-            (student.waiverAccepted ?? false) &&
-            (student.isTeacher() || !paymentInfo.required || paymentInfo.paid));
+        if (
+          student === null ||
+          paymentInfo === null ||
+          this.auth.isSchoolAdmin
+        ) {
+          if (this.auth.isSchoolAdmin) {
+            this.logger.debug(
+              'AppComponent::setEnableFullNavigationObserver => user is school admin. Allowing full navigation'
+            );
+            return true;
+          }
+          this.logger.debug(
+            'AppComponent::setEnableFullNavigationObserver => non-school-admin missing student and/or payment info. Preventing full navigation'
+          );
+          return false;
+        }
+        if (student.isSampleAccount) {
+          this.logger.debug(
+            'AppComponent::setEnableFullNavigationObserver => Account is sample account. Allowing full navigation'
+          );
+          return true;
+        }
+        if (!student.waiverAccepted) {
+          this.logger.debug(
+            'AppComponent::setEnableFullNavigationObserver => Student has not accepted the waiver. Preventing full navigation'
+          );
+          return false;
+        }
+        if (this.auth.isStudent && paymentInfo.required && !paymentInfo.paid) {
+          this.logger.debug(
+            'AppComponent::setEnableFullNavigationObserver => Payment is required and student has not paid. ' +
+              'Preventing full navigation'
+          );
+          return false;
+        }
         this.logger.debug(
-          `The user has${
-            enableFullNavigation ? '' : ' not '
-          }completed the registration process`
+          'AppComponent::setEnableFullNavigationObserver => The user has completed the registration process. ' +
+            'Allowing full navigation'
         );
-        return enableFullNavigation;
+        return true;
       }
     );
   }
