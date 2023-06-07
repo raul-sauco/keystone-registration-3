@@ -134,24 +134,15 @@ export class AppComponent implements OnInit {
     // Set the default language for translation strings, and the current language.
     this.translate.setDefaultLang('en');
     const browserLang = this.translate.getBrowserLang();
-
     if (browserLang) {
       if (browserLang.includes('zh')) {
         this.translate.use('zh-cmn-Hans');
-        // No support for Hant currently
-        // const browserCultureLang = this.translate.getBrowserCultureLang();
-        // if (browserCultureLang.match(/-CN|CHS|Hans/i)) {
-        //   this.translate.use('zh-cmn-Hans');
-        // } else if (browserCultureLang.match(/-TW|CHT|Hant/i)) {
-        //   this.translate.use('zh-cmn-Hant');
-        // }
       } else {
         this.translate.use(browserLang);
       }
     } else {
       this.translate.use('en');
     }
-
     this.logger.debug(
       `TranslateService language set to "${this.translate.currentLang}"`
     );
