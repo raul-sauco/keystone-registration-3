@@ -369,6 +369,10 @@ export class Student {
    * @returns boolean yes/no
    */
   public hasProvidedInformation(): boolean {
+    // Sample accounts are not expected to provide any information.
+    if (this.isSampleAccount) {
+      return true;
+    }
     let provided = true;
     const attrs = ['name', 'travelDocument', 'dob'];
     attrs.forEach((attr) => {

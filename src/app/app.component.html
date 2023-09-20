@@ -121,6 +121,7 @@
               matBadge="!"
               matBadgeColor="warn"
               [matBadgeHidden]="
+                (studentService.student$ | async)?.isSampleAccount ||
                 (studentService.student$ | async)?.waiverAccepted
               "
               >verified_user</mat-icon
