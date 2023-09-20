@@ -9,12 +9,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Credentials } from 'src/app/models/credentials';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { PaymentService } from 'src/app/services/payment/payment.service';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
+
+import { Credentials } from '@models/credentials';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { PaymentService } from '@services/payment/payment.service';
+import { RouteStateService } from '@services/route-state/route-state.service';
+import { StudentService } from '@services/student/student.service';
+import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 
 @Component({
   selector: 'app-login',
@@ -36,6 +38,7 @@ export class LoginComponent implements OnInit {
     private translate: TranslateService,
     private routeStateService: RouteStateService,
     private paymentService: PaymentService,
+    private studentService: StudentService,
     private tripSwitcher: TripSwitcherService
   ) {
     this.loading = false;
@@ -82,6 +85,7 @@ export class LoginComponent implements OnInit {
             } else {
               this.tripSwitcher.refreshTrips();
             }
+            this.studentService.refreshStudent();
             this.router.navigateByUrl('/home').then(() => {
               // Clean up the page here if needed
             });
