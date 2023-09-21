@@ -38,12 +38,12 @@ export class AppComponent implements OnInit {
 
   public appPages = [
     {
-      title: 'OVERVIEW',
+      title: 'ITINERARY',
       url: '/program-overview',
       icon: 'preview',
       render: of(true),
     },
-    { title: 'ITINERARY', url: '/itinerary', icon: 'list', render: of(true) },
+    // { title: 'ITINERARY', url: '/itinerary', icon: 'list', render: of(true) },
     {
       title: 'ACCOMMODATION',
       url: '/accommodation',
