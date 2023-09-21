@@ -6,7 +6,16 @@
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
         <app-admin-banner></app-admin-banner>
-        <h1>TODO: Add content here</h1>
+        <div id="staffing-not-confirmed-container">
+          <mat-card>
+            <img matCardImage [src]="url + 'img/portal/ka-staff-2023.jpg'" />
+            <mat-card-content
+              ><mat-card-subtitle>{{
+                "STAFFING_NOT_YET_CONFIRMED" | translate
+              }}</mat-card-subtitle></mat-card-content
+            >
+          </mat-card>
+        </div>
       </div>
     </div>
   </ng-container>
