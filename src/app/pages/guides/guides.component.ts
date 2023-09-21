@@ -5,12 +5,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Guide } from 'src/app/models/guide';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
+
+import { Guide } from '@models/guide';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { GlobalsService } from '@services/globals/globals.service';
+import { RouteStateService } from '@services/route-state/route-state.service';
+import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
+import { TripService } from '@services/trip/trip.service';
 
 @Component({
   selector: 'app-guides',
@@ -18,10 +20,11 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
   styleUrls: ['./guides.component.scss'],
 })
 export class GuidesComponent implements OnInit {
-  guide$!: Observable<Guide[]>;
+  guide$: Observable<Guide[]> = of([]);
   url: string;
   lang: string;
   needsLogin = false;
+  displayStaffingNotConfirmedTemplate = true;
 
   constructor(
     private auth: AuthService,
@@ -31,6 +34,7 @@ export class GuidesComponent implements OnInit {
     private logger: NGXLogger,
     private translate: TranslateService,
     private tripSwitcher: TripSwitcherService,
+    private tripService: TripService,
     globals: GlobalsService
   ) {
     this.url = globals.getResUrl();
@@ -41,13 +45,18 @@ export class GuidesComponent implements OnInit {
     this.logger.debug('GuidesComponent OnInit');
     const headers: any = { 'Content-Type': 'application/json' };
     this.route.paramMap.subscribe((params: ParamMap) => {
-      const tripId = params.get('trip-id');
-      if (tripId !== null) {
-        if (this.routeStateService.getTripId() !== tripId) {
-          this.routeStateService.updateTripIdParamState(tripId);
+      // const tripId = params.get('trip-id');
+      const trip = this.tripService.trip;
+      if (trip !== null) {
+        if (trip.isStaffingConfirmed) {
+          this.logger.debug(
+            `Trip ${trip.id} staffing confirmed, fetching staff information`
+          );
+          this.displayStaffingNotConfirmedTemplate = false;
+          this.fetch({ 'trip-id': trip.id }, headers);
+        } else {
+          // Fetch template content.
         }
-        // If we have a trip id request info for that trip
-        this.fetch({ 'trip-id': tripId }, headers);
       } else {
         // If we don't have a trip id parameter, request for the current user
         this.auth.checkAuthenticated().then((res: boolean) => {

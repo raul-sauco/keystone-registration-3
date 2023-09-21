@@ -6,12 +6,14 @@ export class Trip {
   private _nameEn: string | null;
   private _nameZh: string | null;
   private _acceptDirectPayment: boolean;
+  private _isStaffingConfirmed: boolean;
 
   constructor(tripJson: any) {
     this._id = tripJson.id;
     this._nameEn = tripJson.name_en;
     this._nameZh = tripJson.name_zh;
     this._acceptDirectPayment = tripJson.accept_direct_payment === 1;
+    this._isStaffingConfirmed = tripJson.is_staffing_confirmed === 1;
   }
 
   get nameEn(): string {
@@ -28,6 +30,10 @@ export class Trip {
 
   get acceptDirectPayment(): boolean {
     return this._acceptDirectPayment;
+  }
+
+  get isStaffingConfirmed(): boolean {
+    return this._isStaffingConfirmed;
   }
 
   /**

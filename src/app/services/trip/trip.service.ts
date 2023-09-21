@@ -17,7 +17,7 @@ import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.servi
 export class TripService {
   private TRIP_DATA_STORAGE_KEY = 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA';
   private _tripName$: BehaviorSubject<string> = new BehaviorSubject('');
-  private trip: Trip | null = null;
+  private _trip: Trip | null = null;
   id!: number;
   name!: string;
   code!: string;
@@ -36,6 +36,10 @@ export class TripService {
 
   get tripName$() {
     return this._tripName$;
+  }
+
+  get trip(): Trip | null {
+    return this._trip;
   }
 
   init() {
@@ -80,7 +84,7 @@ export class TripService {
    */
   clear() {
     this.logger.debug('TripService::clear()');
-    this.trip = null;
+    this._trip = null;
     this._tripName$.next('');
     this.storageService.remove(this.TRIP_DATA_STORAGE_KEY);
   }
@@ -90,7 +94,7 @@ export class TripService {
    * @param tripData any
    */
   private setTrip(trip: Trip): void {
-    this.trip = trip;
+    this._trip = trip;
     this.storageService.set(this.TRIP_DATA_STORAGE_KEY, trip);
     this._tripName$.next(trip.getName(this.translate.currentLang));
   }

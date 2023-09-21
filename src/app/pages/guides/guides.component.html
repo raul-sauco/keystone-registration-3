@@ -2,29 +2,39 @@
   <app-login-required-message></app-login-required-message>
 </ng-container>
 <ng-template #app>
-  <ng-container *ngIf="guide$ | async as guides; else loading">
+  <ng-container *ngIf="displayStaffingNotConfirmedTemplate; else guides">
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
         <app-admin-banner></app-admin-banner>
-        <ul class="guides-list mat-typography">
-          <li class="guide-item" *ngFor="let guide of guides">
-            <div class="avatar-container">
-              <img
-                [src]="url + 'img/users/' + guide.getAvatar()"
-                alt="{{ guide.getName(lang) }} profile image"
-              />
-            </div>
-            <div class="guide-details">
-              <header class="guide-nickname">
-                {{ guide.getName(lang) }}
-              </header>
-              <div class="guide-bio" [innerHtml]="guide.getBio(lang)"></div>
-            </div>
-          </li>
-        </ul>
+        <h1>TODO: Add content here</h1>
       </div>
     </div>
   </ng-container>
+  <ng-template #guides>
+    <ng-container *ngIf="guide$ | async as guides; else loading">
+      <div class="app-page-wrapper">
+        <div class="app-content-wrapper">
+          <app-admin-banner></app-admin-banner>
+          <ul class="guides-list mat-typography">
+            <li class="guide-item" *ngFor="let guide of guides">
+              <div class="avatar-container">
+                <img
+                  [src]="url + 'img/users/' + guide.getAvatar()"
+                  alt="{{ guide.getName(lang) }} profile image"
+                />
+              </div>
+              <div class="guide-details">
+                <header class="guide-nickname">
+                  {{ guide.getName(lang) }}
+                </header>
+                <div class="guide-bio" [innerHtml]="guide.getBio(lang)"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
   <ng-template #loading>
     <app-loading-spinner-content></app-loading-spinner-content>
   </ng-template>
