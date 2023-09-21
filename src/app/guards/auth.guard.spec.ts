@@ -15,26 +15,24 @@ describe('AuthGuard', () => {
   let injector: TestBed;
   let authService: AuthService;
   let guard: AuthGuard;
-  const requestedUrl = '/itinerary';
+  const requestedUrl = '/overview';
   const routeMock: any = { snapshot: {} };
   const routeStateMock: any = { snapshot: {}, url: requestedUrl };
   const routerMock = { navigateByUrl: jasmine.createSpy('navigateByUrl') };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        providers: [AuthGuard, { provide: Router, useValue: routerMock }],
-        imports: [
-          HttpClientTestingModule,
-          LoggerTestingModule,
-          RouterTestingModule,
-        ],
-      });
-      injector = getTestBed();
-      authService = injector.inject(AuthService);
-      guard = injector.inject(AuthGuard);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [AuthGuard, { provide: Router, useValue: routerMock }],
+      imports: [
+        HttpClientTestingModule,
+        LoggerTestingModule,
+        RouterTestingModule,
+      ],
+    });
+    injector = getTestBed();
+    authService = injector.inject(AuthService);
+    guard = injector.inject(AuthGuard);
+  }));
 
   it('should be created', () => {
     expect(guard).toBeTruthy();

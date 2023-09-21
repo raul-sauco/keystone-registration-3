@@ -51,8 +51,6 @@ describe('AppRoutingModule', () => {
     const routes = [
       'home',
       'home/123',
-      'itinerary',
-      'itinerary/123',
       'program-overview',
       'program-overview/123',
       'packing-list',

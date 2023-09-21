@@ -43,7 +43,6 @@ export class AppComponent implements OnInit {
       icon: 'preview',
       render: of(true),
     },
-    // { title: 'ITINERARY', url: '/itinerary', icon: 'list', render: of(true) },
     {
       title: 'ACCOMMODATION',
       url: '/accommodation',

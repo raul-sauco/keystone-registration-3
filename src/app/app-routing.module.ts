@@ -18,20 +18,6 @@ const routes: Routes = [
       import('./pages/home/home.module').then((m) => m.HomeModule),
   },
   {
-    path: 'itinerary',
-    loadChildren: () =>
-      import('./pages/itinerary/itinerary.module').then(
-        (m) => m.ItineraryModule
-      ),
-  },
-  {
-    path: 'itinerary/:trip-id',
-    loadChildren: () =>
-      import('./pages/itinerary/itinerary.module').then(
-        (m) => m.ItineraryModule
-      ),
-  },
-  {
     path: 'program-overview',
     loadChildren: () =>
       import('./pages/program-overview/program-overview.module').then(
