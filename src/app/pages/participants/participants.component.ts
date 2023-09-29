@@ -1,9 +1,9 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import {
+  MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
@@ -12,14 +12,15 @@ import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AddParticipantComponent } from 'src/app/components/add-participant/add-participant.component';
-import { School } from 'src/app/models/school';
-import { Student } from 'src/app/models/student';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { PaymentService } from 'src/app/services/payment/payment.service';
-import { SchoolService } from 'src/app/services/school/school.service';
-import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
+
+import { AddParticipantComponent } from '@components/add-participant/add-participant.component';
+import { School } from '@models/school';
+import { Student } from '@models/student';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { SchoolService } from '@services/school/school.service';
+import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
+import { TripService } from '@services/trip/trip.service';
 
 @Component({
   selector: 'app-participants',
@@ -40,9 +41,9 @@ export class ParticipantsComponent implements OnInit {
     private auth: AuthService,
     private logger: NGXLogger,
     private dialog: MatDialog,
-    private paymentService: PaymentService,
     private schoolService: SchoolService,
     private translate: TranslateService,
+    private tripService: TripService,
     private tripSwitcher: TripSwitcherService,
     private snackBar: MatSnackBar
   ) {
@@ -204,13 +205,13 @@ export class ParticipantsComponent implements OnInit {
    * display logic in a function.
    *
    * There are two situations under which the payment info columns are displayed:
-   * - For regular users, the payment service determines that payment information is required.
+   * - For regular users, check the acceptDirectPayment on the trip linked to their account.
    * - For school administrators, the trip.acceptDirectPayment attribute is set to true for
    * the trip that they are currently visualizing.
    */
   private displayPaymentInfoColumns(): boolean {
     return (
-      (this.paymentService.getPaymentInfo()?.required ||
+      (this.tripService.trip?.acceptDirectPayment ||
         (this.auth.isSchoolAdmin &&
           this.tripSwitcher.selectedTrip?.acceptDirectPayment)) ??
       false
