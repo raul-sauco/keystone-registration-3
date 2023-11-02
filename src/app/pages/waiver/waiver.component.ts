@@ -80,7 +80,8 @@ export class WaiverComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.logger.debug('WaiverComponent on destroy');
     this.student$?.unsubscribe();
-    this.paymentService.paymentInfo$?.unsubscribe();
+    // Unsubscribing here is causing the subscription to close, odd behavior.
+    // this.paymentService.paymentInfo$?.unsubscribe();
   }
 
   listenToPaymentInfoUpdates(): void {

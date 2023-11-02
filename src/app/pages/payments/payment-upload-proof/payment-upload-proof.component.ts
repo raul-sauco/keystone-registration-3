@@ -32,6 +32,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
+    this.logger.debug('PaymentUploadProofComponent on destroy');
     this.uploadSub?.unsubscribe();
   }
 
@@ -45,7 +46,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
    * @param event
    */
   onFileSelected(event: any) {
-    this.logger.debug('File Selected');
+    this.logger.debug('PaymentUploadProofComponent::onFileSelected(event)');
     this.file = event.target.files[0];
     if (this.file) {
       const reader = new FileReader();
@@ -61,6 +62,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
    * Handle uploading the stored file to the server.
    */
   uploadFile(): void {
+    this.logger.debug('PaymentUploadProofComponent::uploadFile()');
     if (this.file) {
       const formData = new FormData();
       const url = this.globals.getApiUrl() + 'trip-direct-payment-proof';
@@ -95,6 +97,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
    * Cancel the image upload currently in progress.
    */
   cancelUpload() {
+    this.logger.debug(`PaymentUploadProofComponent::cancelUpload()`);
     this.uploadSub?.unsubscribe();
     this.reset();
   }
@@ -104,6 +107,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
    * This method works for both successful and failed upload attempts.
    */
   reset() {
+    this.logger.debug(`PaymentUploadProofComponent::reset()`);
     this.uploadProgress = null;
     this.uploadSub = null;
     this.paymentService.fetchFromServer();

@@ -57,9 +57,15 @@ export class PaymentService {
    * @returns
    */
   setPaymentInfo(paymentInfo: PaymentInfo): Promise<any> {
-    this.logger.debug('PaymentService; saving info to storage');
+    this.logger.debug('PaymentService::setPaymentInfo()');
     this.paymentInfo = paymentInfo;
-    this.paymentInfo$.next(paymentInfo);
+    if (!this.paymentInfo$.closed) {
+      this.paymentInfo$.next(paymentInfo);
+    } else {
+      this.logger.warn(
+        'PaymentService::setPaymentInfo() expected paymentInfo$ to be open but it is closed'
+      );
+    }
     return this.storage.set(this.storage.keys.paymentInfo, paymentInfo);
   }
 
