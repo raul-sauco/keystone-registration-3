@@ -72,9 +72,10 @@ export class StorageService {
    * @returns Returns a promise that resolves when the key and value are set
    */
   set(key: string, value: any): Promise<any> {
+    const stringValue = JSON.stringify(value);
+    this.logger.debug(`StorageService::set(${key}, ${stringValue})`);
     return new Promise((resolve, reject) => {
       if (this.storageAvailable('localStorage')) {
-        const stringValue = JSON.stringify(value);
         try {
           localStorage.setItem(key, stringValue);
         } catch (e: any) {
