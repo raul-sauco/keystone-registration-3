@@ -108,18 +108,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "keystone-registration:build"
+            "buildTarget": "keystone-registration:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "keystone-registration:build:production"
+              "buildTarget": "keystone-registration:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "keystone-registration:build"
+            "buildTarget": "keystone-registration:build"
           }
         },
         "test": {
