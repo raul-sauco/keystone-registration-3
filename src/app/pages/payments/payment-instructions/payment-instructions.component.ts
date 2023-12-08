@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
@@ -39,7 +39,9 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
         Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       }),
     };
-    this.content$ = this.api.get(endpoint, null, options);
+    this.content$ = this.api
+      .get(endpoint, null, options)
+      .pipe(map((doc: any) => (this.lang === 'zh' ? doc.text_zh : doc.text)));
     // Need to use window.setTimeout to differentiate from NodeJS.Timeout.
     // https://stackoverflow.com/q/51040703/2557030
     this.timeout = window.setTimeout(() => this.displayWarning(), 5000);

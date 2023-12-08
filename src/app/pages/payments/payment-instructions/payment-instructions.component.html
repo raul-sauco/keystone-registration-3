@@ -1,9 +1,6 @@
 <ng-container *ngIf="content$ | async as content; else loading">
   <div id="payment-instructions-wrapper">
-    <div
-      id="payment-instructions"
-      [innerHtml]="(lang === 'zh' ? content.text_zh : content.text) | markdown"
-    ></div>
+    <markdown id="payment-instructions" [data]="content"></markdown>
     <button
       id="payment-proof-help-btn"
       mat-icon-button
