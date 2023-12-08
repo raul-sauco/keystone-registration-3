@@ -1,9 +1,9 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
-import { HttpHeaders } from '@angular/common/http';
 import { PaymentInfo } from '@models/paymentInfo';
 import { ApiService } from '@services/api/api.service';
 import { PaymentService } from '@services/payment/payment.service';
@@ -23,12 +23,10 @@ export class WaiverContentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.logger.debug('WaiverContentComponent OnInit');
+    this.logger.debug('WaiverContentComponent::OnInit');
     this.fetchContents();
   }
-  /**
-   * Fetch content that needs to be displayed in the UI.
-   */
+
   fetchContents() {
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -36,7 +34,13 @@ export class WaiverContentComponent implements OnInit {
     this.paymentService.paymentInfo$.subscribe({
       next: (paymentInfo: PaymentInfo) => {
         const endpoint = 'documents/' + (paymentInfo?.required ? '104' : '75');
-        this.content$ = this.api.get(endpoint, null, options);
+        this.content$ = this.api
+          .get(endpoint, null, options)
+          .pipe(
+            map((doc: any) =>
+              this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
+            )
+          );
       },
     });
   }

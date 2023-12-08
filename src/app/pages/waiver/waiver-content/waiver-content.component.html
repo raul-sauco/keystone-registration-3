@@ -1,8 +1,3 @@
-<div
-  id="waiver-text"
-  *ngIf="content$ | async as content"
-  [innerHTML]="
-    (translate.currentLang.includes('zh') ? content.text_zh : content.text)
-      | markdown
-  "
-></div>
+@if (content$ | async; as content) {
+<markdown id="waiver-text" [data]="content"></markdown>
+}
