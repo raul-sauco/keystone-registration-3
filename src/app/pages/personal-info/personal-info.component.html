@@ -15,17 +15,15 @@
           >
             <!-- START Personal information section -->
             <h2>{{ "PERSONAL_INFORMATION" | translate }}</h2>
+            @if (requiredFieldsPromptContent$ | async; as content) {
             <markdown
               id="required-fields-prompt"
               class="inner-form-prompt"
-              *ngIf="requiredFieldsPromptContent$ | async as content"
-              [innerHTML]="lang === 'zh' ? content.text_zh : content.text"
+              [data]="content"
             ></markdown>
-            <markdown
-              *ngIf="namePromptContent$ | async as content"
-              class="inner-form-prompt"
-              [innerHTML]="lang === 'zh' ? content.text_zh : content.text"
-            ></markdown>
+            } @if (namePromptContent$ | async; as content) {
+            <markdown class="inner-form-prompt" [data]="content"></markdown>
+            }
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("name") }}</mat-label>
               <input type="text" matInput formControlName="name" />
@@ -33,13 +31,9 @@
                 {{ "THIS_FIELD_IS_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>
-            <markdown
-              *ngIf="englishNamePromptContent$ | async as englishName"
-              class="inner-form-prompt"
-              [innerHTML]="
-                lang === 'zh' ? englishName.text_zh : englishName.text
-              "
-            ></markdown>
+            @if (englishNamePromptContent$ | async; as content) {
+            <markdown class="inner-form-prompt" [data]="content"></markdown>
+            }
             <mat-form-field appearance="outline">
               <mat-label>{{
                 student.getAttributeLabel("englishName")

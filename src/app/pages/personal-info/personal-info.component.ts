@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 
 import { PaymentInfo } from '@models/paymentInfo';
 import { Student } from '@models/student';
@@ -95,28 +95,27 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.fetchContents();
   }
 
-  /**
-   * Fetch content that needs to be displayed in the UI.
-   */
   fetchContents() {
+    this.namePromptContent$ = this.fetchDocumentById(
+      this.auth.isStudent ? 145 : 146
+    );
+    this.englishNamePromptContent$ = this.fetchDocumentById(
+      this.auth.isStudent ? 147 : 142
+    );
+    this.requiredFieldsPromptContent$ = this.fetchDocumentById(144);
+  }
+
+  fetchDocumentById(id: number): Observable<any> {
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-    this.namePromptContent$ = this.api.get(
-      `documents/${this.auth.isStudent ? '145' : '146'}`,
-      null,
-      options
-    );
-    this.englishNamePromptContent$ = this.api.get(
-      `documents/${this.auth.isStudent ? '147' : '142'}`,
-      null,
-      options
-    );
-    this.requiredFieldsPromptContent$ = this.api.get(
-      'documents/144',
-      null,
-      options
-    );
+    return this.api
+      .get(`documents/${id}`, null, options)
+      .pipe(
+        map((content: any) =>
+          this.lang === 'zh' ? content.text_zh : content.text
+        )
+      );
   }
 
   ngOnDestroy(): void {
