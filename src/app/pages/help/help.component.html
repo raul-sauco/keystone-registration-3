@@ -1,33 +1,26 @@
-<ng-container *ngIf="content$ | async as content; else loading">
-  <div class="app-page-wrapper">
-    <div class="app-content-wrapper">
-      <mat-card appearance="outlined">
-        <mat-card-title
-          ><div id="help-component-card-title-wrapper">
-            <h1>{{ "HELP" | translate }}</h1>
-            <a href="tel:18777398294" id="call-help-button"
-              ><button
-                mat-fab
-                color="primary"
-                aria-label="Call support directly"
-              >
-                <mat-icon>phone</mat-icon>
-              </button></a
-            >
-          </div></mat-card-title
-        >
-        <mat-card-content
-          ><div
-            id="help-component-card-content-markdown-wrapper"
-            [innerHtml]="
-              (lang === 'zh' ? content.text_zh : content.text) | markdown
-            "
-          ></div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+@if(content$ | async; as content) {
+<div class="app-page-wrapper">
+  <div class="app-content-wrapper">
+    <mat-card appearance="outlined">
+      <mat-card-title
+        ><div id="help-component-card-title-wrapper">
+          <h1>{{ "HELP" | translate }}</h1>
+          <a href="tel:18777398294" id="call-help-button"
+            ><button mat-fab color="primary" aria-label="Call support directly">
+              <mat-icon>phone</mat-icon>
+            </button></a
+          >
+        </div></mat-card-title
+      >
+      <mat-card-content
+        ><markdown
+          id="help-component-card-content-markdown-wrapper"
+          [data]="content"
+        ></markdown>
+      </mat-card-content>
+    </mat-card>
   </div>
-</ng-container>
-<ng-template #loading>
-  <app-loading-spinner-content></app-loading-spinner-content>
-</ng-template>
+</div>
+} @else {
+<app-loading-spinner-content></app-loading-spinner-content>
+}

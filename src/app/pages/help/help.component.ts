@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { ApiService } from '@services/api/api.service';
 import { PaymentService } from '@services/payment/payment.service';
@@ -14,8 +14,7 @@ import { PaymentService } from '@services/payment/payment.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class HelpComponent implements OnInit {
-  content$!: Observable<any>;
-  lang!: string;
+  content$!: Observable<string>;
   private documentId: string = '133';
 
   constructor(
@@ -27,7 +26,6 @@ export class HelpComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('HelpComponent OnInit');
-    this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
     if (this.paymentService.paymentInfo$.getValue()?.required) {
       this.documentId = '131';
     }
@@ -41,6 +39,12 @@ export class HelpComponent implements OnInit {
         'Content-Type': 'application/json',
       }),
     };
-    this.content$ = this.api.get(endpoint, null, options);
+    this.content$ = this.api
+      .get(endpoint, null, options)
+      .pipe(
+        map((doc: any) =>
+          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
+        )
+      );
   }
 }
