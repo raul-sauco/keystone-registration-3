@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private translate: TranslateService,
+    public translate: TranslateService,
     private logger: NGXLogger,
     private routeStateService: RouteStateService,
     private router: Router,
@@ -145,6 +145,15 @@ export class AppComponent implements OnInit {
     this.logger.debug(
       `TranslateService language set to "${this.translate.currentLang}"`
     );
+  }
+
+  toggleLanguage(lang: string) {
+    if (lang === 'en' && this.translate.currentLang !== 'en') {
+      this.translate.use('en');
+    }
+    if (lang === '中文' && this.translate.currentLang !== 'zh-cmn-Hans') {
+      this.translate.use('zh-cmn-Hans');
+    }
   }
 
   /**
