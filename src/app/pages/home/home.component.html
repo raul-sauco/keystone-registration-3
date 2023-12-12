@@ -9,7 +9,7 @@
       >
       <mat-card-content
         class="card-content"
-        [innerHTML]="card.content | translate | markdown"
+        [innerHTML]="card.content | translate | markdown | async"
       >
       </mat-card-content>
     </mat-card>
