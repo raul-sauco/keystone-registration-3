@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
+import { Observable, map } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 
 @Component({
@@ -11,8 +11,7 @@ import { ApiService } from 'src/app/services/api/api.service';
   styleUrls: ['./teacher-note.component.scss'],
 })
 export class TeacherNoteComponent implements OnInit {
-  content$!: Observable<any>;
-  lang!: string;
+  content$!: Observable<string>;
 
   constructor(
     private logger: NGXLogger,
@@ -22,13 +21,18 @@ export class TeacherNoteComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('TeacherNoteComponent OnInit');
-    this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
     const endpoint = 'documents/46';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     };
-    this.content$ = this.api.get(endpoint, null, options);
+    this.content$ = this.api
+      .get(endpoint, null, options)
+      .pipe(
+        map((doc: any) =>
+          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
+        )
+      );
   }
 }
