@@ -3,7 +3,6 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -33,12 +32,6 @@ import { StudentService } from '@services/student/student.service';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { WaiverContentComponent } from './waiver-content/waiver-content.component';
 import { WaiverComponent } from './waiver.component';
-
-@Component({
-  selector: 'app-payment-terms',
-  template: '<p>Payment Terms</p>',
-})
-class MockAppPaymentTermsComponent {}
 
 describe('WaiverComponent', () => {
   let component: WaiverComponent;
@@ -80,11 +73,7 @@ describe('WaiverComponent', () => {
       }
     );
     TestBed.configureTestingModule({
-      declarations: [
-        MockAppPaymentTermsComponent,
-        WaiverComponent,
-        WaiverContentComponent,
-      ],
+      declarations: [WaiverComponent, WaiverContentComponent],
       imports: [
         FormsModule,
         HttpClientTestingModule,
