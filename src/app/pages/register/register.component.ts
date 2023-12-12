@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
 import { UniqueUsernameValidator } from '@directives/unique-username-validator.directive';
@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
   loading: boolean = false;
   userRegistrationForm!: UntypedFormGroup;
   errorMatcher!: CrossFieldErrorMatcher;
-  namePromptContent$!: Observable<any>;
+  namePromptContent$!: Observable<string>;
   lang: string = 'en';
 
   constructor(
@@ -85,7 +85,13 @@ export class RegisterComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-    this.namePromptContent$ = this.api.get('documents/141', null, options);
+    this.namePromptContent$ = this.api
+      .get('documents/141', null, options)
+      .pipe(
+        map((doc: any) =>
+          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
+        )
+      );
   }
 
   /**
