@@ -1,17 +1,11 @@
-<ng-container *ngIf="content$ | async as content; else loading">
-  <div class="app-page-wrapper">
-    <div class="app-content-wrapper">
-      <div
-        id="faq-page"
-        class="mat-typography"
-        [innerHTML]="
-          (lang === 'zh' ? content.text_zh : content.text) | markdown
-        "
-      ></div>
+@if(content$ | async; as content ) {
+<div class="app-page-wrapper">
+  <div class="app-content-wrapper">
+    <div id="faq-page" class="mat-typography">
+      <markdown [data]="content"></markdown>
     </div>
   </div>
-</ng-container>
-
-<ng-template #loading>
-  <app-loading-spinner-content></app-loading-spinner-content>
-</ng-template>
+</div>
+} @else {
+<app-loading-spinner-content></app-loading-spinner-content>
+}

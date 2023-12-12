@@ -1,12 +1,12 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { HttpHeaders } from '@angular/common/http';
+import { NGXLogger } from 'ngx-logger';
+import { Observable, map } from 'rxjs';
 
-import { ApiService } from 'src/app/services/api/api.service';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
+import { ApiService } from '@services/api/api.service';
+import { RouteStateService } from '@services/route-state/route-state.service';
 
 @Component({
   selector: 'app-faq',
@@ -16,7 +16,6 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
 })
 export class FaqComponent implements OnInit {
   content$!: Observable<any>;
-  lang: string = 'en';
 
   constructor(
     private api: ApiService,
@@ -33,14 +32,19 @@ export class FaqComponent implements OnInit {
   }
 
   fetchContent(): void {
-    this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
     const endpoint = 'documents/48';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     };
-    this.content$ = this.api.get(endpoint, null, options);
+    this.content$ = this.api
+      .get(endpoint, null, options)
+      .pipe(
+        map((doc: any) =>
+          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
+        )
+      );
   }
 
   /**
