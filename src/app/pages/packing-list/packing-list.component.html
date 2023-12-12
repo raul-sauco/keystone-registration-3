@@ -20,7 +20,9 @@
                 <div class="tab-content">
                   <header
                     class="pli-header"
-                    [innerHtml]="'PACKING_LIST_HEADER' | translate | markdown"
+                    [innerHtml]="
+                      'PACKING_LIST_HEADER' | translate | markdown | async
+                    "
                   ></header>
 
                   <ul class="pli-list">
@@ -45,7 +47,10 @@
                   <header
                     class="pli-header"
                     [innerHtml]="
-                      'PACKING_LIST_HEADER_OPTIONAL' | translate | markdown
+                      'PACKING_LIST_HEADER_OPTIONAL'
+                        | translate
+                        | markdown
+                        | async
                     "
                   ></header>
 
@@ -71,7 +76,10 @@
                   <header
                     class="pli-header"
                     [innerHtml]="
-                      'PACKING_LIST_HEADER_DO_NOT_BRING' | translate | markdown
+                      'PACKING_LIST_HEADER_DO_NOT_BRING'
+                        | translate
+                        | markdown
+                        | async
                     "
                   ></header>
 

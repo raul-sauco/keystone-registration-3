@@ -17,10 +17,10 @@
       >
       </span>
     </h2>
-    <div
+    <markdown
       class="description-container"
-      [innerHtml]="pli.getDescription() | markdown"
-    ></div>
-    <footer [innerHtml]="pli.getFooter() | markdown"></footer>
+      [data]="pli.getDescription()"
+    ></markdown>
+    <footer [innerHtml]="pli.getFooter() | markdown | async"></footer>
   </div>
 </div>
