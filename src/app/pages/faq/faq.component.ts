@@ -15,7 +15,7 @@ import { RouteStateService } from '@services/route-state/route-state.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class FaqComponent implements OnInit {
-  content$!: Observable<any>;
+  content$!: Observable<string>;
 
   constructor(
     private api: ApiService,
