@@ -146,16 +146,9 @@ const routes: Routes = [
   },
   {
     path: 'covid-policy',
-    loadChildren: () =>
-      import('./pages/covid-policy/covid-policy.module').then(
-        (m) => m.CovidPolicyModule
-      ),
-  },
-  {
-    path: 'covid-policy/:trip-id',
-    loadChildren: () =>
-      import('./pages/covid-policy/covid-policy.module').then(
-        (m) => m.CovidPolicyModule
+    loadComponent: () =>
+      import('./pages/covid-policy/covid-policy.component').then(
+        (m) => m.CovidPolicyComponent
       ),
   },
   {

@@ -1,10 +1,10 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import {
   TranslateLoader,
   TranslateModule,
@@ -12,24 +12,21 @@ import {
 } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { HttpLoaderFactory } from 'src/app/app.module';
-import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
-import { CovidPolicyComponent } from './covid-policy.component';
+import { KaMdDocumentComponent } from './ka-md-document.component';
 
-describe('CovidPolicyComponent', () => {
-  let component: CovidPolicyComponent;
-  let fixture: ComponentFixture<CovidPolicyComponent>;
+describe('KaMdDocumentComponent', () => {
+  let component: KaMdDocumentComponent;
+  let fixture: ComponentFixture<KaMdDocumentComponent>;
   let translate: TranslateService;
   let http: HttpTestingController;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      providers: [TranslateService],
       imports: [
-        CovidPolicyComponent,
         HttpClientTestingModule,
-        LoadingSpinnerContentModule,
+        KaMdDocumentComponent,
         LoggerTestingModule,
-        RouterTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,
@@ -43,11 +40,10 @@ describe('CovidPolicyComponent', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     http = TestBed.inject(HttpTestingController);
-  }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CovidPolicyComponent);
+    fixture = TestBed.createComponent(KaMdDocumentComponent);
     component = fixture.componentInstance;
+    component.endpoint = 'documents/1';
     fixture.detectChanges();
   });
 
