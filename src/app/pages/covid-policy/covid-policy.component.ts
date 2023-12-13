@@ -26,6 +26,12 @@ export class CovidPolicyComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('CovidPolicyComponent OnInit');
+    this.loadContent();
+    this.translate.onLangChange.subscribe((_) => this.loadContent());
+    this.checkTripIdParam();
+  }
+
+  loadContent(): void {
     const endpoint = 'documents/44';
     const options = {
       headers: new HttpHeaders({
@@ -39,8 +45,6 @@ export class CovidPolicyComponent implements OnInit {
           this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
         )
       );
-
-    this.checkTripIdParam();
   }
 
   /**
