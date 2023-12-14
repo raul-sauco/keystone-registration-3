@@ -153,9 +153,9 @@ const routes: Routes = [
   },
   {
     path: 'teacher-note',
-    loadChildren: () =>
-      import('./pages/teacher-note/teacher-note.module').then(
-        (m) => m.TeacherNoteModule
+    loadComponent: () =>
+      import('./pages/teacher-note/teacher-note.component').then(
+        (m) => m.TeacherNoteComponent
       ),
   },
   {
