@@ -132,16 +132,9 @@ const routes: Routes = [
   },
   {
     path: 'privacy-policy',
-    loadChildren: () =>
-      import('./pages/privacy-policy/privacy-policy.module').then(
-        (m) => m.PrivacyPolicyModule
-      ),
-  },
-  {
-    path: 'privacy-policy/:trip-id',
-    loadChildren: () =>
-      import('./pages/privacy-policy/privacy-policy.module').then(
-        (m) => m.PrivacyPolicyModule
+    loadComponent: () =>
+      import('./pages/privacy-policy/privacy-policy.component').then(
+        (m) => m.PrivacyPolicyComponent
       ),
   },
   {
