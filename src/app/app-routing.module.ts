@@ -125,9 +125,9 @@ const routes: Routes = [
   },
   {
     path: 'payment-policy',
-    loadChildren: () =>
-      import('./pages/payment-policy/payment-policy.module').then(
-        (m) => m.PaymentPolicyModule
+    loadComponent: () =>
+      import('./pages/payment-policy/payment-policy.component').then(
+        (m) => m.PaymentPolicyComponent
       ),
   },
   {
