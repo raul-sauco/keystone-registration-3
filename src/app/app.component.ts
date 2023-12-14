@@ -147,12 +147,11 @@ export class AppComponent implements OnInit {
     );
   }
 
-  toggleLanguage(lang: string) {
-    if (lang === 'en' && this.translate.currentLang !== 'en') {
-      this.translate.use('en');
-    }
-    if (lang === '中文' && this.translate.currentLang !== 'zh-cmn-Hans') {
+  toggleLanguage() {
+    if (this.translate.currentLang === 'en') {
       this.translate.use('zh-cmn-Hans');
+    } else {
+      this.translate.use('en');
     }
   }
 

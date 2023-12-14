@@ -32,27 +32,22 @@
         {{ tripName }}
       </div>
     </div></ng-template
-  ><select
-    #langSelect
-    (change)="toggleLanguage(langSelect.value)"
-    id="toggle-lang-select"
+  ><button
+    type="button"
+    mat-raised-button
+    aria-label="Toggle UI language"
+    (click)="toggleLanguage()"
+    id="toggle-lang-button"
   >
-    @for (lang of ['en', '中文']; track lang) {
-    <option
-      [value]="lang"
-      [selected]="
-        lang === translate.currentLang ||
-        (lang === '中文' && translate.currentLang === 'zh-cmn-Hans')
-      "
+    {{ translate.currentLang === "en" ? "中文" : "EN" }}
+    <mat-icon aria-label="Translate toggle icon" color="primary"
+      >translate</mat-icon
     >
-      {{ lang }}
-    </option>
-    }
-  </select>
+  </button>
   <button
     type="button"
     mat-raised-button
-    class="help-button"
+    id="help-button"
     aria-label="Display help"
     routerLink="help"
   >
