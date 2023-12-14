@@ -3,6 +3,10 @@
 #ka-md-document-wrapper {
   margin: 16px;
   padding-bottom: 50vh;
+  h3 {
+    // This rule keeps h3 markdown headers and their related content together.
+    margin-bottom: 8px;
+  }
   img {
     max-width: 100%;
     height: auto;

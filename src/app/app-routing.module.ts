@@ -57,13 +57,8 @@ const routes: Routes = [
   },
   {
     path: 'faq',
-    loadChildren: () =>
-      import('./pages/faq/faq.module').then((m) => m.FaqModule),
-  },
-  {
-    path: 'faq/:trip-id',
-    loadChildren: () =>
-      import('./pages/faq/faq.module').then((m) => m.FaqModule),
+    loadComponent: () =>
+      import('./pages/faq/faq.component').then((m) => m.FaqComponent),
   },
   {
     path: 'documents',

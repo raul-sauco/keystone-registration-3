@@ -58,7 +58,6 @@ describe('AppRoutingModule', () => {
       'guides',
       'guides/123',
       'faq',
-      'faq/123',
       'documents',
       'documents/123',
       'accommodation',
