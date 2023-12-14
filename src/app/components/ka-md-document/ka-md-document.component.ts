@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
@@ -15,6 +15,8 @@ import { ApiService } from '@services/api/api.service';
   templateUrl: './ka-md-document.component.html',
   styleUrl: './ka-md-document.component.scss',
   imports: [CommonModule, LoadingSpinnerContentModule, MarkdownModule],
+  // This is needed to style shadow DOM markdown content.
+  encapsulation: ViewEncapsulation.None,
 })
 export class KaMdDocumentComponent implements OnInit {
   @Input() endpoint!: string;

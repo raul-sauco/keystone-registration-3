@@ -153,16 +153,9 @@ const routes: Routes = [
   },
   {
     path: 'child-protection',
-    loadChildren: () =>
-      import('./pages/child-protection/child-protection.module').then(
-        (m) => m.ChildProtectionModule
-      ),
-  },
-  {
-    path: 'child-protection/:trip-id',
-    loadChildren: () =>
-      import('./pages/child-protection/child-protection.module').then(
-        (m) => m.ChildProtectionModule
+    loadComponent: () =>
+      import('./pages/child-protection/child-protection.component').then(
+        (m) => m.ChildProtectionComponent
       ),
   },
   {

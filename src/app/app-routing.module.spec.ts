@@ -68,7 +68,6 @@ describe('AppRoutingModule', () => {
       'privacy-policy/123',
       'covid-policy',
       'child-protection',
-      'child-protection/123',
       'teacher-note',
       'help',
       'waiver',
