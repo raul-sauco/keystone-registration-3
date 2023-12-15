@@ -48,6 +48,11 @@ export class TripService {
     this.auth.auth$.subscribe((authStatus: boolean) => {
       this.handleAuthStatusChange(authStatus);
     });
+    this.translate.onLangChange.subscribe(() =>
+      this._tripName$.next(
+        this._trip?.getName(this.translate.currentLang) ?? ''
+      )
+    );
   }
 
   /**

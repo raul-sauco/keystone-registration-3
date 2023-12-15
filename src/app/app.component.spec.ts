@@ -1,4 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { EventEmitter, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,14 +8,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { of } from 'rxjs';
 
-import { Pipe, PipeTransform } from '@angular/core';
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { Spied } from '@interfaces/spied';
 import { Credentials } from '@models/credentials';
-import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '@services/auth/auth.service';
 import { AppComponent } from 'src/app/app.component';
 
@@ -55,6 +55,7 @@ const defaultAuthServiceSpy: Spied<AuthService> = jasmine.createSpyObj(
   },
   { auth$: of(true) }
 );
+const eventEmitter = new EventEmitter<LangChangeEvent>();
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -72,7 +73,7 @@ describe('AppComponent', () => {
           getBrowserLang: 'en-US',
           use: of(true),
         },
-        { currentLang: 'zh-CN' }
+        { currentLang: 'zh-CN', onLangChange: eventEmitter }
       );
       TestBed.configureTestingModule({
         providers: [
@@ -133,7 +134,7 @@ describe('AppComponent', () => {
           getBrowserLang: 'zh-CN',
           use: of(true),
         },
-        { currentLang: 'zh-CN' }
+        { currentLang: 'zh-CN', onLangChange: eventEmitter }
       );
       const studentAuthServiceSpy: Spied<AuthService> = jasmine.createSpyObj(
         'AuthService',
@@ -176,7 +177,7 @@ describe('AppComponent', () => {
           getBrowserLang: null,
           use: of(true),
         },
-        { currentLang: 'zh-CN' }
+        { currentLang: 'zh-CN', onLangChange: eventEmitter }
       );
       TestBed.configureTestingModule({
         providers: [

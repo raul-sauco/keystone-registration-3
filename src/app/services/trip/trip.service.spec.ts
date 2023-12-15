@@ -1,5 +1,6 @@
+import { EventEmitter } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subject, of, throwError } from 'rxjs';
 
@@ -46,6 +47,7 @@ describe('TripService', () => {
   let storageServiceSpy: Spied<StorageService>;
   let translateServiceSpy: Spied<TranslateService>;
   let tripSwitcherSpy: Spied<TripSwitcherService>;
+  let eventEmitter = new EventEmitter<LangChangeEvent>();
 
   beforeEach(() => {
     authSubject = new Subject<boolean>();
@@ -70,7 +72,7 @@ describe('TripService', () => {
     translateServiceSpy = jasmine.createSpyObj(
       'TranslateServiceSpy',
       {},
-      { currentLang: 'en' }
+      { currentLang: 'en', onLangChange: eventEmitter }
     );
     tripSwitcherSpy = jasmine.createSpyObj(
       'TripSwitcherSpy',
