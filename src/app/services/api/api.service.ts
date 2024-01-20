@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
 import {
   HttpClient,
+  HttpErrorResponse,
   HttpHeaders,
   HttpParams,
-  HttpErrorResponse,
 } from '@angular/common/http';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+import { AuthService } from '@services/auth/auth.service';
+import { GlobalsService } from '@services/globals/globals.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +21,8 @@ export class ApiService {
   constructor(
     public http: HttpClient,
     globals: GlobalsService,
-    private logger: NGXLogger
+    private auth: AuthService,
+    private logger: NGXLogger,
   ) {
     this.url = globals.getApiUrl();
   }
@@ -41,8 +44,15 @@ export class ApiService {
         : this.url + endpoint;
 
     if (!reqOpts) {
+      const headers: any = {
+        'Content-Type': 'application/json',
+      };
+      if (this.auth.authenticated) {
+        headers.Authorization = ` Bearer ${this.auth.getCredentials()?.accessToken}`;
+      }
       reqOpts = {
         params: new HttpParams(),
+        headers,
       };
     }
 
@@ -55,7 +65,6 @@ export class ApiService {
         reqOpts.params = reqOpts.params.set(k, params[k]);
       }
     }
-
     return this.http
       .get(url, reqOpts)
       .pipe(catchError((err) => this.handleError(err)));
@@ -118,7 +127,7 @@ export class ApiService {
     }
 
     // Error level logs get sent to the server
-    this.logger.error(`ApiService ${msg}: ${error.error.message}`, {
+    this.logger.error(`ApiService ${msg}: ${error?.error?.message}`, {
       url: error.url,
       name: error.name,
       message: error.message,

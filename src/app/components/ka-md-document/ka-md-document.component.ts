@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -25,7 +24,7 @@ export class KaMdDocumentComponent implements OnInit {
   constructor(
     private logger: NGXLogger,
     private api: ApiService,
-    private translate: TranslateService
+    private translate: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -35,17 +34,12 @@ export class KaMdDocumentComponent implements OnInit {
   }
 
   loadContent(): void {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
     this.content$ = this.api
-      .get(this.endpoint, null, options)
+      .get(this.endpoint)
       .pipe(
         map((doc: any) =>
-          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
-        )
+          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text,
+        ),
       );
   }
 }

@@ -1,10 +1,5 @@
-import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
-import { Observable, map } from 'rxjs';
+import { Component } from '@angular/core';
 
-import { ApiService } from '@services/api/api.service';
 import { KaMdDocumentComponent } from '@components/ka-md-document/ka-md-document.component';
 
 @Component({
@@ -14,5 +9,5 @@ import { KaMdDocumentComponent } from '@components/ka-md-document/ka-md-document
   template: '<app-ka-md-document [endpoint]="endpoint"></app-ka-md-document>',
 })
 export class PaymentPolicyComponent {
-  endpoint = 'documents/104';
+  endpoint = 'registration-portal-documents/payment-policy';
 }
