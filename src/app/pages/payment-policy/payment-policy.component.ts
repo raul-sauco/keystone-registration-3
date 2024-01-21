@@ -9,5 +9,5 @@ import { KaMdDocumentComponent } from '@components/ka-md-document/ka-md-document
   template: '<app-ka-md-document [endpoint]="endpoint"></app-ka-md-document>',
 })
 export class PaymentPolicyComponent {
-  endpoint = 'registration-portal-documents/payment-policy';
+  endpoint = 'registration-portal-documents/rp-payment-terms';
 }
