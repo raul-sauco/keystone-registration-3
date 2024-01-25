@@ -1,5 +1,9 @@
 import { LayoutModule } from '@angular/cdk/layout';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,10 +18,12 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
+
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminBannerModule } from './components/admin-banner/admin-banner.module';
+import { Auth401Interceptor } from './http-interceptors/auth-401-interceptor';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -58,7 +64,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     AdminBannerModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
