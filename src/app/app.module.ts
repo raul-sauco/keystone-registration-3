@@ -15,19 +15,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
 
+import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
+import { CustomTranslationsLoader } from '@services/custom-translate-loader/custom-translate-loader.service';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdminBannerModule } from './components/admin-banner/admin-banner.module';
 import { Auth401Interceptor } from './http-interceptors/auth-401-interceptor';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new CustomTranslationsLoader(http);
 }
 
 @NgModule({
