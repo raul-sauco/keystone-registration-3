@@ -14,6 +14,7 @@ export class Student {
   dob?: string;
   guardianName?: string;
   emergencyContact?: string;
+  email?: string;
   wechatId?: string;
   waiverAccepted: boolean | null = null;
   waiverSignedOn?: string;
@@ -28,9 +29,6 @@ export class Student {
   paymentVerified: boolean | null = null;
   house: string | null = null;
   roomNumber: string | null = null;
-  // insurance: boolean;
-  // insuranceName: string;
-  // insurancePolicyNumber: string;
 
   private translations: any;
 
@@ -39,7 +37,10 @@ export class Student {
   private dietaryAttributes: any;
   private medicalAttributes: any;
 
-  constructor(json: any, private translate: TranslateService) {
+  constructor(
+    json: any,
+    private translate: TranslateService,
+  ) {
     // Set the ID attribute only at creation
     this.id = json.id;
     this.setFromJSON(json);
@@ -65,6 +66,7 @@ export class Student {
         'DOB',
         'GUARDIAN_NAME',
         'EMERGENCY_CONTACT',
+        'EMAIL',
         'WECHAT_ID',
         'WAIVER_ACCEPTED',
         'WAIVER_SIGNED_ON',
@@ -112,12 +114,13 @@ export class Student {
     this.dob = json.dob;
     this.guardianName = json.guardian_name;
     this.emergencyContact = json.emergency_contact;
+    this.email = json.email;
     this.wechatId = json.wechat_id;
     this.waiverAccepted = json.waiver_accepted
       ? true
       : json.waiver_accepted === 0
-      ? false
-      : null;
+        ? false
+        : null;
     this.waiverSignedOn = json.waiver_signed_on;
     this.dietaryRequirements = json.dietary_requirements;
     this.dietaryRequirementsOther = json.dietary_requirements_other;
@@ -127,15 +130,15 @@ export class Student {
     this.termsAccepted = json.terms_accepted
       ? true
       : json.terms_accepted === 0
-      ? false
-      : null;
+        ? false
+        : null;
     this.termsAcceptedOn = json.terms_accepted_on;
     this.paid = json.paid ? true : json.paid === 0 ? false : null;
     this.paymentVerified = json.payment_verified
       ? true
       : json.payment_verified === 0
-      ? false
-      : null;
+        ? false
+        : null;
     this.house = json.house;
     this.roomNumber = json.room_number;
     // this.insurance = json.insurance;
@@ -157,6 +160,7 @@ export class Student {
       dob: this.translations.DOB,
       guardianName: this.translations.GUARDIAN_NAME,
       emergencyContact: this.translations.EMERGENCY_CONTACT,
+      email: this.translations.EMAIL,
       wechatId: this.translations.WECHAT_ID,
       waiverAccepted: this.translations.WAIVER_ACCEPTED,
       waiverSignedOn: this.translations.WAIVER_SIGNED_ON,
@@ -215,7 +219,7 @@ export class Student {
       return formatDate(
         this[attr] || '',
         'longDate',
-        this.translate.currentLang.includes('zh') ? 'zh' : 'en-US'
+        this.translate.currentLang.includes('zh') ? 'zh' : 'en-US',
       );
     }
 
@@ -333,6 +337,9 @@ export class Student {
         break;
       case 'emergencyContact':
         this.emergencyContact = value;
+        break;
+      case 'email':
+        this.email = value;
         break;
       case 'wechatId':
         this.wechatId = value;

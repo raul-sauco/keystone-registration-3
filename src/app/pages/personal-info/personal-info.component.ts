@@ -46,7 +46,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     private paymentService: PaymentService,
     public schoolService: SchoolService,
     public studentService: StudentService,
-    public auth: AuthService
+    public auth: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -62,14 +62,14 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
               next: (student: Student) => {
                 this.logger.debug(
                   'PersonalInfoComponent StudentService.student$.next',
-                  student
+                  student,
                 );
                 this.initPersonalInfoForm(student);
               },
               error: (error: any) => {
                 this.logger.error(
                   'PersonalInfoComponent StudentService student$ error',
-                  error
+                  error,
                 );
               },
             });
@@ -80,7 +80,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
             });
           } else {
             this.logger.error(
-              'Authentication error, expected valid student ID.'
+              'Authentication error, expected valid student ID.',
             );
           }
         } else {
@@ -97,10 +97,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   fetchContents() {
     this.namePromptContent$ = this.fetchDocumentById(
-      this.auth.isStudent ? 145 : 146
+      this.auth.isStudent ? 145 : 146,
     );
     this.englishNamePromptContent$ = this.fetchDocumentById(
-      this.auth.isStudent ? 147 : 142
+      this.auth.isStudent ? 147 : 142,
     );
     this.requiredFieldsPromptContent$ = this.fetchDocumentById(144);
   }
@@ -113,8 +113,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       .get(`documents/${id}`, null, options)
       .pipe(
         map((content: any) =>
-          this.lang === 'zh' ? content.text_zh : content.text
-        )
+          this.lang === 'zh' ? content.text_zh : content.text,
+        ),
       );
   }
 
@@ -158,7 +158,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       englishName: [student.englishName],
       citizenship: [student.citizenship],
       travelDocument: [student.travelDocument, Validators.required],
-      email: ['', Validators.email],
+      email: [student.email, Validators.email],
       gender: [student.gender],
       dob: [student.dob, Validators.required],
       guardianName: [student.guardianName],
@@ -181,7 +181,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       next: (student: Student) => {
         this.logger.debug(
           'PersonalInfoComponent updated student data',
-          student
+          student,
         );
         this.snackBar
           .open(this.translate.instant('PERSONAL_INFO_UPDATED'), undefined, {
@@ -240,7 +240,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
         sanitizedData.dob = dob.format('YYYY-MM-DD');
       } else {
         this.logger.warn(
-          'Trying to use invalid date ' + dob.format('YYYY-MM-DD')
+          'Trying to use invalid date ' + dob.format('YYYY-MM-DD'),
         );
       }
     }
