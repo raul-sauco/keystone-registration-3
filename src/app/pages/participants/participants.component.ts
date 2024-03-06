@@ -45,7 +45,7 @@ export class ParticipantsComponent implements OnInit {
     private translate: TranslateService,
     private tripService: TripService,
     private tripSwitcher: TripSwitcherService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {
     this.displayedColumns = this.getDisplayedColumns();
     this.sortableColumns = [
@@ -154,7 +154,7 @@ export class ParticipantsComponent implements OnInit {
    */
   private fetch(tripId?: number): void {
     this.logger.debug('ParticipantsComponent fetch() called');
-    const endpoint = tripId ? `students?trip-id=${tripId}` : 'students';
+    const endpoint = tripId ? `participants?trip-id=${tripId}` : 'participants';
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ export class ParticipantsComponent implements OnInit {
                 return -1;
               }
               return a.name.localeCompare(b.name);
-            }
+            },
           );
 
         // Add an index value to all
@@ -196,7 +196,7 @@ export class ParticipantsComponent implements OnInit {
           indexedStudentArray.push(student);
         });
         return indexedStudentArray;
-      })
+      }),
     );
   }
 
@@ -273,7 +273,7 @@ export class ParticipantsComponent implements OnInit {
       const updatedValue: string = event.currentTarget.textContent.trim();
       const attrSnakeCase = attr.replace(
         /[A-Z]/g,
-        (letter) => `_${letter.toLowerCase()}`
+        (letter) => `_${letter.toLowerCase()}`,
       );
       if (updatedValue !== student[studentKey]) {
         // TODO check if this line could be removed using Angular binding
@@ -295,7 +295,7 @@ export class ParticipantsComponent implements OnInit {
       const updatedValue = student[studentKey];
       const attrSnakeCase = attr.replace(
         /[A-Z]/g,
-        (letter) => `_${letter.toLowerCase()}`
+        (letter) => `_${letter.toLowerCase()}`,
       );
       // TODO this update happens twice, find a way to only update when the value has changed.
       this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
@@ -338,7 +338,7 @@ export class ParticipantsComponent implements OnInit {
         this.snackBar.open(
           this.translate.instant('INFORMATION_UPDATED'),
           undefined,
-          { duration: 2000 }
+          { duration: 2000 },
         );
       },
       error: (error: any) => {
@@ -357,7 +357,7 @@ export class ParticipantsComponent implements OnInit {
       DeleteStudentConfirmationDialogComponent,
       {
         data: student,
-      }
+      },
     );
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
@@ -365,7 +365,7 @@ export class ParticipantsComponent implements OnInit {
         this.snackBar.open(
           this.translate.instant('PARTICIPANT_DELETED'),
           undefined,
-          { duration: 2000 }
+          { duration: 2000 },
         );
       }
     });
@@ -389,7 +389,7 @@ export class ParticipantsComponent implements OnInit {
         return this.compareStudentAttributeValues(
           a.getAttributeText(event.active as keyof Student),
           b.getAttributeText(event.active as keyof Student),
-          isAsc
+          isAsc,
         );
       }
       return 0;
@@ -406,7 +406,7 @@ export class ParticipantsComponent implements OnInit {
   compareStudentAttributeValues(
     a: number | string,
     b: number | string,
-    isAsc: boolean
+    isAsc: boolean,
   ): number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
@@ -426,7 +426,7 @@ export class DeleteStudentConfirmationDialogComponent {
     private auth: AuthService,
     private logger: NGXLogger,
     public dialogRef: MatDialogRef<DeleteStudentConfirmationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Student
+    @Inject(MAT_DIALOG_DATA) public data: Student,
   ) {}
 
   /**
@@ -450,7 +450,7 @@ export class DeleteStudentConfirmationDialogComponent {
       (error: any) => {
         this.logger.error(`Error deleting student ${this.data.id}`, error);
         this.deleteError = true;
-      }
+      },
     );
   }
 
