@@ -16,13 +16,14 @@
             <!-- START Personal information section -->
             <h2>{{ "PERSONAL_INFORMATION" | translate }}</h2>
             @if (requiredFieldsPromptContent$ | async; as content) {
-            <markdown
-              id="required-fields-prompt"
-              class="inner-form-prompt"
-              [data]="content"
-            ></markdown>
-            } @if (namePromptContent$ | async; as content) {
-            <markdown class="inner-form-prompt" [data]="content"></markdown>
+              <markdown
+                id="required-fields-prompt"
+                class="inner-form-prompt"
+                [data]="content"
+              ></markdown>
+            }
+            @if (namePromptContent$ | async; as content) {
+              <markdown class="inner-form-prompt" [data]="content"></markdown>
             }
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("name") }}</mat-label>
@@ -32,7 +33,7 @@
               </mat-error>
             </mat-form-field>
             @if (englishNamePromptContent$ | async; as content) {
-            <markdown class="inner-form-prompt" [data]="content"></markdown>
+              <markdown class="inner-form-prompt" [data]="content"></markdown>
             }
             <mat-form-field appearance="outline">
               <mat-label>{{
@@ -73,6 +74,7 @@
                 {{ "THIS_FIELD_IS_REQUIRED" | translate }}
               </mat-error>
             </mat-form-field>
+            <app-id-photo [student]="student"></app-id-photo>
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("gender") }}</mat-label>
               <mat-select

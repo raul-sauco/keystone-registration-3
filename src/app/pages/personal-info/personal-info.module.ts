@@ -14,6 +14,7 @@ import { MarkdownModule } from 'ngx-markdown';
 
 import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
 import { LoginRequiredMessageModule } from '@components/login-required-message/login-required-message.module';
+import { IdPhotoComponent } from './id-photo/id-photo.component';
 import { PersonalInfoRoutingModule } from './personal-info-routing.module';
 import { PersonalInfoComponent } from './personal-info.component';
 
@@ -22,6 +23,7 @@ import { PersonalInfoComponent } from './personal-info.component';
   imports: [
     CommonModule,
     FormsModule,
+    IdPhotoComponent,
     LoadingSpinnerContentModule,
     LoginRequiredMessageModule,
     MarkdownModule,
