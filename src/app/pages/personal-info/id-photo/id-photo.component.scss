@@ -2,6 +2,15 @@
 
 #id-photo-component {
   margin: 16px 0 24px 0;
+  #images-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img.id-photo-image {
+      margin-bottom: 16px;
+      max-width: 100%;
+    }
+  }
   #file-upload-wrapper {
     display: flex;
     flex-direction: column;

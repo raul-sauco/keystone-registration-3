@@ -1,5 +1,5 @@
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,6 +9,7 @@ import { Subscription, finalize } from 'rxjs';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Student } from '@models/student';
+import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 
@@ -24,15 +25,17 @@ import { GlobalsService } from '@services/globals/globals.service';
   templateUrl: './id-photo.component.html',
   styleUrl: './id-photo.component.scss',
 })
-export class IdPhotoComponent {
+export class IdPhotoComponent implements OnInit {
   @Input() student!: Student;
   file: File | null = null;
   imgSrc: string | ArrayBuffer | null = null;
   uploadProgress: number | null = null;
   uploadSub: Subscription | null = null;
   success = false;
+  images: string[] = [];
 
   constructor(
+    private api: ApiService,
     private auth: AuthService,
     private http: HttpClient,
     private globals: GlobalsService,
@@ -40,6 +43,18 @@ export class IdPhotoComponent {
     private snackBar: MatSnackBar,
     private translate: TranslateService,
   ) {}
+
+  ngOnInit(): void {
+    const urlPrefix = `${this.globals.getResUrl()}img/trip/pop/${this.student.id}/`;
+    this.api.get('student-id-photos').subscribe({
+      next: (res: any) => {
+        this.logger.debug(
+          `IDPhotoComponent fetched ${res.length} id images from server`,
+        );
+        this.images = res.map((name: any) => urlPrefix + name);
+      },
+    });
+  }
 
   /**
    * Handle the user selecting a file.

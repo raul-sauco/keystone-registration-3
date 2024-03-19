@@ -1,4 +1,9 @@
 <div id="id-photo-component">
+  <div id="images-wrapper">
+    @for (image of images; track image) {
+      <img [src]="image" alt="ID photo" class="id-photo-image" />
+    }
+  </div>
   <div id="file-upload-wrapper">
     <input
       type="file"
