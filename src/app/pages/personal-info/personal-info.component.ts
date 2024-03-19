@@ -176,6 +176,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   /** Handle form submission */
   submitPersonalInfoForm(): void {
+    this.logger.debug('PersonalInfoComponent::submitPersonalInfoForm()');
     const studentData = this.sanitizeData(this.personalInfoForm.value);
     this.studentService.updateStudent(studentData).subscribe({
       next: (student: Student) => {

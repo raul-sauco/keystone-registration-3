@@ -1,2 +1,58 @@
-<p>id-photo works!</p>
-<p>student is {{ student.id }}</p>
+<div id="id-photo-component">
+  <div id="file-upload-wrapper">
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      #fileUpload
+      id="file-input"
+    />
+    <div id="file-preview-container" class="mat-elevation-z2">
+      @if (file) {
+        <img
+          id="image-preview"
+          class="mat-elevation-z8"
+          [src]="imgSrc || '../assets/img/placeholder.png'"
+          [alt]="file.name"
+        />
+        @if (uploadSub) {
+          <div id="uploading-message">{{ "UPLOADING" | translate }}...</div>
+          <div id="progress">
+            <mat-progress-bar
+              class="progress-bar"
+              [mode]="uploadProgress ? 'determinate' : 'indeterminate'"
+              [value]="uploadProgress"
+            >
+            </mat-progress-bar>
+          </div>
+        } @else {
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="uploadFile()"
+            class="primary-action-button"
+          >
+            <mat-icon>upload</mat-icon> {{ "UPLOAD" | translate }}
+          </button>
+        }
+      } @else {
+        <div id="no-file-message">
+          <mat-icon id="no-file-download-icon">download</mat-icon>
+          <div id="no-file-prompt-container">
+            {{ "SELECT_ID_PHOTO_TO_UPLOAD" | translate }}
+          </div>
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="fileUpload.click()"
+            class="primary-action-button"
+            id="no-file-select-file-btn"
+          >
+            <mat-icon>attach_file</mat-icon>
+            {{ "SELECT_IMAGE_PROMPT" | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
