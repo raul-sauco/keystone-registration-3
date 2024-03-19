@@ -1,11 +1,11 @@
-import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription, finalize } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Student } from '@models/student';
@@ -29,9 +29,8 @@ export class IdPhotoComponent implements OnInit {
   @Input() student!: Student;
   file: File | null = null;
   imgSrc: string | ArrayBuffer | null = null;
-  uploadProgress: number | null = null;
   uploadSub: Subscription | null = null;
-  success = false;
+  urlPrefix!: string;
   images: string[] = [];
 
   constructor(
@@ -45,13 +44,13 @@ export class IdPhotoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const urlPrefix = `${this.globals.getResUrl()}img/trip/pop/${this.student.id}/`;
+    this.urlPrefix = `${this.globals.getResUrl()}img/trip/pop/${this.student.id}/`;
     this.api.get('student-id-photos').subscribe({
       next: (res: any) => {
         this.logger.debug(
           `IDPhotoComponent fetched ${res.length} id images from server`,
         );
-        this.images = res.map((name: any) => urlPrefix + name);
+        this.images = res.map((name: any) => this.urlPrefix + name);
       },
     });
   }
@@ -87,22 +86,13 @@ export class IdPhotoComponent implements OnInit {
         Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
       });
       formData.append('image', this.file);
-      const upload$ = this.http
-        .post(url, formData, {
-          headers,
-          reportProgress: true,
-          observe: 'events',
-        })
-        .pipe(
-          finalize(() => {
-            this.success = true;
-            this.reset();
-          }),
-        );
-      this.uploadSub = upload$.subscribe((event) => {
-        if (event.type == HttpEventType.UploadProgress && event.total) {
-          this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-        }
+      const upload$ = this.http.post(url, formData, {
+        headers,
+      });
+      this.uploadSub = upload$.subscribe((res: any) => {
+        this.logger.debug('IDPhotoComponent::uploadFile upload completed', res);
+        this.images.push(this.urlPrefix + res.name);
+        this.reset();
       });
     } else {
       this.logger.error('Trying to upload an empty file');
@@ -114,7 +104,6 @@ export class IdPhotoComponent implements OnInit {
    */
   reset() {
     this.logger.debug(`IDPhotoComponent::reset()`);
-    this.uploadProgress = null;
     this.uploadSub = null;
     this.file = null;
     this.imgSrc = null;
