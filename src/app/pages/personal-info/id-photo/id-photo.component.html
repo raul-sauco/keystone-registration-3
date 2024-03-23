@@ -1,9 +1,15 @@
 <div id="id-photo-component">
-  <div id="images-wrapper">
-    @for (image of images; track image) {
-      <img [src]="image" alt="ID photo" class="id-photo-image" />
-    }
-  </div>
+  @if (images.length === 0) {
+    <div class="inner-form-prompt">
+      {{ "PIF_HINT_UPLOAD_ID_PHOTO" | translate }}
+    </div>
+  } @else {
+    <div id="images-wrapper">
+      @for (image of images; track image) {
+        <img [src]="image" alt="ID photo" class="id-photo-image" />
+      }
+    </div>
+  }
   <div id="file-upload-wrapper">
     <input
       type="file"

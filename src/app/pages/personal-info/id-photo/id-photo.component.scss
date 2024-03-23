@@ -1,6 +1,9 @@
 @use "../../../../sass/mixins" as mixins;
 
 #id-photo-component {
+  .inner-form-prompt {
+    @include mixins.alert-dialog;
+  }
   margin: 16px 0 24px 0;
   #images-wrapper {
     display: flex;
@@ -26,7 +29,7 @@
       @include mixins.active-elements-width;
       background-color: white;
       border-radius: 16px;
-      border: #b31414 5px dashed;
+      border: #ccc 3px dashed;
       display: flex;
       flex-direction: column;
       justify-content: center;
