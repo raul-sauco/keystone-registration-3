@@ -207,6 +207,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     return +v === +c;
   }
 
+  handleIdUploadEvent(success: boolean): void {
+    this.logger.error(success);
+  }
+
   /** Sanitize the data entered by the user before sending it to the server. */
   sanitizeData(data: any): any {
     const sanitizedData: any = {

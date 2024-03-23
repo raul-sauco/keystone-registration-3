@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -27,6 +27,7 @@ import { GlobalsService } from '@services/globals/globals.service';
 })
 export class IdPhotoComponent implements OnInit {
   @Input() student!: Student;
+  @Output() idUploadedEvent = new EventEmitter<boolean>();
   file: File | null = null;
   imgSrc: string | ArrayBuffer | null = null;
   uploadSub: Subscription | null = null;
@@ -51,6 +52,9 @@ export class IdPhotoComponent implements OnInit {
           `IDPhotoComponent fetched ${res.length} id images from server`,
         );
         this.images = res.map((name: any) => this.urlPrefix + name);
+        if (this.images.length > 0) {
+          this.idUploadedEvent.emit(true);
+        }
       },
     });
   }
@@ -92,6 +96,7 @@ export class IdPhotoComponent implements OnInit {
       this.uploadSub = upload$.subscribe((res: any) => {
         this.logger.debug('IDPhotoComponent::uploadFile upload completed', res);
         this.images.push(this.urlPrefix + res.name);
+        this.idUploadedEvent.emit(true);
         this.reset();
       });
     } else {
