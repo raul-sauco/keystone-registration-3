@@ -93,11 +93,20 @@ export class IdPhotoComponent implements OnInit {
       const upload$ = this.http.post(url, formData, {
         headers,
       });
-      this.uploadSub = upload$.subscribe((res: any) => {
-        this.logger.debug('IDPhotoComponent::uploadFile upload completed', res);
-        this.images.push(this.urlPrefix + res.name);
-        this.idUploadedEvent.emit(true);
-        this.reset();
+      this.uploadSub = upload$.subscribe({
+        next: (res: any) => {
+          this.logger.debug(
+            'IDPhotoComponent::uploadFile upload completed',
+            res,
+          );
+          this.images.push(this.urlPrefix + res.name);
+          this.idUploadedEvent.emit(true);
+          this.reset();
+        },
+        error: (err: any) => {
+          this.snackBar.open(err, undefined, { duration: 3000 });
+          this.reset();
+        },
       });
     } else {
       this.logger.error('Trying to upload an empty file');
