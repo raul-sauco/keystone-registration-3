@@ -1,5 +1,11 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -26,11 +32,13 @@ import { StudentService } from '@services/student/student.service';
   styleUrls: ['./personal-info.component.scss'],
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
+  @ViewChild('photoId') photoIdElement!: ElementRef;
   private student$?: Subscription | null = null;
   private paymentInfo?: PaymentInfo | null = null;
   private paymentInfo$?: Subscription | null = null;
   personalInfoForm!: UntypedFormGroup;
   needsLogin = false;
+  idPhotoProvided = false;
   lang: string = 'en';
   namePromptContent$!: Observable<any>;
   englishNamePromptContent$!: Observable<any>;
@@ -177,6 +185,22 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   /** Handle form submission */
   submitPersonalInfoForm(): void {
     this.logger.debug('PersonalInfoComponent::submitPersonalInfoForm()');
+    if (!this.idPhotoProvided) {
+      this.logger.debug(
+        'PersonalInfoComponent no photo ID provided yet, preventing submission.',
+      );
+      this.snackBar.open(
+        this.translate.instant('PIF_WARNING_PROVIDE_ID_PHOTO'),
+        undefined,
+        { duration: 3000 },
+      );
+      this.logger.debug(this.photoIdElement.nativeElement);
+      this.photoIdElement.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+      return;
+    }
     const studentData = this.sanitizeData(this.personalInfoForm.value);
     this.studentService.updateStudent(studentData).subscribe({
       next: (student: Student) => {
@@ -207,8 +231,9 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     return +v === +c;
   }
 
+  /** Handle child component boolean output. */
   handleIdUploadEvent(success: boolean): void {
-    this.logger.error(success);
+    this.idPhotoProvided = success;
   }
 
   /** Sanitize the data entered by the user before sending it to the server. */
