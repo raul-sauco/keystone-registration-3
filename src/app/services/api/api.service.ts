@@ -42,20 +42,7 @@ export class ApiService {
       endpoint.includes('http://') || endpoint.includes('https://')
         ? endpoint
         : this.url + endpoint;
-
-    if (!reqOpts) {
-      const headers: any = {
-        'Content-Type': 'application/json',
-      };
-      if (this.auth.authenticated) {
-        headers.Authorization = ` Bearer ${this.auth.getCredentials()?.accessToken}`;
-      }
-      reqOpts = {
-        params: new HttpParams(),
-        headers,
-      };
-    }
-
+    reqOpts = this.addDefaultReqOps(reqOpts);
     // Support easy query params for GET requests
     if (params) {
       reqOpts.params = new HttpParams();
@@ -71,19 +58,34 @@ export class ApiService {
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.post(this.url + endpoint, body, reqOpts);
+    return this.http.post(
+      this.url + endpoint,
+      body,
+      this.addDefaultReqOps(reqOpts),
+    );
   }
 
   put(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.put(this.url + endpoint, body, reqOpts);
+    return this.http.put(
+      this.url + endpoint,
+      body,
+      this.addDefaultReqOps(reqOpts),
+    );
   }
 
   delete(endpoint: string, reqOpts?: any) {
-    return this.http.delete(this.url + endpoint, reqOpts);
+    return this.http.delete(
+      this.url + endpoint,
+      this.addDefaultReqOps(reqOpts),
+    );
   }
 
   patch(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.patch(this.url + endpoint, body, reqOpts);
+    return this.http.patch(
+      this.url + endpoint,
+      body,
+      this.addDefaultReqOps(reqOpts),
+    );
   }
 
   /**
@@ -139,5 +141,26 @@ export class ApiService {
 
     // return an observable with a user-facing error message
     return throwError(() => new Error(`${msg}; please try again later.`));
+  }
+
+  /**
+   * Add default opts that will be sent in all requests like content type and auth headers.
+   * @param reqOpts An object with the opts that the caller wants to include in the request.
+   * @returns The caller opts merged with the default opts that will be sent in all requests.
+   */
+  private addDefaultReqOps(reqOpts?: any): any {
+    if (!reqOpts) {
+      const headers: any = {
+        'Content-Type': 'application/json',
+      };
+      if (this.auth.authenticated) {
+        headers.Authorization = ` Bearer ${this.auth.getCredentials()?.accessToken}`;
+      }
+      reqOpts = {
+        params: new HttpParams(),
+        headers,
+      };
+    }
+    return reqOpts;
   }
 }
