@@ -16,6 +16,7 @@ import {
 
 import { PaymentInfo } from '@models/paymentInfo';
 import { Student } from '@models/student';
+import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { RouteStateService } from '@services/route-state/route-state.service';
@@ -95,7 +96,7 @@ export class AppComponent implements OnInit {
     .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
-      shareReplay()
+      shareReplay(),
     );
 
   constructor(
@@ -104,17 +105,18 @@ export class AppComponent implements OnInit {
     private logger: NGXLogger,
     private routeStateService: RouteStateService,
     private router: Router,
+    private api: ApiService,
     public auth: AuthService,
     public paymentService: PaymentService,
     public studentService: StudentService,
     public tripSwitcher: TripSwitcherService,
-    public tripService: TripService
+    public tripService: TripService,
   ) {
     this.initTranslate();
     router.events
       .pipe(
         withLatestFrom(this.isHandset$),
-        filter(([a, b]) => b && a instanceof NavigationEnd)
+        filter(([a, b]) => b && a instanceof NavigationEnd),
       )
       .subscribe((_) => {
         if (this.drawer.opened) {
@@ -143,16 +145,26 @@ export class AppComponent implements OnInit {
       this.translate.use('en');
     }
     this.logger.debug(
-      `TranslateService language set to "${this.translate.currentLang}"`
+      `TranslateService language set to "${this.translate.currentLang}"`,
     );
   }
 
   toggleLanguage() {
+    this.logger.debug('AppComponent.toggleLanguage');
+    let value = 1;
     if (this.translate.currentLang === 'en') {
+      value = 2;
       this.translate.use('zh-cmn-Hans');
     } else {
       this.translate.use('en');
     }
+    // Set the user's preference in the backend, 1 => en, 2 => zh.
+    this.api
+      .patch('user-preferences/1', { value })
+      .subscribe({
+        next: (res: any) => this.logger.debug(res),
+        error: (err: any) => this.logger.warn(err),
+      });
   }
 
   /**
@@ -171,11 +183,11 @@ export class AppComponent implements OnInit {
       (
         student: Student | null,
         paymentInfo: PaymentInfo | null,
-        authenticated: boolean
+        authenticated: boolean,
       ) => {
         if (!authenticated) {
           this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => No user authenticated, preventing full navigation'
+            'AppComponent::setEnableFullNavigationObserver => No user authenticated, preventing full navigation',
           );
           return false;
         }
@@ -186,40 +198,40 @@ export class AppComponent implements OnInit {
         ) {
           if (this.auth.isSchoolAdmin) {
             this.logger.debug(
-              'AppComponent::setEnableFullNavigationObserver => user is school admin. Allowing full navigation'
+              'AppComponent::setEnableFullNavigationObserver => user is school admin. Allowing full navigation',
             );
             return true;
           }
           this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => non-school-admin missing student and/or payment info. Preventing full navigation'
+            'AppComponent::setEnableFullNavigationObserver => non-school-admin missing student and/or payment info. Preventing full navigation',
           );
           return false;
         }
         if (student.isSampleAccount) {
           this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => Account is sample account. Allowing full navigation'
+            'AppComponent::setEnableFullNavigationObserver => Account is sample account. Allowing full navigation',
           );
           return true;
         }
         if (!student.waiverAccepted) {
           this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => Student has not accepted the waiver. Preventing full navigation'
+            'AppComponent::setEnableFullNavigationObserver => Student has not accepted the waiver. Preventing full navigation',
           );
           return false;
         }
         if (this.auth.isStudent && paymentInfo.required && !paymentInfo.paid) {
           this.logger.debug(
             'AppComponent::setEnableFullNavigationObserver => Payment is required and student has not paid. ' +
-              'Preventing full navigation'
+              'Preventing full navigation',
           );
           return false;
         }
         this.logger.debug(
           'AppComponent::setEnableFullNavigationObserver => The user has completed the registration process. ' +
-            'Allowing full navigation'
+            'Allowing full navigation',
         );
         return true;
-      }
+      },
     );
   }
 
