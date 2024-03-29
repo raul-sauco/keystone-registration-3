@@ -29,6 +29,8 @@ export class Student {
   paymentVerified: boolean | null = null;
   house: string | null = null;
   roomNumber: string | null = null;
+  homeroom: string | null = null;
+  grade: string | null = null;
 
   private translations: any;
 
@@ -141,6 +143,8 @@ export class Student {
         : null;
     this.house = json.house;
     this.roomNumber = json.room_number;
+    this.homeroom = json.homeroom;
+    this.grade = json.grade;
     // this.insurance = json.insurance;
     // this.insuranceName = json.insurance_name;
     // this.insurancePolicyNumber = json.insurance_policy_number;
@@ -173,6 +177,8 @@ export class Student {
       paymentVerified: this.translations.PAYMENT_VERIFIED,
       house: this.translations.SCHOOL_HOUSE,
       roomNumber: this.translations.ROOM_NUMBER,
+      homeroom: this.translations.HOMEROOM,
+      grade: this.translations.GRADE,
       // insurance: this.translations.INSURANCE,
       // insuranceName: this.translations.INSURANCE_NAME,
       // insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER,
@@ -364,6 +370,12 @@ export class Student {
         break;
       case 'roomNumber':
         this.roomNumber = value;
+        break;
+      case 'homeroom':
+        this.homeroom = value;
+        break;
+      case 'grade':
+        this.grade = value;
         break;
     }
   }
