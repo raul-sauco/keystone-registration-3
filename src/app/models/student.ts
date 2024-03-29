@@ -83,6 +83,8 @@ export class Student {
         'PAYMENT_VERIFIED',
         'SCHOOL_HOUSE',
         'ROOM_NUMBER',
+        'HOMEROOM',
+        'GRADE',
         // 'INSURANCE',
         // 'I',
         // 'INSURANCE_NAME',

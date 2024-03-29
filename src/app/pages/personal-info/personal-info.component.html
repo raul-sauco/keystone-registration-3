@@ -1,10 +1,7 @@
-<ng-container *ngIf="needsLogin; else app">
+@if (needsLogin) {
   <app-login-required-message></app-login-required-message>
-</ng-container>
-<ng-template #app>
-  <ng-container
-    *ngIf="studentService.student$ | async as student; else loading"
-  >
+} @else {
+  @if (studentService.student$ | async; as student) {
     <div class="app-page-wrapper mat-typography">
       <div class="app-content-wrapper">
         <div id="personal-info-form-container" *ngIf="personalInfoForm">
@@ -151,6 +148,52 @@
             </mat-form-field>
             <!-- END Contact information section -->
 
+            <!-- START School information section, wait until we have school info -->
+            @if (schoolService.school$ | async; as school) {
+              @if (
+                auth.isStudent &&
+                (school.useHouse ||
+                  school.useRoomNumber ||
+                  school.useGrade ||
+                  school.useHomeroom)
+              ) {
+                <h2>{{ "SCHOOL_INFORMATION" | translate }}</h2>
+                @if (school.useHouse) {
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{
+                      student.getAttributeLabel("house")
+                    }}</mat-label>
+                    <input type="text" matInput formControlName="house" />
+                  </mat-form-field>
+                }
+                @if (school.useRoomNumber) {
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{
+                      student.getAttributeLabel("roomNumber")
+                    }}</mat-label>
+                    <input type="text" matInput formControlName="roomNumber" />
+                  </mat-form-field>
+                }
+                @if (school.useGrade) {
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{
+                      student.getAttributeLabel("grade")
+                    }}</mat-label>
+                    <input type="text" matInput formControlName="grade" />
+                  </mat-form-field>
+                }
+                @if (school.useHomeroom) {
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{
+                      student.getAttributeLabel("homeroom")
+                    }}</mat-label>
+                    <input type="text" matInput formControlName="homeroom" />
+                  </mat-form-field>
+                }
+              }
+            }
+            <!-- END School information section -->
+
             <!-- START Medical & dietary section -->
             <h2>{{ "DIETARY_REQUIREMENTS" | translate }}</h2>
             <p class="form-field-extra-hint">
@@ -233,34 +276,6 @@
               ></textarea>
             </mat-form-field>
             <!-- END Medical information section -->
-            <!-- START School information section, wait until we have school info -->
-            <ng-container *ngIf="schoolService.school$ | async as school">
-              <!-- Only display this section to students and only when the school requires it -->
-              <ng-container
-                *ngIf="
-                  auth.getCredentials()?.type === 6 &&
-                  (school.useHouse || school.useRoomNumber)
-                "
-              >
-                <h2>{{ "SCHOOL_INFORMATION" | translate }}</h2>
-                <mat-form-field appearance="outline" *ngIf="school.useHouse">
-                  <mat-label>{{
-                    student.getAttributeLabel("house")
-                  }}</mat-label>
-                  <input type="text" matInput formControlName="house" />
-                </mat-form-field>
-                <mat-form-field
-                  appearance="outline"
-                  *ngIf="school.useRoomNumber"
-                >
-                  <mat-label>{{
-                    student.getAttributeLabel("roomNumber")
-                  }}</mat-label>
-                  <input type="text" matInput formControlName="roomNumber" />
-                </mat-form-field>
-              </ng-container>
-            </ng-container>
-            <!-- END School information section -->
             <button
               id="submit-personal-info"
               mat-raised-button
@@ -273,8 +288,7 @@
         </div>
       </div>
     </div>
-  </ng-container>
-  <ng-template #loading>
+  } @else {
     <app-loading-spinner-content></app-loading-spinner-content>
-  </ng-template>
-</ng-template>
+  }
+}
