@@ -39,6 +39,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   personalInfoForm!: UntypedFormGroup;
   needsLogin = false;
   idPhotoProvided = false;
+  idPhotoRequired = false;
   lang: string = 'en';
   namePromptContent$!: Observable<any>;
   englishNamePromptContent$!: Observable<any>;
@@ -73,6 +74,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
                   student,
                 );
                 this.initPersonalInfoForm(student);
+                this.idPhotoRequired = student.idPhotoRequired;
               },
               error: (error: any) => {
                 this.logger.error(
@@ -187,7 +189,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   /** Handle form submission */
   submitPersonalInfoForm(): void {
     this.logger.debug('PersonalInfoComponent::submitPersonalInfoForm()');
-    if (!this.idPhotoProvided) {
+    if (this.idPhotoRequired && !this.idPhotoProvided) {
       this.logger.debug(
         'PersonalInfoComponent no photo ID provided yet, preventing submission.',
       );
@@ -241,7 +243,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   /** Sanitize the data entered by the user before sending it to the server. */
   sanitizeData(data: any): any {
     const sanitizedData: any = {
-      name: data.englishName,
+      name: data.name,
       english_name: data.englishName,
       citizenship: data.citizenship,
       travel_document: data.travelDocument,

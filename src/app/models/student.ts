@@ -31,6 +31,7 @@ export class Student {
   roomNumber: string | null = null;
   homeroom: string | null = null;
   grade: string | null = null;
+  idPhotoRequired: boolean = false;
 
   private translations: any;
 
@@ -85,10 +86,6 @@ export class Student {
         'ROOM_NUMBER',
         'HOMEROOM',
         'GRADE',
-        // 'INSURANCE',
-        // 'I',
-        // 'INSURANCE_NAME',
-        // 'INSURANCE_POLICY_NUMBER',
         'YES',
         'NO',
         'EMPTY',
@@ -103,13 +100,11 @@ export class Student {
    * Use JSON data to set this student's attributes.
    */
   private setFromJSON(json: any) {
+    const truthyValues = [true, 'true', 1, '1'];
     // Use the id attribute for creation scenarios
     this.id = json.id;
     this.type = json.type;
-    this.isSampleAccount =
-      json.is_sample_account === true ||
-      json.is_sample_account === '1' ||
-      json.is_sample_account === 1;
+    this.isSampleAccount = truthyValues.includes(json.is_sample_account);
     this.name = json.name;
     this.englishName = json.english_name;
     this.citizenship = json.citizenship;
@@ -147,9 +142,7 @@ export class Student {
     this.roomNumber = json.room_number;
     this.homeroom = json.homeroom;
     this.grade = json.grade;
-    // this.insurance = json.insurance;
-    // this.insuranceName = json.insurance_name;
-    // this.insurancePolicyNumber = json.insurance_policy_number;
+    this.idPhotoRequired = truthyValues.includes(json.is_photo_id_required);
   }
 
   /**
@@ -181,9 +174,6 @@ export class Student {
       roomNumber: this.translations.ROOM_NUMBER,
       homeroom: this.translations.HOMEROOM,
       grade: this.translations.GRADE,
-      // insurance: this.translations.INSURANCE,
-      // insuranceName: this.translations.INSURANCE_NAME,
-      // insurancePolicyNumber: this.translations.INSURANCE_POLICY_NUMBER,
     };
     return labels[attribute] || '';
   }
@@ -208,9 +198,6 @@ export class Student {
     if (attr === 'gender') {
       return this.translations.G[this['gender']!];
     }
-    // if (attr === 'insurance') {
-    //   return this.translations.I[this[attr]];
-    // }
     if (attr === 'dietaryRequirements' && this['dietaryRequirements']) {
       return this.translations.DR[this['dietaryRequirements']];
     }

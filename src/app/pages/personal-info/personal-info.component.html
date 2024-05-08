@@ -19,11 +19,13 @@
                 [data]="content"
               ></markdown>
             }
-            <div #photoId></div>
-            <app-id-photo
-              [student]="student"
-              (idUploadedEvent)="handleIdUploadEvent($event)"
-            ></app-id-photo>
+            @if (idPhotoRequired) {
+              <div #photoId></div>
+              <app-id-photo
+                [student]="student"
+                (idUploadedEvent)="handleIdUploadEvent($event)"
+              ></app-id-photo>
+            }
             @if (namePromptContent$ | async; as content) {
               <markdown class="inner-form-prompt" [data]="content"></markdown>
             }
