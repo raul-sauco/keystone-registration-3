@@ -27,16 +27,16 @@ echo "${GREEN}»»» Generating $configuration bundle «««${NC}"
 ng build --configuration $configuration
 
 # Clean up the remote playground folder
-remote="climbdal@keystone-adventures.com"
+# remote="climbdal@keystone-adventures.com"
+remote="raul@keystone-adventures.cn"
 echo "\n${GREEN}»»» Cleaning remote directories «««${NC}\n"
 echo "    » Local system name: $HOSTNAME"
 echo "    » Local date and time: $(date)"
 
-folder="public_html/registration"
 if [[ "$production" = true ]]
 then
-  folder="public_html/program"
-  echo "\n${GREEN}»»» Running commands on remote host named $remote folder 'public_html/program' «««${NC}\n"
+  folder="program"
+  echo "\n${GREEN}»»» Running commands on remote host named $remote '$folder' program «««${NC}\n"
   ssh -T $remote <<'EOL'
 	now="$(date)"
 	name="$HOSTNAME"
@@ -44,7 +44,8 @@ then
 	echo "    » Server name is $name"
 	echo "    » Server date and time is $now"
 	echo "    » Server uptime: $up"
-	cd public_html/program
+  echo $folder
+	cd program
 	rm *.js manifest.* ngsw.json *.css index.html favicon.ico
   [ ! -e *.map ] || rm *.map
   rm -rf assets/

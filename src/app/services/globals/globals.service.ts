@@ -26,6 +26,6 @@ export class GlobalsService {
 
 /** AppComponent cannot import the service, needs a const. */
 export const apiUrl = {
-  production: 'https://apivp1.keystone-adventures.com/',
+  production: 'https://apivp1.keystone-adventures.cn/',
   development: 'http://localhost/ka-apivp1/',
 };
