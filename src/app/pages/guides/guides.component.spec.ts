@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -9,6 +9,7 @@ import { GuidesComponent } from './guides.component';
 
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('GuidesComponent', () => {
   let component: GuidesComponent;
@@ -16,20 +17,18 @@ describe('GuidesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AdminBannerModule,
-        HttpClientTestingModule,
+    declarations: [GuidesComponent],
+    imports: [AdminBannerModule,
         LoggerTestingModule,
         RouterTestingModule,
         MatCardModule,
         MatSnackBarModule,
         LoadingSpinnerContentModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
-        }),
-      ],
-      declarations: [GuidesComponent],
-    }).compileComponents();
+            en: require('src/assets/i18n/en.json'),
+        })],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   }));
 
   beforeEach(() => {

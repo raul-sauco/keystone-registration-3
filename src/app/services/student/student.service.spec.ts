@@ -1,20 +1,23 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
 import { StudentService } from './student.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('StudentService', () => {
   let service: StudentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
+    imports: [LoggerTestingModule],
+    providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
-      ],
-      imports: [HttpClientTestingModule, LoggerTestingModule],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     service = TestBed.inject(StudentService);
   });
 

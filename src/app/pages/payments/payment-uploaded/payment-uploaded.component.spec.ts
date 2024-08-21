@@ -1,11 +1,12 @@
 import { MatDialogModule } from '@angular/material/dialog';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { PaymentUploadedComponent } from './payment-uploaded.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentUploadedComponent', () => {
   let component: PaymentUploadedComponent;
@@ -13,18 +14,16 @@ describe('PaymentUploadedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        LoggerTestingModule,
+    declarations: [PaymentUploadedComponent],
+    imports: [LoggerTestingModule,
         MatDialogModule,
         MatProgressSpinnerModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
-        }),
-      ],
-      declarations: [PaymentUploadedComponent],
-    }).compileComponents();
+            en: require('src/assets/i18n/en.json'),
+        })],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   });
 
   beforeEach(() => {

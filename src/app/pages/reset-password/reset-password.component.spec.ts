@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   FormsModule,
@@ -20,6 +20,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 
 import { ResetPasswordComponent } from './reset-password.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ResetPasswordComponent', () => {
   let component: ResetPasswordComponent;
@@ -27,17 +28,8 @@ describe('ResetPasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: {},
-        },
-        UntypedFormBuilder,
-      ],
-      declarations: [ResetPasswordComponent],
-      imports: [
-        FormsModule,
-        HttpClientTestingModule,
+    declarations: [ResetPasswordComponent],
+    imports: [FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatButtonModule,
@@ -52,10 +44,18 @@ describe('ResetPasswordComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
-        }),
-      ],
-    }).compileComponents();
+            en: require('src/assets/i18n/en.json'),
+        })],
+    providers: [
+        {
+            provide: MatDialogRef,
+            useValue: {},
+        },
+        UntypedFormBuilder,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {

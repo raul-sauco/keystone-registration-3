@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   ComponentFixture,
   fakeAsync,
@@ -26,6 +26,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ParticipantsComponent } from './participants.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ParticipantsComponent', () => {
   let component: ParticipantsComponent;
@@ -56,11 +57,8 @@ describe('ParticipantsComponent', () => {
       error: undefined,
     });
     TestBed.configureTestingModule({
-      providers: [{ provide: AuthService, useValue: authServiceSpy }],
-      declarations: [ParticipantsComponent],
-      imports: [
-        AdminBannerModule,
-        HttpClientTestingModule,
+    declarations: [ParticipantsComponent],
+    imports: [AdminBannerModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatDialogModule,
@@ -72,10 +70,10 @@ describe('ParticipantsComponent', () => {
         PipesModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
-        }),
-      ],
-    }).compileComponents();
+            en: require('src/assets/i18n/en.json'),
+        })],
+    providers: [{ provide: AuthService, useValue: authServiceSpy }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   }));
 
   beforeEach(() => {

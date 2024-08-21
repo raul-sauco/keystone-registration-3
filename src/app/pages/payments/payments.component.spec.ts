@@ -1,8 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   TranslateLoader,
@@ -41,24 +38,23 @@ describe('PaymentsComponent', () => {
       { auth$: of(true) }
     );
     TestBed.configureTestingModule({
-      providers: [
-        TranslateService,
-        { provide: AuthService, useValue: authServiceSpy },
-      ],
-      declarations: [PaymentsComponent, PaymentClosedComponent],
-      imports: [
-        LoadingSpinnerContentModule,
-        HttpClientTestingModule,
+    declarations: [PaymentsComponent, PaymentClosedComponent],
+    imports: [LoadingSpinnerContentModule,
         LoggerTestingModule,
         TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: HttpLoaderFactory,
-            deps: [HttpClient],
-          },
-        }),
-      ],
-    }).compileComponents();
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient],
+            },
+        })],
+    providers: [
+        TranslateService,
+        { provide: AuthService, useValue: authServiceSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');

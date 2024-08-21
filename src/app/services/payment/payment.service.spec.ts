@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -12,6 +12,7 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { StorageService } from '@services/storage/storage.service';
 import { PaymentService } from './payment.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -40,14 +41,16 @@ describe('PaymentService', () => {
 
   function arrange() {
     TestBed.configureTestingModule({
-      providers: [
+    imports: [LoggerTestingModule],
+    providers: [
         { provide: NGXLogger, useValue: loggerSpy },
         { provide: StorageService, useValue: storageServiceSpy },
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: AuthService, useValue: authServiceSpy },
-      ],
-      imports: [HttpClientTestingModule, LoggerTestingModule],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     service = TestBed.inject(PaymentService);
   }
 

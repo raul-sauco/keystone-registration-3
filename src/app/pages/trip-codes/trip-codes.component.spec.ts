@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { TripCodesComponent } from './trip-codes.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('TripCodesComponent', () => {
   let component: TripCodesComponent;
@@ -18,23 +19,21 @@ describe('TripCodesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [TripCodesComponent],
-        imports: [
-          FormsModule,
-          HttpClientTestingModule,
-          LoggerTestingModule,
-          MatCardModule,
-          MatDialogModule,
-          MatIconModule,
-          MatInputModule,
-          NoopAnimationsModule,
-          ReactiveFormsModule,
-          RouterTestingModule,
-          TranslateTestingModule.withTranslations({
+    declarations: [TripCodesComponent],
+    imports: [FormsModule,
+        LoggerTestingModule,
+        MatCardModule,
+        MatDialogModule,
+        MatIconModule,
+        MatInputModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-          }),
-        ],
-      }).compileComponents();
+        })],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     })
   );
 

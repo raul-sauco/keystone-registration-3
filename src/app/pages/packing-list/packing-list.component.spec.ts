@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SecurityContext } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { PackingListComponent } from './packing-list.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PackingListComponent', () => {
   let component: PackingListComponent;
@@ -20,26 +21,23 @@ describe('PackingListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [PackingListComponent],
-        imports: [
-          AdminBannerModule,
-          BrowserAnimationsModule,
-          HttpClientTestingModule,
-          LoadingSpinnerContentModule,
-          LoggerTestingModule,
-          MatIconModule,
-          MatSnackBarModule,
-          MatTabsModule,
-          MarkdownModule.forRoot({
+    declarations: [PackingListComponent],
+    imports: [AdminBannerModule,
+        BrowserAnimationsModule,
+        LoadingSpinnerContentModule,
+        LoggerTestingModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatTabsModule,
+        MarkdownModule.forRoot({
             sanitize: SecurityContext.NONE,
-          }),
-          RouterTestingModule,
-          TranslateTestingModule.withTranslations({
+        }),
+        RouterTestingModule,
+        TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-          }),
-        ],
-        // providers: [MarkdownService],
-      }).compileComponents();
+        })],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
     })
   );
 

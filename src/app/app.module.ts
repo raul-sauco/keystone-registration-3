@@ -1,9 +1,5 @@
 import { LayoutModule } from '@angular/cdk/layout';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClient,
-  HttpClientModule,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,43 +26,37 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new CustomTranslationsLoader(http);
 }
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-    }),
-    LayoutModule,
-    MatToolbarModule,
-    MatBadgeModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
-    MarkdownModule.forRoot({ loader: HttpClient }),
-    LoggerModule.forRoot({
-      serverLoggingUrl: environment.apiUrl + 'portal-logs',
-      level: environment.production
-        ? NgxLoggerLevel.INFO
-        : NgxLoggerLevel.TRACE,
-      serverLogLevel: NgxLoggerLevel.WARN,
-    }),
-    AdminBannerModule,
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [AppComponent],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+        }),
+        LayoutModule,
+        MatToolbarModule,
+        MatBadgeModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient],
+            },
+        }),
+        MarkdownModule.forRoot({ loader: HttpClient }),
+        LoggerModule.forRoot({
+            serverLoggingUrl: environment.apiUrl + 'portal-logs',
+            level: environment.production
+                ? NgxLoggerLevel.INFO
+                : NgxLoggerLevel.TRACE,
+            serverLogLevel: NgxLoggerLevel.WARN,
+        }),
+        AdminBannerModule], providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}

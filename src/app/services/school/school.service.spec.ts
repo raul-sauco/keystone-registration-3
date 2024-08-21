@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
@@ -11,6 +11,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SchoolService } from 'src/app/services/school/school.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SchoolService', () => {
   let service: SchoolService;
@@ -23,8 +24,9 @@ describe('SchoolService', () => {
 
   it('should be created', () => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LoggerTestingModule],
-    });
+    imports: [LoggerTestingModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     service = TestBed.inject(SchoolService);
     expect(service).toBeTruthy();
   });
@@ -57,13 +59,15 @@ describe('SchoolService', () => {
       });
       loggerSpy = jasmine.createSpyObj('NGXLogger', { debug: null });
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, LoggerTestingModule],
-        providers: [
-          { provide: AuthService, useValue: authServiceSpy },
-          { provide: StorageService, useValue: storageServiceSpy },
-          { provide: NGXLogger, useValue: loggerSpy },
-        ],
-      });
+    imports: [LoggerTestingModule],
+    providers: [
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: StorageService, useValue: storageServiceSpy },
+        { provide: NGXLogger, useValue: loggerSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     });
 
     it('should fetch school on constructor call', fakeAsync(() => {
@@ -132,14 +136,16 @@ describe('SchoolService', () => {
       });
       loggerSpy = jasmine.createSpyObj('NGXLogger', { debug: null });
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, LoggerTestingModule],
-        providers: [
-          { provide: AuthService, useValue: authServiceSpy },
-          { provide: StorageService, useValue: storageServiceSpy },
-          { provide: NGXLogger, useValue: loggerSpy },
-          { provide: ApiService, useValue: apiServiceSpy },
-        ],
-      });
+    imports: [LoggerTestingModule],
+    providers: [
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: StorageService, useValue: storageServiceSpy },
+        { provide: NGXLogger, useValue: loggerSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     });
 
     it('should fetch data from the server', fakeAsync(() => {
@@ -191,14 +197,16 @@ describe('SchoolService', () => {
         get: of(apiSchoolData),
       });
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, LoggerTestingModule],
-        providers: [
-          { provide: AuthService, useValue: authServiceSpy },
-          { provide: StorageService, useValue: storageServiceSpy },
-          { provide: NGXLogger, useValue: loggerSpy },
-          { provide: ApiService, useValue: apiServiceSpy },
-        ],
-      });
+    imports: [LoggerTestingModule],
+    providers: [
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: StorageService, useValue: storageServiceSpy },
+        { provide: NGXLogger, useValue: loggerSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     });
 
     it('should fetch data from the server', fakeAsync(() => {
@@ -246,14 +254,16 @@ describe('SchoolService', () => {
         get: throwError(() => new Error('API error')),
       });
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, LoggerTestingModule],
-        providers: [
-          { provide: AuthService, useValue: authServiceSpy },
-          { provide: StorageService, useValue: storageServiceSpy },
-          { provide: NGXLogger, useValue: loggerSpy },
-          { provide: ApiService, useValue: apiServiceSpy },
-        ],
-      });
+    imports: [LoggerTestingModule],
+    providers: [
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: StorageService, useValue: storageServiceSpy },
+        { provide: NGXLogger, useValue: loggerSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     });
 
     it('should fetch data from the server', fakeAsync(() => {

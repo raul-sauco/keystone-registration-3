@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +12,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 
 import { ForgotPasswordComponent } from './forgot-password.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ForgotPasswordComponent', () => {
   let component: ForgotPasswordComponent;
@@ -19,13 +20,11 @@ describe('ForgotPasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ForgotPasswordComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
+    declarations: [ForgotPasswordComponent],
+    imports: [RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
+            en: require('src/assets/i18n/en.json'),
         }),
         FormsModule,
         ReactiveFormsModule,
@@ -34,9 +33,9 @@ describe('ForgotPasswordComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatSnackBarModule,
-        NoopAnimationsModule,
-      ],
-    }).compileComponents();
+        NoopAnimationsModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   }));
 
   beforeEach(() => {

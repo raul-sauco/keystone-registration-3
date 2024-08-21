@@ -1,8 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   ComponentFixture,
   TestBed,
@@ -73,32 +70,31 @@ describe('WaiverComponent', () => {
       }
     );
     TestBed.configureTestingModule({
-      declarations: [WaiverComponent, WaiverContentComponent],
-      imports: [
-        FormsModule,
-        HttpClientTestingModule,
+    declarations: [WaiverComponent, WaiverContentComponent],
+    imports: [FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatSnackBarModule,
         ReactiveFormsModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
+            en: require('src/assets/i18n/en.json'),
         }),
         TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: HttpLoaderFactory,
-            deps: [HttpClient],
-          },
-        }),
-      ],
-      providers: [
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient],
+            },
+        })],
+    providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: NGXLogger, useValue: loggerSpy },
         { provide: StudentService, useValue: studentServiceSpy },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');

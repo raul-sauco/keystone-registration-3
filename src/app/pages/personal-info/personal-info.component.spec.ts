@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   ComponentFixture,
   fakeAsync,
@@ -22,6 +22,7 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PersonalInfoComponent } from './personal-info.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PersonalInfoComponent', () => {
   let component: PersonalInfoComponent;
@@ -65,26 +66,25 @@ describe('PersonalInfoComponent', () => {
       error: undefined,
     });
     TestBed.configureTestingModule({
-      declarations: [PersonalInfoComponent],
-      imports: [
-        HttpClientTestingModule,
-        FormsModule,
+    declarations: [PersonalInfoComponent],
+    imports: [FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatSnackBarModule,
         ReactiveFormsModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
-        }),
-      ],
-      providers: [
+            en: require('src/assets/i18n/en.json'),
+        })],
+    providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: NGXLogger, useValue: loggerSpy },
         { provide: TranslateService, useValue: translateServiceMock },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {

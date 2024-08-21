@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { AddParticipantComponent } from './add-participant.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AddParticipantComponent', () => {
   let component: AddParticipantComponent;
@@ -22,34 +23,33 @@ describe('AddParticipantComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        providers: [
-          {
+    declarations: [AddParticipantComponent],
+    imports: [RouterTestingModule,
+        LoggerTestingModule,
+        TranslateTestingModule.withTranslations({
+            en: require('src/assets/i18n/en.json'),
+        }),
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule, // Material needs animations
+        MatButtonModule,
+        MatInputModule,
+        MatProgressBarModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule],
+    providers: [
+        {
             provide: MatDialogRef,
             useValue: {},
-          },
-          UntypedFormBuilder,
-        ],
-        imports: [
-          HttpClientTestingModule,
-          RouterTestingModule,
-          LoggerTestingModule,
-          TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-          }),
-          FormsModule,
-          ReactiveFormsModule,
-          BrowserAnimationsModule, // Material needs animations
-          MatButtonModule,
-          MatInputModule,
-          MatProgressBarModule,
-          MatDialogModule,
-          MatFormFieldModule,
-          MatSidenavModule,
-          MatToolbarModule,
-          MatListModule,
-        ],
-        declarations: [AddParticipantComponent],
-      }).compileComponents();
+        },
+        UntypedFormBuilder,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
     })
   );
 

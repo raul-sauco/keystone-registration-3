@@ -3,13 +3,14 @@
 // run locally this test with:
 // ng test --include='**/app/guards/auth.guard.spec.ts' --browsers=Chrome --code-coverage --no-watch
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { AuthGuard } from './auth.guard';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AuthGuard', () => {
   let injector: TestBed;
@@ -22,13 +23,10 @@ describe('AuthGuard', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      providers: [AuthGuard, { provide: Router, useValue: routerMock }],
-      imports: [
-        HttpClientTestingModule,
-        LoggerTestingModule,
-        RouterTestingModule,
-      ],
-    });
+    imports: [LoggerTestingModule,
+        RouterTestingModule],
+    providers: [AuthGuard, { provide: Router, useValue: routerMock }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     injector = getTestBed();
     authService = injector.inject(AuthService);
     guard = injector.inject(AuthGuard);
