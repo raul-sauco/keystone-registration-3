@@ -14,10 +14,10 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, Subscription, map } from 'rxjs';
 
+import { formatDate } from '@angular/common';
 import { PaymentInfo } from '@models/paymentInfo';
 import { Student } from '@models/student';
 import { ApiService } from '@services/api/api.service';
@@ -268,19 +268,28 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       // insurance_policy_number: data.insurancePolicyNumber,
     };
     if (data.dob) {
-      let dob = data.dob;
-      if (!moment.isMoment(dob)) {
-        dob = moment(dob);
-      }
-      if (dob.isValid()) {
-        sanitizedData.dob = dob.format('YYYY-MM-DD');
-      } else {
-        this.logger.warn(
-          'Trying to use invalid date ' + dob.format('YYYY-MM-DD'),
-        );
-      }
+      sanitizedData.dob = this.sanitizeDate(data.dob);
     }
     // Dob could be a moment object.
     return sanitizedData;
+  }
+
+  /**
+   * Validate a date and prepare it to be sent to the server.
+   * @param dateString
+   * @returns
+   */
+  sanitizeDate(dateString: string): string | null {
+    const dateObject = new Date(dateString);
+    if (isNaN(dateObject.getTime())) {
+      this.logger.error(`Failed to format date ${dateString}`);
+      return null;
+    }
+    // const res = dateObject.toISOString().substring(0, 10);
+    const res = formatDate(dateObject, 'yyyy-MM-dd', 'en-US');
+    this.logger.debug(
+      `Converted field value ${dateString} to YYYY-mm-dd ${res}`,
+    );
+    return res;
   }
 }

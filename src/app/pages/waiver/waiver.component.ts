@@ -7,7 +7,6 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 
@@ -37,7 +36,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBar: MatSnackBar,
     public studentService: StudentService,
-    public translate: TranslateService
+    public translate: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -55,14 +54,14 @@ export class WaiverComponent implements OnInit, OnDestroy {
               error: (error) => {
                 this.logger.error(
                   'WaiverComponent studentService.student$ error',
-                  error
+                  error,
                 );
               },
             });
             this.studentService.refreshStudent();
           } else {
             this.logger.error(
-              'Authentication error, expected valid student ID.'
+              'Authentication error, expected valid student ID.',
             );
           }
         } else {
@@ -111,7 +110,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
 
   /** Mark the student as having accepted the terms&conditions today. */
   acceptWaiver(): void {
-    const today = moment().format('YYYY-MM-DD');
+    const today = new Date().toISOString().substring(0, 10);
     const studentData = {
       name: this.waiverForm.value.name,
       guardian_name: this.waiverForm.value.guardianName,
@@ -127,7 +126,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
         const snackBar = this.snackBar.open(
           this.translate.instant('WAIVER_ACCEPTED'),
           undefined,
-          { duration: 2000 }
+          { duration: 2000 },
         );
         snackBar.afterDismissed().subscribe(() => {
           const destination = this.paymentInfo?.required

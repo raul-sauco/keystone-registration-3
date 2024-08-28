@@ -16,7 +16,6 @@ import {
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, map } from 'rxjs';
 
@@ -28,6 +27,7 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { TripService } from '@services/trip/trip.service';
+import { formatDate } from '@angular/common';
 
 // import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
 
@@ -35,7 +35,7 @@ import { TripService } from '@services/trip/trip.service';
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(
     control: UntypedFormControl | null,
-    form: FormGroupDirective | NgForm | null
+    form: FormGroupDirective | NgForm | null,
   ): boolean {
     return (control?.dirty && form?.invalid) || false;
   }
@@ -63,7 +63,7 @@ export class RegisterComponent implements OnInit {
     public dialog: MatDialog,
     public router: Router,
     public translate: TranslateService,
-    public trip: TripService
+    public trip: TripService,
   ) {}
 
   ngOnInit(): void {
@@ -89,8 +89,8 @@ export class RegisterComponent implements OnInit {
       .get('documents/141', null, options)
       .pipe(
         map((doc: any) =>
-          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
-        )
+          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text,
+        ),
       );
   }
 
@@ -121,7 +121,7 @@ export class RegisterComponent implements OnInit {
           Validators.compose([Validators.required, Validators.minLength(8)]),
         ],
       },
-      { validator: passwordMatchValidator }
+      { validator: passwordMatchValidator },
     );
   }
   get id() {
@@ -209,19 +209,21 @@ export class RegisterComponent implements OnInit {
 
   /**
    * Validate a date and prepare it to be sent to the server.
-   * @param d
+   * @param dateString
    * @returns
    */
-  sanitizeDate(d: string | moment.Moment): string | null {
-    // Make sure we are dealing with a moment object.
-    if (!moment.isMoment(d)) {
-      d = moment(d);
+  sanitizeDate(dateString: string): string | null {
+    const dateObject = new Date(dateString);
+    if (isNaN(dateObject.getTime())) {
+      this.logger.error(`Failed to format date ${dateString}`);
+      return null;
     }
-    if (d.isValid()) {
-      return d.format('YYYY-MM-DD');
-    }
-    this.logger.error(`Trying to format invalid date ${d}`);
-    return null;
+    // const res = dateObject.toISOString().substring(0, 10);
+    const res = formatDate(dateObject, 'yyyy-MM-dd', 'en-US');
+    this.logger.debug(
+      `Converted field value ${dateString} to YYYY-mm-dd ${res}`,
+    );
+    return res;
   }
 }
 
@@ -232,7 +234,7 @@ export class RegisterComponent implements OnInit {
 export class ErrorMessageDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ErrorMessageDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
 }
 
@@ -246,7 +248,7 @@ export class RegistrationSuccessDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<RegistrationSuccessDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    auth: AuthService
+    auth: AuthService,
   ) {
     this.username = auth.getCredentials()?.username || null;
   }
