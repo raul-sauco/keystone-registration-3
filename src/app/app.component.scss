@@ -9,13 +9,13 @@
 $toolbarBackgroundGrey: rgb(190, 190, 190);
 #main-header {
   background-color: #e6e6e6;
+  justify-content: space-between;
   #toggle-sidenav-button {
+    background-color: rgb(35, 114, 32);
     mat-icon {
       color: #fff;
     }
-    background-color: rgb(35, 114, 32);
   }
-  justify-content: space-between;
   #main-header-logo {
     height: 52px;
   }

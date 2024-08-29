@@ -1,10 +1,10 @@
 @use "../../../../sass/mixins" as mixins;
 
 #id-photo-component {
+  margin: 16px 0 24px 0;
   .inner-form-prompt {
     @include mixins.alert-dialog;
   }
-  margin: 16px 0 24px 0;
   #images-wrapper {
     display: flex;
     flex-direction: column;
@@ -26,7 +26,6 @@
       position: relative;
       margin: 8px;
       // height: 20vh;
-      @include mixins.active-elements-width;
       background-color: white;
       border-radius: 16px;
       border: #ccc 3px dashed;
@@ -35,6 +34,7 @@
       justify-content: center;
       align-items: center;
       font-size: 1.3rem;
+      @include mixins.active-elements-width;
       img#image-preview {
         max-height: 90%;
         max-width: 90%;

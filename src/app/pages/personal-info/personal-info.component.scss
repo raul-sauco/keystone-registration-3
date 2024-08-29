@@ -1,26 +1,26 @@
 @use "../../../sass/mixins" as mixins;
 
 #personal-info-form-container {
+  box-sizing: border-box;
+  padding: 0 16px 16px 16px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   h2 {
     text-align: center;
   }
   #required-fields-prompt {
     @include mixins.alert-dialog;
   }
-  box-sizing: border-box;
-  padding: 0 16px 16px 16px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 .inner-form-prompt {
   @include mixins.alert-dialog;
   margin-top: 0px;
+  text-align: left;
   /* Fix <p> elements margin adding to padding resulting in too much space */
   &::ng-deep p:last-child {
     margin-bottom: 0;
   }
-  text-align: left;
 }
 form#personal-info-form {
   display: flex;

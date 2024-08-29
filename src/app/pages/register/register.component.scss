@@ -55,6 +55,7 @@ form#registration-form {
     margin-bottom: 16px;
   }
   .inner-form-prompt {
+    text-align: left;
     @include mixins.alert-dialog;
     margin-top: 0px;
     /* Fix <p> elements margin adding to padding resulting in too much space */
@@ -66,7 +67,6 @@ form#registration-form {
         margin-bottom: 0;
       }
     }
-    text-align: left;
   }
 }
 
