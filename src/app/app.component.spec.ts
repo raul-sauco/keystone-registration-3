@@ -1,4 +1,4 @@
-import {} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { EventEmitter, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -7,11 +7,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { of } from 'rxjs';
 
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { Spied } from '@interfaces/spied';
 import { Credentials } from '@models/credentials';
@@ -26,8 +27,6 @@ class MockTranslatePipe implements PipeTransform {
 }
 // Define some defaults.
 const imports = [
-  RouterTestingModule,
-  HttpClientTestingModule,
   LoggerTestingModule,
   // TranslateTestingModule.withTranslations({
   //   en: require('src/assets/i18n/en.json'),
@@ -53,7 +52,7 @@ const defaultAuthServiceSpy: Spied<AuthService> = jasmine.createSpyObj(
     getCredentials: new Credentials(credentials1),
     checkAuthenticated: Promise.resolve(true),
   },
-  { auth$: of(true) }
+  { auth$: of(true) },
 );
 const eventEmitter = new EventEmitter<LangChangeEvent>();
 
@@ -73,13 +72,16 @@ describe('AppComponent', () => {
           getBrowserLang: 'en-US',
           use: of(true),
         },
-        { currentLang: 'zh-CN', onLangChange: eventEmitter }
+        { currentLang: 'zh-CN', onLangChange: eventEmitter },
       );
       TestBed.configureTestingModule({
         providers: [
           AppComponent,
           { provide: AuthService, useValue: defaultAuthServiceSpy },
           { provide: TranslateService, useValue: translateServiceSpy },
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          provideRouter,
         ],
         imports,
         declarations: [AppComponent, MockTranslatePipe],
@@ -111,7 +113,7 @@ describe('AppComponent', () => {
     it('should have access to credentials from AuthService', () => {
       expect(component.auth.getCredentials()?.username).toBe(
         'test',
-        'wrong username'
+        'wrong username',
       );
     });
 
@@ -134,7 +136,7 @@ describe('AppComponent', () => {
           getBrowserLang: 'zh-CN',
           use: of(true),
         },
-        { currentLang: 'zh-CN', onLangChange: eventEmitter }
+        { currentLang: 'zh-CN', onLangChange: eventEmitter },
       );
       const studentAuthServiceSpy: Spied<AuthService> = jasmine.createSpyObj(
         'AuthService',
@@ -142,7 +144,7 @@ describe('AppComponent', () => {
           getCredentials: new Credentials(studentCredentials),
           checkAuthenticated: Promise.resolve(true),
         },
-        { auth$: of(true) }
+        { auth$: of(true) },
       );
       TestBed.configureTestingModule({
         providers: [
@@ -177,7 +179,7 @@ describe('AppComponent', () => {
           getBrowserLang: null,
           use: of(true),
         },
-        { currentLang: 'zh-CN', onLangChange: eventEmitter }
+        { currentLang: 'zh-CN', onLangChange: eventEmitter },
       );
       TestBed.configureTestingModule({
         providers: [

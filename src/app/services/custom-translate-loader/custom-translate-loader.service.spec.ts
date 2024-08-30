@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CustomTranslateLoaderService } from './custom-translate-loader.service';
+import { CustomTranslationsLoader } from './custom-translate-loader.service';
 
 describe('CustomTranslateLoaderService', () => {
-  let service: CustomTranslateLoaderService;
+  let service: CustomTranslationsLoader;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CustomTranslateLoaderService);
+    service = TestBed.inject(CustomTranslationsLoader);
   });
 
   it('should be created', () => {
