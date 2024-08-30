@@ -158,13 +158,13 @@ export class AppComponent implements OnInit {
     } else {
       this.translate.use('en');
     }
-    // Set the user's preference in the backend, 1 => en, 2 => zh.
-    this.api
-      .patch('user-preferences/1', { value })
-      .subscribe({
+    if (this.auth.authenticated) {
+      // Set the user's preference in the backend, 1 => en, 2 => zh.
+      this.api.patch('user-preferences/1', { value }).subscribe({
         next: (res: any) => this.logger.debug(res),
         error: (err: any) => this.logger.warn(err),
       });
+    }
   }
 
   /**
