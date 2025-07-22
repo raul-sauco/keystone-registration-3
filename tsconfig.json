@@ -8,22 +8,39 @@
     "declaration": false,
     "experimentalDecorators": true,
     "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "lib": ["es2018", "dom"],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "useDefineForClassFields": false,
     "paths": {
-      "@components/*": ["./src/app/components/*"],
-      "@directives/*": ["./src/app/directives/*"],
-      "@guards/*": ["./src/app/guards/*"],
-      "@interfaces/*": ["./src/app/interfaces/*"],
-      "@models/*": ["./src/app/models/*"],
-      "@pages/*": ["./src/app/pages/*"],
-      "@services/*": ["./src/app/services/*"]
+      "@components/*": [
+        "./src/app/components/*"
+      ],
+      "@directives/*": [
+        "./src/app/directives/*"
+      ],
+      "@guards/*": [
+        "./src/app/guards/*"
+      ],
+      "@interfaces/*": [
+        "./src/app/interfaces/*"
+      ],
+      "@models/*": [
+        "./src/app/models/*"
+      ],
+      "@pages/*": [
+        "./src/app/pages/*"
+      ],
+      "@services/*": [
+        "./src/app/services/*"
+      ]
     }
   },
   "angularCompilerOptions": {
