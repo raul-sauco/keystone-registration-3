@@ -10,9 +10,10 @@ import { GlobalsService } from '@services/globals/globals.service';
 import { PaymentService } from '@services/payment/payment.service';
 
 @Component({
-  selector: 'app-payment-upload-proof',
-  templateUrl: './payment-upload-proof.component.html',
-  styleUrls: ['./payment-upload-proof.component.scss'],
+    selector: 'app-payment-upload-proof',
+    templateUrl: './payment-upload-proof.component.html',
+    styleUrls: ['./payment-upload-proof.component.scss'],
+    standalone: false
 })
 export class PaymentUploadProofComponent implements OnInit, OnDestroy {
   file: File | null = null;

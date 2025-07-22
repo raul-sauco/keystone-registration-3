@@ -6,9 +6,10 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
-  selector: 'app-admin-banner',
-  templateUrl: './admin-banner.component.html',
-  styleUrls: ['./admin-banner.component.scss'],
+    selector: 'app-admin-banner',
+    templateUrl: './admin-banner.component.html',
+    styleUrls: ['./admin-banner.component.scss'],
+    standalone: false
 })
 export class AdminBannerComponent implements OnInit {
   lang: string = 'en';

@@ -19,7 +19,10 @@ import { Credentials } from '@models/credentials';
 import { AuthService } from '@services/auth/auth.service';
 import { AppComponent } from 'src/app/app.component';
 
-@Pipe({ name: 'translate' })
+@Pipe({
+    name: 'translate',
+    standalone: false
+})
 class MockTranslatePipe implements PipeTransform {
   transform(value: string): string {
     return value;

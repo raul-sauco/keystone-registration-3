@@ -11,9 +11,10 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
-  selector: 'app-accommodation',
-  templateUrl: './accommodation.component.html',
-  styleUrls: ['./accommodation.component.scss'],
+    selector: 'app-accommodation',
+    templateUrl: './accommodation.component.html',
+    styleUrls: ['./accommodation.component.scss'],
+    standalone: false
 })
 export class AccommodationComponent implements OnInit {
   supplier$!: Observable<Supplier[]>;

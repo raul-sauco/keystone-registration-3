@@ -23,10 +23,11 @@ import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.servi
 import { TripService } from '@services/trip/trip.service';
 
 @Component({
-  selector: 'app-participants',
-  templateUrl: './participants.component.html',
-  styleUrls: ['./participants.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-participants',
+    templateUrl: './participants.component.html',
+    styleUrls: ['./participants.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class ParticipantsComponent implements OnInit {
   participant$!: Observable<Student[]>;
@@ -413,9 +414,10 @@ export class ParticipantsComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-delete-student-confirmation-dialog-component',
-  templateUrl: './delete-student-confirmation-dialog.component.html',
-  styleUrls: ['./delete-student-confirmation-dialog.component.scss'],
+    selector: 'app-delete-student-confirmation-dialog-component',
+    templateUrl: './delete-student-confirmation-dialog.component.html',
+    styleUrls: ['./delete-student-confirmation-dialog.component.scss'],
+    standalone: false
 })
 export class DeleteStudentConfirmationDialogComponent {
   public loading = false;

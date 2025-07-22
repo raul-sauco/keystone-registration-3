@@ -10,9 +10,10 @@ import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
-  selector: 'app-payment-instructions',
-  templateUrl: './payment-instructions.component.html',
-  styleUrls: ['./payment-instructions.component.scss'],
+    selector: 'app-payment-instructions',
+    templateUrl: './payment-instructions.component.html',
+    styleUrls: ['./payment-instructions.component.scss'],
+    standalone: false
 })
 export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   lang!: string;
@@ -82,12 +83,12 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-  selector: 'app-add-participant-info-to-payment-reminder-dialog-component',
-  templateUrl:
-    './add-participant-info-to-payment-reminder-dialog.component.html',
-  styleUrls: [
-    './add-participant-info-to-payment-reminder-dialog.component.scss',
-  ],
+    selector: 'app-add-participant-info-to-payment-reminder-dialog-component',
+    templateUrl: './add-participant-info-to-payment-reminder-dialog.component.html',
+    styleUrls: [
+        './add-participant-info-to-payment-reminder-dialog.component.scss',
+    ],
+    standalone: false
 })
 export class AddParticipantInfoToPaymentReminderDialogComponent {
   exampleImgUrl: string;
@@ -105,9 +106,10 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
 }
 
 @Component({
-  selector: 'app-add-student-name-to-payment-proof-help-dialog-component',
-  templateUrl: './add-student-name-to-payment-proof-help-dialog.component.html',
-  styleUrls: ['./add-student-name-to-payment-proof-help-dialog.component.scss'],
+    selector: 'app-add-student-name-to-payment-proof-help-dialog-component',
+    templateUrl: './add-student-name-to-payment-proof-help-dialog.component.html',
+    styleUrls: ['./add-student-name-to-payment-proof-help-dialog.component.scss'],
+    standalone: false
 })
 export class AddStudentNameToPaymentProofHelpDialogComponent {
   exampleImgUrl: string;

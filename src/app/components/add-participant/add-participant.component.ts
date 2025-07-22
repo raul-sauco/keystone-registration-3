@@ -28,9 +28,10 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-add-participant',
-  templateUrl: './add-participant.component.html',
-  styleUrls: ['./add-participant.component.scss'],
+    selector: 'app-add-participant',
+    templateUrl: './add-participant.component.html',
+    styleUrls: ['./add-participant.component.scss'],
+    standalone: false
 })
 export class AddParticipantComponent implements OnInit {
   participantForm!: UntypedFormGroup;

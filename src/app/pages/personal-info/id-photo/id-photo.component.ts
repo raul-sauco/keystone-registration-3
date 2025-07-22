@@ -14,16 +14,15 @@ import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
-  selector: 'app-id-photo',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatProgressBarModule,
-    TranslateModule,
-  ],
-  templateUrl: './id-photo.component.html',
-  styleUrl: './id-photo.component.scss',
+    selector: 'app-id-photo',
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatProgressBarModule,
+        TranslateModule,
+    ],
+    templateUrl: './id-photo.component.html',
+    styleUrl: './id-photo.component.scss'
 })
 export class IdPhotoComponent implements OnInit {
   @Input() student!: Student;

@@ -42,9 +42,10 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    standalone: false
 })
 export class RegisterComponent implements OnInit {
   loading: boolean = false;
@@ -228,8 +229,9 @@ export class RegisterComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-error-message-dialog-component',
-  templateUrl: './error-message-dialog.component.html',
+    selector: 'app-error-message-dialog-component',
+    templateUrl: './error-message-dialog.component.html',
+    standalone: false
 })
 export class ErrorMessageDialogComponent {
   constructor(
@@ -239,9 +241,10 @@ export class ErrorMessageDialogComponent {
 }
 
 @Component({
-  selector: 'app-registration-success-dialog-component',
-  templateUrl: './registration-success-dialog.component.html',
-  styleUrls: ['./registration-success-dialog.component.scss'],
+    selector: 'app-registration-success-dialog-component',
+    templateUrl: './registration-success-dialog.component.html',
+    styleUrls: ['./registration-success-dialog.component.scss'],
+    standalone: false
 })
 export class RegistrationSuccessDialogComponent {
   username: string | null = null;

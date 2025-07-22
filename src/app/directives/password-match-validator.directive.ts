@@ -18,14 +18,15 @@ export const passwordMatchValidator: ValidatorFn = (
 };
 
 @Directive({
-  selector: '[appPasswordMatchValidator]',
-  providers: [
-    {
-      provide: NG_VALIDATORS,
-      useExisting: PasswordMatchValidatorDirective,
-      multi: true,
-    },
-  ],
+    selector: '[appPasswordMatchValidator]',
+    providers: [
+        {
+            provide: NG_VALIDATORS,
+            useExisting: PasswordMatchValidatorDirective,
+            multi: true,
+        },
+    ],
+    standalone: false
 })
 export class PasswordMatchValidatorDirective {
   static validate(control: AbstractControl): ValidationErrors | null {

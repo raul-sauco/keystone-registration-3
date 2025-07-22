@@ -9,13 +9,12 @@ import { LoadingSpinnerContentModule } from '@components/loading-spinner-content
 import { ApiService } from '@services/api/api.service';
 
 @Component({
-  selector: 'app-ka-md-document',
-  standalone: true,
-  templateUrl: './ka-md-document.component.html',
-  styleUrl: './ka-md-document.component.scss',
-  imports: [CommonModule, LoadingSpinnerContentModule, MarkdownModule],
-  // This is needed to style shadow DOM markdown content.
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-ka-md-document',
+    templateUrl: './ka-md-document.component.html',
+    styleUrl: './ka-md-document.component.scss',
+    imports: [CommonModule, LoadingSpinnerContentModule, MarkdownModule],
+    // This is needed to style shadow DOM markdown content.
+    encapsulation: ViewEncapsulation.None
 })
 export class KaMdDocumentComponent implements OnInit {
   @Input() endpoint!: string;

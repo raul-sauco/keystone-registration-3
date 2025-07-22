@@ -9,9 +9,10 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
-  selector: 'app-packing-list',
-  templateUrl: './packing-list.component.html',
-  styleUrls: ['./packing-list.component.scss'],
+    selector: 'app-packing-list',
+    templateUrl: './packing-list.component.html',
+    styleUrls: ['./packing-list.component.scss'],
+    standalone: false
 })
 export class PackingListComponent implements OnInit, OnDestroy {
   itemsBring: TripPackingListItem[] = [];

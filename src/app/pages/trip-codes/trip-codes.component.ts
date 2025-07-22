@@ -18,9 +18,10 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-trip-codes',
-  templateUrl: './trip-codes.component.html',
-  styleUrls: ['./trip-codes.component.scss'],
+    selector: 'app-trip-codes',
+    templateUrl: './trip-codes.component.html',
+    styleUrls: ['./trip-codes.component.scss'],
+    standalone: false
 })
 export class TripCodesComponent implements OnInit {
   tripCodeForm!: UntypedFormGroup;
@@ -134,8 +135,9 @@ export class TripCodesComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-code-error-dialog-component',
-  templateUrl: './code-error-dialog.component.html',
+    selector: 'app-code-error-dialog-component',
+    templateUrl: './code-error-dialog.component.html',
+    standalone: false
 })
 export class CodeErrorDialogComponent {
   constructor(
@@ -149,8 +151,9 @@ export class CodeErrorDialogComponent {
 }
 
 @Component({
-  selector: 'app-trip-code-help-dialog-component',
-  templateUrl: './trip-code-help-dialog.component.html',
+    selector: 'app-trip-code-help-dialog-component',
+    templateUrl: './trip-code-help-dialog.component.html',
+    standalone: false
 })
 export class TripCodeHelpDialogComponent {
   constructor(

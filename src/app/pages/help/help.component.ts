@@ -8,10 +8,11 @@ import { ApiService } from '@services/api/api.service';
 import { PaymentService } from '@services/payment/payment.service';
 
 @Component({
-  selector: 'app-help',
-  templateUrl: './help.component.html',
-  styleUrls: ['./help.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-help',
+    templateUrl: './help.component.html',
+    styleUrls: ['./help.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class HelpComponent implements OnInit {
   content$!: Observable<string>;

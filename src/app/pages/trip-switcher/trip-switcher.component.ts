@@ -4,9 +4,10 @@ import { NGXLogger } from 'ngx-logger';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
-  selector: 'app-trip-switcher',
-  templateUrl: './trip-switcher.component.html',
-  styleUrls: ['./trip-switcher.component.scss'],
+    selector: 'app-trip-switcher',
+    templateUrl: './trip-switcher.component.html',
+    styleUrls: ['./trip-switcher.component.scss'],
+    standalone: false
 })
 export class TripSwitcherComponent implements OnInit {
   lang: string = 'en';

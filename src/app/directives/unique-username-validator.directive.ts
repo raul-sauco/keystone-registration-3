@@ -25,14 +25,15 @@ export class UniqueUsernameValidator implements AsyncValidator {
 }
 
 @Directive({
-  selector: '[appUniqueUsernameValidatorDirective]',
-  providers: [
-    {
-      provide: NG_ASYNC_VALIDATORS,
-      useExisting: forwardRef(() => UniqueUsernameValidator),
-      multi: true,
-    },
-  ],
+    selector: '[appUniqueUsernameValidatorDirective]',
+    providers: [
+        {
+            provide: NG_ASYNC_VALIDATORS,
+            useExisting: forwardRef(() => UniqueUsernameValidator),
+            multi: true,
+        },
+    ],
+    standalone: false
 })
 export class UniqueUsernameValidatorDirective {
   constructor(private validator: UniqueUsernameValidator) {}

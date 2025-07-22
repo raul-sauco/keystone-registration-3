@@ -3,9 +3,10 @@ import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 
 @Component({
-  selector: 'app-packing-list-item',
-  templateUrl: './packing-list-item.component.html',
-  styleUrls: ['./packing-list-item.component.scss'],
+    selector: 'app-packing-list-item',
+    templateUrl: './packing-list-item.component.html',
+    styleUrls: ['./packing-list-item.component.scss'],
+    standalone: false
 })
 export class PackingListItemComponent implements OnInit {
   @Input() pli!: TripPackingListItem;

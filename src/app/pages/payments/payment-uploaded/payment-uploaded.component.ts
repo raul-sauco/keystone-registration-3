@@ -10,9 +10,10 @@ import { PaymentService } from 'src/app/services/payment/payment.service';
 import { StudentService } from 'src/app/services/student/student.service';
 
 @Component({
-  selector: 'app-payment-uploaded',
-  templateUrl: './payment-uploaded.component.html',
-  styleUrls: ['./payment-uploaded.component.scss'],
+    selector: 'app-payment-uploaded',
+    templateUrl: './payment-uploaded.component.html',
+    styleUrls: ['./payment-uploaded.component.scss'],
+    standalone: false
 })
 export class PaymentUploadedComponent implements OnInit, OnDestroy {
   staticUrl: string;
@@ -67,9 +68,10 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-  selector: 'app-payment-completed-confirmation-dialog-component',
-  templateUrl: './payment-completed-confirmation-dialog.component.html',
-  styleUrls: ['./payment-completed-confirmation-dialog.component.scss'],
+    selector: 'app-payment-completed-confirmation-dialog-component',
+    templateUrl: './payment-completed-confirmation-dialog.component.html',
+    styleUrls: ['./payment-completed-confirmation-dialog.component.scss'],
+    standalone: false
 })
 export class PaymentCompletedConfirmationDialogComponent {
   constructor(

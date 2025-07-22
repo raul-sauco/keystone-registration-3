@@ -4,9 +4,10 @@ import { Supplier } from 'src/app/models/supplier';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 
 @Component({
-  selector: 'app-supplier-item',
-  templateUrl: './supplier-item.component.html',
-  styleUrls: ['./supplier-item.component.scss'],
+    selector: 'app-supplier-item',
+    templateUrl: './supplier-item.component.html',
+    styleUrls: ['./supplier-item.component.scss'],
+    standalone: false
 })
 export class SupplierItemComponent implements OnInit {
   @Input() supplier!: Supplier;

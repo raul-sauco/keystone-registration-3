@@ -7,10 +7,11 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
-  selector: 'app-feedback',
-  templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-feedback',
+    templateUrl: './feedback.component.html',
+    styleUrls: ['./feedback.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class FeedbackComponent implements OnInit {
   feedback$!: Observable<any>;

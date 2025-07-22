@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-no-items-notification',
-  templateUrl: './no-items-notification.component.html',
-  styleUrls: ['./no-items-notification.component.scss']
+    selector: 'app-no-items-notification',
+    templateUrl: './no-items-notification.component.html',
+    styleUrls: ['./no-items-notification.component.scss'],
+    standalone: false
 })
 export class NoItemsNotificationComponent {
 

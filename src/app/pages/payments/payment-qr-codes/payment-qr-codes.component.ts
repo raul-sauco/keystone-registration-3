@@ -8,9 +8,10 @@ import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
-  selector: 'app-payment-qr-codes',
-  templateUrl: './payment-qr-codes.component.html',
-  styleUrls: ['./payment-qr-codes.component.scss'],
+    selector: 'app-payment-qr-codes',
+    templateUrl: './payment-qr-codes.component.html',
+    styleUrls: ['./payment-qr-codes.component.scss'],
+    standalone: false
 })
 export class PaymentQrCodesComponent implements OnInit {
   images$!: Observable<any>;

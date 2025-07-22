@@ -33,9 +33,10 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss'],
+    selector: 'app-reset-password',
+    templateUrl: './reset-password.component.html',
+    styleUrls: ['./reset-password.component.scss'],
+    standalone: false
 })
 export class ResetPasswordComponent implements OnInit {
   validating = true;
@@ -196,8 +197,9 @@ export class ResetPasswordComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-password-reset-dialog-component',
-  templateUrl: './reset-password-dialog-component.html',
+    selector: 'app-password-reset-dialog-component',
+    templateUrl: './reset-password-dialog-component.html',
+    standalone: false
 })
 export class ResetPasswordDialogComponent {
   constructor(

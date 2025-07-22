@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'camelToSnake',
+    name: 'camelToSnake',
+    standalone: false
 })
 export class CamelToSnakePipe implements PipeTransform {
   transform(value: string): string {

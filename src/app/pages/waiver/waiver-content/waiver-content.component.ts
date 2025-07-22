@@ -6,9 +6,10 @@ import { PaymentInfo } from '@models/paymentInfo';
 import { ApiService } from '@services/api/api.service';
 import { PaymentService } from '@services/payment/payment.service';
 @Component({
-  selector: 'app-waiver-content',
-  templateUrl: './waiver-content.component.html',
-  styleUrls: ['./waiver-content.component.scss'],
+    selector: 'app-waiver-content',
+    templateUrl: './waiver-content.component.html',
+    styleUrls: ['./waiver-content.component.scss'],
+    standalone: false
 })
 export class WaiverContentComponent implements OnInit {
   document!: any;

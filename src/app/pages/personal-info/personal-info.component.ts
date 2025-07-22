@@ -27,9 +27,10 @@ import { SchoolService } from '@services/school/school.service';
 import { StudentService } from '@services/student/student.service';
 
 @Component({
-  selector: 'app-personal-info',
-  templateUrl: './personal-info.component.html',
-  styleUrls: ['./personal-info.component.scss'],
+    selector: 'app-personal-info',
+    templateUrl: './personal-info.component.html',
+    styleUrls: ['./personal-info.component.scss'],
+    standalone: false
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
   @ViewChild('photoId') photoIdElement!: ElementRef;

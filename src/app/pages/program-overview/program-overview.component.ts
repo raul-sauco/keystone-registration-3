@@ -11,9 +11,10 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
-  selector: 'app-program-overview',
-  templateUrl: './program-overview.component.html',
-  styleUrls: ['./program-overview.component.scss'],
+    selector: 'app-program-overview',
+    templateUrl: './program-overview.component.html',
+    styleUrls: ['./program-overview.component.scss'],
+    standalone: false
 })
 export class ProgramOverviewComponent implements OnInit {
   document$: Observable<any> | null = null;

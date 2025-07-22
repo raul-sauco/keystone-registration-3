@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-login-required-message',
-  templateUrl: './login-required-message.component.html',
-  styleUrls: ['./login-required-message.component.scss']
+    selector: 'app-login-required-message',
+    templateUrl: './login-required-message.component.html',
+    styleUrls: ['./login-required-message.component.scss'],
+    standalone: false
 })
 export class LoginRequiredMessageComponent {
 

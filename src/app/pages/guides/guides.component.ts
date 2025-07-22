@@ -15,9 +15,10 @@ import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.servi
 import { TripService } from '@services/trip/trip.service';
 
 @Component({
-  selector: 'app-guides',
-  templateUrl: './guides.component.html',
-  styleUrls: ['./guides.component.scss'],
+    selector: 'app-guides',
+    templateUrl: './guides.component.html',
+    styleUrls: ['./guides.component.scss'],
+    standalone: false
 })
 export class GuidesComponent implements OnInit {
   guide$: Observable<Guide[]> = of([]);

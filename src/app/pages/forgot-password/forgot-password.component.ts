@@ -17,9 +17,10 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
-  selector: 'app-forgot-password',
-  templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss'],
+    selector: 'app-forgot-password',
+    templateUrl: './forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.scss'],
+    standalone: false
 })
 export class ForgotPasswordComponent implements OnInit {
   passwordRecoveryForm!: UntypedFormGroup;
@@ -132,8 +133,9 @@ export class ForgotPasswordComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-forgot-password-dialog-component',
-  templateUrl: './forgot-password-dialog-component.html',
+    selector: 'app-forgot-password-dialog-component',
+    templateUrl: './forgot-password-dialog-component.html',
+    standalone: false
 })
 export class ForgotPasswordDialogComponent {
   constructor(

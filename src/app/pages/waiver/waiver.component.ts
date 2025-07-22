@@ -17,9 +17,10 @@ import { PaymentService } from '@services/payment/payment.service';
 import { StudentService } from '@services/student/student.service';
 
 @Component({
-  selector: 'app-waiver',
-  templateUrl: './waiver.component.html',
-  styleUrls: ['./waiver.component.scss'],
+    selector: 'app-waiver',
+    templateUrl: './waiver.component.html',
+    styleUrls: ['./waiver.component.scss'],
+    standalone: false
 })
 export class WaiverComponent implements OnInit, OnDestroy {
   needsLogin = false;
