@@ -1,11 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -33,6 +27,17 @@ import { StudentService } from '@services/student/student.service';
     standalone: false
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
+  private api = inject(ApiService);
+  private formBuilder = inject(UntypedFormBuilder);
+  private snackBar = inject(MatSnackBar);
+  private logger = inject(NGXLogger);
+  private router = inject(Router);
+  private translate = inject(TranslateService);
+  private paymentService = inject(PaymentService);
+  schoolService = inject(SchoolService);
+  studentService = inject(StudentService);
+  auth = inject(AuthService);
+
   @ViewChild('photoId') photoIdElement!: ElementRef;
   private student$?: Subscription | null = null;
   private paymentInfo?: PaymentInfo | null = null;
@@ -45,19 +50,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   namePromptContent$!: Observable<any>;
   englishNamePromptContent$!: Observable<any>;
   requiredFieldsPromptContent$!: Observable<any>;
-
-  constructor(
-    private api: ApiService,
-    private formBuilder: UntypedFormBuilder,
-    private snackBar: MatSnackBar,
-    private logger: NGXLogger,
-    private router: Router,
-    private translate: TranslateService,
-    private paymentService: PaymentService,
-    public schoolService: SchoolService,
-    public studentService: StudentService,
-    public auth: AuthService,
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('PersonalInfoComponent OnInit');

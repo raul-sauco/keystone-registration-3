@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -17,21 +17,21 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
     standalone: false
 })
 export class ProgramOverviewComponent implements OnInit {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private globals = inject(GlobalsService);
+  private logger = inject(NGXLogger);
+  private route = inject(ActivatedRoute);
+  private routeStateService = inject(RouteStateService);
+  private translate = inject(TranslateService);
+  private tripSwitcher = inject(TripSwitcherService);
+
   document$: Observable<any> | null = null;
   url: string;
   lang: string;
   needsLogin = false;
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private globals: GlobalsService,
-    private logger: NGXLogger,
-    private route: ActivatedRoute,
-    private routeStateService: RouteStateService,
-    private translate: TranslateService,
-    private tripSwitcher: TripSwitcherService
-  ) {
+  constructor() {
     this.url = this.globals.getResUrl();
     this.lang = this.translate.currentLang;
   }

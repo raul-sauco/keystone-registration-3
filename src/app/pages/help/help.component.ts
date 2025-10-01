@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, map } from 'rxjs';
@@ -15,15 +15,13 @@ import { PaymentService } from '@services/payment/payment.service';
     standalone: false
 })
 export class HelpComponent implements OnInit {
+  private api = inject(ApiService);
+  private logger = inject(NGXLogger);
+  private translate = inject(TranslateService);
+  private paymentService = inject(PaymentService);
+
   content$!: Observable<string>;
   private documentId: string = '133';
-
-  constructor(
-    private api: ApiService,
-    private logger: NGXLogger,
-    private translate: TranslateService,
-    private paymentService: PaymentService
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('HelpComponent OnInit');

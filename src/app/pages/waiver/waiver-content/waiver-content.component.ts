@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
@@ -12,15 +12,13 @@ import { PaymentService } from '@services/payment/payment.service';
     standalone: false
 })
 export class WaiverContentComponent implements OnInit {
+  private logger = inject(NGXLogger);
+  private paymentService = inject(PaymentService);
+  api = inject(ApiService);
+  translate = inject(TranslateService);
+
   document!: any;
   content = signal(null);
-
-  constructor(
-    private logger: NGXLogger,
-    private paymentService: PaymentService,
-    public api: ApiService,
-    public translate: TranslateService,
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('WaiverContentComponent::OnInit');

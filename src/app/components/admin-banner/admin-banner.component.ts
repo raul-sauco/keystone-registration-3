@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Trip } from 'src/app/models/trip';
@@ -12,15 +12,15 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
     standalone: false
 })
 export class AdminBannerComponent implements OnInit {
+  private logger = inject(NGXLogger);
+  private translate = inject(TranslateService);
+  tripService = inject(TripSwitcherService);
+  auth = inject(AuthService);
+
   lang: string = 'en';
   trip?: Trip;
 
-  constructor(
-    private logger: NGXLogger,
-    private translate: TranslateService,
-    public tripService: TripSwitcherService,
-    public auth: AuthService
-  ) {
+  constructor() {
     this.lang = this.translate.currentLang;
   }
 

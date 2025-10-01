@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -30,6 +30,16 @@ import { TripService } from '@services/trip/trip.service';
     standalone: false
 })
 export class ParticipantsComponent implements OnInit {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  private dialog = inject(MatDialog);
+  private schoolService = inject(SchoolService);
+  private translate = inject(TranslateService);
+  private tripService = inject(TripService);
+  private tripSwitcher = inject(TripSwitcherService);
+  private snackBar = inject(MatSnackBar);
+
   participant$!: Observable<Student[]>;
   displayedColumns: string[];
   sortableColumns: string[];
@@ -37,17 +47,7 @@ export class ParticipantsComponent implements OnInit {
   school: School | null = null;
   sortedParticipants: Student[] = [];
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    private dialog: MatDialog,
-    private schoolService: SchoolService,
-    private translate: TranslateService,
-    private tripService: TripService,
-    private tripSwitcher: TripSwitcherService,
-    private snackBar: MatSnackBar,
-  ) {
+  constructor() {
     this.displayedColumns = this.getDisplayedColumns();
     this.sortableColumns = [
       // 'index',
@@ -420,16 +420,14 @@ export class ParticipantsComponent implements OnInit {
     standalone: false
 })
 export class DeleteStudentConfirmationDialogComponent {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  dialogRef = inject<MatDialogRef<DeleteStudentConfirmationDialogComponent>>(MatDialogRef);
+  data = inject<Student>(MAT_DIALOG_DATA);
+
   public loading = false;
   public deleteError = false;
-
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    public dialogRef: MatDialogRef<DeleteStudentConfirmationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Student,
-  ) {}
 
   /**
    * User confirms participant delete.

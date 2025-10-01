@@ -1,4 +1,4 @@
-import { Directive, forwardRef, Injectable } from '@angular/core';
+import { Directive, forwardRef, Injectable, inject } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidator,
@@ -12,7 +12,8 @@ import { UsernameService } from '../services/username/username.service';
 // noinspection JSAnnotator
 @Injectable({ providedIn: 'root' })
 export class UniqueUsernameValidator implements AsyncValidator {
-  constructor(private usernameService: UsernameService) {}
+  private usernameService = inject(UsernameService);
+
 
   validate(
     control: AbstractControl
@@ -36,7 +37,8 @@ export class UniqueUsernameValidator implements AsyncValidator {
     standalone: false
 })
 export class UniqueUsernameValidatorDirective {
-  constructor(private validator: UniqueUsernameValidator) {}
+  private validator = inject(UniqueUsernameValidator);
+
 
   validate(control: AbstractControl) {
     this.validator.validate(control);

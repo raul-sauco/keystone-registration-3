@@ -1,5 +1,5 @@
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -16,21 +16,19 @@ import { PaymentService } from '@services/payment/payment.service';
     standalone: false
 })
 export class PaymentUploadProofComponent implements OnInit, OnDestroy {
+  private auth = inject(AuthService);
+  private http = inject(HttpClient);
+  private globals = inject(GlobalsService);
+  private snackBar = inject(MatSnackBar);
+  private logger = inject(NGXLogger);
+  private paymentService = inject(PaymentService);
+  private translate = inject(TranslateService);
+
   file: File | null = null;
   imgSrc: string | ArrayBuffer | null = null;
   uploadProgress: number | null = null;
   uploadSub: Subscription | null = null;
   success = false;
-
-  constructor(
-    private auth: AuthService,
-    private http: HttpClient,
-    private globals: GlobalsService,
-    private snackBar: MatSnackBar,
-    private logger: NGXLogger,
-    private paymentService: PaymentService,
-    private translate: TranslateService
-  ) {}
 
   ngOnDestroy(): void {
     this.logger.debug('PaymentUploadProofComponent on destroy');

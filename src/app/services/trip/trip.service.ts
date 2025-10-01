@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject } from 'rxjs';
@@ -15,6 +15,13 @@ import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.servi
   providedIn: 'root',
 })
 export class TripService {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private storageService = inject(StorageService);
+  private logger = inject(NGXLogger);
+  private translate = inject(TranslateService);
+  private tripSwitcherService = inject(TripSwitcherService);
+
   private TRIP_DATA_STORAGE_KEY = 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA';
   private _tripName$: BehaviorSubject<string> = new BehaviorSubject('');
   private _trip: Trip | null = null;
@@ -23,14 +30,7 @@ export class TripService {
   code!: string;
   type!: string;
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private storageService: StorageService,
-    private logger: NGXLogger,
-    private translate: TranslateService,
-    private tripSwitcherService: TripSwitcherService
-  ) {
+  constructor() {
     this.init();
   }
 

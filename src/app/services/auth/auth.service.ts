@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subject } from 'rxjs';
 
@@ -9,13 +9,16 @@ import { StorageService } from '@services/storage/storage.service';
   providedIn: 'root',
 })
 export class AuthService {
+  private storage = inject(StorageService);
+  private logger = inject(NGXLogger);
+
   private credentials?: Credentials;
 
   public authenticated = false;
   auth$: Subject<boolean> = new Subject<boolean>();
   public redirectUrl?: string;
 
-  constructor(private storage: StorageService, private logger: NGXLogger) {
+  constructor() {
     this.logger.debug('AuthService constructor');
     this.checkAuthenticated().catch((error) => this.logger.warn(error));
   }

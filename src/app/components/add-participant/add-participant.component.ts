@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   FormGroupDirective,
   NgForm,
@@ -34,19 +34,17 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     standalone: false
 })
 export class AddParticipantComponent implements OnInit {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  dialogRef = inject<MatDialogRef<AddParticipantComponent>>(MatDialogRef);
+  private formBuilder = inject(UntypedFormBuilder);
+  private logger = inject(NGXLogger);
+  private uniqueUsernameValidator = inject(UniqueUsernameValidator);
+  private tripSwitcher = inject(TripSwitcherService);
+
   participantForm!: UntypedFormGroup;
   errorMatcher!: CrossFieldErrorMatcher;
   loading: boolean = false;
-
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    public dialogRef: MatDialogRef<AddParticipantComponent>,
-    private formBuilder: UntypedFormBuilder,
-    private logger: NGXLogger,
-    private uniqueUsernameValidator: UniqueUsernameValidator,
-    private tripSwitcher: TripSwitcherService
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('AddParticipantComponent OnInit');

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -23,16 +23,14 @@ import { AuthService } from 'src/app/services/auth/auth.service';
     standalone: false
 })
 export class ForgotPasswordComponent implements OnInit {
+  private api = inject(ApiService);
+  private formBuilder = inject(UntypedFormBuilder);
+  dialog = inject(MatDialog);
+  private logger = inject(NGXLogger);
+  private router = inject(Router);
+
   passwordRecoveryForm!: UntypedFormGroup;
   loading: boolean = false;
-
-  constructor(
-    private api: ApiService,
-    private formBuilder: UntypedFormBuilder,
-    public dialog: MatDialog,
-    private logger: NGXLogger,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('ForgotPasswordComponent OnInit');
@@ -138,9 +136,6 @@ export class ForgotPasswordComponent implements OnInit {
     standalone: false
 })
 export class ForgotPasswordDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<ForgotPasswordDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    auth: AuthService
-  ) {}
+  dialogRef = inject<MatDialogRef<ForgotPasswordDialogComponent>>(MatDialogRef);
+  data = inject<DialogData>(MAT_DIALOG_DATA);
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   Router,
@@ -13,7 +13,9 @@ import { AuthService } from '@services/auth/auth.service';
   providedIn: 'root',
 })
 export class SchoolAdminGuard {
-  constructor(private auth: AuthService, private router: Router) {}
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
@@ -16,18 +16,19 @@ import { StudentService } from 'src/app/services/student/student.service';
     standalone: false
 })
 export class PaymentUploadedComponent implements OnInit, OnDestroy {
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  private router = inject(Router);
+  private studentService = inject(StudentService);
+  dialog = inject(MatDialog);
+  paymentService = inject(PaymentService);
+
   staticUrl: string;
   private student$: Subscription | null = null;
 
-  constructor(
-    private auth: AuthService,
-    private logger: NGXLogger,
-    private router: Router,
-    private studentService: StudentService,
-    public dialog: MatDialog,
-    public paymentService: PaymentService,
-    globals: GlobalsService
-  ) {
+  constructor() {
+    const globals = inject(GlobalsService);
+
     this.staticUrl =
       globals.getResUrl() +
       'img/trip/pop/' +
@@ -74,7 +75,5 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
     standalone: false
 })
 export class PaymentCompletedConfirmationDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<PaymentCompletedConfirmationDialogComponent>
-  ) {}
+  dialogRef = inject<MatDialogRef<PaymentCompletedConfirmationDialogComponent>>(MatDialogRef);
 }

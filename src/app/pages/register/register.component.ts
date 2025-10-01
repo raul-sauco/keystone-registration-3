@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   FormGroupDirective,
   NgForm,
@@ -48,24 +48,22 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     standalone: false
 })
 export class RegisterComponent implements OnInit {
+  private api = inject(ApiService);
+  private paymentService = inject(PaymentService);
+  private formBuilder = inject(UntypedFormBuilder);
+  private logger = inject(NGXLogger);
+  private usernameValidator = inject(UniqueUsernameValidator);
+  auth = inject(AuthService);
+  dialog = inject(MatDialog);
+  router = inject(Router);
+  translate = inject(TranslateService);
+  trip = inject(TripService);
+
   loading: boolean = false;
   userRegistrationForm!: UntypedFormGroup;
   errorMatcher!: CrossFieldErrorMatcher;
   namePromptContent$!: Observable<string>;
   lang: string = 'en';
-
-  constructor(
-    private api: ApiService,
-    private paymentService: PaymentService,
-    private formBuilder: UntypedFormBuilder,
-    private logger: NGXLogger,
-    private usernameValidator: UniqueUsernameValidator,
-    public auth: AuthService,
-    public dialog: MatDialog,
-    public router: Router,
-    public translate: TranslateService,
-    public trip: TripService,
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('RegisterComponent OnInit');
@@ -234,10 +232,8 @@ export class RegisterComponent implements OnInit {
     standalone: false
 })
 export class ErrorMessageDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<ErrorMessageDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
+  dialogRef = inject<MatDialogRef<ErrorMessageDialogComponent>>(MatDialogRef);
+  data = inject<DialogData>(MAT_DIALOG_DATA);
 }
 
 @Component({
@@ -247,12 +243,13 @@ export class ErrorMessageDialogComponent {
     standalone: false
 })
 export class RegistrationSuccessDialogComponent {
+  dialogRef = inject<MatDialogRef<RegistrationSuccessDialogComponent>>(MatDialogRef);
+  data = inject<DialogData>(MAT_DIALOG_DATA);
+
   username: string | null = null;
-  constructor(
-    public dialogRef: MatDialogRef<RegistrationSuccessDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    auth: AuthService,
-  ) {
+  constructor() {
+    const auth = inject(AuthService);
+
     this.username = auth.getCredentials()?.username || null;
   }
 }

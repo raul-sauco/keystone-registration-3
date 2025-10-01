@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { ReplaySubject, Subject } from 'rxjs';
 import { Trip } from 'src/app/models/trip';
@@ -11,17 +11,17 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
   providedIn: 'root',
 })
 export class TripSwitcherService {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  private routeStateService = inject(RouteStateService);
+
   private trips: Trip[] = [];
   trips$: Subject<Trip[]> = new ReplaySubject();
   selectedTrip$: Subject<Trip> = new ReplaySubject();
   selectedTrip: Trip | null = null;
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    private routeStateService: RouteStateService
-  ) {
+  constructor() {
     this.logger.debug('TripSwitcherService constructor');
     this.init();
   }

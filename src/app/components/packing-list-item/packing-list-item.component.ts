@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 
@@ -9,10 +9,10 @@ import { GlobalsService } from 'src/app/services/globals/globals.service';
     standalone: false
 })
 export class PackingListItemComponent implements OnInit {
+  private globals = inject(GlobalsService);
+
   @Input() pli!: TripPackingListItem;
   url!: string;
-
-  constructor(private globals: GlobalsService) {}
 
   ngOnInit(): void {
     this.url = this.globals.getResUrl();

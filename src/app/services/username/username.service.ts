@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../api/api.service';
@@ -7,7 +7,8 @@ import { ApiService } from '../api/api.service';
   providedIn: 'root',
 })
 export class UsernameService {
-  constructor(private api: ApiService) {}
+  private api = inject(ApiService);
+
 
   isUsernameTaken(username: string): Observable<boolean> {
     const endpoint = 'username-available?username=' + username;

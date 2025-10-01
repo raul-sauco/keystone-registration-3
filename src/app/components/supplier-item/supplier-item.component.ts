@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Supplier } from 'src/app/models/supplier';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
@@ -10,14 +10,12 @@ import { GlobalsService } from 'src/app/services/globals/globals.service';
     standalone: false
 })
 export class SupplierItemComponent implements OnInit {
+  private globals = inject(GlobalsService);
+  translate = inject(TranslateService);
+
   @Input() supplier!: Supplier;
   url!: string;
   lang!: string;
-
-  constructor(
-    private globals: GlobalsService,
-    public translate: TranslateService
-  ) {}
 
   ngOnInit(): void {
     this.url = this.globals.getResUrl();

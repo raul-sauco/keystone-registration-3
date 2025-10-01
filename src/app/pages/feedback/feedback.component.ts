@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -14,15 +14,13 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
   standalone: false,
 })
 export class FeedbackComponent implements OnInit {
+  private logger = inject(NGXLogger);
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private tripSwitcher = inject(TripSwitcherService);
+
   feedback$!: Observable<any>;
   canDetermineTrip = true;
-
-  constructor(
-    private logger: NGXLogger,
-    private api: ApiService,
-    private auth: AuthService,
-    private tripSwitcher: TripSwitcherService
-  ) { }
 
   ngOnInit(): void {
     this.logger.debug('FeedbackComponent OnInit');

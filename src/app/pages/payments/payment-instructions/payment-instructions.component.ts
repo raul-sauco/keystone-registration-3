@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -16,18 +16,16 @@ import { GlobalsService } from '@services/globals/globals.service';
     standalone: false
 })
 export class PaymentInstructionsComponent implements OnInit, OnDestroy {
+  dialog = inject(MatDialog);
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  private translate = inject(TranslateService);
+
   lang!: string;
   content$!: Observable<any>;
   timeout: number | null = null;
   helpOpen: boolean = false;
-
-  constructor(
-    public dialog: MatDialog,
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    private translate: TranslateService
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('PaymentInstructionsComponent on init');
@@ -91,12 +89,13 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
     standalone: false
 })
 export class AddParticipantInfoToPaymentReminderDialogComponent {
+  dialogRef = inject<MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>>(MatDialogRef);
+
   exampleImgUrl: string;
-  constructor(
-    public dialogRef: MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>,
-    globals: GlobalsService,
-    translate: TranslateService
-  ) {
+  constructor() {
+    const globals = inject(GlobalsService);
+    const translate = inject(TranslateService);
+
     this.exampleImgUrl =
       globals.getResUrl() +
       'img/portal/example-payment-proof-' +
@@ -112,12 +111,13 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
     standalone: false
 })
 export class AddStudentNameToPaymentProofHelpDialogComponent {
+  dialogRef = inject<MatDialogRef<AddStudentNameToPaymentProofHelpDialogComponent>>(MatDialogRef);
+
   exampleImgUrl: string;
-  constructor(
-    public dialogRef: MatDialogRef<AddStudentNameToPaymentProofHelpDialogComponent>,
-    globals: GlobalsService,
-    translate: TranslateService
-  ) {
+  constructor() {
+    const globals = inject(GlobalsService);
+    const translate = inject(TranslateService);
+
     this.exampleImgUrl =
       globals.getResUrl() +
       'img/portal/example-payment-proof-' +

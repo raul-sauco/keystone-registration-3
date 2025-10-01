@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -25,23 +25,23 @@ import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.servi
     standalone: false
 })
 export class LoginComponent implements OnInit {
+  private router = inject(Router);
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private formBuilder = inject(UntypedFormBuilder);
+  private logger = inject(NGXLogger);
+  private snackbar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
+  private routeStateService = inject(RouteStateService);
+  private paymentService = inject(PaymentService);
+  private studentService = inject(StudentService);
+  private tripSwitcher = inject(TripSwitcherService);
+
   loginForm!: UntypedFormGroup;
   loading: boolean;
   errorMsg: string | null = null;
 
-  constructor(
-    private router: Router,
-    private api: ApiService,
-    private auth: AuthService,
-    private formBuilder: UntypedFormBuilder,
-    private logger: NGXLogger,
-    private snackbar: MatSnackBar,
-    private translate: TranslateService,
-    private routeStateService: RouteStateService,
-    private paymentService: PaymentService,
-    private studentService: StudentService,
-    private tripSwitcher: TripSwitcherService
-  ) {
+  constructor() {
     this.loading = false;
     this.logger.debug('LoginComponent constructor');
   }

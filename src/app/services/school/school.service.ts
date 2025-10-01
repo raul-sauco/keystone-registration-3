@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable, isDevMode, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject } from 'rxjs';
 
@@ -12,17 +12,17 @@ import { StorageService } from 'src/app/services/storage/storage.service';
   providedIn: 'root',
 })
 export class SchoolService {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  private storage = inject(StorageService);
+
   private SCHOOL_SERVICE_STORAGE_KEY =
     'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY';
   school$: BehaviorSubject<School> = new BehaviorSubject(new School({}));
   private school?: School;
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    private storage: StorageService
-  ) {
+  constructor() {
     this.logger.debug('SchoolService constructor');
     this.auth.checkAuthenticated().then((res) => {
       if (res && !this.auth.isSchoolAdmin) {

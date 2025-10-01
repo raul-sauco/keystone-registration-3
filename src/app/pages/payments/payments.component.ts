@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 
@@ -14,16 +14,17 @@ import { PaymentService } from '@services/payment/payment.service';
     standalone: false
 })
 export class PaymentsComponent implements OnInit, ComponentCanDeactivate {
+  private logger = inject(NGXLogger);
+  paymentService = inject(PaymentService);
+  auth = inject(AuthService);
+
   lang!: string;
   content$!: Observable<any>;
   staticUrl: string;
 
-  constructor(
-    private logger: NGXLogger,
-    public paymentService: PaymentService,
-    public auth: AuthService,
-    globals: GlobalsService
-  ) {
+  constructor() {
+    const globals = inject(GlobalsService);
+
     this.staticUrl = globals.getResUrl();
   }
 

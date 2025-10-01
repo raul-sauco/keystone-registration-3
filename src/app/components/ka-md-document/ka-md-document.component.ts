@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
@@ -17,14 +17,12 @@ import { ApiService } from '@services/api/api.service';
     encapsulation: ViewEncapsulation.None
 })
 export class KaMdDocumentComponent implements OnInit {
+  private logger = inject(NGXLogger);
+  private api = inject(ApiService);
+  private translate = inject(TranslateService);
+
   @Input() endpoint!: string;
   content$!: Observable<string>;
-
-  constructor(
-    private logger: NGXLogger,
-    private api: ApiService,
-    private translate: TranslateService,
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('KAMdDocumentComponent::OnInit');

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subject } from 'rxjs';
@@ -12,15 +12,15 @@ import { AuthService } from '../auth/auth.service';
   providedIn: 'root',
 })
 export class PackingListService {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  private translate = inject(TranslateService);
+
   items: TripPackingListItem[] = [];
   item$: Subject<TripPackingListItem[]> = new Subject<TripPackingListItem[]>();
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    private translate: TranslateService
-  ) {
+  constructor() {
     this.logger.debug('PackingListService constructor called');
   }
 

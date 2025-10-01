@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subject } from 'rxjs';
 
@@ -13,18 +13,18 @@ import { StorageService } from '@services/storage/storage.service';
   providedIn: 'root',
 })
 export class PaymentService {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private storage = inject(StorageService);
+  private logger = inject(NGXLogger);
+
   private paymentInfo?: PaymentInfo;
   paymentInfo$: BehaviorSubject<PaymentInfo> = new BehaviorSubject(
     new PaymentInfo({})
   );
   paymentProof$: Subject<Image[]> = new Subject();
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private storage: StorageService,
-    private logger: NGXLogger
-  ) {
+  constructor() {
     this.logger.debug('PaymentService constructor');
     // Check credentials and do not load for School Administrators
     this.auth.checkAuthenticated().then((res) => {

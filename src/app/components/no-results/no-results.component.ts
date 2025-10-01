@@ -1,5 +1,5 @@
 import { NGXLogger } from 'ngx-logger';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'app-no-results',
@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
     standalone: false
 })
 export class NoResultsComponent implements OnInit {
-  constructor(private logger: NGXLogger) {}
+  private logger = inject(NGXLogger);
+
 
   ngOnInit(): void {
     this.logger.debug('NoResultsComponent OnInit');

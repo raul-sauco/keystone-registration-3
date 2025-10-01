@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -39,6 +39,14 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     standalone: false
 })
 export class ResetPasswordComponent implements OnInit {
+  dialog = inject(MatDialog);
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private formBuilder = inject(UntypedFormBuilder);
+  private logger = inject(NGXLogger);
+
   validating = true;
   loading = false;
   isTokenValid = false;
@@ -47,16 +55,6 @@ export class ResetPasswordComponent implements OnInit {
   errorMatcher!: CrossFieldErrorMatcher;
   userData: any = null;
   private token: string | null = null;
-
-  constructor(
-    public dialog: MatDialog,
-    private api: ApiService,
-    private auth: AuthService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: UntypedFormBuilder,
-    private logger: NGXLogger
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('ResetPasswordComponent OnInit');
@@ -202,9 +200,6 @@ export class ResetPasswordComponent implements OnInit {
     standalone: false
 })
 export class ResetPasswordDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<ResetPasswordDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    auth: AuthService
-  ) {}
+  dialogRef = inject<MatDialogRef<ResetPasswordDialogComponent>>(MatDialogRef);
+  data = inject<DialogData>(MAT_DIALOG_DATA);
 }

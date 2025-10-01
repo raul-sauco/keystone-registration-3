@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
@@ -15,21 +15,19 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
     standalone: false
 })
 export class PackingListComponent implements OnInit, OnDestroy {
+  private auth = inject(AuthService);
+  private route = inject(ActivatedRoute);
+  private packingListService = inject(PackingListService);
+  private logger = inject(NGXLogger);
+  private routeStateService = inject(RouteStateService);
+  private tripSwitcher = inject(TripSwitcherService);
+  sanitizer = inject(DomSanitizer);
+
   itemsBring: TripPackingListItem[] = [];
   itemsOptional: TripPackingListItem[] = [];
   itemsDoNotBring: TripPackingListItem[] = [];
   needsLogin = false;
   fetching = false;
-
-  constructor(
-    private auth: AuthService,
-    private route: ActivatedRoute,
-    private packingListService: PackingListService,
-    private logger: NGXLogger,
-    private routeStateService: RouteStateService,
-    private tripSwitcher: TripSwitcherService,
-    public sanitizer: DomSanitizer
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('PackingList ngOnInit called');

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 
@@ -14,15 +14,16 @@ import { GlobalsService } from '@services/globals/globals.service';
     standalone: false
 })
 export class PaymentQrCodesComponent implements OnInit {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+
   images$!: Observable<any>;
   staticUrl: string;
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    globals: GlobalsService
-  ) {
+  constructor() {
+    const globals = inject(GlobalsService);
+
     this.staticUrl = globals.getResUrl();
   }
 

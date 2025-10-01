@@ -1,6 +1,6 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,43 +22,39 @@ import { AppComponent } from './app.component';
 import { Auth401Interceptor } from './http-interceptors/auth-401-interceptor';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
-// AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
-  return new CustomTranslationsLoader(http);
-}
-
-@NgModule({ declarations: [AppComponent],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: environment.production,
-        }),
-        LayoutModule,
-        MatToolbarModule,
-        MatBadgeModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient],
-            },
-        }),
-        MarkdownModule.forRoot({ loader: HttpClient }),
-        LoggerModule.forRoot({
-            serverLoggingUrl: environment.apiUrl + 'portal-logs',
-            level: environment.production
-                ? NgxLoggerLevel.INFO
-                : NgxLoggerLevel.TRACE,
-            serverLogLevel: NgxLoggerLevel.WARN,
-        }),
-        AdminBannerModule], providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideCharts(withDefaultRegisterables()),
-    ] })
-export class AppModule {}
+@NgModule({
+  declarations: [AppComponent],
+  bootstrap: [AppComponent], imports: [BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+    }),
+    LayoutModule,
+    MatToolbarModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: CustomTranslationsLoader,
+      },
+    }),
+    MarkdownModule.forRoot({ loader: HttpClient }),
+    LoggerModule.forRoot({
+      serverLoggingUrl: environment.apiUrl + 'portal-logs',
+      level: environment.production
+        ? NgxLoggerLevel.INFO
+        : NgxLoggerLevel.TRACE,
+      serverLogLevel: NgxLoggerLevel.WARN,
+    }),
+    AdminBannerModule], providers: [
+      { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
+      provideHttpClient(withInterceptorsFromDi()),
+      provideCharts(withDefaultRegisterables()),
+    ]
+})
+export class AppModule { }

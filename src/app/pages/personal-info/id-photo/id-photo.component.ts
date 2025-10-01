@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -25,6 +25,14 @@ import { GlobalsService } from '@services/globals/globals.service';
     styleUrl: './id-photo.component.scss'
 })
 export class IdPhotoComponent implements OnInit {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private http = inject(HttpClient);
+  private globals = inject(GlobalsService);
+  private logger = inject(NGXLogger);
+  private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
+
   @Input() student!: Student;
   @Output() idUploadedEvent = new EventEmitter<boolean>();
   file: File | null = null;
@@ -32,16 +40,6 @@ export class IdPhotoComponent implements OnInit {
   uploadSub: Subscription | null = null;
   urlPrefix!: string;
   images: string[] = [];
-
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private http: HttpClient,
-    private globals: GlobalsService,
-    private logger: NGXLogger,
-    private snackBar: MatSnackBar,
-    private translate: TranslateService,
-  ) {}
 
   ngOnInit(): void {
     this.urlPrefix = `${this.globals.getResUrl()}img/trip/pop/${this.student.id}/`;

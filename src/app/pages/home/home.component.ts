@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
@@ -10,6 +10,9 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
     standalone: false
 })
 export class HomeComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private routeStateService = inject(RouteStateService);
+
   url: string;
   columns = 1;
 
@@ -78,11 +81,9 @@ export class HomeComponent implements OnInit {
   ];
   // cSpell: enable
 
-  constructor(
-    globals: GlobalsService,
-    private route: ActivatedRoute,
-    private routeStateService: RouteStateService
-  ) {
+  constructor() {
+    const globals = inject(GlobalsService);
+
     this.url = globals.getResUrl() + 'img/portal/';
   }
 

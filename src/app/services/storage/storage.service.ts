@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
+  private logger = inject(NGXLogger);
+
   /**
    * A private map of keys that the storage service uses.
    * Previously the callers stored the keys, having the storage service
@@ -20,7 +22,7 @@ export class StorageService {
     schoolService: 'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY',
   };
 
-  constructor(private logger: NGXLogger) {
+  constructor() {
     this.logger.debug('StorageService constructor');
   }
 

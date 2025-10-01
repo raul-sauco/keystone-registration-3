@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
@@ -10,13 +10,11 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
     standalone: false
 })
 export class TripSwitcherComponent implements OnInit {
-  lang: string = 'en';
+  private logger = inject(NGXLogger);
+  private translate = inject(TranslateService);
+  tripSwitcher = inject(TripSwitcherService);
 
-  constructor(
-    private logger: NGXLogger,
-    private translate: TranslateService,
-    public tripSwitcher: TripSwitcherService
-  ) {}
+  lang: string = 'en';
 
   ngOnInit(): void {
     this.logger.debug('TripSwitcherComponent OnInit');

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -23,22 +23,20 @@ import { StudentService } from '@services/student/student.service';
     standalone: false
 })
 export class WaiverComponent implements OnInit, OnDestroy {
+  auth = inject(AuthService);
+  private formBuilder = inject(UntypedFormBuilder);
+  private logger = inject(NGXLogger);
+  private paymentService = inject(PaymentService);
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  studentService = inject(StudentService);
+  translate = inject(TranslateService);
+
   needsLogin = false;
   posting = false;
   waiverForm!: UntypedFormGroup;
   private student$?: Subscription | null = null;
   private paymentInfo?: PaymentInfo | null = null;
-
-  constructor(
-    public auth: AuthService,
-    private formBuilder: UntypedFormBuilder,
-    private logger: NGXLogger,
-    private paymentService: PaymentService,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    public studentService: StudentService,
-    public translate: TranslateService,
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('WaiverComponent OnInit');

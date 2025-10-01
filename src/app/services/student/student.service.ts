@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, ReplaySubject, Subject, map } from 'rxjs';
@@ -11,14 +11,14 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   providedIn: 'root',
 })
 export class StudentService {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  private translate = inject(TranslateService);
+
   student$: Subject<Student> = new ReplaySubject();
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    private translate: TranslateService
-  ) {
+  constructor() {
     this.logger.debug('StudentService constructor');
     this.init();
   }

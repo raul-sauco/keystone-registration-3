@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { ApiService } from 'src/app/services/api/api.service';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
@@ -24,20 +24,18 @@ export interface DialogData {
     standalone: false
 })
 export class TripCodesComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private api = inject(ApiService);
+  private router = inject(Router);
+  private translate = inject(TranslateService);
+  private formBuilder = inject(UntypedFormBuilder);
+  private trip = inject(TripService);
+  private logger = inject(NGXLogger);
+  dialog = inject(MatDialog);
+
   tripCodeForm!: UntypedFormGroup;
   tripId: string | null = null;
   loading: boolean = true;
-
-  constructor(
-    private route: ActivatedRoute,
-    private api: ApiService,
-    private router: Router,
-    private translate: TranslateService,
-    private formBuilder: UntypedFormBuilder,
-    private trip: TripService,
-    private logger: NGXLogger,
-    public dialog: MatDialog
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('TripComponent OnInit');
@@ -140,10 +138,9 @@ export class TripCodesComponent implements OnInit {
     standalone: false
 })
 export class CodeErrorDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<CodeErrorDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  dialogRef = inject<MatDialogRef<CodeErrorDialogComponent>>(MatDialogRef);
+  data = inject<DialogData>(MAT_DIALOG_DATA);
+
 
   onClose() {
     this.dialogRef.close();
@@ -156,10 +153,9 @@ export class CodeErrorDialogComponent {
     standalone: false
 })
 export class TripCodeHelpDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<TripCodeHelpDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  dialogRef = inject<MatDialogRef<TripCodeHelpDialogComponent>>(MatDialogRef);
+  data = inject<DialogData>(MAT_DIALOG_DATA);
+
 
   dismiss() {
     this.dialogRef.close();

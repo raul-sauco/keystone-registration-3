@@ -1,5 +1,5 @@
 import { AuthService } from './../auth/auth.service';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
@@ -7,6 +7,9 @@ import { NGXLogger } from 'ngx-logger';
   providedIn: 'root',
 })
 export class RouteStateService {
+  private logger = inject(NGXLogger);
+  private auth = inject(AuthService);
+
   // Make the BehaviorSubject private to hide the next() method
   private tripIdParamState = new BehaviorSubject<string | null>(null);
   // Store the last value assigned to tripId
@@ -15,7 +18,7 @@ export class RouteStateService {
   // Expose tripId as an observable
   tripIdParam$: Observable<string | null>;
 
-  constructor(private logger: NGXLogger, private auth: AuthService) {
+  constructor() {
     this.logger.trace('Instantiated RouteStateService');
     this.tripId = null;
     this.tripIdParam$ = this.tripIdParamState.asObservable();

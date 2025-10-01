@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
@@ -17,17 +17,15 @@ import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switche
     standalone: false
 })
 export class AccommodationComponent implements OnInit {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+  private route = inject(ActivatedRoute);
+  private routeStateService = inject(RouteStateService);
+  private tripSwitcher = inject(TripSwitcherService);
+
   supplier$!: Observable<Supplier[]>;
   needsLogin = false;
-
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-    private route: ActivatedRoute,
-    private routeStateService: RouteStateService,
-    private tripSwitcher: TripSwitcherService
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('AccommodationComponent OnInit');

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -15,16 +15,14 @@ import { GlobalsService } from 'src/app/services/globals/globals.service';
     standalone: false
 })
 export class DocumentsComponent implements OnInit {
+  private logger = inject(NGXLogger);
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private globals = inject(GlobalsService);
+
   document$!: Observable<any>;
   isGuest = false;
   url!: string;
-
-  constructor(
-    private logger: NGXLogger,
-    private api: ApiService,
-    private auth: AuthService,
-    private globals: GlobalsService
-  ) {}
 
   ngOnInit(): void {
     this.logger.debug('DocumentComponent OnInit');

@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,6 +31,18 @@ import { TripService } from '@services/trip/trip.service';
     standalone: false
 })
 export class AppComponent implements OnInit {
+  private breakpointObserver = inject(BreakpointObserver);
+  translate = inject(TranslateService);
+  private logger = inject(NGXLogger);
+  private routeStateService = inject(RouteStateService);
+  private router = inject(Router);
+  private api = inject(ApiService);
+  auth = inject(AuthService);
+  paymentService = inject(PaymentService);
+  studentService = inject(StudentService);
+  tripSwitcher = inject(TripSwitcherService);
+  tripService = inject(TripService);
+
   @ViewChild('drawer', { static: true })
   drawer!: MatSidenav;
   title = 'Keystone Adventures';
@@ -100,19 +112,9 @@ export class AppComponent implements OnInit {
       shareReplay(),
     );
 
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    public translate: TranslateService,
-    private logger: NGXLogger,
-    private routeStateService: RouteStateService,
-    private router: Router,
-    private api: ApiService,
-    public auth: AuthService,
-    public paymentService: PaymentService,
-    public studentService: StudentService,
-    public tripSwitcher: TripSwitcherService,
-    public tripService: TripService,
-  ) {
+  constructor() {
+    const router = this.router;
+
     this.initTranslate();
     router.events
       .pipe(

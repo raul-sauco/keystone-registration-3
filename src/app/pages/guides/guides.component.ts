@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -21,23 +21,24 @@ import { TripService } from '@services/trip/trip.service';
     standalone: false
 })
 export class GuidesComponent implements OnInit {
+  private auth = inject(AuthService);
+  private api = inject(ApiService);
+  private route = inject(ActivatedRoute);
+  private routeStateService = inject(RouteStateService);
+  private logger = inject(NGXLogger);
+  private translate = inject(TranslateService);
+  private tripSwitcher = inject(TripSwitcherService);
+  private tripService = inject(TripService);
+
   guide$: Observable<Guide[]> = of([]);
   url: string;
   lang: string;
   needsLogin = false;
   displayStaffingNotConfirmedTemplate = true;
 
-  constructor(
-    private auth: AuthService,
-    private api: ApiService,
-    private route: ActivatedRoute,
-    private routeStateService: RouteStateService,
-    private logger: NGXLogger,
-    private translate: TranslateService,
-    private tripSwitcher: TripSwitcherService,
-    private tripService: TripService,
-    globals: GlobalsService
-  ) {
+  constructor() {
+    const globals = inject(GlobalsService);
+
     this.url = globals.getResUrl();
     this.lang = this.translate.currentLang;
   }

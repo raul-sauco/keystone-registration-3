@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -11,14 +11,15 @@ import { GlobalsService } from '@services/globals/globals.service';
   providedIn: 'root',
 })
 export class ApiService {
+  http = inject(HttpClient);
+  private auth = inject(AuthService);
+  private logger = inject(NGXLogger);
+
   private url: string;
 
-  constructor(
-    public http: HttpClient,
-    globals: GlobalsService,
-    private auth: AuthService,
-    private logger: NGXLogger,
-  ) {
+  constructor() {
+    const globals = inject(GlobalsService);
+
     this.url = globals.getApiUrl();
   }
 
