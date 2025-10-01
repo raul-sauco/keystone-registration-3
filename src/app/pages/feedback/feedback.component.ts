@@ -7,11 +7,11 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
-    selector: 'app-feedback',
-    templateUrl: './feedback.component.html',
-    styleUrls: ['./feedback.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+  selector: 'app-feedback',
+  templateUrl: './feedback.component.html',
+  styleUrls: ['./feedback.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class FeedbackComponent implements OnInit {
   feedback$!: Observable<any>;
@@ -22,7 +22,7 @@ export class FeedbackComponent implements OnInit {
     private api: ApiService,
     private auth: AuthService,
     private tripSwitcher: TripSwitcherService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.logger.debug('FeedbackComponent OnInit');
@@ -45,7 +45,7 @@ export class FeedbackComponent implements OnInit {
     } else {
       this.logger.error(
         'Called FeedbackComponent OnInit without valid ' +
-          'authentication status. AuthGuard failure?',
+        'authentication status. AuthGuard failure?',
         this.auth.getCredentials()
       );
       this.setEmptyContent();

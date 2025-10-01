@@ -20,6 +20,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { Auth401Interceptor } from './http-interceptors/auth-401-interceptor';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -58,5 +59,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         AdminBannerModule], providers: [
         { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
         provideHttpClient(withInterceptorsFromDi()),
+        provideCharts(withDefaultRegisterables()),
     ] })
 export class AppModule {}

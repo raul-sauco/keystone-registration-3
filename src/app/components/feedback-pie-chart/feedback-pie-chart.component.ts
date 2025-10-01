@@ -1,11 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
-    selector: 'app-feedback-pie-chart',
-    templateUrl: './feedback-pie-chart.component.html',
-    styleUrls: ['./feedback-pie-chart.component.scss'],
-    standalone: false
+  selector: 'app-feedback-pie-chart',
+  templateUrl: './feedback-pie-chart.component.html',
+  styleUrls: ['./feedback-pie-chart.component.scss'],
+  standalone: true,
+  imports: [CommonModule, BaseChartDirective],
 })
 export class FeedbackPieChartComponent implements OnInit {
   @Input() rawData!: { label: string; data: { name: string; value: number }[] };
@@ -21,7 +24,7 @@ export class FeedbackPieChartComponent implements OnInit {
   public pieChartLegend = true;
   public pieChartPlugins = [];
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     // The API data needs to be mapped to the shape expected by the

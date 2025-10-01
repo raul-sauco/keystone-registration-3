@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NgChartsModule } from 'ng2-charts';
 
 import { FeedbackPieChartComponent } from './feedback-pie-chart.component';
+import { BaseChartDirective } from 'ng2-charts';
 
 describe('FeedbackPieChartComponent', () => {
   const data = {
@@ -35,7 +35,7 @@ describe('FeedbackPieChartComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [FeedbackPieChartComponent],
-      imports: [NgChartsModule],
+      imports: [BaseChartDirective],
     }).compileComponents();
   }));
 

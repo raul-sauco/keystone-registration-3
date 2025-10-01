@@ -5,18 +5,18 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
-import { FeedbackPieChartModule } from '@components/feedback-pie-chart/feedback-pie-chart.module';
 import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
 import { NoItemsNotificationModule } from '@components/no-items-notification/no-items-notification.module';
 import { FeedbackRoutingModule } from './feedback-routing.module';
 import { FeedbackComponent } from './feedback.component';
+import { FeedbackPieChartComponent } from '@components/feedback-pie-chart/feedback-pie-chart.component';
 
 @NgModule({
   declarations: [FeedbackComponent],
   imports: [
     AdminBannerModule,
     CommonModule,
-    FeedbackPieChartModule,
+    FeedbackPieChartComponent,
     FeedbackRoutingModule,
     LoadingSpinnerContentModule,
     NoItemsNotificationModule,
@@ -25,4 +25,4 @@ import { FeedbackComponent } from './feedback.component';
     MatTabsModule,
   ],
 })
-export class FeedbackModule {}
+export class FeedbackModule { }
