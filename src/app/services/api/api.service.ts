@@ -155,6 +155,7 @@ export class ApiService {
       reqOpts = {
         params: new HttpParams(),
         headers,
+        withCredentials: true
       };
     }
     return reqOpts;
