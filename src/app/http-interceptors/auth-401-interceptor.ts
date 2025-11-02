@@ -1,4 +1,5 @@
 import {
+  HttpClient,
   HttpErrorResponse,
   HttpEvent,
   HttpHandler,
@@ -8,30 +9,39 @@ import {
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
-import { BehaviorSubject, Observable, catchError, filter, switchMap, take, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, filter, switchMap, take, tap, throwError } from 'rxjs';
 
 import { AuthService } from '@services/auth/auth.service';
+import { GlobalsService } from '@services/globals/globals.service';
 
 @Injectable()
 export class Auth401Interceptor implements HttpInterceptor {
   private auth = inject(AuthService);
   private logger = inject(NGXLogger);
   private router = inject(Router);
+  private http = inject(HttpClient);
   private refreshing = false;
   private refreshSubject = new BehaviorSubject<string | null>(null);
+  private url: string;
 
+  constructor() {
+    const globals = inject(GlobalsService);
+    this.url = globals.getApiUrl();
+  }
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    // Avoid circular intercept of the refresh token request.
+    if (req.url.endsWith('/auth/refresh')) {
+      return next.handle(req);
+    }
     return next.handle(req).pipe(
       catchError((err) => {
         if (err instanceof HttpErrorResponse && err.status === 401) {
           return this.handle401(req, next);
-        } else {
-          const error = err.error?.message || err.statusText;
-          this.logger.error(error);
         }
+        this.logger.error(err.error?.message || err.statusText);
         return throwError(() => err);
       })
     );
@@ -49,13 +59,19 @@ export class Auth401Interceptor implements HttpInterceptor {
     }
     this.refreshing = true;
     this.refreshSubject.next(null);
-    return this.auth.refreshToken().pipe(
-      switchMap((newToken: string) => {
+    return this.http.get<{ access_token: string }>(
+      `${this.url}auth/refresh`,
+      { withCredentials: true }
+    ).pipe(
+      tap(res => this.auth.setAccessToken(res.access_token)),
+      switchMap((res) => {
+        const token = res.access_token;
+        this.logger.debug(`Got new access token from server: ${token}`);
         this.refreshing = false;
-        this.refreshSubject.next(newToken);
+        this.refreshSubject.next(token);
         // Clone the request to update the access token.
         return next.handle(req.clone({
-          setHeaders: { Authorization: `Bearer ${newToken}` }
+          setHeaders: { Authorization: `Bearer ${token}` }
         }));
       }),
       catchError(err => {

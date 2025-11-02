@@ -13,6 +13,7 @@ export class AuthService {
   private logger = inject(NGXLogger);
 
   private credentials?: Credentials;
+  private accessToken: string | null = null;
 
   public authenticated = false;
   auth$: Subject<boolean> = new Subject<boolean>();
@@ -27,8 +28,18 @@ export class AuthService {
   setCredentials(cred: Credentials) {
     this.credentials = cred;
     this.authenticated = true;
+    // TODO: Migrate to only storing the token in memory.
+    this.setAccessToken(cred.accessToken);
     this.auth$.next(this.authenticated);
     return this.saveCredentials();
+  }
+
+  getAccessToken(): string | null {
+    return this.accessToken;
+  }
+
+  setAccessToken(token: string): void {
+    this.accessToken = token;
   }
 
   /** Return the current credentials if any, null otherwise */
@@ -119,6 +130,7 @@ export class AuthService {
     });
   }
 
+
   /** Remove all the login info associated with this user */
   logout(): Promise<any> {
     if (this.credentials) {
@@ -127,6 +139,7 @@ export class AuthService {
       );
     }
     this.credentials = undefined;
+    this.accessToken = null;
     this.authenticated = false;
     this.auth$.next(this.authenticated);
     // When the user logs out, we want to remove all of its data.

@@ -19,10 +19,10 @@ import { StudentService } from '@services/student/student.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    standalone: false
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: false
 })
 export class LoginComponent implements OnInit {
   private router = inject(Router);
@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit {
         if (!res.error && res.credentials) {
           // Creating the Credentials object does some error checking
           const cred = new Credentials(res.credentials);
+          this.logger.debug(`Got RefreshToken cookie and auth token from login route: ${cred.accessToken}`);
           // TODO remember where the user was and navigate back
           this.auth.setCredentials(cred).then(() => {
             if (!this.auth.isSchoolAdmin) {
