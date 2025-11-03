@@ -42,6 +42,25 @@ export class AuthService {
     this.accessToken = token;
   }
 
+  get isAccessTokenExpired(): boolean {
+    const payload = this.accessToken !== null && JSON.parse(atob(this.accessToken.split('.')[1]));
+    const exp = payload.exp * 1000;
+    const now = Date.now();
+    if (exp > now) {
+      this.logger.info(
+        `Checking access token. Not Expired. Issued ${new Date(payload.iat * 1000).toLocaleString()} `
+        + `Expires at: ${new Date(exp).toLocaleString()} `
+        + `Has ${(exp - now) / 1000} seconds left`);
+      return false;
+    } else {
+      this.logger.info(
+        `Checking access token. Expired. Issued ${new Date(payload.iat * 1000).toLocaleString()} `
+        + `Expired at: ${new Date(exp).toLocaleString()} `
+        + `${Math.floor((now - exp) / 1000)} seconds ago`);
+      return true;
+    }
+  }
+
   /** Return the current credentials if any, null otherwise */
   getCredentials(): Credentials | undefined {
     return this.credentials;
