@@ -8,23 +8,21 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
-
-import { Credentials } from '@models/credentials';
-import { ApiService } from '@services/api/api.service';
-import { AuthService } from '@services/auth/auth.service';
-import { PaymentService } from '@services/payment/payment.service';
-import { RouteStateService } from '@services/route-state/route-state.service';
-import { StudentService } from '@services/student/student.service';
-import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
+
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { PaymentService } from '@services/payment/payment.service';
+import { RouteStateService } from '@services/route-state/route-state.service';
+import { StudentService } from '@services/student/student.service';
 
 @Component({
   standalone: true,
@@ -55,7 +53,6 @@ export class LoginComponent implements OnInit {
   private routeStateService = inject(RouteStateService);
   private paymentService = inject(PaymentService);
   private studentService = inject(StudentService);
-  private tripSwitcher = inject(TripSwitcherService);
 
   loginForm!: UntypedFormGroup;
   loading: boolean = false;
@@ -78,39 +75,22 @@ export class LoginComponent implements OnInit {
 
   /** Send the login information to the backend */
   submitLogin() {
-    // Todo display loading status
     this.loading = true;
-
     const params = {
       username: this.loginForm.value.username,
       password: this.loginForm.value.password,
     };
-
     this.logger.debug(`Sending login request for ${params.username}`);
-
     this.api.post('login', params).subscribe({
       next: (res: any) => {
         // Todo
-        if (!res.error && res.credentials) {
-          // Creating the Credentials object does some error checking
-          const cred = new Credentials(res.credentials);
-          this.logger.debug(`Got RefreshToken cookie and auth token from login route: ${cred.accessToken}`);
-          // TODO remember where the user was and navigate back
-          this.auth.setCredentials(cred).then(() => {
-            if (!this.auth.isSchoolAdmin) {
-              this.paymentService.fetchFromServer();
-            } else {
-              this.tripSwitcher.refreshTrips();
-            }
-            this.studentService.refreshStudent();
-            this.router.navigateByUrl('/home').then(() => {
-              // Clean up the page here if needed
-            });
-          });
+        if (!res.error && res.credentials && res.access_token) {
+          this.auth.setAuth(res);
+          this.paymentService.fetchFromServer();
+          this.studentService.refreshStudent();
+          this.router.navigateByUrl('/home');
         } else {
-          this.logger.debug(
-            `Failed Login attempt for User: ${params.username}`
-          );
+          this.logger.debug(`Failed Login attempt for User: ${params.username}`);
           this.translate
             .get('AUTHENTICATION_FAILURE')
             .subscribe((translation: string) => {

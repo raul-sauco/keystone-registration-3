@@ -3,13 +3,11 @@ import { NGXLogger } from 'ngx-logger';
 import { Subject } from 'rxjs';
 
 import { Credentials } from '@models/credentials';
-import { StorageService } from '@services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private storage = inject(StorageService);
   private logger = inject(NGXLogger);
 
   private credentials?: Credentials;
@@ -24,14 +22,17 @@ export class AuthService {
     this.checkAuthenticated().catch((error) => this.logger.warn(error));
   }
 
-  /** Set the auth credentials */
-  setCredentials(cred: Credentials) {
-    this.credentials = cred;
-    this.authenticated = true;
-    // TODO: Migrate to only storing the token in memory.
-    this.setAccessToken(cred.accessToken);
-    this.auth$.next(this.authenticated);
-    return this.saveCredentials();
+  setAuth(res: any) {
+    this.accessToken = res.access_token;
+    this.credentials = new Credentials(res.credentials);
+    if (this.authenticated) {
+      this.logger.debug(`AuthService: Updating Auth access token and credentials: ${res.access_token}`);
+    } else {
+      this.authenticated = true;
+      this.auth$.next(this.authenticated);
+      this.logger.debug(`AuthService: Setting Auth access token and credentials: ${res.access_token}. `
+        + 'And updating authenticated status to `true`');
+    }
   }
 
   getAccessToken(): string | null {
@@ -81,77 +82,19 @@ export class AuthService {
     return this.credentials?.type === 8;
   }
 
-  /** Save the current credentials to persistent storage */
-  saveCredentials(): Promise<any> {
-    this.logger.debug('AuthService; saving credentials to storage');
-    const credString = this.credentials;
-    return this.storage.set(this.storage.keys.credentials, credString);
-  }
-
-  /** Checks whether the application has a user currently authenticated */
+  /**
+   * Checks whether the application has a user currently authenticated.
+   * TODO: Get rid of this method, should just use sync auth.isAuthenticated
+   */
   checkAuthenticated(): Promise<boolean> {
     this.logger.debug('AuthService.checkAuthenticated called');
-    return new Promise<boolean>((resolve, reject) => {
-      // Quick resolve
-      if (this.authenticated) {
-        resolve(true);
-      }
-      if (this.credentials?.accessToken) {
-        this.logger.debug(
-          'AuthService.checkAuthenticated(); had credentials: ',
-          this.credentials
-        );
-        this.authenticated = true;
-        this.auth$.next(this.authenticated);
-        resolve(true);
-      } else {
-        this.logger.debug(
-          'AuthService.checkAuthenticated(); did not have credentials, checking storage'
-        );
-        this.storage
-          .get(this.storage.keys.credentials)
-          .then((cred) => {
-            if (cred) {
-              this.logger.debug(
-                'AuthService.checkAuthenticated(); got credentials from StorageService',
-                cred
-              );
-              // Try parsing the credentials.
-              try {
-                this.credentials = new Credentials(cred);
-                this.authenticated = true;
-                this.auth$.next(this.authenticated);
-                resolve(true);
-              } catch (e) {
-                this.logger.warn(
-                  'AuthService.checkAuthenticated(); Failed to parse credentials',
-                  e,
-                  cred
-                );
-              }
-              // Fail if we cannot create a Credentials object.
-              resolve(false);
-            } else {
-              this.logger.debug(
-                'AuthService.checkAuthenticated(); did not get credentials from StorageService'
-              );
-              resolve(false);
-            }
-          })
-          .catch((error) => {
-            this.logger.warn(
-              'AuthService.checkAuthenticated(); Error getting credentials from storage',
-              error
-            );
-            reject(error);
-          });
-      }
+    return new Promise<boolean>((resolve, _reject) => {
+      resolve(this.authenticated);
     });
   }
 
-
   /** Remove all the login info associated with this user */
-  logout(): Promise<any> {
+  logout(): void {
     if (this.credentials) {
       this.logger.debug(
         `AuthService; logging out ${this.credentials.username}`
@@ -161,7 +104,5 @@ export class AuthService {
     this.accessToken = null;
     this.authenticated = false;
     this.auth$.next(this.authenticated);
-    // When the user logs out, we want to remove all of its data.
-    return this.storage.removeAll();
   }
 }
