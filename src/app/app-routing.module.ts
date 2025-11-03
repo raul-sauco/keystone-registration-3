@@ -160,8 +160,8 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () =>
-      import('./pages/login/login.module').then((m) => m.LoginModule),
+    loadComponent: () =>
+      import('./pages/login/login.component').then((m) => m.LoginComponent),
     canActivate: [NoAuthGuard],
   },
   {
@@ -227,4 +227,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

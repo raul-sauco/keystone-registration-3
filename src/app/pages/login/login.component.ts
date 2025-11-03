@@ -1,13 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { Credentials } from '@models/credentials';
@@ -17,12 +20,29 @@ import { PaymentService } from '@services/payment/payment.service';
 import { RouteStateService } from '@services/route-state/route-state.service';
 import { StudentService } from '@services/student/student.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
+  standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  standalone: false
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+    TranslateModule,
+  ],
 })
 export class LoginComponent implements OnInit {
   private router = inject(Router);
@@ -38,13 +58,8 @@ export class LoginComponent implements OnInit {
   private tripSwitcher = inject(TripSwitcherService);
 
   loginForm!: UntypedFormGroup;
-  loading: boolean;
+  loading: boolean = false;
   errorMsg: string | null = null;
-
-  constructor() {
-    this.loading = false;
-    this.logger.debug('LoginComponent constructor');
-  }
 
   ngOnInit(): void {
     this.logger.debug('LoginComponent onInit');
