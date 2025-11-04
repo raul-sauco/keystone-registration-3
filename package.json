@@ -43,14 +43,17 @@
     "@angular-eslint/template-parser": "^20.3.0",
     "@angular/cli": "^20.3.3",
     "@angular/compiler-cli": "^20.3.2",
+    "@angular/language-server": "^20.3.0",
     "@angular/language-service": "^20.3.2",
+    "@fsouza/prettierd": "^0.26.2",
     "@types/d3": "^7.4.3",
     "@types/jasmine": "^5.1.9",
     "@types/jasminewd2": "~2.0.13",
     "@types/node": "^24.6.0",
     "@typescript-eslint/eslint-plugin": "^8.45.0",
     "@typescript-eslint/parser": "^8.45.0",
-    "eslint": "^9.36.0",
+    "angular-eslint": "^20.5.1",
+    "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "jasmine-core": "^5.11.0",
@@ -63,8 +66,10 @@
     "ng-mocks": "^14.13.5",
     "ngx-translate-testing": "^7.0.0",
     "prettier": "^3.6.2",
+    "prettier-eslint": "^16.4.2",
     "protractor": "~7.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3"
   }
 }
