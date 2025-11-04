@@ -1,6 +1,6 @@
 <!--App Component HTML file. App bar and sidebar menu, render router outlet on the rest -->
 <mat-toolbar id="main-header">
-  <ng-container *ngIf="isHandset$ | async; else noHandset">
+  @if (isHandset$ | async) {
     <button
       id="toggle-sidenav-button"
       type="button"
@@ -17,29 +17,26 @@
       alt="{{ title }}"
     />
     <div class="toolbar-spacer"></div>
-  </ng-container>
-  <ng-template #noHandset>
+  } @else {
     <img
       id="main-header-logo"
       src="../assets/img/ka-logo-long.jpeg"
       alt="{{ title }}"
     />
     <div class="toolbar-spacer">
-      <div
-        class="trip-name-wrapper"
-        *ngIf="tripService.tripName$ | async as tripName"
-      >
-        {{ tripName }}
-      </div>
-    </div></ng-template
-  ><button
+      @if (tripService.tripName$ | async; as tripName) {
+        <div class="trip-name-wrapper">{{ tripName }}</div>
+      }
+    </div>
+  }
+  <button
     type="button"
     mat-raised-button
     aria-label="Toggle UI language"
     (click)="toggleLanguage()"
     id="toggle-lang-button"
   >
-    {{ translate.currentLang === "en" ? "中文" : "EN" }}
+    {{ translate.getCurrentLang() === "en" ? "中文" : "EN" }}
     <mat-icon aria-label="Translate toggle icon" color="primary"
       >translate</mat-icon
     >
@@ -67,24 +64,21 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-nav-list>
-      <!-- Log in/out side menu links -->
-      <a
-        mat-list-item
-        *ngIf="auth.auth$ | async; else login"
-        (click)="logout()"
-      >
-        <!--
+      @if (auth.auth$ | async) {
+        <!-- Log in/out side menu links -->
+        <a mat-list-item (click)="logout()">
+          <!--
         Mat icon rendering with color broken in Angular Material >= 15, the
         following does not work. Workaround wrap icons in a div.
         <mat-icon matListItemIcon color="primary">paid</mat-icon>
         -->
-        <div matListItemIcon>
-          <mat-icon color="primary">open_in_new</mat-icon>
-        </div>
-        <span>{{ "LOG_OUT" | translate | uppercase }}</span>
-        <mat-divider [inset]="true"></mat-divider>
-      </a>
-      <ng-template #login>
+          <div matListItemIcon>
+            <mat-icon color="primary">open_in_new</mat-icon>
+          </div>
+          <span>{{ "LOG_OUT" | translate | uppercase }}</span>
+          <mat-divider [inset]="true"></mat-divider>
+        </a>
+      } @else {
         <a mat-list-item routerLink="/login">
           <div matListItemIcon>
             <mat-icon color="primary">exit_to_app</mat-icon>
@@ -92,23 +86,23 @@
           <span>{{ "LOG_IN" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
-      </ng-template>
+      }
       <a mat-list-item routerLink="/home">
         <div matListItemIcon><mat-icon color="primary">home</mat-icon></div>
         <span>{{ "HOME" | translate | uppercase }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </a>
-      <ng-container *ngIf="(auth.auth$ | async) && auth.isSchoolAdmin">
+      @if ((auth.auth$ | async) && auth.isSchoolAdmin) {
         <a mat-list-item routerLink="/trip-switcher">
           <div matListItemIcon>
             <mat-icon color="primary">restart_alt</mat-icon>
           </div>
           <span>{{ "SWITCH_TRIP" | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider> </a
-      ></ng-container>
-
+          <mat-divider [inset]="true"></mat-divider>
+        </a>
+      }
       <!-- Registration links -->
-      <ng-container *ngIf="(auth.auth$ | async) && !auth.isSchoolAdmin">
+      @if ((auth.auth$ | async) && !auth.isSchoolAdmin) {
         <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
         <a mat-list-item routerLink="/personal-info">
           <div matListItemIcon>
@@ -123,8 +117,8 @@
             >
           </div>
           <span>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider
-        ></a>
+          <mat-divider [inset]="true"></mat-divider>
+        </a>
         <a mat-list-item routerLink="/waiver">
           <div matListItemIcon>
             <mat-icon
@@ -141,12 +135,10 @@
           <span>{{ "TERMS_CONDITIONS" | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider
         ></a>
-        <ng-container *ngIf="auth.isStudent">
-          <a
-            mat-list-item
-            *ngIf="(paymentService.paymentInfo$ | async)?.required"
-            routerLink="/payments"
-          >
+        @if (
+          auth.isStudent && (paymentService.paymentInfo$ | async)?.required
+        ) {
+          <a mat-list-item routerLink="/payments">
             <div matListItemIcon>
               <mat-icon
                 color="primary"
@@ -159,107 +151,101 @@
             <span>{{ "PAYMENTS" | translate | uppercase }}</span>
             <mat-divider [inset]="true"></mat-divider
           ></a>
-        </ng-container>
-      </ng-container>
+        }
+      }
 
       <!-- General information links -->
       <h3 matSubheader>{{ "GENERAL_INFORMATION" | translate | uppercase }}</h3>
-      <ng-container *ngFor="let page of appPages; last as last">
-        <ng-container *ngIf="page.render | async">
-          <a
-            mat-list-item
-            [routerLink]="
-              page.url +
-              ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-            "
-            *ngIf="enableFullNavigation$ | async; else giPlain"
-          >
+      @for (page of appPages; track page.title) {
+        @if (page.render | async) {
+          @if (enableFullNavigation$ | async) {
+            <a
+              mat-list-item
+              [routerLink]="
+                page.url +
+                ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
+              "
+            >
+              <div matListItemIcon>
+                <mat-icon color="primary">{{ page.icon }}</mat-icon>
+              </div>
+              <span>{{ page.title | translate | uppercase }}</span>
+              <mat-divider [inset]="true"></mat-divider>
+            </a>
+          } @else {
+            <mat-list-item class="disabled-link">
+              <div matListItemIcon>
+                <mat-icon color="primary">{{ page.icon }}</mat-icon>
+              </div>
+              <span>{{ page.title | translate | uppercase }}</span>
+              <mat-divider [inset]="true"></mat-divider>
+            </mat-list-item>
+          }
+        }
+      }
+
+      <!-- This links should only be available for teachers -->
+      @if ((auth.auth$ | async) && (auth.isTeacher || auth.isSchoolAdmin)) {
+        <h3 matSubheader>{{ "TEACHER_AREA" | translate | uppercase }}</h3>
+        @for (page of teacherPages; track page.title) {
+          <a mat-list-item [routerLink]="page.url">
             <div matListItemIcon>
               <mat-icon color="primary">{{ page.icon }}</mat-icon>
             </div>
             <span>{{ page.title | translate | uppercase }}</span>
             <mat-divider [inset]="true"></mat-divider>
           </a>
-          <ng-template #giPlain>
+        }
+      }
+
+      <!-- Policy pages -->
+      <h3 matSubheader>{{ "KA_POLICY" | translate | uppercase }}</h3>
+      @for (page of policyPages; track page.title) {
+        @if (page.render | async) {
+          @if (enableFullNavigation$ | async) {
+            <a
+              mat-list-item
+              [routerLink]="
+                page.url +
+                ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
+              "
+            >
+              <div matListItemIcon>
+                <mat-icon color="primary">{{ page.icon }}</mat-icon>
+              </div>
+              <span>{{ page.title | translate | uppercase }}</span>
+              <mat-divider [inset]="true"></mat-divider>
+            </a>
+          } @else {
             <mat-list-item class="disabled-link">
               <div matListItemIcon>
                 <mat-icon color="primary">{{ page.icon }}</mat-icon>
               </div>
               <span>{{ page.title | translate | uppercase }}</span>
-              <mat-divider [inset]="true"></mat-divider></mat-list-item
-          ></ng-template>
-        </ng-container>
-      </ng-container>
-
-      <!-- This links should only be available for teachers -->
-      <ng-container
-        *ngIf="(auth.auth$ | async) && (auth.isTeacher || auth.isSchoolAdmin)"
-      >
-        <h3 matSubheader>{{ "TEACHER_AREA" | translate | uppercase }}</h3>
-        <a
-          mat-list-item
-          [routerLink]="page.url"
-          *ngFor="let page of teacherPages; last as last"
-        >
-          <div matListItemIcon>
-            <mat-icon color="primary">{{ page.icon }}</mat-icon>
-          </div>
-          <span>{{ page.title | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider>
+              <mat-divider [inset]="true"></mat-divider>
+            </mat-list-item>
+          }
+        }
+      }
+      @if (
+        (auth.isSchoolAdmin &&
+          tripSwitcher.selectedTrip?.acceptDirectPayment) ||
+        (paymentService.paymentInfo$ | async)?.required
+      ) {
+        <a mat-list-item routerLink="/payment-policy">
+          <div matListItemIcon><mat-icon color="primary">paid</mat-icon></div>
+          <span>{{ "PAYMENT_TERMS" | translate | uppercase }}</span>
         </a>
-      </ng-container>
-
-      <!-- Policy pages -->
-      <h3 matSubheader>{{ "KA_POLICY" | translate | uppercase }}</h3>
-      <ng-container *ngFor="let page of policyPages"
-        ><ng-container *ngIf="page.render | async">
-          <a
-            mat-list-item
-            [routerLink]="
-              page.url +
-              ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-            "
-            *ngIf="enableFullNavigation$ | async; else ppPlain"
-          >
-            <div matListItemIcon>
-              <mat-icon color="primary">{{ page.icon }}</mat-icon>
-            </div>
-            <span>{{ page.title | translate | uppercase }}</span>
-            <mat-divider [inset]="true"></mat-divider> </a></ng-container
-        ><ng-template #ppPlain
-          ><mat-list-item class="disabled-link"
-            ><div matListItemIcon>
-              <mat-icon color="primary">{{ page.icon }}</mat-icon>
-            </div>
-            <span>{{ page.title | translate | uppercase }}</span>
-            <mat-divider [inset]="true"></mat-divider></mat-list-item
-        ></ng-template>
-      </ng-container>
-      <a
-        mat-list-item
-        routerLink="/payment-policy"
-        *ngIf="
-          (auth.isSchoolAdmin &&
-            tripSwitcher.selectedTrip?.acceptDirectPayment) ||
-          (paymentService.paymentInfo$ | async)?.required
-        "
-      >
-        <div matListItemIcon><mat-icon color="primary">paid</mat-icon></div>
-        <span>{{ "PAYMENT_TERMS" | translate | uppercase }}</span>
-      </a>
+      }
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <ng-container
-      *ngIf="
-        (isHandset$ | async) && (tripService.tripName$ | async) as tripName
-      "
-    >
+    @if ((isHandset$ | async) && (tripService.tripName$ | async); as tripName) {
       <div id="content-trip-name-wrapper">
         <div class="trip-name-wrapper">{{ tripName }}</div>
       </div>
-    </ng-container>
+    }
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
