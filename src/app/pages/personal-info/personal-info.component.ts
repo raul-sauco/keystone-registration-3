@@ -21,10 +21,10 @@ import { SchoolService } from '@services/school/school.service';
 import { StudentService } from '@services/student/student.service';
 
 @Component({
-    selector: 'app-personal-info',
-    templateUrl: './personal-info.component.html',
-    styleUrls: ['./personal-info.component.scss'],
-    standalone: false
+  selector: 'app-personal-info',
+  templateUrl: './personal-info.component.html',
+  styleUrls: ['./personal-info.component.scss'],
+  standalone: false
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
   private api = inject(ApiService);
@@ -53,42 +53,37 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.logger.debug('PersonalInfoComponent OnInit');
-    this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
+    this.lang = this.translate.getCurrentLang().includes('zh') ? 'zh' : 'en';
     this.auth.checkAuthenticated().then((res: boolean) => {
       const credentials = this.auth.getCredentials();
       if (res && credentials) {
-        if (credentials.accessToken) {
-          if (credentials.studentId) {
-            this.studentService.refreshStudent();
-            this.student$ = this.studentService.student$.subscribe({
-              next: (student: Student) => {
-                this.logger.debug(
-                  'PersonalInfoComponent StudentService.student$.next',
-                  student,
-                );
-                this.initPersonalInfoForm(student);
-                this.idPhotoRequired = student.idPhotoRequired;
-              },
-              error: (error: any) => {
-                this.logger.error(
-                  'PersonalInfoComponent StudentService student$ error',
-                  error,
-                );
-              },
-            });
-            this.paymentInfo$ = this.paymentService.paymentInfo$.subscribe({
-              next: (paymentInfo: PaymentInfo) => {
-                this.paymentInfo = paymentInfo;
-              },
-            });
-          } else {
-            this.logger.error(
-              'Authentication error, expected valid student ID.',
-            );
-          }
+        if (credentials.studentId) {
+          this.studentService.refreshStudent();
+          this.student$ = this.studentService.student$.subscribe({
+            next: (student: Student) => {
+              this.logger.debug(
+                'PersonalInfoComponent StudentService.student$.next',
+                student,
+              );
+              this.initPersonalInfoForm(student);
+              this.idPhotoRequired = student.idPhotoRequired;
+            },
+            error: (error: any) => {
+              this.logger.error(
+                'PersonalInfoComponent StudentService student$ error',
+                error,
+              );
+            },
+          });
+          this.paymentInfo$ = this.paymentService.paymentInfo$.subscribe({
+            next: (paymentInfo: PaymentInfo) => {
+              this.paymentInfo = paymentInfo;
+            },
+          });
         } else {
-          this.needsLogin = true;
-          this.logger.error('Authentication error, expected access token.');
+          this.logger.error(
+            'Authentication error, expected valid student ID.',
+          );
         }
       } else {
         this.needsLogin = true;

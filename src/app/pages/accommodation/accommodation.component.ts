@@ -43,7 +43,7 @@ export class AccommodationComponent implements OnInit {
         this.fetch(requestParams, headers);
       } else {
         this.auth.checkAuthenticated().then((res: boolean) => {
-          if (res && this.auth.getCredentials()?.accessToken) {
+          if (res && this.auth.getAccessToken()) {
             // School admins do not have a trip by default.
             if (this.auth.isSchoolAdmin) {
               if (this.tripSwitcher.selectedTrip) {
@@ -54,7 +54,7 @@ export class AccommodationComponent implements OnInit {
               }
             } else {
               headers.authorization = `Bearer ${
-                this.auth.getCredentials()?.accessToken
+                this.auth.getAccessToken()
               }`;
               this.fetch(params, headers);
             }

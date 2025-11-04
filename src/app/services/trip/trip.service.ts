@@ -50,7 +50,7 @@ export class TripService {
     });
     this.translate.onLangChange.subscribe(() =>
       this._tripName$.next(
-        this._trip?.getName(this.translate.currentLang) ?? ''
+        this._trip?.getName(this.translate.getCurrentLang()) ?? ''
       )
     );
   }
@@ -101,7 +101,7 @@ export class TripService {
   private setTrip(trip: Trip): void {
     this._trip = trip;
     this.storageService.set(this.TRIP_DATA_STORAGE_KEY, trip);
-    this._tripName$.next(trip.getName(this.translate.currentLang));
+    this._tripName$.next(trip.getName(this.translate.getCurrentLang()));
   }
 
   /**
@@ -131,17 +131,10 @@ export class TripService {
    */
   private fetch(cred: Credentials): void {
     this.logger.debug('TripService fetching from API');
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + (cred.accessToken || ''),
-      }),
-    };
-    this.api.get('my-trip', { expand: 'name_zh,name_en' }, options).subscribe({
+    this.api.get('my-trip', { expand: 'name_zh,name_en' }).subscribe({
       next: (res: any) => {
         this.setTrip(new Trip(res));
       },
-
       error: (err: any) => {
         this.logger.warn('Error fetching my trip', err);
       },

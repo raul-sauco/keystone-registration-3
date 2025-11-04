@@ -39,7 +39,7 @@ export class StudentService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     this.api.get(endpoint, null, options).subscribe({
@@ -64,7 +64,7 @@ export class StudentService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     return this.api.patch(endpoint, data, options).pipe(

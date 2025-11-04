@@ -159,7 +159,7 @@ export class ParticipantsComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     this.participant$ = this.api.get(endpoint, null, options).pipe(
@@ -331,7 +331,7 @@ export class ParticipantsComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     this.api.patch(endpoint, data, options).subscribe({
@@ -440,7 +440,7 @@ export class DeleteStudentConfirmationDialogComponent {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     this.api.delete(endpoint, options).subscribe(

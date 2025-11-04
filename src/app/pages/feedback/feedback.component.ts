@@ -26,7 +26,7 @@ export class FeedbackComponent implements OnInit {
     this.logger.debug('FeedbackComponent OnInit');
     if (
       this.auth.authenticated &&
-      this.auth.getCredentials()?.accessToken &&
+      this.auth.getAccessToken() &&
       (this.auth.isSchoolAdmin || this.auth.isTeacher)
     ) {
       if (this.auth.isSchoolAdmin) {
@@ -70,7 +70,7 @@ export class FeedbackComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     this.feedback$ = this.api.get(endpoint, null, options);

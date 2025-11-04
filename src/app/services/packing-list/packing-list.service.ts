@@ -42,10 +42,10 @@ export class PackingListService {
       fetch = true;
     } else if (
       this.auth.authenticated &&
-      this.auth.getCredentials()?.accessToken
+      this.auth.getAccessToken()
     ) {
       headers.authorization =
-        ' Bearer ' + this.auth.getCredentials()?.accessToken;
+        ' Bearer ' + this.auth.getAccessToken();
       fetch = true;
     }
 
@@ -90,7 +90,7 @@ export class PackingListService {
     this.logger.debug(`Adding ${items.length} packing list items to provider`);
     items.forEach((i: any) => {
       // Pass the language to the PLI
-      i.lang = this.translate.currentLang;
+      i.lang = this.translate.getCurrentLang();
       this.items.push(new TripPackingListItem(i));
     });
   }

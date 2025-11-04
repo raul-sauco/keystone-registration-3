@@ -33,10 +33,10 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-    selector: 'app-reset-password',
-    templateUrl: './reset-password.component.html',
-    styleUrls: ['./reset-password.component.scss'],
-    standalone: false
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.scss'],
+  standalone: false
 })
 export class ResetPasswordComponent implements OnInit {
   dialog = inject(MatDialog);
@@ -147,11 +147,11 @@ export class ResetPasswordComponent implements OnInit {
       (res: any) => {
         this.loading = false;
         this.logger.debug('Success updating password', res);
-        if (res.credentials) {
-          this.login(res.credentials);
+        if (!res.error) {
+          this.auth.setAuth(res);
         } else {
           this.logger.warn(
-            'Password reset success but not credentials returned',
+            'Password reset error',
             res
           );
         }
@@ -179,25 +179,12 @@ export class ResetPasswordComponent implements OnInit {
       }
     );
   }
-
-  /** Log in user */
-  login(credentialsData: any): void {
-    const cred = new Credentials(credentialsData);
-    this.auth
-      .setCredentials(cred)
-      .then(() => {
-        this.logger.debug('Success logging in user');
-      })
-      .catch((err: any) => {
-        this.logger.warn('Error logging user in', err);
-      });
-  }
 }
 
 @Component({
-    selector: 'app-password-reset-dialog-component',
-    templateUrl: './reset-password-dialog-component.html',
-    standalone: false
+  selector: 'app-password-reset-dialog-component',
+  templateUrl: './reset-password-dialog-component.html',
+  standalone: false
 })
 export class ResetPasswordDialogComponent {
   dialogRef = inject<MatDialogRef<ResetPasswordDialogComponent>>(MatDialogRef);

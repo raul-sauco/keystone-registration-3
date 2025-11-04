@@ -8,10 +8,10 @@ import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
-    selector: 'app-payment-qr-codes',
-    templateUrl: './payment-qr-codes.component.html',
-    styleUrls: ['./payment-qr-codes.component.scss'],
-    standalone: false
+  selector: 'app-payment-qr-codes',
+  templateUrl: './payment-qr-codes.component.html',
+  styleUrls: ['./payment-qr-codes.component.scss'],
+  standalone: false
 })
 export class PaymentQrCodesComponent implements OnInit {
   private api = inject(ApiService);
@@ -37,7 +37,7 @@ export class PaymentQrCodesComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     this.images$ = this.api.get(endpoint, null, options);

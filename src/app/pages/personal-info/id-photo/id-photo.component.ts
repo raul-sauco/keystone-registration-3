@@ -14,15 +14,15 @@ import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
-    selector: 'app-id-photo',
-    imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatProgressBarModule,
-        TranslateModule,
-    ],
-    templateUrl: './id-photo.component.html',
-    styleUrl: './id-photo.component.scss'
+  selector: 'app-id-photo',
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule,
+    TranslateModule,
+  ],
+  templateUrl: './id-photo.component.html',
+  styleUrl: './id-photo.component.scss'
 })
 export class IdPhotoComponent implements OnInit {
   private api = inject(ApiService);
@@ -84,7 +84,7 @@ export class IdPhotoComponent implements OnInit {
       const url = this.globals.getApiUrl() + 'student-id-photos';
       const headers = new HttpHeaders({
         // 'Content-Type': Automatically assigned by the browser when it detects form data.
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       });
       formData.append('image', this.file);
       const upload$ = this.http.post(url, formData, {

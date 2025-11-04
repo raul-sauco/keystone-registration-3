@@ -70,10 +70,10 @@ export class SchoolService {
       if (res) {
         const endpoint = 'school-details';
         let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        if (this.auth.getCredentials()?.accessToken) {
+        if (this.auth.getAccessToken()) {
           headers = headers.append(
             'Authorization',
-            `Bearer ${this.auth.getCredentials()?.accessToken}`
+            `Bearer ${this.auth.getAccessToken()}`
           );
         }
         const options = { headers };

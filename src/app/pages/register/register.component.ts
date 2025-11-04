@@ -22,7 +22,6 @@ import { Observable, map } from 'rxjs';
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
 import { UniqueUsernameValidator } from '@directives/unique-username-validator.directive';
 import { DialogData } from '@interfaces/dialog-data';
-import { Credentials } from '@models/credentials';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
@@ -42,10 +41,10 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss'],
-    standalone: false
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+  standalone: false
 })
 export class RegisterComponent implements OnInit {
   private api = inject(ApiService);
@@ -67,7 +66,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('RegisterComponent OnInit');
-    this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
+    this.lang = this.translate.getCurrentLang().includes('zh') ? 'zh' : 'en';
     this.errorMatcher = new CrossFieldErrorMatcher();
     if (!this.trip.code || !this.trip.id) {
       this.router.navigateByUrl('/trip-codes');
@@ -88,7 +87,7 @@ export class RegisterComponent implements OnInit {
       .get('documents/141', null, options)
       .pipe(
         map((doc: any) =>
-          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text,
+          this.translate.getCurrentLang().includes('zh') ? doc.text_zh : doc.text,
         ),
       );
   }
@@ -174,12 +173,10 @@ export class RegisterComponent implements OnInit {
             },
           });
         } else {
-          const cred = new Credentials(response.credentials);
-          this.auth.setCredentials(cred).then(() => {
-            this.loading = false;
-            this.paymentService.fetchFromServer();
-            this.displayRegistrationSuccess();
-          });
+          this.auth.setAuth(response);
+          this.loading = false;
+          this.paymentService.fetchFromServer();
+          this.displayRegistrationSuccess();
         }
       },
       error: (error: any) => {
@@ -227,9 +224,9 @@ export class RegisterComponent implements OnInit {
 }
 
 @Component({
-    selector: 'app-error-message-dialog-component',
-    templateUrl: './error-message-dialog.component.html',
-    standalone: false
+  selector: 'app-error-message-dialog-component',
+  templateUrl: './error-message-dialog.component.html',
+  standalone: false
 })
 export class ErrorMessageDialogComponent {
   dialogRef = inject<MatDialogRef<ErrorMessageDialogComponent>>(MatDialogRef);
@@ -237,10 +234,10 @@ export class ErrorMessageDialogComponent {
 }
 
 @Component({
-    selector: 'app-registration-success-dialog-component',
-    templateUrl: './registration-success-dialog.component.html',
-    styleUrls: ['./registration-success-dialog.component.scss'],
-    standalone: false
+  selector: 'app-registration-success-dialog-component',
+  templateUrl: './registration-success-dialog.component.html',
+  styleUrls: ['./registration-success-dialog.component.scss'],
+  standalone: false
 })
 export class RegistrationSuccessDialogComponent {
   dialogRef = inject<MatDialogRef<RegistrationSuccessDialogComponent>>(MatDialogRef);

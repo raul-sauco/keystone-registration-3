@@ -108,7 +108,7 @@ export class AddParticipantComponent implements OnInit {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     this.logger.debug('Posting participant data', data);

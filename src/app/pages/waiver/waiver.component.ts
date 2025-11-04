@@ -43,7 +43,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
     this.auth.checkAuthenticated().then((res: boolean) => {
       this.logger.debug('WaiverComponent Resolved Authenticated');
       if (res) {
-        if (this.auth.getCredentials()?.accessToken) {
+        if (this.auth.getAccessToken()) {
           if (this.auth.getCredentials()?.studentId) {
             this.student$ = this.studentService.student$.subscribe({
               next: (student) => {

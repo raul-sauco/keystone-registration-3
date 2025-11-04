@@ -150,7 +150,7 @@ export class ApiService {
         'Content-Type': 'application/json',
       };
       if (this.auth.authenticated) {
-        headers.Authorization = ` Bearer ${this.auth.getCredentials()?.accessToken}`;
+        headers.Authorization = ` Bearer ${this.auth.getAccessToken()}`;
       }
       reqOpts = {
         params: new HttpParams(),

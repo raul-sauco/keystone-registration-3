@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
@@ -9,10 +8,10 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 
 @Component({
-    selector: 'app-documents',
-    templateUrl: './documents.component.html',
-    styleUrls: ['./documents.component.scss'],
-    standalone: false
+  selector: 'app-documents',
+  templateUrl: './documents.component.html',
+  styleUrls: ['./documents.component.scss'],
+  standalone: false
 })
 export class DocumentsComponent implements OnInit {
   private logger = inject(NGXLogger);
@@ -27,7 +26,7 @@ export class DocumentsComponent implements OnInit {
   ngOnInit(): void {
     this.logger.debug('DocumentComponent OnInit');
     this.url = this.globals.getResUrl();
-    if (this.auth.authenticated && this.auth.getCredentials()?.accessToken) {
+    if (this.auth.authenticated) {
       this.fetch();
     } else {
       // Also check async
@@ -44,14 +43,8 @@ export class DocumentsComponent implements OnInit {
   fetch() {
     this.logger.debug('DocumentComponent fetch() called');
     const endpoint = 'files';
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
-      }),
-    };
     this.document$ = this.api
-      .get(endpoint, null, options)
+      .get(endpoint, null)
       .pipe(
         map((docs: any) => docs.map((docJson: any) => new Document(docJson)))
       );

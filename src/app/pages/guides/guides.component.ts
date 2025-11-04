@@ -62,7 +62,7 @@ export class GuidesComponent implements OnInit {
       } else {
         // If we don't have a trip id parameter, request for the current user
         this.auth.checkAuthenticated().then((res: boolean) => {
-          if (res && this.auth.getCredentials()?.accessToken) {
+          if (res && this.auth.getAccessToken()) {
             if (this.auth.isSchoolAdmin) {
               if (this.tripSwitcher.selectedTrip) {
                 this.fetch(
@@ -74,7 +74,7 @@ export class GuidesComponent implements OnInit {
               }
             } else {
               headers.authorization = `Bearer ${
-                this.auth.getCredentials()?.accessToken
+                this.auth.getAccessToken()
               }`;
               this.fetch(null, headers);
             }

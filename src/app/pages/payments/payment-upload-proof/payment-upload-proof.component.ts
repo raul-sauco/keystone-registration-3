@@ -10,10 +10,10 @@ import { GlobalsService } from '@services/globals/globals.service';
 import { PaymentService } from '@services/payment/payment.service';
 
 @Component({
-    selector: 'app-payment-upload-proof',
-    templateUrl: './payment-upload-proof.component.html',
-    styleUrls: ['./payment-upload-proof.component.scss'],
-    standalone: false
+  selector: 'app-payment-upload-proof',
+  templateUrl: './payment-upload-proof.component.html',
+  styleUrls: ['./payment-upload-proof.component.scss'],
+  standalone: false
 })
 export class PaymentUploadProofComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);
@@ -67,7 +67,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
       const url = this.globals.getApiUrl() + 'trip-direct-payment-proof';
       const headers = new HttpHeaders({
         // 'Content-Type': Automatically assigned by the browser when it detects form data.
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       });
       formData.append('image', this.file);
       const upload$ = this.http

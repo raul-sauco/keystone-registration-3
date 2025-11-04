@@ -11,10 +11,10 @@ import { RouteStateService } from 'src/app/services/route-state/route-state.serv
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 
 @Component({
-    selector: 'app-program-overview',
-    templateUrl: './program-overview.component.html',
-    styleUrls: ['./program-overview.component.scss'],
-    standalone: false
+  selector: 'app-program-overview',
+  templateUrl: './program-overview.component.html',
+  styleUrls: ['./program-overview.component.scss'],
+  standalone: false
 })
 export class ProgramOverviewComponent implements OnInit {
   private api = inject(ApiService);
@@ -33,7 +33,7 @@ export class ProgramOverviewComponent implements OnInit {
 
   constructor() {
     this.url = this.globals.getResUrl();
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
   }
 
   ngOnInit(): void {
@@ -72,10 +72,10 @@ export class ProgramOverviewComponent implements OnInit {
     const endpoint =
       'files?tagged=itinerary' + (tripId ? `&trip-id=${tripId}` : '');
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    if (this.auth.getCredentials()?.accessToken) {
+    if (this.auth.getAccessToken()) {
       headers = headers.append(
         'Authorization',
-        `Bearer ${this.auth.getCredentials()?.accessToken}`
+        `Bearer ${this.auth.getAccessToken()}`
       );
     }
     const options = { headers };

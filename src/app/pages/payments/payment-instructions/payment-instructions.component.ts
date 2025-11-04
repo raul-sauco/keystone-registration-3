@@ -35,7 +35,7 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getCredentials()?.accessToken,
+        Authorization: ' Bearer ' + this.auth.getAccessToken(),
       }),
     };
     this.content$ = this.api
