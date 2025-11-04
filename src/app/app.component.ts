@@ -161,7 +161,7 @@ export class AppComponent implements OnInit {
 
   initTranslate() {
     // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('en');
+    this.translate.setFallbackLang('en');
     const browserLang = this.translate.getBrowserLang();
     if (browserLang) {
       if (browserLang.includes('zh')) {
@@ -173,14 +173,14 @@ export class AppComponent implements OnInit {
       this.translate.use('en');
     }
     this.logger.debug(
-      `TranslateService language set to "${this.translate.currentLang}"`,
+      `TranslateService language set to "${this.translate.getCurrentLang()}"`,
     );
   }
 
   toggleLanguage() {
     this.logger.debug('AppComponent.toggleLanguage');
     let value = 1;
-    if (this.translate.currentLang === 'en') {
+    if (this.translate.getCurrentLang() === 'en') {
       value = 2;
       this.translate.use('zh-cmn-Hans');
     } else {
@@ -264,12 +264,11 @@ export class AppComponent implements OnInit {
   }
 
   /** Logout the current application user */
-  async logout() {
+  logout() {
     const username = this.auth.getCredentials()?.username;
     try {
-      await this.auth.logout();
+      this.auth.logout();
       // paymentService.logout();
-      this.tripSwitcher.logout();
       this.logger.debug(`User ${username} logged out`);
       this.router.navigateByUrl('/login');
     } catch (error) {

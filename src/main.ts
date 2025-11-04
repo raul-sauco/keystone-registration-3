@@ -7,7 +7,7 @@ import { importProvidersFrom, enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { provideTranslateLoader, provideTranslateService } from '@ngx-translate/core';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
@@ -31,9 +31,6 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(
       AppRoutingModule,
       ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-      TranslateModule.forRoot({
-        loader: { provide: TranslateLoader, useClass: CustomTranslationsLoader },
-      }),
       MarkdownModule.forRoot(),
       LoggerModule.forRoot({
         serverLoggingUrl: environment.apiUrl + 'portal-logs',
@@ -44,5 +41,8 @@ bootstrapApplication(AppComponent, {
     { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
     provideHttpClient(withInterceptorsFromDi()),
     provideCharts(withDefaultRegisterables()),
+    provideTranslateService({
+      loader: provideTranslateLoader(CustomTranslationsLoader),
+    }),
   ],
 }).catch(err => console.error(err));
