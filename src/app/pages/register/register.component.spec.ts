@@ -17,14 +17,13 @@ describe('RegisterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [RegisterComponent],
     imports: [FormsModule,
         LoggerTestingModule,
         MatDialogModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([
             { path: 'trip-codes', component: TripCodesComponent },
-        ])],
+        ]), RegisterComponent],
     providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
         provideHttpClient(withInterceptorsFromDi()),

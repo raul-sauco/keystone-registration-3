@@ -14,14 +14,13 @@ describe('PaymentUploadProofComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    declarations: [PaymentUploadProofComponent],
     imports: [MatSnackBarModule,
         LoggerTestingModule,
         MatIconModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), PaymentUploadProofComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
   });

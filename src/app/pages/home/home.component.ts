@@ -2,12 +2,16 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { MatCard, MatCardImage, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MarkdownPipe } from 'ngx-markdown';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    standalone: false
+    imports: [NgFor, MatCard, MatCardImage, MatCardHeader, MatCardTitle, MatCardContent, AsyncPipe, TranslatePipe, MarkdownPipe]
 })
 export class HomeComponent implements OnInit {
   private route = inject(ActivatedRoute);

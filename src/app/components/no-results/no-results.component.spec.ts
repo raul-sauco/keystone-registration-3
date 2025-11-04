@@ -10,15 +10,15 @@ describe('NoResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
+    imports: [
         LoggerTestingModule,
         MatIconModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
+            en: require('src/assets/i18n/en.json'),
         }),
-      ],
-      declarations: [NoResultsComponent],
-    }).compileComponents();
+        NoResultsComponent,
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

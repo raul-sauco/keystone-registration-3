@@ -13,12 +13,11 @@ describe('DocumentsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [DocumentsComponent],
     imports: [LoadingSpinnerContentModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), DocumentsComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
   }));

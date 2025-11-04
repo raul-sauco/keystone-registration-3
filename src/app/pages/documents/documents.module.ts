@@ -12,16 +12,16 @@ import { NoItemsNotificationModule } from 'src/app/components/no-items-notificat
 
 
 @NgModule({
-  declarations: [DocumentsComponent],
-  imports: [
-    CommonModule,
-    DocumentsRoutingModule,
-    LoadingSpinnerContentModule,
-    LoginRequiredMessageModule,
-    NoItemsNotificationModule,
-    MatButtonModule,
-    MatIconModule,
-    TranslateModule
-  ]
+    imports: [
+        CommonModule,
+        DocumentsRoutingModule,
+        LoadingSpinnerContentModule,
+        LoginRequiredMessageModule,
+        NoItemsNotificationModule,
+        MatButtonModule,
+        MatIconModule,
+        TranslateModule,
+        DocumentsComponent
+    ]
 })
 export class DocumentsModule { }

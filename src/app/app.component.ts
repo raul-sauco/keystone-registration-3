@@ -25,10 +25,10 @@ import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.servi
 import { TripService } from '@services/trip/trip.service';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: false
 })
 export class AppComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
@@ -225,13 +225,13 @@ export class AppComponent implements OnInit {
         if (this.auth.isStudent && paymentInfo.required && !paymentInfo.paid) {
           this.logger.debug(
             'AppComponent::setEnableFullNavigationObserver => Payment is required and student has not paid. ' +
-              'Preventing full navigation',
+            'Preventing full navigation',
           );
           return false;
         }
         this.logger.debug(
           'AppComponent::setEnableFullNavigationObserver => The user has completed the registration process. ' +
-            'Allowing full navigation',
+          'Allowing full navigation',
         );
         return true;
       },

@@ -1,26 +1,25 @@
 import { Component, OnInit, inject } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { Router, RouterLink } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { DialogData } from 'src/app/interfaces/dialog-data';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { NgIf } from '@angular/common';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatButton } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
     styleUrls: ['./forgot-password.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, NgIf, MatProgressBar, MatButton, RouterLink, TranslatePipe]
 })
 export class ForgotPasswordComponent implements OnInit {
   private api = inject(ApiService);
@@ -133,7 +132,7 @@ export class ForgotPasswordComponent implements OnInit {
 @Component({
     selector: 'app-forgot-password-dialog-component',
     templateUrl: './forgot-password-dialog-component.html',
-    standalone: false
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, NgIf, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class ForgotPasswordDialogComponent {
   dialogRef = inject<MatDialogRef<ForgotPasswordDialogComponent>>(MatDialogRef);

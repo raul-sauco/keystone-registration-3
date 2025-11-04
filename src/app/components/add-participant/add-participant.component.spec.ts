@@ -23,7 +23,6 @@ describe('AddParticipantComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-    declarations: [AddParticipantComponent],
     imports: [RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
@@ -39,7 +38,7 @@ describe('AddParticipantComponent', () => {
         MatFormFieldModule,
         MatSidenavModule,
         MatToolbarModule,
-        MatListModule],
+        MatListModule, AddParticipantComponent],
     providers: [
         {
             provide: MatDialogRef,

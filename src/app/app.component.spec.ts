@@ -19,10 +19,7 @@ import { Credentials } from '@models/credentials';
 import { AuthService } from '@services/auth/auth.service';
 import { AppComponent } from 'src/app/app.component';
 
-@Pipe({
-    name: 'translate',
-    standalone: false
-})
+@Pipe({ name: 'translate' })
 class MockTranslatePipe implements PipeTransform {
   transform(value: string): string {
     return value;
@@ -78,17 +75,17 @@ describe('AppComponent', () => {
         { currentLang: 'zh-CN', onLangChange: eventEmitter },
       );
       TestBed.configureTestingModule({
-        providers: [
-          AppComponent,
-          { provide: AuthService, useValue: defaultAuthServiceSpy },
-          { provide: TranslateService, useValue: translateServiceSpy },
-          provideHttpClient(),
-          provideHttpClientTesting(),
-          provideRouter,
-        ],
-        imports,
-        declarations: [AppComponent, MockTranslatePipe],
-      });
+    providers: [
+        AppComponent,
+        { provide: AuthService, useValue: defaultAuthServiceSpy },
+        { provide: TranslateService, useValue: translateServiceSpy },
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter,
+    ],
+    imports,
+    declarations: [AppComponent],
+});
     });
 
     beforeEach(() => {

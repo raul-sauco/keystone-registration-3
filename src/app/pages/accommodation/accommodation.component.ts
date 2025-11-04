@@ -9,12 +9,18 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
+import { SupplierItemComponent } from '../../components/supplier-item/supplier-item.component';
+import { NoResultsComponent } from '../../components/no-results/no-results.component';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
     selector: 'app-accommodation',
     templateUrl: './accommodation.component.html',
     styleUrls: ['./accommodation.component.scss'],
-    standalone: false
+    imports: [NgIf, LoginRequiredMessageComponent, AdminBannerComponent, NgFor, SupplierItemComponent, NoResultsComponent, LoadingSpinnerContentComponent, AsyncPipe]
 })
 export class AccommodationComponent implements OnInit {
   private api = inject(ApiService);

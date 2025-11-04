@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,12 +13,17 @@ import { GlobalsService } from '@services/globals/globals.service';
 import { RouteStateService } from '@services/route-state/route-state.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
+import { MatCard, MatCardImage, MatCardContent, MatCardSubtitle } from '@angular/material/card';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
     selector: 'app-guides',
     templateUrl: './guides.component.html',
     styleUrls: ['./guides.component.scss'],
-    standalone: false
+    imports: [NgIf, LoginRequiredMessageComponent, AdminBannerComponent, MatCard, MatCardImage, MatCardContent, MatCardSubtitle, NgFor, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
 })
 export class GuidesComponent implements OnInit {
   private auth = inject(AuthService);

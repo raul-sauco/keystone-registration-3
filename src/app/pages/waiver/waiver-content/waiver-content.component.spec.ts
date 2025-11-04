@@ -16,12 +16,11 @@ describe('WaiverContentComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-    declarations: [WaiverContentComponent],
     imports: [RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), WaiverContentComponent],
     providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
         provideHttpClient(withInterceptorsFromDi()),

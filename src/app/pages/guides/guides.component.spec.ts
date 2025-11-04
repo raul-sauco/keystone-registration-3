@@ -17,7 +17,6 @@ describe('GuidesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [GuidesComponent],
     imports: [AdminBannerModule,
         LoggerTestingModule,
         RouterTestingModule,
@@ -26,7 +25,7 @@ describe('GuidesComponent', () => {
         LoadingSpinnerContentModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), GuidesComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
   }));

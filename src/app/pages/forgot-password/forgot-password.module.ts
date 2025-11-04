@@ -17,18 +17,18 @@ import {
 } from './forgot-password.component';
 
 @NgModule({
-  declarations: [ForgotPasswordComponent, ForgotPasswordDialogComponent],
-  imports: [
-    CommonModule,
-    ForgotPasswordRoutingModule,
-    FormsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatInputModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-    TranslateModule,
-  ],
+    imports: [
+        CommonModule,
+        ForgotPasswordRoutingModule,
+        FormsModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDialogModule,
+        MatInputModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        TranslateModule,
+        ForgotPasswordComponent, ForgotPasswordDialogComponent,
+    ],
 })
 export class ForgotPasswordModule {}

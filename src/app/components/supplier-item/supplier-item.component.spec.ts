@@ -16,19 +16,19 @@ describe('SupplierItemComponent', () => {
     waitForAsync(() => {
       const mockTranslateService = {};
       TestBed.configureTestingModule({
-        providers: [
-          { provide: TranslateService, useClass: TranslateServiceStub },
-        ],
-        imports: [
-          MatButtonModule,
-          MatCardModule,
-          MatIconModule,
-          TranslateTestingModule.withTranslations({
+    providers: [
+        { provide: TranslateService, useClass: TranslateServiceStub },
+    ],
+    imports: [
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-          }),
-        ],
-        declarations: [SupplierItemComponent],
-      }).compileComponents();
+        }),
+        SupplierItemComponent,
+    ],
+}).compileComponents();
     })
   );
 

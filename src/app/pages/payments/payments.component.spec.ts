@@ -38,7 +38,6 @@ describe('PaymentsComponent', () => {
       { auth$: of(true) }
     );
     TestBed.configureTestingModule({
-    declarations: [PaymentsComponent, PaymentClosedComponent],
     imports: [LoadingSpinnerContentModule,
         LoggerTestingModule,
         TranslateModule.forRoot({
@@ -47,7 +46,7 @@ describe('PaymentsComponent', () => {
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient],
             },
-        })],
+        }), PaymentsComponent, PaymentClosedComponent],
     providers: [
         TranslateService,
         { provide: AuthService, useValue: authServiceSpy },

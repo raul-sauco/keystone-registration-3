@@ -9,13 +9,13 @@ describe('LoginRequiredMessageComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [
-          TranslateTestingModule.withTranslations({
+    imports: [
+        TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-          }),
-        ],
-        declarations: [LoginRequiredMessageComponent],
-      }).compileComponents();
+        }),
+        LoginRequiredMessageComponent,
+    ],
+}).compileComponents();
     })
   );
 

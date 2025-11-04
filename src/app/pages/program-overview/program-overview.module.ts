@@ -10,16 +10,16 @@ import { ProgramOverviewRoutingModule } from './program-overview-routing.module'
 import { ProgramOverviewComponent } from './program-overview.component';
 
 @NgModule({
-  declarations: [ProgramOverviewComponent],
-  imports: [
-    AdminBannerModule,
-    CommonModule,
-    LoadingSpinnerContentModule,
-    LoginRequiredMessageModule,
-    MatIconModule,
-    NoResultsModule,
-    ProgramOverviewRoutingModule,
-    TranslateModule,
-  ],
+    imports: [
+        AdminBannerModule,
+        CommonModule,
+        LoadingSpinnerContentModule,
+        LoginRequiredMessageModule,
+        MatIconModule,
+        NoResultsModule,
+        ProgramOverviewRoutingModule,
+        TranslateModule,
+        ProgramOverviewComponent,
+    ],
 })
 export class ProgramOverviewModule {}

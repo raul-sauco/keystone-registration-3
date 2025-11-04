@@ -10,16 +10,16 @@ import { HelpRoutingModule } from './help-routing.module';
 import { HelpComponent } from './help.component';
 
 @NgModule({
-  declarations: [HelpComponent],
-  imports: [
-    CommonModule,
-    HelpRoutingModule,
-    LoadingSpinnerContentModule,
-    MarkdownModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    TranslateModule,
-  ],
+    imports: [
+        CommonModule,
+        HelpRoutingModule,
+        LoadingSpinnerContentModule,
+        MarkdownModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        TranslateModule,
+        HelpComponent,
+    ],
 })
 export class HelpModule {}

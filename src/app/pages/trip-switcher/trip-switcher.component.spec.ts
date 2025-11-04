@@ -20,7 +20,6 @@ describe('TripSwitcherComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    declarations: [TripSwitcherComponent],
     imports: [LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatRippleModule,
@@ -30,7 +29,7 @@ describe('TripSwitcherComponent', () => {
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient],
             },
-        })],
+        }), TripSwitcherComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     translate = TestBed.inject(TranslateService);

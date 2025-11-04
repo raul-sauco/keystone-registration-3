@@ -20,26 +20,24 @@ import {
 } from './register.component';
 
 @NgModule({
-  declarations: [
-    RegisterComponent,
-    ErrorMessageDialogComponent,
-    RegistrationSuccessDialogComponent,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MarkdownModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMomentDateModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-    RegisterRoutingModule,
-    TranslateModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MarkdownModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDatepickerModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMomentDateModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        RegisterRoutingModule,
+        TranslateModule,
+        RegisterComponent,
+        ErrorMessageDialogComponent,
+        RegistrationSuccessDialogComponent,
+    ],
 })
 export class RegisterModule {}

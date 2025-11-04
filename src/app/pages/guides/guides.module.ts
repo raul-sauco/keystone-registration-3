@@ -11,16 +11,16 @@ import { GuidesRoutingModule } from './guides-routing.module';
 import { GuidesComponent } from './guides.component';
 
 @NgModule({
-  declarations: [GuidesComponent],
-  imports: [
-    AdminBannerModule,
-    CommonModule,
-    GuidesRoutingModule,
-    LoadingSpinnerContentModule,
-    LoginRequiredMessageModule,
-    MarkdownModule.forChild(),
-    MatCardModule,
-    TranslateModule,
-  ],
+    imports: [
+        AdminBannerModule,
+        CommonModule,
+        GuidesRoutingModule,
+        LoadingSpinnerContentModule,
+        LoginRequiredMessageModule,
+        MarkdownModule.forChild(),
+        MatCardModule,
+        TranslateModule,
+        GuidesComponent,
+    ],
 })
 export class GuidesModule {}

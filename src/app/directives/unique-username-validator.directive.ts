@@ -33,8 +33,7 @@ export class UniqueUsernameValidator implements AsyncValidator {
             useExisting: forwardRef(() => UniqueUsernameValidator),
             multi: true,
         },
-    ],
-    standalone: false
+    ]
 })
 export class UniqueUsernameValidatorDirective {
   private validator = inject(UniqueUsernameValidator);

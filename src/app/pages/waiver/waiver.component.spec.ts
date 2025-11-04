@@ -70,7 +70,6 @@ describe('WaiverComponent', () => {
       }
     );
     TestBed.configureTestingModule({
-    declarations: [WaiverComponent, WaiverContentComponent],
     imports: [FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
@@ -86,7 +85,7 @@ describe('WaiverComponent', () => {
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient],
             },
-        })],
+        }), WaiverComponent, WaiverContentComponent],
     providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: NGXLogger, useValue: loggerSpy },

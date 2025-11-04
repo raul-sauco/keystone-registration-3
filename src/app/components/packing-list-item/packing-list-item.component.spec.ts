@@ -12,15 +12,15 @@ describe('PackingListItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [PackingListItemComponent],
-      imports: [
+    imports: [
         MarkdownModule.forRoot(),
         LoadingSpinnerContentModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
+            en: require('src/assets/i18n/en.json'),
         }),
-      ],
-    }).compileComponents();
+        PackingListItemComponent,
+    ],
+}).compileComponents();
   }));
 
   beforeEach(() => {

@@ -6,12 +6,17 @@ import { Document } from 'src/app/models/document';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { NoItemsNotificationComponent } from '../../components/no-items-notification/no-items-notification.component';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
 
 @Component({
-  selector: 'app-documents',
-  templateUrl: './documents.component.html',
-  styleUrls: ['./documents.component.scss'],
-  standalone: false
+    selector: 'app-documents',
+    templateUrl: './documents.component.html',
+    styleUrls: ['./documents.component.scss'],
+    imports: [NgIf, NgFor, MatIcon, NoItemsNotificationComponent, LoadingSpinnerContentComponent, LoginRequiredMessageComponent, AsyncPipe]
 })
 export class DocumentsComponent implements OnInit {
   private logger = inject(NGXLogger);

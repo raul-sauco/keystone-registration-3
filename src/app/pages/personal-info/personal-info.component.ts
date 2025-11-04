@@ -1,17 +1,13 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, Subscription, map } from 'rxjs';
 
-import { formatDate } from '@angular/common';
+import { formatDate, NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { PaymentInfo } from '@models/paymentInfo';
 import { Student } from '@models/student';
 import { ApiService } from '@services/api/api.service';
@@ -19,12 +15,21 @@ import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { SchoolService } from '@services/school/school.service';
 import { StudentService } from '@services/student/student.service';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { MarkdownComponent } from 'ngx-markdown';
+import { IdPhotoComponent } from './id-photo/id-photo.component';
+import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatButton } from '@angular/material/button';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
-  selector: 'app-personal-info',
-  templateUrl: './personal-info.component.html',
-  styleUrls: ['./personal-info.component.scss'],
-  standalone: false
+    selector: 'app-personal-info',
+    templateUrl: './personal-info.component.html',
+    styleUrls: ['./personal-info.component.scss'],
+    imports: [LoginRequiredMessageComponent, NgIf, FormsModule, ReactiveFormsModule, MarkdownComponent, IdPhotoComponent, MatFormField, MatLabel, MatInput, MatError, MatSelect, MatOption, NgFor, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
   private api = inject(ApiService);

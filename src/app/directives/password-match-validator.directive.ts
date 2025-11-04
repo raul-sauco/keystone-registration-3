@@ -25,8 +25,7 @@ export const passwordMatchValidator: ValidatorFn = (
             useExisting: PasswordMatchValidatorDirective,
             multi: true,
         },
-    ],
-    standalone: false
+    ]
 })
 export class PasswordMatchValidatorDirective {
   static validate(control: AbstractControl): ValidationErrors | null {

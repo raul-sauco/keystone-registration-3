@@ -13,19 +13,19 @@ import { PackingListRoutingModule } from './packing-list-routing.module';
 import { PackingListComponent } from './packing-list.component';
 
 @NgModule({
-  declarations: [PackingListComponent],
-  imports: [
-    AdminBannerModule,
-    CommonModule,
-    PackingListRoutingModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatTabsModule,
-    PackingListItemModule,
-    TranslateModule,
-    MarkdownModule.forChild(),
-    LoadingSpinnerContentModule,
-    LoginRequiredMessageModule,
-  ],
+    imports: [
+        AdminBannerModule,
+        CommonModule,
+        PackingListRoutingModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatTabsModule,
+        PackingListItemModule,
+        TranslateModule,
+        MarkdownModule.forChild(),
+        LoadingSpinnerContentModule,
+        LoginRequiredMessageModule,
+        PackingListComponent,
+    ],
 })
 export class PackingListModule {}

@@ -10,16 +10,16 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AddParticipantComponent } from './add-participant.component';
 
 @NgModule({
-  declarations: [AddParticipantComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-    TranslateModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        TranslateModule,
+        AddParticipantComponent,
+    ],
 })
 export class AddParticipantModule {}

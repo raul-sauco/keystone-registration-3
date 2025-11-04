@@ -7,14 +7,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SupplierItemComponent } from './supplier-item.component';
 
 @NgModule({
-  declarations: [SupplierItemComponent],
-  exports: [SupplierItemComponent],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    TranslateModule,
-  ],
+    exports: [SupplierItemComponent],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        TranslateModule,
+        SupplierItemComponent,
+    ],
 })
 export class SupplierItemModule {}

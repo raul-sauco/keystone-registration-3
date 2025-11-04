@@ -20,7 +20,6 @@ describe('ForgotPasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [ForgotPasswordComponent],
     imports: [RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
@@ -33,7 +32,7 @@ describe('ForgotPasswordComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatSnackBarModule,
-        NoopAnimationsModule],
+        NoopAnimationsModule, ForgotPasswordComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
   }));

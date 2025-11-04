@@ -7,12 +7,21 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { PackingListService } from 'src/app/services/packing-list/packing-list.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
+import { MatTabGroup, MatTab, MatTabLabel } from '@angular/material/tabs';
+import { MatIcon } from '@angular/material/icon';
+import { PackingListItemComponent } from '../../components/packing-list-item/packing-list-item.component';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MarkdownPipe } from 'ngx-markdown';
 
 @Component({
     selector: 'app-packing-list',
     templateUrl: './packing-list.component.html',
     styleUrls: ['./packing-list.component.scss'],
-    standalone: false
+    imports: [NgIf, LoginRequiredMessageComponent, AdminBannerComponent, MatTabGroup, MatTab, MatTabLabel, MatIcon, NgFor, PackingListItemComponent, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe, MarkdownPipe]
 })
 export class PackingListComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);

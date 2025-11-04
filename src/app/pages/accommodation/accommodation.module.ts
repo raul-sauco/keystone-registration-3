@@ -9,15 +9,15 @@ import { AccommodationRoutingModule } from './accommodation-routing.module';
 import { AccommodationComponent } from './accommodation.component';
 
 @NgModule({
-  declarations: [AccommodationComponent],
-  imports: [
-    AdminBannerModule,
-    CommonModule,
-    AccommodationRoutingModule,
-    LoadingSpinnerContentModule,
-    LoginRequiredMessageModule,
-    NoResultsModule,
-    SupplierItemModule,
-  ],
+    imports: [
+        AdminBannerModule,
+        CommonModule,
+        AccommodationRoutingModule,
+        LoadingSpinnerContentModule,
+        LoginRequiredMessageModule,
+        NoResultsModule,
+        SupplierItemModule,
+        AccommodationComponent,
+    ],
 })
 export class AccommodationModule {}

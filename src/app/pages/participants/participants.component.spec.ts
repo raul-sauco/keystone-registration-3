@@ -57,7 +57,6 @@ describe('ParticipantsComponent', () => {
       error: undefined,
     });
     TestBed.configureTestingModule({
-    declarations: [ParticipantsComponent],
     imports: [AdminBannerModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
@@ -71,7 +70,7 @@ describe('ParticipantsComponent', () => {
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), ParticipantsComponent],
     providers: [{ provide: AuthService, useValue: authServiceSpy }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
   }));

@@ -1,19 +1,23 @@
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription, finalize } from 'rxjs';
 
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 import { PaymentService } from '@services/payment/payment.service';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-payment-upload-proof',
-  templateUrl: './payment-upload-proof.component.html',
-  styleUrls: ['./payment-upload-proof.component.scss'],
-  standalone: false
+    selector: 'app-payment-upload-proof',
+    templateUrl: './payment-upload-proof.component.html',
+    styleUrls: ['./payment-upload-proof.component.scss'],
+    imports: [NgIf, MatIcon, MatButton, MatProgressBar, TranslatePipe]
 })
 export class PaymentUploadProofComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);

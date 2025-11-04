@@ -6,13 +6,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [LoginRequiredMessageComponent],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    RouterModule,
-    TranslateModule
-  ],
-  exports: [LoginRequiredMessageComponent]
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        RouterModule,
+        TranslateModule,
+        LoginRequiredMessageComponent
+    ],
+    exports: [LoginRequiredMessageComponent]
 })
 export class LoginRequiredMessageModule { }

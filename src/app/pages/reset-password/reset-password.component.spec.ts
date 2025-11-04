@@ -28,7 +28,6 @@ describe('ResetPasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [ResetPasswordComponent],
     imports: [FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
@@ -45,7 +44,7 @@ describe('ResetPasswordComponent', () => {
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), ResetPasswordComponent],
     providers: [
         {
             provide: MatDialogRef,

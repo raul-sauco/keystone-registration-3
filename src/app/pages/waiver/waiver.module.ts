@@ -17,22 +17,22 @@ import { WaiverRoutingModule } from './waiver-routing.module';
 import { WaiverComponent } from './waiver.component';
 
 @NgModule({
-  declarations: [WaiverComponent, WaiverContentComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    LoadingSpinnerContentModule,
-    LoginRequiredMessageModule,
-    MarkdownModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMomentDateModule,
-    MatProgressBarModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    TranslateModule,
-    WaiverRoutingModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        LoadingSpinnerContentModule,
+        LoginRequiredMessageModule,
+        MarkdownModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMomentDateModule,
+        MatProgressBarModule,
+        MatSnackBarModule,
+        ReactiveFormsModule,
+        TranslateModule,
+        WaiverRoutingModule,
+        WaiverComponent, WaiverContentComponent,
+    ],
 })
 export class WaiverModule {}

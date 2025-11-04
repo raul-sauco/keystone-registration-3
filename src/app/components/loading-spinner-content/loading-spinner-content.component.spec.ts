@@ -10,14 +10,14 @@ describe('LoadingSpinnerContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [LoadingSpinnerContentComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
+            en: require('src/assets/i18n/en.json'),
         }),
-      ],
-    }).compileComponents();
+        LoadingSpinnerContentComponent,
+    ],
+}).compileComponents();
   }));
 
   beforeEach(() => {

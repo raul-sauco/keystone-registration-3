@@ -21,7 +21,6 @@ describe('PackingListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-    declarations: [PackingListComponent],
     imports: [AdminBannerModule,
         BrowserAnimationsModule,
         LoadingSpinnerContentModule,
@@ -35,7 +34,7 @@ describe('PackingListComponent', () => {
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), PackingListComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     })

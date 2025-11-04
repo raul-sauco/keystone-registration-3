@@ -19,7 +19,6 @@ describe('TripCodesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-    declarations: [TripCodesComponent],
     imports: [FormsModule,
         LoggerTestingModule,
         MatCardModule,
@@ -31,7 +30,7 @@ describe('TripCodesComponent', () => {
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), TripCodesComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     })

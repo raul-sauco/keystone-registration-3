@@ -19,7 +19,6 @@ describe('LoginComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-    declarations: [LoginComponent],
     imports: [FormsModule,
         LoggerTestingModule,
         MatCardModule,
@@ -31,7 +30,7 @@ describe('LoginComponent', () => {
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), LoginComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     })

@@ -1,12 +1,8 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 
@@ -15,12 +11,20 @@ import { Student } from '@models/student';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { StudentService } from '@services/student/student.service';
+import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { WaiverContentComponent } from './waiver-content/waiver-content.component';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatButton } from '@angular/material/button';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
     selector: 'app-waiver',
     templateUrl: './waiver.component.html',
     styleUrls: ['./waiver.component.scss'],
-    standalone: false
+    imports: [NgIf, LoginRequiredMessageComponent, WaiverContentComponent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatProgressBar, MatButton, LoadingSpinnerContentComponent, AsyncPipe, DatePipe, TranslatePipe]
 })
 export class WaiverComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);

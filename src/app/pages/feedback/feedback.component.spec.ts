@@ -15,14 +15,13 @@ describe('FeedbackComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-    declarations: [FeedbackComponent],
     imports: [AdminBannerModule,
         LoggerTestingModule,
         NoItemsNotificationModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), FeedbackComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     })

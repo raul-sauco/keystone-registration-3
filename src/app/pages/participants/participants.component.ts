@@ -1,13 +1,9 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Sort } from '@angular/material/sort';
-import { TranslateService } from '@ngx-translate/core';
+import { Sort, MatSort, MatSortHeader } from '@angular/material/sort';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
@@ -21,13 +17,26 @@ import { AuthService } from '@services/auth/auth.service';
 import { SchoolService } from '@services/school/school.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass } from '@angular/common';
+import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatSuffix } from '@angular/material/form-field';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatInput } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatIconButton, MatFabButton, MatButton } from '@angular/material/button';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
+import { CamelToSnakePipe } from '../../pipes/camel-to-snake.pipe';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-participants',
     templateUrl: './participants.component.html',
     styleUrls: ['./participants.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    standalone: false
+    imports: [NgIf, AdminBannerComponent, MatTable, MatSort, NgFor, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, NgSwitch, NgSwitchCase, MatIcon, MatFormField, MatSelect, MatOption, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatIconButton, NgSwitchDefault, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgClass, MatFabButton, LoadingSpinnerContentComponent, CamelToSnakePipe, TranslatePipe]
 })
 export class ParticipantsComponent implements OnInit {
   private api = inject(ApiService);
@@ -417,7 +426,7 @@ export class ParticipantsComponent implements OnInit {
     selector: 'app-delete-student-confirmation-dialog-component',
     templateUrl: './delete-student-confirmation-dialog.component.html',
     styleUrls: ['./delete-student-confirmation-dialog.component.scss'],
-    standalone: false
+    imports: [NgIf, MatDialogTitle, CdkScrollable, MatDialogContent, MatProgressSpinner, MatDialogActions, MatButton, TranslatePipe]
 })
 export class DeleteStudentConfirmationDialogComponent {
   private api = inject(ApiService);

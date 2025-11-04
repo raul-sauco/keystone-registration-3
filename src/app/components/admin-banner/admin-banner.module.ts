@@ -6,8 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AdminBannerComponent } from './admin-banner.component';
 
 @NgModule({
-  declarations: [AdminBannerComponent],
-  imports: [CommonModule, MatButtonModule, RouterModule, TranslateModule],
-  exports: [AdminBannerComponent],
+    imports: [CommonModule, MatButtonModule, RouterModule, TranslateModule, AdminBannerComponent],
+    exports: [AdminBannerComponent],
 })
 export class AdminBannerModule {}

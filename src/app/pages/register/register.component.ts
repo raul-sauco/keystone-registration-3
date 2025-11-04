@@ -1,21 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
-import {
-  FormGroupDirective,
-  NgForm,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormGroupDirective, NgForm, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { Router, RouterLink } from '@angular/router';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, map } from 'rxjs';
 
@@ -26,7 +15,15 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { TripService } from '@services/trip/trip.service';
-import { formatDate } from '@angular/common';
+import { formatDate, NgIf, AsyncPipe } from '@angular/common';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MarkdownComponent } from 'ngx-markdown';
+import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatButton } from '@angular/material/button';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 // import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
 
@@ -41,10 +38,10 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
-  standalone: false
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    imports: [NgIf, MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MarkdownComponent, MatFormField, MatLabel, MatInput, MatError, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, RouterLink, MatProgressBar, MatButton, AsyncPipe, TranslatePipe]
 })
 export class RegisterComponent implements OnInit {
   private api = inject(ApiService);
@@ -224,9 +221,9 @@ export class RegisterComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-error-message-dialog-component',
-  templateUrl: './error-message-dialog.component.html',
-  standalone: false
+    selector: 'app-error-message-dialog-component',
+    templateUrl: './error-message-dialog.component.html',
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class ErrorMessageDialogComponent {
   dialogRef = inject<MatDialogRef<ErrorMessageDialogComponent>>(MatDialogRef);
@@ -234,10 +231,10 @@ export class ErrorMessageDialogComponent {
 }
 
 @Component({
-  selector: 'app-registration-success-dialog-component',
-  templateUrl: './registration-success-dialog.component.html',
-  styleUrls: ['./registration-success-dialog.component.scss'],
-  standalone: false
+    selector: 'app-registration-success-dialog-component',
+    templateUrl: './registration-success-dialog.component.html',
+    styleUrls: ['./registration-success-dialog.component.scss'],
+    imports: [CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class RegistrationSuccessDialogComponent {
   dialogRef = inject<MatDialogRef<RegistrationSuccessDialogComponent>>(MatDialogRef);

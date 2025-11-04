@@ -40,28 +40,28 @@ describe('HomeComponent', () => {
       setNullTripIdParamState: null,
     });
     TestBed.configureTestingModule({
-      declarations: [HomeComponent],
-      imports: [
+    imports: [
         BrowserAnimationsModule,
         RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
-          en: require('src/assets/i18n/en.json'),
+            en: require('src/assets/i18n/en.json'),
         }),
         MarkdownModule.forRoot(),
         MatCardModule,
-      ],
-      providers: [
+        HomeComponent,
+    ],
+    providers: [
         {
-          provide: ActivatedRoute,
-          useValue: activatedRouteSpy,
+            provide: ActivatedRoute,
+            useValue: activatedRouteSpy,
         },
         {
-          provide: RouteStateService,
-          useValue: routeStateServiceSpy,
+            provide: RouteStateService,
+            useValue: routeStateServiceSpy,
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     element = fixture.debugElement;

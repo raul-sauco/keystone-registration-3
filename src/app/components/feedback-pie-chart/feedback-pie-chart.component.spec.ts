@@ -34,9 +34,8 @@ describe('FeedbackPieChartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [FeedbackPieChartComponent],
-      imports: [BaseChartDirective],
-    }).compileComponents();
+    imports: [BaseChartDirective, FeedbackPieChartComponent],
+}).compileComponents();
   }));
 
   beforeEach(() => {

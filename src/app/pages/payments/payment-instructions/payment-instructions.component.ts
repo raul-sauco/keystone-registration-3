@@ -1,19 +1,25 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, map } from 'rxjs';
 
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MarkdownComponent } from 'ngx-markdown';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-payment-instructions',
     templateUrl: './payment-instructions.component.html',
     styleUrls: ['./payment-instructions.component.scss'],
-    standalone: false
+    imports: [NgIf, MarkdownComponent, MatIconButton, MatIcon, MatProgressSpinner, AsyncPipe]
 })
 export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
@@ -86,7 +92,7 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
     styleUrls: [
         './add-participant-info-to-payment-reminder-dialog.component.scss',
     ],
-    standalone: false
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class AddParticipantInfoToPaymentReminderDialogComponent {
   dialogRef = inject<MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>>(MatDialogRef);
@@ -108,7 +114,7 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
     selector: 'app-add-student-name-to-payment-proof-help-dialog-component',
     templateUrl: './add-student-name-to-payment-proof-help-dialog.component.html',
     styleUrls: ['./add-student-name-to-payment-proof-help-dialog.component.scss'],
-    standalone: false
+    imports: [CdkScrollable, MatDialogContent]
 })
 export class AddStudentNameToPaymentProofHelpDialogComponent {
   dialogRef = inject<MatDialogRef<AddStudentNameToPaymentProofHelpDialogComponent>>(MatDialogRef);

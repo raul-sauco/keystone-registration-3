@@ -7,13 +7,13 @@ import { TripSwitcherRoutingModule } from './trip-switcher-routing.module';
 import { TripSwitcherComponent } from './trip-switcher.component';
 
 @NgModule({
-  declarations: [TripSwitcherComponent],
-  imports: [
-    CommonModule,
-    LoadingSpinnerContentModule,
-    MatRippleModule,
-    TranslateModule,
-    TripSwitcherRoutingModule,
-  ],
+    imports: [
+        CommonModule,
+        LoadingSpinnerContentModule,
+        MatRippleModule,
+        TranslateModule,
+        TripSwitcherRoutingModule,
+        TripSwitcherComponent,
+    ],
 })
 export class TripSwitcherModule {}

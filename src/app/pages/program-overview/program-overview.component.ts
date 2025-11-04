@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -9,12 +9,18 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
+import { MatIcon } from '@angular/material/icon';
+import { NoResultsComponent } from '../../components/no-results/no-results.component';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
-  selector: 'app-program-overview',
-  templateUrl: './program-overview.component.html',
-  styleUrls: ['./program-overview.component.scss'],
-  standalone: false
+    selector: 'app-program-overview',
+    templateUrl: './program-overview.component.html',
+    styleUrls: ['./program-overview.component.scss'],
+    imports: [NgIf, LoginRequiredMessageComponent, AdminBannerComponent, NgFor, MatIcon, NoResultsComponent, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
 })
 export class ProgramOverviewComponent implements OnInit {
   private api = inject(ApiService);

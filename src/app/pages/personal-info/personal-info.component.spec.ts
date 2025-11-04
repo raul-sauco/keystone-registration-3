@@ -66,7 +66,6 @@ describe('PersonalInfoComponent', () => {
       error: undefined,
     });
     TestBed.configureTestingModule({
-    declarations: [PersonalInfoComponent],
     imports: [FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
@@ -75,7 +74,7 @@ describe('PersonalInfoComponent', () => {
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), PersonalInfoComponent],
     providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: ApiService, useValue: apiServiceSpy },

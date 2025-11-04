@@ -5,11 +5,12 @@ import { NGXLogger } from 'ngx-logger';
 import { PaymentInfo } from '@models/paymentInfo';
 import { ApiService } from '@services/api/api.service';
 import { PaymentService } from '@services/payment/payment.service';
+import { MarkdownComponent } from 'ngx-markdown';
 @Component({
     selector: 'app-waiver-content',
     templateUrl: './waiver-content.component.html',
     styleUrls: ['./waiver-content.component.scss'],
-    standalone: false
+    imports: [MarkdownComponent]
 })
 export class WaiverContentComponent implements OnInit {
   private logger = inject(NGXLogger);

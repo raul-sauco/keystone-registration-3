@@ -14,12 +14,11 @@ describe('PaymentClosedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    declarations: [PaymentClosedComponent],
     imports: [LoadingSpinnerContentModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), PaymentClosedComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
     translate = TestBed.inject(TranslateService);

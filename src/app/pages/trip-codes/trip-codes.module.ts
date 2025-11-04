@@ -20,24 +20,22 @@ import {
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 
 @NgModule({
-  declarations: [
-    TripCodesComponent,
-    CodeErrorDialogComponent,
-    TripCodeHelpDialogComponent,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TripCodesRoutingModule,
-    LoadingSpinnerContentModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatIconModule,
-    MatInputModule,
-    MatProgressBarModule,
-    TranslateModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TripCodesRoutingModule,
+        LoadingSpinnerContentModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDialogModule,
+        MatIconModule,
+        MatInputModule,
+        MatProgressBarModule,
+        TranslateModule,
+        TripCodesComponent,
+        CodeErrorDialogComponent,
+        TripCodeHelpDialogComponent,
+    ],
 })
 export class TripCodesModule {}

@@ -21,7 +21,6 @@ describe('HelpComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-    declarations: [HelpComponent],
     imports: [LoadingSpinnerContentModule,
         RouterTestingModule,
         LoggerTestingModule,
@@ -31,7 +30,7 @@ describe('HelpComponent', () => {
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient],
             },
-        })],
+        }), HelpComponent],
     providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting()

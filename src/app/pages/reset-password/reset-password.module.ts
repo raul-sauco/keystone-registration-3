@@ -18,19 +18,19 @@ import {
 } from './reset-password.component';
 
 @NgModule({
-  declarations: [ResetPasswordComponent, ResetPasswordDialogComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    LoadingSpinnerContentModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatInputModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-    ResetPasswordRoutingModule,
-    TranslateModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        LoadingSpinnerContentModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDialogModule,
+        MatInputModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        ResetPasswordRoutingModule,
+        TranslateModule,
+        ResetPasswordComponent, ResetPasswordDialogComponent,
+    ],
 })
 export class ResetPasswordModule {}

@@ -1,15 +1,19 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap, RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/services/api/api.service';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { TripService } from 'src/app/services/trip/trip.service';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { NGXLogger } from 'ngx-logger';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { NgIf } from '@angular/common';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatButton } from '@angular/material/button';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 export interface DialogData {
   title: string;
@@ -21,7 +25,7 @@ export interface DialogData {
     selector: 'app-trip-codes',
     templateUrl: './trip-codes.component.html',
     styleUrls: ['./trip-codes.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, MatIcon, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, NgIf, MatProgressBar, MatButton, RouterLink, TranslatePipe]
 })
 export class TripCodesComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -135,7 +139,7 @@ export class TripCodesComponent implements OnInit {
 @Component({
     selector: 'app-code-error-dialog-component',
     templateUrl: './code-error-dialog.component.html',
-    standalone: false
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, TranslatePipe]
 })
 export class CodeErrorDialogComponent {
   dialogRef = inject<MatDialogRef<CodeErrorDialogComponent>>(MatDialogRef);
@@ -150,7 +154,7 @@ export class CodeErrorDialogComponent {
 @Component({
     selector: 'app-trip-code-help-dialog-component',
     templateUrl: './trip-code-help-dialog.component.html',
-    standalone: false
+    imports: [NgIf, MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, TranslatePipe]
 })
 export class TripCodeHelpDialogComponent {
   dialogRef = inject<MatDialogRef<TripCodeHelpDialogComponent>>(MatDialogRef);

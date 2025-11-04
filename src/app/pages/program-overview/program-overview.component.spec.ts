@@ -13,13 +13,12 @@ describe('ProgramOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    declarations: [ProgramOverviewComponent],
     imports: [LoadingSpinnerContentModule,
         LoggerTestingModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
             en: require('src/assets/i18n/en.json'),
-        })],
+        }), ProgramOverviewComponent],
     providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 }).compileComponents();
   });
