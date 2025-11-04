@@ -1,9 +1,16 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints, LayoutModule } from '@angular/cdk/layout';
+import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-import { NavigationEnd, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LoggerModule, NGXLogger } from 'ngx-logger';
+import { MarkdownModule } from 'ngx-markdown';
 import { Observable, combineLatest, of } from 'rxjs';
 import {
   delay,
@@ -14,6 +21,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { PaymentInfo } from '@models/paymentInfo';
 import { Student } from '@models/student';
 import { ApiService } from '@services/api/api.service';
@@ -28,7 +36,24 @@ import { TripService } from '@services/trip/trip.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false
+  imports: [
+    AdminBannerModule,
+    AsyncPipe,
+    CommonModule,
+    LayoutModule,
+    LoggerModule,
+    MarkdownModule,
+    MatToolbarModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    RouterLink,
+    RouterOutlet,
+    TranslateModule,
+    UpperCasePipe,
+  ],
 })
 export class AppComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
