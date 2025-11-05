@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 
 import { Credentials } from '@models/credentials';
 
@@ -10,37 +10,54 @@ import { Credentials } from '@models/credentials';
 export class AuthService {
   private logger = inject(NGXLogger);
 
-  private credentials?: Credentials;
-  private accessToken: string | null = null;
+  private readonly _auth$ = new BehaviorSubject<boolean>(false);
+  private _credentials: Credentials | null = null;
+  private _accessToken: string | null = null;
 
-  public authenticated = false;
-  auth$: Subject<boolean> = new Subject<boolean>();
+  readonly auth$ = this._auth$.pipe(distinctUntilChanged());
   public redirectUrl?: string;
 
   constructor() {
     this.logger.debug('AuthService constructor');
-    this.checkAuthenticated().catch((error) => this.logger.warn(error));
   }
 
   setAuth(res: any) {
-    this.accessToken = res.access_token;
-    this.credentials = new Credentials(res.credentials);
+    this._accessToken = res.access_token;
+    this._credentials = new Credentials(res.credentials);
     if (this.authenticated) {
       this.logger.debug(`AuthService: Updating Auth access token and credentials: ${res.access_token}`);
     } else {
-      this.authenticated = true;
-      this.auth$.next(this.authenticated);
+      this._auth$.next(true);
       this.logger.debug(`AuthService: Setting Auth access token and credentials: ${res.access_token}. `
         + 'And updating authenticated status to `true`');
     }
   }
 
-  getAccessToken(): string | null {
-    return this.accessToken;
+  get accessToken(): string | null {
+    return this._accessToken;
   }
 
-  setAccessToken(token: string): void {
-    this.accessToken = token;
+  get authenticated(): boolean {
+    return this._auth$.value;
+  }
+
+  get credentials(): Credentials | null {
+    return this._credentials;
+  }
+
+  /** Return whether the current user is type teacher */
+  get isTeacher(): boolean {
+    return this.credentials?.type === 4;
+  }
+
+  /** Return whether the current user is type student */
+  get isStudent(): boolean {
+    return this.credentials?.type === 6;
+  }
+
+  /** Return whether the current user is type school admin */
+  get isSchoolAdmin(): boolean {
+    return this.credentials?.type === 8;
   }
 
   get isAccessTokenExpired(): boolean {
@@ -62,29 +79,19 @@ export class AuthService {
     }
   }
 
-  /** Return the current credentials if any, null otherwise */
-  getCredentials(): Credentials | undefined {
+  /** @deprecated Use `auth.credentials` instead */
+  getCredentials(): Credentials | null {
     return this.credentials;
   }
 
-  /** Return whether the current user is type teacher */
-  get isTeacher(): boolean {
-    return this.credentials?.type === 4;
-  }
-
-  /** Return whether the current user is type student */
-  get isStudent(): boolean {
-    return this.credentials?.type === 6;
-  }
-
-  /** Return whether the current user is type school admin */
-  get isSchoolAdmin(): boolean {
-    return this.credentials?.type === 8;
+  /** @deprecated Use `auth.accessToken` instead */
+  getAccessToken(): string | null {
+    return this.accessToken;
   }
 
   /**
    * Checks whether the application has a user currently authenticated.
-   * TODO: Get rid of this method, should just use sync auth.isAuthenticated
+   * @deprecated Use `auth.authenticated` for sync and `auth.auth$` for async.
    */
   checkAuthenticated(): Promise<boolean> {
     this.logger.debug('AuthService.checkAuthenticated called');
@@ -95,14 +102,9 @@ export class AuthService {
 
   /** Remove all the login info associated with this user */
   logout(): void {
-    if (this.credentials) {
-      this.logger.debug(
-        `AuthService; logging out ${this.credentials.username}`
-      );
-    }
-    this.credentials = undefined;
-    this.accessToken = null;
-    this.authenticated = false;
-    this.auth$.next(this.authenticated);
+    this.logger.debug(`AuthService; logging out ${this.credentials?.username}`);
+    this._credentials = null;
+    this._accessToken = null;
+    this._auth$.next(false);
   }
 }
