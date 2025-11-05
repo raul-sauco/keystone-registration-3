@@ -1,26 +1,28 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { MatCard, MatCardImage, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { TranslatePipe } from '@ngx-translate/core';
 import { MarkdownPipe } from 'ngx-markdown';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
-    imports: [NgFor, MatCard, MatCardImage, MatCardHeader, MatCardTitle, MatCardContent, AsyncPipe, TranslatePipe, MarkdownPipe]
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+  imports: [
+    AsyncPipe,
+    MarkdownPipe,
+    MatCard,
+    MatCardContent,
+    MatCardHeader,
+    MatCardImage,
+    MatCardTitle,
+    TranslatePipe,
+  ]
 })
-export class HomeComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private routeStateService = inject(RouteStateService);
-
-  url: string;
-  columns = 1;
-
-  // cSpell:disable
+export class HomeComponent {
+  url = inject(GlobalsService).getResUrl() + 'img/portal/';
   cards = [
     {
       title: 'HOME_CARD_TITLE_ABOUT',
@@ -83,33 +85,4 @@ export class HomeComponent implements OnInit {
       image: 'Y8NUMCWKUDIMMPJJCCOM.jpg',
     },
   ];
-  // cSpell: enable
-
-  constructor() {
-    const globals = inject(GlobalsService);
-
-    this.url = globals.getResUrl() + 'img/portal/';
-  }
-
-  /**
-   * Initialize the component.
-   */
-  ngOnInit() {
-    this.checkTripIdParam();
-  }
-
-  /**
-   * Check the current route for a trip-id parameter and update the
-   * route state service if a parameter is found and not the same as trip-id.
-   */
-  checkTripIdParam() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      const tripId = params.get('trip-id');
-      if (tripId !== null) {
-        if (this.routeStateService.getTripId() !== tripId) {
-          this.routeStateService.updateTripIdParamState(tripId);
-        }
-      }
-    });
-  }
 }
