@@ -137,11 +137,10 @@ export class AppComponent implements OnInit {
       shareReplay(),
     );
 
-  constructor() {
-    const router = this.router;
-
+  ngOnInit() {
+    this.checkAuth();
     this.initTranslate();
-    router.events
+    this.router.events
       .pipe(
         withLatestFrom(this.isHandset$),
         filter(([a, b]) => b && a instanceof NavigationEnd),
@@ -151,12 +150,21 @@ export class AppComponent implements OnInit {
           this.drawer.close();
         }
       });
-  }
-
-  ngOnInit() {
     // Subscribe to the routeStateService to get updates on the trip ID parameter
     this.tripId$ = this.routeStateService.tripIdParam$.pipe(delay(0));
     this.setEnableFullNavigationObserver();
+  }
+
+  /**
+   * Access token is only stored in-memory, check status when the app
+   * first launches, for example page refresh.
+   */
+  checkAuth() {
+    this.logger.debug('AppComponent::ngOnInit triggered authentication status check');
+    this.api.get('auth/check').subscribe({
+      next: (res: any) => this.logger.info(res),
+      error: (err: any) => this.logger.error(err),
+    });
   }
 
   initTranslate() {
