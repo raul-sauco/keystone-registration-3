@@ -22,6 +22,7 @@ import {
 } from 'rxjs/operators';
 
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
+import { AuthState } from '@models/auth-state';
 import { PaymentInfo } from '@models/paymentInfo';
 import { Student } from '@models/student';
 import { ApiService } from '@services/api/api.service';
@@ -219,53 +220,17 @@ export class AppComponent implements OnInit {
       (
         student: Student | null,
         paymentInfo: PaymentInfo | null,
-        authenticated: boolean,
+        authState: AuthState,
       ) => {
-        if (!authenticated) {
-          this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => No user authenticated, preventing full navigation',
-          );
+        if (authState !== AuthState.Authenticated
+          || student === null
+          || paymentInfo === null
+          || !student.waiverAccepted
+          || (this.auth.isStudent && paymentInfo.required && !paymentInfo.paid)) {
+          this.logger.debug('AppComponent: Blocking full navigation');
           return false;
         }
-        if (
-          student === null ||
-          paymentInfo === null ||
-          this.auth.isSchoolAdmin
-        ) {
-          if (this.auth.isSchoolAdmin) {
-            this.logger.debug(
-              'AppComponent::setEnableFullNavigationObserver => user is school admin. Allowing full navigation',
-            );
-            return true;
-          }
-          this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => non-school-admin missing student and/or payment info. Preventing full navigation',
-          );
-          return false;
-        }
-        if (student.isSampleAccount) {
-          this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => Account is sample account. Allowing full navigation',
-          );
-          return true;
-        }
-        if (!student.waiverAccepted) {
-          this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => Student has not accepted the waiver. Preventing full navigation',
-          );
-          return false;
-        }
-        if (this.auth.isStudent && paymentInfo.required && !paymentInfo.paid) {
-          this.logger.debug(
-            'AppComponent::setEnableFullNavigationObserver => Payment is required and student has not paid. ' +
-            'Preventing full navigation',
-          );
-          return false;
-        }
-        this.logger.debug(
-          'AppComponent::setEnableFullNavigationObserver => The user has completed the registration process. ' +
-          'Allowing full navigation',
-        );
+        this.logger.debug('AppComponent: Allowing full navigation');
         return true;
       },
     );
@@ -273,11 +238,9 @@ export class AppComponent implements OnInit {
 
   /** Logout the current application user */
   logout() {
-    const username = this.auth.getCredentials()?.username;
     try {
       this.auth.logout();
-      // paymentService.logout();
-      this.logger.debug(`User ${username} logged out`);
+      this.logger.debug(`User ${this.auth.credentials?.username} logged out`);
       this.router.navigateByUrl('/login');
     } catch (error) {
       this.logger.warn('AppComponent error logging out', error);

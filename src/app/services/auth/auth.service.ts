@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 
+import { AuthState } from '@models/auth-state';
 import { Credentials } from '@models/credentials';
 
 @Injectable({
@@ -10,7 +11,7 @@ import { Credentials } from '@models/credentials';
 export class AuthService {
   private logger = inject(NGXLogger);
 
-  private readonly _auth$ = new BehaviorSubject<boolean>(false);
+  private readonly _auth$ = new BehaviorSubject<AuthState>(AuthState.Unknown);
   private _credentials: Credentials | null = null;
   private _accessToken: string | null = null;
 
@@ -27,7 +28,7 @@ export class AuthService {
     if (this.authenticated) {
       this.logger.debug(`AuthService: Updating Auth access token and credentials: ${res.access_token}`);
     } else {
-      this._auth$.next(true);
+      this._auth$.next(AuthState.Unauthenticated);
       this.logger.debug(`AuthService: Setting Auth access token and credentials: ${res.access_token}. `
         + 'And updating authenticated status to `true`');
     }
@@ -37,8 +38,9 @@ export class AuthService {
     return this._accessToken;
   }
 
+  /** Return whether the current service state is `Authenticated` */
   get authenticated(): boolean {
-    return this._auth$.value;
+    return this._auth$.value === AuthState.Authenticated;
   }
 
   get credentials(): Credentials | null {
@@ -79,6 +81,13 @@ export class AuthService {
     }
   }
 
+  /**
+   * Get the current authenticated state for the service.
+   */
+  get state(): AuthState {
+    return this._auth$.value;
+  }
+
   /** @deprecated Use `auth.credentials` instead */
   getCredentials(): Credentials | null {
     return this.credentials;
@@ -96,7 +105,7 @@ export class AuthService {
   checkAuthenticated(): Promise<boolean> {
     this.logger.debug('AuthService.checkAuthenticated called');
     return new Promise<boolean>((resolve, _reject) => {
-      resolve(this.authenticated);
+      resolve(this._auth$.value === AuthState.Authenticated);
     });
   }
 
@@ -105,6 +114,6 @@ export class AuthService {
     this.logger.debug(`AuthService; logging out ${this.credentials?.username}`);
     this._credentials = null;
     this._accessToken = null;
-    this._auth$.next(false);
+    this._auth$.next(AuthState.Unauthenticated);
   }
 }

@@ -3,48 +3,60 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import tsParser from "@typescript-eslint/parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
 
-export default defineConfig([globalIgnores(["projects/**/*"]), {
+export default defineConfig([
+  globalIgnores(["projects/**/*"]),
+  {
     files: ["**/*.ts"],
 
     extends: compat.extends(
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
+      "plugin:@angular-eslint/recommended",
+      "plugin:@angular-eslint/template/process-inline-templates",
     ),
 
     languageOptions: {
-        ecmaVersion: 5,
-        sourceType: "script",
+      ecmaVersion: 2022,
+      sourceType: "module",
+      parser: tsParser,
 
-        parserOptions: {
-            project: ["tsconfig.json", "e2e/tsconfig.json"],
-            createDefaultProgram: true,
-        },
+      parserOptions: {
+        project: ["tsconfig.json", "e2e/tsconfig.json"],
+        createDefaultProgram: true,
+      },
     },
 
     rules: {
-        "@angular-eslint/component-selector": ["error", {
-            prefix: "app",
-            style: "kebab-case",
-            type: "element",
-        }],
+      "@angular-eslint/component-selector": [
+        "error",
+        {
+          prefix: "app",
+          style: "kebab-case",
+          type: "element",
+        },
+      ],
 
-        "@angular-eslint/directive-selector": ["error", {
-            prefix: "app",
-            style: "camelCase",
-            type: "attribute",
-        }],
+      "@angular-eslint/directive-selector": [
+        "error",
+        {
+          prefix: "app",
+          style: "camelCase",
+          type: "attribute",
+        },
+      ],
     },
-}, {
+  },
+  {
     files: ["**/*.html"],
     extends: compat.extends("plugin:@angular-eslint/template/recommended"),
     rules: {},
-}]);
+  },
+]);

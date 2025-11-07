@@ -3,13 +3,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject } from 'rxjs';
 
-import { HttpHeaders } from '@angular/common/http';
-import { Credentials } from '@models/credentials';
 import { Trip } from '@models/trip';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { StorageService } from '@services/storage/storage.service';
-import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
+import { AuthState } from '@models/auth-state';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +18,6 @@ export class TripService {
   private storageService = inject(StorageService);
   private logger = inject(NGXLogger);
   private translate = inject(TranslateService);
-  private tripSwitcherService = inject(TripSwitcherService);
 
   private TRIP_DATA_STORAGE_KEY = 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA';
   private _tripName$: BehaviorSubject<string> = new BehaviorSubject('');
@@ -30,6 +27,8 @@ export class TripService {
   code!: string;
   type!: string;
 
+  // TODO: Stop initializing the service from the constructor, have a caller
+  // for example AppComponent, call its fetch method when required.
   constructor() {
     this.init();
   }
@@ -45,8 +44,8 @@ export class TripService {
   init() {
     this.logger.debug('TripService::init()');
     // Subscribe to authentication updates.
-    this.auth.auth$.subscribe((authStatus: boolean) => {
-      this.handleAuthStatusChange(authStatus);
+    this.auth.auth$.subscribe((authState: AuthState) => {
+      this.handleAuthStatusChange(authState);
     });
     this.translate.onLangChange.subscribe(() =>
       this._tripName$.next(
@@ -58,29 +57,14 @@ export class TripService {
   /**
    * Handle changes to the application authentication service status, could be
    * a login or a logout.
-   * @param authStatus boolean
+   * @param authState boolean
    */
-  private handleAuthStatusChange(authStatus: boolean) {
-    this.logger.debug(`Updated authentication status ${authStatus}`);
-    if (!authStatus) {
-      this.clear();
+  private handleAuthStatusChange(authState: AuthState) {
+    this.logger.debug(`Updated authentication status ${authState}`);
+    if (authState === AuthState.Authenticated) {
+      this.fetch();
     } else {
-      if (this.auth.isStudent || this.auth.isTeacher) {
-        // If we received auth$ true we should have credentials.
-        const cred: Credentials | undefined = this.auth.getCredentials();
-        if (cred) {
-          this.fetch(cred);
-        } else {
-          this.logger.warn('Expected credentials to exists and be valid');
-        }
-      } else {
-        this.logger.debug(
-          'Detected school admin user, subscribing to TripSwitcher updates'
-        );
-        this.tripSwitcherService.selectedTrip$.subscribe((trip) =>
-          this.setTrip(trip)
-        );
-      }
+      this.clear();
     }
   }
 
@@ -127,9 +111,8 @@ export class TripService {
 
   /**
    * Fetch trip data from the API.
-   * @param cred Credentials The authenticated user credentials to fetch for.
    */
-  private fetch(cred: Credentials): void {
+  private fetch(): void {
     this.logger.debug('TripService fetching from API');
     this.api.get('my-trip', { expand: 'name_zh,name_en' }).subscribe({
       next: (res: any) => {
