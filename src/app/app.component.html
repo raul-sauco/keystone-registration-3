@@ -246,6 +246,10 @@
         <div class="trip-name-wrapper">{{ tripName }}</div>
       </div>
     }
-    <router-outlet></router-outlet>
+    @if ((this.auth.auth$ | async) === eAuthState.Unknown) {
+      <app-loading-spinner-content></app-loading-spinner-content>
+    } @else {
+      <router-outlet></router-outlet>
+    }
   </mat-sidenav-content>
 </mat-sidenav-container>

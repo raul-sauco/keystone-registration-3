@@ -32,6 +32,7 @@ import { RouteStateService } from '@services/route-state/route-state.service';
 import { StudentService } from '@services/student/student.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
+import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,7 @@ import { TripService } from '@services/trip/trip.service';
     AsyncPipe,
     CommonModule,
     LayoutModule,
+    LoadingSpinnerContentComponent,
     LoggerModule,
     MarkdownModule,
     MatToolbarModule,
@@ -68,6 +70,7 @@ export class AppComponent implements OnInit {
   studentService = inject(StudentService);
   tripSwitcher = inject(TripSwitcherService);
   tripService = inject(TripService);
+  eAuthState = AuthState;
 
   @ViewChild('drawer', { static: true })
   drawer!: MatSidenav;
@@ -162,10 +165,13 @@ export class AppComponent implements OnInit {
    */
   checkAuth() {
     this.logger.debug('AppComponent::ngOnInit triggered authentication status check');
-    this.api.get('auth/check').subscribe({
-      next: (res: any) => this.logger.info(res),
-      error: (err: any) => this.logger.error(err),
+    this.auth.auth$.subscribe({
+      next: (state: AuthState) => this.logger.info(
+        `Auth state: ${state}`,
+        'TODO: Initialize services here',
+      ),
     });
+    this.api.get('auth/check').subscribe();
   }
 
   initTranslate() {
@@ -239,8 +245,8 @@ export class AppComponent implements OnInit {
   /** Logout the current application user */
   logout() {
     try {
+      this.logger.debug(`Logging out user ${this.auth.credentials?.username}`);
       this.auth.logout();
-      this.logger.debug(`User ${this.auth.credentials?.username} logged out`);
       this.router.navigateByUrl('/login');
     } catch (error) {
       this.logger.warn('AppComponent error logging out', error);

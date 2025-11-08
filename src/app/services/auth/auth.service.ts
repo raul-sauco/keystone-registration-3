@@ -26,11 +26,11 @@ export class AuthService {
     this._accessToken = res.access_token;
     this._credentials = new Credentials(res.credentials);
     if (this.authenticated) {
-      this.logger.debug(`AuthService: Updating Auth access token and credentials: ${res.access_token}`);
+      this.logger.debug(`AuthService: Updating Auth access token and credentials.`);
     } else {
-      this._auth$.next(AuthState.Unauthenticated);
-      this.logger.debug(`AuthService: Setting Auth access token and credentials: ${res.access_token}. `
-        + 'And updating authenticated status to `true`');
+      this._auth$.next(AuthState.Authenticated);
+      this.logger.debug(`AuthService: Setting Auth access token and credentials.`
+        + 'And updating authenticated state to `Authenticated');
     }
   }
 
