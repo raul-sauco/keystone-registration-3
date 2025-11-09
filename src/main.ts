@@ -18,6 +18,7 @@ import { routes } from './app/app.routing';
 import { Auth401Interceptor } from './app/http-interceptors/auth-401-interceptor';
 import { environment } from './environments/environment';
 import { CustomTranslationsLoader } from '@services/custom-translate-loader/custom-translate-loader.service';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 registerLocaleData(en);
 registerLocaleData(zh);
@@ -41,6 +42,7 @@ bootstrapApplication(AppComponent, {
     { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
     provideHttpClient(withInterceptorsFromDi()),
     provideCharts(withDefaultRegisterables()),
+    provideNativeDateAdapter(),
     provideRouter(routes),
     provideTranslateService({
       loader: provideTranslateLoader(CustomTranslationsLoader),

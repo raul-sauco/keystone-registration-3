@@ -1,10 +1,8 @@
-@if (needsLogin) {
-  <app-login-required-message></app-login-required-message>
-} @else {
-  @if (studentService.student$ | async; as student) {
-    <div class="app-page-wrapper mat-typography">
-      <div class="app-content-wrapper">
-        <div id="personal-info-form-container" *ngIf="personalInfoForm">
+@if (studentService.student$ | async; as student) {
+  <div class="app-page-wrapper mat-typography">
+    <div class="app-content-wrapper">
+      @if (personalInfoForm) {
+        <div id="personal-info-form-container">
           <form
             [formGroup]="personalInfoForm"
             (ngSubmit)="submitPersonalInfoForm()"
@@ -32,9 +30,11 @@
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("name") }}</mat-label>
               <input type="text" matInput formControlName="name" />
-              <mat-error *ngIf="name?.errors?.required">
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-              </mat-error>
+              @if (name?.errors?.required) {
+                <mat-error>
+                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                </mat-error>
+              }
             </mat-form-field>
             @if (englishNamePromptContent$ | async; as content) {
               <markdown class="inner-form-prompt" [data]="content"></markdown>
@@ -74,9 +74,11 @@
                 student.getAttributeLabel("travelDocument")
               }}</mat-label>
               <input type="text" matInput formControlName="travelDocument" />
-              <mat-error *ngIf="travelDocument?.errors?.required">
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-              </mat-error>
+              @if (travelDocument?.errors?.required) {
+                <mat-error>
+                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                </mat-error>
+              }
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel("gender") }}</mat-label>
@@ -84,13 +86,17 @@
                 formControlName="gender"
                 [compareWith]="intValueCompare"
               >
-                <mat-option value="" *ngIf="gender?.value === null">
-                  <!-- Acts as a placeholder when gender is null -->
-                  {{ "SELECT_GENDER" | translate }}</mat-option
-                >
-                <mat-option *ngFor="let i of [0, 1, 2, 3]" [value]="i">
-                  {{ "G." + i | translate }}</mat-option
-                >
+                @if (gender?.value === null) {
+                  <mat-option value="">
+                    <!-- Acts as a placeholder when gender is null -->
+                    {{ "SELECT_GENDER" | translate }}
+                  </mat-option>
+                }
+                @for (i of [0, 1, 2, 3]; track i) {
+                  <mat-option [value]="i">
+                    {{ "G." + i | translate }}
+                  </mat-option>
+                }
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -106,12 +112,16 @@
                 [for]="picker"
               ></mat-datepicker-toggle>
               <mat-datepicker touchUi #picker></mat-datepicker>
-              <mat-error *ngIf="dob?.errors?.matDatepickerParse">
-                {{ "PIF_ERROR_INVALID_DATE" | translate }}
-              </mat-error>
-              <mat-error *ngIf="dob?.errors?.required">
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-              </mat-error>
+              @if (dob?.errors?.matDatepickerParse) {
+                <mat-error>
+                  {{ "PIF_ERROR_INVALID_DATE" | translate }}
+                </mat-error>
+              }
+              @if (dob?.errors?.required) {
+                <mat-error>
+                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                </mat-error>
+              }
             </mat-form-field>
             <!-- END Personal information section -->
 
@@ -122,32 +132,39 @@
                   | translate
               }}
             </h2>
-            <mat-form-field
-              appearance="outline"
-              *ngIf="auth.getCredentials()?.type !== 4"
-            >
-              <mat-label>{{
-                student.getAttributeLabel("guardianName")
-              }}</mat-label>
-              <input type="text" matInput formControlName="guardianName" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>{{
-                student.getAttributeLabel("emergencyContact")
-              }}</mat-label>
-              <input type="text" matInput formControlName="emergencyContact" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ student.getAttributeLabel("wechatId") }}</mat-label>
-              <input type="text" matInput formControlName="wechatId" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ "EMAIL" | translate }}</mat-label>
-              <input type="email" matInput formControlName="email" />
-              <mat-error *ngIf="email?.errors?.email">
-                {{ "EMAIL_IS_NOT_VALID" | translate }}
-              </mat-error>
-            </mat-form-field>
+            @if (auth.isStudent) {
+              <mat-form-field appearance="outline">
+                <mat-label>{{
+                  student.getAttributeLabel("guardianName")
+                }}</mat-label>
+                <input type="text" matInput formControlName="guardianName" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{
+                  student.getAttributeLabel("emergencyContact")
+                }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="emergencyContact"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{
+                  student.getAttributeLabel("wechatId")
+                }}</mat-label>
+                <input type="text" matInput formControlName="wechatId" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ "EMAIL" | translate }}</mat-label>
+                <input type="email" matInput formControlName="email" />
+                @if (email?.errors?.email) {
+                  <mat-error>
+                    {{ "EMAIL_IS_NOT_VALID" | translate }}
+                  </mat-error>
+                }
+              </mat-form-field>
+            }
             <!-- END Contact information section -->
 
             <!-- START School information section, wait until we have school info -->
@@ -209,17 +226,14 @@
                 formControlName="dietaryRequirements"
                 [compareWith]="intValueCompare"
               >
-                <mat-option *ngFor="let i of [0, 2, 3, 4, 5, 1]" [value]="i">
-                  {{ "DR." + i | translate }}</mat-option
-                >
+                @for (i of [0, 2, 3, 4, 5, 1]; track i) {
+                  <mat-option [value]="i">
+                    {{ "DR." + i | translate }}
+                  </mat-option>
+                }
               </mat-select>
             </mat-form-field>
-            <ng-container
-              *ngIf="
-                personalInfoForm.value.dietaryRequirements &&
-                personalInfoForm.value.dietaryRequirements === 1
-              "
-            >
+            @if (personalInfoForm.value.dietaryRequirements === 1) {
               <mat-form-field appearance="outline">
                 <mat-label>{{
                   student.getAttributeLabel("dietaryRequirementsOther")
@@ -230,7 +244,7 @@
                   formControlName="dietaryRequirementsOther"
                 />
               </mat-form-field>
-            </ng-container>
+            }
             <!-- END Dietary requirements section -->
 
             <!-- START Medical information section -->
@@ -246,24 +260,21 @@
                 formControlName="allergies"
                 [compareWith]="intValueCompare"
               >
-                <mat-option *ngFor="let i of [0, 2, 3, 1]" [value]="i">
-                  {{ "ALLER." + i | translate }}</mat-option
-                >
+                @for (i of [0, 2, 3, 1]; track i) {
+                  <mat-option [value]="i">
+                    {{ "ALLER." + i | translate }}
+                  </mat-option>
+                }
               </mat-select>
             </mat-form-field>
-            <ng-container
-              *ngIf="
-                personalInfoForm.value.allergies &&
-                personalInfoForm.value.allergies === 1
-              "
-            >
+            @if (personalInfoForm.value.allergies === 1) {
               <mat-form-field appearance="outline">
                 <mat-label>{{
                   student.getAttributeLabel("allergiesOther")
                 }}</mat-label>
                 <input type="text" matInput formControlName="allergiesOther" />
               </mat-form-field>
-            </ng-container>
+            }
             <p class="form-field-extra-hint">
               {{ "PIF_HINT_MEDICAL" | translate }}
             </p>
@@ -288,9 +299,9 @@
             </button>
           </form>
         </div>
-      </div>
+      }
     </div>
-  } @else {
-    <app-loading-spinner-content></app-loading-spinner-content>
-  }
+  </div>
+} @else {
+  <app-loading-spinner-content></app-loading-spinner-content>
 }

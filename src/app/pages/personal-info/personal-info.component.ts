@@ -1,35 +1,50 @@
-import { HttpHeaders } from '@angular/common/http';
+import { formatDate, AsyncPipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, Subscription, map } from 'rxjs';
+import { MarkdownComponent } from 'ngx-markdown';
+import { Observable, Subject, filter, map, takeUntil } from 'rxjs';
 
-import { formatDate, NgIf, NgFor, AsyncPipe } from '@angular/common';
-import { PaymentInfo } from '@models/paymentInfo';
+import { IdPhotoComponent } from './id-photo/id-photo.component';
+import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { Student } from '@models/student';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
-import { PaymentService } from '@services/payment/payment.service';
 import { SchoolService } from '@services/school/school.service';
 import { StudentService } from '@services/student/student.service';
-import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
-import { MarkdownComponent } from 'ngx-markdown';
-import { IdPhotoComponent } from './id-photo/id-photo.component';
-import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { MatSelect, MatOption } from '@angular/material/select';
-import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
-import { MatButton } from '@angular/material/button';
-import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
   selector: 'app-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss'],
-  imports: [LoginRequiredMessageComponent, NgIf, FormsModule, ReactiveFormsModule, MarkdownComponent, IdPhotoComponent, MatFormField, MatLabel, MatInput, MatError, MatSelect, MatOption, NgFor, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
+  imports: [
+    AsyncPipe,
+    FormsModule,
+    IdPhotoComponent,
+    LoadingSpinnerContentComponent,
+    MarkdownComponent,
+    MatButton,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatError,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatOption,
+    MatSelect,
+    MatSuffix,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
   private api = inject(ApiService);
@@ -38,17 +53,13 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   private logger = inject(NGXLogger);
   private router = inject(Router);
   private translate = inject(TranslateService);
-  private paymentService = inject(PaymentService);
   schoolService = inject(SchoolService);
   studentService = inject(StudentService);
   auth = inject(AuthService);
 
   @ViewChild('photoId') photoIdElement!: ElementRef;
-  private student$?: Subscription | null = null;
-  private paymentInfo?: PaymentInfo | null = null;
-  private paymentInfo$?: Subscription | null = null;
+  private readonly destroy$ = new Subject<void>();
   personalInfoForm!: UntypedFormGroup;
-  needsLogin = false;
   idPhotoProvided = false;
   idPhotoRequired = false;
   lang: string = 'en';
@@ -59,43 +70,27 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.logger.debug('PersonalInfoComponent OnInit');
     this.lang = this.translate.getCurrentLang().includes('zh') ? 'zh' : 'en';
-    this.auth.checkAuthenticated().then((res: boolean) => {
-      const credentials = this.auth.getCredentials();
-      if (res && credentials) {
-        if (credentials.studentId) {
-          this.studentService.student$.subscribe({
-            next: (student: Student | null) => {
-              this.logger.debug(
-                'PersonalInfoComponent StudentService.student$.next',
-                student,
-              );
-              if (student !== null) {
-                this.initPersonalInfoForm(student);
-                this.idPhotoRequired = student.idPhotoRequired;
-              }
-            },
-            error: (error: any) => {
-              this.logger.error(
-                'PersonalInfoComponent StudentService student$ error',
-                error,
-              );
-            },
-          });
-          this.paymentInfo$ = this.paymentService.paymentInfo$.subscribe({
-            next: (paymentInfo: PaymentInfo) => {
-              this.paymentInfo = paymentInfo;
-            },
-          });
-        } else {
-          this.logger.error(
-            'Authentication error, expected valid student ID.',
+    this.studentService.student$
+      .pipe(
+        filter((student): student is Student => student !== null),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (student: Student) => {
+          this.logger.debug(
+            'PersonalInfoComponent: student$ subscription update',
+            student,
           );
-        }
-      } else {
-        this.needsLogin = true;
-        this.logger.error('Authentication error, expected having auth info.');
-      }
-    });
+          this.initPersonalInfoForm(student);
+          this.idPhotoRequired = student.idPhotoRequired;
+        },
+        error: (error: any) => {
+          this.logger.error(
+            'PersonalInfoComponent StudentService student$ error',
+            error,
+          );
+        },
+      });
     this.fetchContents();
   }
 
@@ -110,11 +105,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   }
 
   fetchDocumentById(id: number): Observable<any> {
-    const options = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
     return this.api
-      .get(`documents/${id}`, null, options)
+      .get(`documents/${id}`)
       .pipe(
         map((content: any) =>
           this.lang === 'zh' ? content.text_zh : content.text,
@@ -124,8 +116,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.logger.debug('PersonalInfoComponent on destroy');
-    this.student$?.unsubscribe();
-    this.paymentInfo$?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get name() {
@@ -257,14 +249,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       allergies: data.allergies,
       allergies_other: data.allergiesOther,
       medical_information: data.medicalInformation,
-      // insurance: data.insurance,
-      // insurance_name: data.insuranceName,
-      // insurance_policy_number: data.insurancePolicyNumber,
     };
     if (data.dob) {
       sanitizedData.dob = this.sanitizeDate(data.dob);
     }
-    // Dob could be a moment object.
     return sanitizedData;
   }
 
