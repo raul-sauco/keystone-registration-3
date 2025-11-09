@@ -28,12 +28,13 @@ export class Auth401Interceptor implements HttpInterceptor {
     const globals = inject(GlobalsService);
     this.url = globals.getApiUrl();
   }
+
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // Avoid circular intercept of the refresh token request.
-    if (req.url.endsWith('/auth/refresh')) {
+    if (req.url.endsWith('/auth/refresh') || req.url.endsWith('/auth/logout')) {
       return next.handle(req);
     }
     return next.handle(req).pipe(
@@ -75,10 +76,10 @@ export class Auth401Interceptor implements HttpInterceptor {
       }),
       catchError(err => {
         this.refreshing = false;
-        const cred = this.auth.getCredentials();
+        const cred = this.auth.credentials;
         this.logger.info(
           'Failed to refresh access token, logging out ' +
-          `user ${cred?.username} student ID: ${cred?.studentId}`
+          (cred === null ? '' : `user ${cred?.username} student ID: ${cred?.studentId}`)
         );
         this.auth.logout();
         this.router.navigateByUrl('/login');

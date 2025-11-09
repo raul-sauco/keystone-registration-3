@@ -1,25 +1,30 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 
 import { AuthState } from '@models/auth-state';
 import { Credentials } from '@models/credentials';
+import { GlobalsService } from '@services/globals/globals.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private logger = inject(NGXLogger);
+  private http = inject(HttpClient);
 
   private readonly _auth$ = new BehaviorSubject<AuthState>(AuthState.Unknown);
   private _credentials: Credentials | null = null;
   private _accessToken: string | null = null;
+  private apiUrl: string;
 
   readonly auth$ = this._auth$.pipe(distinctUntilChanged());
   public redirectUrl?: string;
 
   constructor() {
     this.logger.debug('AuthService constructor');
+    this.apiUrl = inject(GlobalsService).getApiUrl();
   }
 
   setAuth(res: any) {
@@ -112,8 +117,29 @@ export class AuthService {
   /** Remove all the login info associated with this user */
   logout(): void {
     this.logger.debug(`AuthService; logging out ${this.credentials?.username}`);
-    this._credentials = null;
-    this._accessToken = null;
-    this._auth$.next(AuthState.Unauthenticated);
+    this.http.post(`${this.apiUrl}auth/logout`, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.accessToken}`,
+      },
+      withCredentials: true,
+    }).subscribe({
+      next: (res) => {
+        this.logger.debug('AuthService: logout response from server', res);
+        this._credentials = null;
+        this._accessToken = null;
+        this._auth$.next(AuthState.Unauthenticated);
+      },
+      error: (error) => {
+        if (error.status === 401) {
+          // Refresh token was already invalid.
+          this._credentials = null;
+          this._accessToken = null;
+          this._auth$.next(AuthState.Unauthenticated);
+        } else {
+          this.logger.error('Error logging out user', error);
+        }
+      },
+    });
   }
 }
