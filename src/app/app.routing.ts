@@ -187,8 +187,9 @@ export const routes: Routes = [
   },
   {
     path: 'waiver',
-    loadChildren: () =>
-      import('./pages/waiver/waiver.module').then((m) => m.WaiverModule),
+    loadComponent: () =>
+      import('./pages/waiver/waiver.component').then((m) => m.WaiverComponent),
+    canActivate: [AuthGuard],
   },
   {
     path: 'trip-switcher',
