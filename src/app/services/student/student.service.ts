@@ -1,11 +1,11 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, ReplaySubject, Subject, map } from 'rxjs';
-import { Student } from 'src/app/models/student';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { BehaviorSubject, Observable, distinctUntilChanged, map } from 'rxjs';
+
+import { Student } from '@models/student';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,41 +16,30 @@ export class StudentService {
   private logger = inject(NGXLogger);
   private translate = inject(TranslateService);
 
-  student$: Subject<Student> = new ReplaySubject();
-
-  constructor() {
-    this.logger.debug('StudentService constructor');
-    this.init();
-  }
+  private initialized: boolean = false;
+  private readonly _student$ = new BehaviorSubject<Student | null>(null);
+  readonly student$ = this._student$.pipe(distinctUntilChanged());
 
   init(): void {
-    this.auth.checkAuthenticated().then((res) => {
-      if (res && this.auth.getCredentials()?.type !== 8) {
-        this.refreshStudent();
-      }
-    });
+    if (!this.initialized) {
+      this.fetch();
+    }
   }
 
-  /**
-   * Refresh student information from the server.
-   */
-  refreshStudent(): void {
-    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
-      }),
-    };
-    this.api.get(endpoint, null, options).subscribe({
+  private fetch(): void {
+    const endpoint = 'students/' + this.auth.credentials?.studentId;
+    this.api.get(endpoint).subscribe({
       next: (studentJson) => {
         this.logger.debug(
           'StudentService got student json from server',
           studentJson
         );
-        this.student$.next(new Student(studentJson, this.translate));
+        this._student$.next(new Student(studentJson, this.translate));
+        this.initialized = true;
       },
+      error: (err) => this.logger.error('StudentService::fetch Error', err),
     });
+
   }
 
   /**
@@ -60,17 +49,11 @@ export class StudentService {
    * @returns An HttpClient observable that will close on response.
    */
   updateStudent(data: any): Observable<Student> {
-    const endpoint = 'students/' + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
-      }),
-    };
-    return this.api.patch(endpoint, data, options).pipe(
+    const endpoint = 'students/' + this.auth.credentials?.studentId;
+    return this.api.patch(endpoint, data).pipe(
       map((studentJson) => {
         const student = new Student(studentJson, this.translate);
-        this.student$.next(student);
+        this._student$.next(student);
         return student;
       })
     );

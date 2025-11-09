@@ -22,7 +22,6 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { RouteStateService } from '@services/route-state/route-state.service';
-import { StudentService } from '@services/student/student.service';
 
 @Component({
   standalone: true,
@@ -52,7 +51,6 @@ export class LoginComponent implements OnInit {
   private translate = inject(TranslateService);
   private routeStateService = inject(RouteStateService);
   private paymentService = inject(PaymentService);
-  private studentService = inject(StudentService);
 
   loginForm!: UntypedFormGroup;
   loading: boolean = false;
@@ -87,7 +85,6 @@ export class LoginComponent implements OnInit {
         if (!res.error && res.credentials && res.access_token) {
           this.auth.setAuth(res);
           this.paymentService.fetchFromServer();
-          this.studentService.refreshStudent();
           this.router.navigateByUrl('/home');
         } else {
           this.logger.debug(`Failed Login attempt for User: ${params.username}`);

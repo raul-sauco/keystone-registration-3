@@ -21,10 +21,10 @@ import { MatButton } from '@angular/material/button';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
-    selector: 'app-waiver',
-    templateUrl: './waiver.component.html',
-    styleUrls: ['./waiver.component.scss'],
-    imports: [NgIf, LoginRequiredMessageComponent, WaiverContentComponent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatProgressBar, MatButton, LoadingSpinnerContentComponent, AsyncPipe, DatePipe, TranslatePipe]
+  selector: 'app-waiver',
+  templateUrl: './waiver.component.html',
+  styleUrls: ['./waiver.component.scss'],
+  imports: [NgIf, LoginRequiredMessageComponent, WaiverContentComponent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatProgressBar, MatButton, LoadingSpinnerContentComponent, AsyncPipe, DatePipe, TranslatePipe]
 })
 export class WaiverComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
@@ -51,8 +51,10 @@ export class WaiverComponent implements OnInit, OnDestroy {
           if (this.auth.getCredentials()?.studentId) {
             this.student$ = this.studentService.student$.subscribe({
               next: (student) => {
-                this.logger.debug('WaiverComponent next student$', student);
-                this.initWaiverForm(student);
+                if (student !== null) {
+                  this.logger.debug('WaiverComponent next student$', student);
+                  this.initWaiverForm(student);
+                }
               },
               error: (error) => {
                 this.logger.error(
@@ -61,7 +63,6 @@ export class WaiverComponent implements OnInit, OnDestroy {
                 );
               },
             });
-            this.studentService.refreshStudent();
           } else {
             this.logger.error(
               'Authentication error, expected valid student ID.',

@@ -26,10 +26,10 @@ import { MatButton } from '@angular/material/button';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
-    selector: 'app-personal-info',
-    templateUrl: './personal-info.component.html',
-    styleUrls: ['./personal-info.component.scss'],
-    imports: [LoginRequiredMessageComponent, NgIf, FormsModule, ReactiveFormsModule, MarkdownComponent, IdPhotoComponent, MatFormField, MatLabel, MatInput, MatError, MatSelect, MatOption, NgFor, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
+  selector: 'app-personal-info',
+  templateUrl: './personal-info.component.html',
+  styleUrls: ['./personal-info.component.scss'],
+  imports: [LoginRequiredMessageComponent, NgIf, FormsModule, ReactiveFormsModule, MarkdownComponent, IdPhotoComponent, MatFormField, MatLabel, MatInput, MatError, MatSelect, MatOption, NgFor, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
 })
 export class PersonalInfoComponent implements OnInit, OnDestroy {
   private api = inject(ApiService);
@@ -63,15 +63,16 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       const credentials = this.auth.getCredentials();
       if (res && credentials) {
         if (credentials.studentId) {
-          this.studentService.refreshStudent();
-          this.student$ = this.studentService.student$.subscribe({
-            next: (student: Student) => {
+          this.studentService.student$.subscribe({
+            next: (student: Student | null) => {
               this.logger.debug(
                 'PersonalInfoComponent StudentService.student$.next',
                 student,
               );
-              this.initPersonalInfoForm(student);
-              this.idPhotoRequired = student.idPhotoRequired;
+              if (student !== null) {
+                this.initPersonalInfoForm(student);
+                this.idPhotoRequired = student.idPhotoRequired;
+              }
             },
             error: (error: any) => {
               this.logger.error(

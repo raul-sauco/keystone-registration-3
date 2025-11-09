@@ -15,10 +15,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-    selector: 'app-payment-uploaded',
-    templateUrl: './payment-uploaded.component.html',
-    styleUrls: ['./payment-uploaded.component.scss'],
-    imports: [NgIf, NgFor, MatButton, MatIcon, MatProgressSpinner, AsyncPipe, TranslatePipe]
+  selector: 'app-payment-uploaded',
+  templateUrl: './payment-uploaded.component.html',
+  styleUrls: ['./payment-uploaded.component.scss'],
+  imports: [NgIf, NgFor, MatButton, MatIcon, MatProgressSpinner, AsyncPipe, TranslatePipe]
 })
 export class PaymentUploadedComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);
@@ -58,13 +58,15 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.student$ = this.studentService.student$.subscribe({
-            next: (student: Student) => {
-              if (!student.hasProvidedInformation()) {
-                this.router.navigateByUrl('/personal-info');
-              } else if (!student.waiverAccepted) {
-                this.router.navigateByUrl('/waiver');
-              } else {
-                this.router.navigateByUrl('/home');
+            next: (student: Student | null) => {
+              if (student !== null) {
+                if (!student.hasProvidedInformation()) {
+                  this.router.navigateByUrl('/personal-info');
+                } else if (!student.waiverAccepted) {
+                  this.router.navigateByUrl('/waiver');
+                } else {
+                  this.router.navigateByUrl('/home');
+                }
               }
             },
           });
@@ -74,10 +76,10 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-    selector: 'app-payment-completed-confirmation-dialog-component',
-    templateUrl: './payment-completed-confirmation-dialog.component.html',
-    styleUrls: ['./payment-completed-confirmation-dialog.component.scss'],
-    imports: [MatDialogTitle, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  selector: 'app-payment-completed-confirmation-dialog-component',
+  templateUrl: './payment-completed-confirmation-dialog.component.html',
+  styleUrls: ['./payment-completed-confirmation-dialog.component.scss'],
+  imports: [MatDialogTitle, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class PaymentCompletedConfirmationDialogComponent {
   dialogRef = inject<MatDialogRef<PaymentCompletedConfirmationDialogComponent>>(MatDialogRef);

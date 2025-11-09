@@ -166,10 +166,12 @@ export class AppComponent implements OnInit {
   checkAuth() {
     this.logger.debug('AppComponent::ngOnInit triggered authentication status check');
     this.auth.auth$.subscribe({
-      next: (state: AuthState) => this.logger.info(
-        `Auth state: ${state}`,
-        'TODO: Initialize services here',
-      ),
+      next: (state: AuthState) => {
+        this.logger.debug(`AppComponent auth$ updated to ${state}`);
+        if (state === AuthState.Authenticated) {
+          this.studentService.init();
+        }
+      },
     });
     this.api.get('auth/check').subscribe();
   }
