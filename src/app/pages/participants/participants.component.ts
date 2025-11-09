@@ -1,42 +1,75 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, formatDate } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { MatIconButton, MatFabButton, MatButton } from '@angular/material/button';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MatFormField, MatSuffix } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSelect, MatOption } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort, MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import * as moment from 'moment';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AddParticipantComponent } from '@components/add-participant/add-participant.component';
+import { AdminBannerComponent } from '@components/admin-banner/admin-banner.component';
+import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { School } from '@models/school';
 import { Student } from '@models/student';
+import { CamelToSnakePipe } from '@pipes/camel-to-snake.pipe';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { SchoolService } from '@services/school/school.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
-import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass } from '@angular/common';
-import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { MatIcon } from '@angular/material/icon';
-import { MatFormField, MatSuffix } from '@angular/material/form-field';
-import { MatSelect, MatOption } from '@angular/material/select';
-import { MatInput } from '@angular/material/input';
-import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
-import { MatIconButton, MatFabButton, MatButton } from '@angular/material/button';
-import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
-import { CamelToSnakePipe } from '../../pipes/camel-to-snake.pipe';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-    selector: 'app-participants',
-    templateUrl: './participants.component.html',
-    styleUrls: ['./participants.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    imports: [NgIf, AdminBannerComponent, MatTable, MatSort, NgFor, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, NgSwitch, NgSwitchCase, MatIcon, MatFormField, MatSelect, MatOption, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatIconButton, NgSwitchDefault, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgClass, MatFabButton, LoadingSpinnerContentComponent, CamelToSnakePipe, TranslatePipe]
+  selector: 'app-participants',
+  templateUrl: './participants.component.html',
+  styleUrls: ['./participants.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  imports: [
+    AdminBannerComponent,
+    CamelToSnakePipe,
+    LoadingSpinnerContentComponent,
+    MatCell,
+    MatCellDef,
+    MatColumnDef,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatFabButton,
+    MatFormField,
+    MatHeaderCell,
+    MatHeaderCellDef,
+    MatHeaderRow,
+    MatHeaderRowDef,
+    MatIcon,
+    MatIconButton,
+    MatInput,
+    MatOption,
+    MatRow,
+    MatRowDef,
+    MatSelect,
+    MatSort,
+    MatSortHeader,
+    MatSuffix,
+    MatTable,
+    NgClass,
+    NgFor,
+    NgIf,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    TranslatePipe,
+  ],
 })
 export class ParticipantsComponent implements OnInit {
   private api = inject(ApiService);
@@ -318,10 +351,11 @@ export class ParticipantsComponent implements OnInit {
    * @param student Student.
    */
   handleDobChange(event: any, student: Student): void {
-    // The event contains a moment date object.
     const dob = event.value;
-    if (moment.isMoment(dob) && dob.isValid()) {
-      this.updateStudentInfo(student, { dob: dob.format('YYYY-MM-DD') });
+    if (dob instanceof Date && !isNaN(dob.getTime())) {
+      // Format date as YYYY-MM-DD using Angular's formatDate
+      const dobString = formatDate(dob, 'yyyy-MM-dd', 'en-US');
+      this.updateStudentInfo(student, { dob: dobString });
     } else {
       // The date object is not valid.
       this.snackBar.open(this.translate.instant('DATE_NOT_VALID'), undefined, {
@@ -423,10 +457,10 @@ export class ParticipantsComponent implements OnInit {
 }
 
 @Component({
-    selector: 'app-delete-student-confirmation-dialog-component',
-    templateUrl: './delete-student-confirmation-dialog.component.html',
-    styleUrls: ['./delete-student-confirmation-dialog.component.scss'],
-    imports: [NgIf, MatDialogTitle, CdkScrollable, MatDialogContent, MatProgressSpinner, MatDialogActions, MatButton, TranslatePipe]
+  selector: 'app-delete-student-confirmation-dialog-component',
+  templateUrl: './delete-student-confirmation-dialog.component.html',
+  styleUrls: ['./delete-student-confirmation-dialog.component.scss'],
+  imports: [NgIf, MatDialogTitle, CdkScrollable, MatDialogContent, MatProgressSpinner, MatDialogActions, MatButton, TranslatePipe]
 })
 export class DeleteStudentConfirmationDialogComponent {
   private api = inject(ApiService);

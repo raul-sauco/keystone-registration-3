@@ -97,9 +97,9 @@ export const routes: Routes = [
   },
   {
     path: 'participants',
-    loadChildren: () =>
-      import('./pages/participants/participants.module').then(
-        (m) => m.ParticipantsModule
+    loadComponent: () =>
+      import('./pages/participants/participants.component').then(
+        (m) => m.ParticipantsComponent
       ),
     canActivate: [TeacherGuard],
   },
@@ -165,8 +165,8 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    loadChildren: () =>
-      import('./pages/register/register.module').then((m) => m.RegisterModule),
+    loadComponent: () =>
+      import('./pages/register/register.component').then((m) => m.RegisterComponent),
     canActivate: [NoAuthGuard],
   },
   {

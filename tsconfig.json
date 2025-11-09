@@ -38,6 +38,9 @@
       "@pages/*": [
         "./src/app/pages/*"
       ],
+      "@pipes/*": [
+        "./src/app/pipes/*"
+      ],
       "@services/*": [
         "./src/app/services/*"
       ],

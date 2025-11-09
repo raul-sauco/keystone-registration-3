@@ -38,10 +38,10 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss'],
-    imports: [NgIf, MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MarkdownComponent, MatFormField, MatLabel, MatInput, MatError, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, RouterLink, MatProgressBar, MatButton, AsyncPipe, TranslatePipe]
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+  imports: [NgIf, MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MarkdownComponent, MatFormField, MatLabel, MatInput, MatError, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, RouterLink, MatProgressBar, MatButton, AsyncPipe, TranslatePipe]
 })
 export class RegisterComponent implements OnInit {
   private api = inject(ApiService);
@@ -205,25 +205,19 @@ export class RegisterComponent implements OnInit {
    * @param dateString
    * @returns
    */
-  sanitizeDate(dateString: string): string | null {
-    const dateObject = new Date(dateString);
-    if (isNaN(dateObject.getTime())) {
-      this.logger.error(`Failed to format date ${dateString}`);
+  sanitizeDate(date: Date): string | null {
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      this.logger.error(`Failed to format date ${date}`);
       return null;
     }
-    // const res = dateObject.toISOString().substring(0, 10);
-    const res = formatDate(dateObject, 'yyyy-MM-dd', 'en-US');
-    this.logger.debug(
-      `Converted field value ${dateString} to YYYY-mm-dd ${res}`,
-    );
-    return res;
+    return formatDate(date, 'yyyy-MM-dd', 'en-US');
   }
 }
 
 @Component({
-    selector: 'app-error-message-dialog-component',
-    templateUrl: './error-message-dialog.component.html',
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  selector: 'app-error-message-dialog-component',
+  templateUrl: './error-message-dialog.component.html',
+  imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class ErrorMessageDialogComponent {
   dialogRef = inject<MatDialogRef<ErrorMessageDialogComponent>>(MatDialogRef);
@@ -231,10 +225,10 @@ export class ErrorMessageDialogComponent {
 }
 
 @Component({
-    selector: 'app-registration-success-dialog-component',
-    templateUrl: './registration-success-dialog.component.html',
-    styleUrls: ['./registration-success-dialog.component.scss'],
-    imports: [CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  selector: 'app-registration-success-dialog-component',
+  templateUrl: './registration-success-dialog.component.html',
+  styleUrls: ['./registration-success-dialog.component.scss'],
+  imports: [CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class RegistrationSuccessDialogComponent {
   dialogRef = inject<MatDialogRef<RegistrationSuccessDialogComponent>>(MatDialogRef);
