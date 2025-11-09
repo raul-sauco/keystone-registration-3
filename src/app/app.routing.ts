@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { AuthGuard } from '@guards/auth.guard';
 import { NoAuthGuard } from '@guards/no-auth.guard';
 import { SchoolAdminGuard } from '@guards/school-admin.guard';
 import { TeacherGuard } from '@guards/teacher.guard';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'home',
     loadChildren: () =>
@@ -106,9 +105,9 @@ const routes: Routes = [
   },
   {
     path: 'personal-info',
-    loadChildren: () =>
-      import('./pages/personal-info/personal-info.module').then(
-        (m) => m.PersonalInfoModule
+    loadComponent: () =>
+      import('./pages/personal-info/personal-info.component').then(
+        (m) => m.PersonalInfoComponent
       ),
     canActivate: [AuthGuard],
   },
@@ -222,9 +221,3 @@ const routes: Routes = [
     // canActivate: [AuthGuard]
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule { }
