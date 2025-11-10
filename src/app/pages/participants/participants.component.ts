@@ -1,6 +1,5 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgClass, formatDate } from '@angular/common';
-import { HttpHeaders } from '@angular/common/http';
+import { NgClass, formatDate } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { MatIconButton, MatFabButton, MatButton } from '@angular/material/button';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
@@ -63,11 +62,6 @@ import { TripService } from '@services/trip/trip.service';
     MatSuffix,
     MatTable,
     NgClass,
-    NgFor,
-    NgIf,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     TranslatePipe,
   ],
 })
@@ -83,14 +77,12 @@ export class ParticipantsComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
 
   participant$!: Observable<Student[]>;
-  displayedColumns: string[];
   sortableColumns: string[];
   canDetermineTrip = true;
   school: School | null = null;
   sortedParticipants: Student[] = [];
 
   constructor() {
-    this.displayedColumns = this.getDisplayedColumns();
     this.sortableColumns = [
       // 'index',
       'type',
@@ -123,7 +115,7 @@ export class ParticipantsComponent implements OnInit {
     this.subscribeToUpdates();
   }
 
-  private getDisplayedColumns(): string[] {
+  get displayedColumns(): string[] {
     return [
       'index',
       'type',
@@ -186,7 +178,7 @@ export class ParticipantsComponent implements OnInit {
         this.school = school;
         // Some of the columns are displayed conditionally based on the school
         // data. Refresh the list of displayed columns.
-        this.displayedColumns = this.getDisplayedColumns();
+        // this.displayedColumns = this.getDisplayedColumns();
       },
       error: (err: any) => this.logger.warn(err),
     });
@@ -198,13 +190,7 @@ export class ParticipantsComponent implements OnInit {
   private fetch(tripId?: number): void {
     this.logger.debug('ParticipantsComponent fetch() called');
     const endpoint = tripId ? `participants?trip-id=${tripId}` : 'participants';
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
-      }),
-    };
-    this.participant$ = this.api.get(endpoint, null, options).pipe(
+    this.participant$ = this.api.get(endpoint).pipe(
       map((studentsJson: any) => {
         const studentsArray = studentsJson
           .map((s: any) => new Student(s, this.translate))
@@ -371,14 +357,8 @@ export class ParticipantsComponent implements OnInit {
    */
   updateStudentInfo(student: Student, data: any): void {
     const endpoint = `students/${student.id}`;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
-      }),
-    };
-    this.api.patch(endpoint, data, options).subscribe({
-      next: (res: any) => {
+    this.api.patch(endpoint, data).subscribe({
+      next: (_res: any) => {
         this.snackBar.open(
           this.translate.instant('INFORMATION_UPDATED'),
           undefined,
@@ -460,11 +440,18 @@ export class ParticipantsComponent implements OnInit {
   selector: 'app-delete-student-confirmation-dialog-component',
   templateUrl: './delete-student-confirmation-dialog.component.html',
   styleUrls: ['./delete-student-confirmation-dialog.component.scss'],
-  imports: [NgIf, MatDialogTitle, CdkScrollable, MatDialogContent, MatProgressSpinner, MatDialogActions, MatButton, TranslatePipe]
+  imports: [
+    CdkScrollable,
+    MatButton,
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogTitle,
+    MatProgressSpinner,
+    TranslatePipe,
+  ],
 })
 export class DeleteStudentConfirmationDialogComponent {
   private api = inject(ApiService);
-  private auth = inject(AuthService);
   private logger = inject(NGXLogger);
   dialogRef = inject<MatDialogRef<DeleteStudentConfirmationDialogComponent>>(MatDialogRef);
   data = inject<Student>(MAT_DIALOG_DATA);
@@ -480,19 +467,13 @@ export class DeleteStudentConfirmationDialogComponent {
     this.loading = true;
     this.logger.debug(`Sending DELETE for student ${this.data.id}`);
     const endpoint = `students/${this.data.id}`;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
-      }),
-    };
-    this.api.delete(endpoint, options).subscribe(
-      () => {
-        this.dialogRef.close(true);
-      },
-      (error: any) => {
-        this.logger.error(`Error deleting student ${this.data.id}`, error);
-        this.deleteError = true;
+    this.api.delete(endpoint).subscribe(
+      {
+        next: () => { this.dialogRef.close(true); },
+        error: (error: any) => {
+          this.logger.error(`Error deleting student ${this.data.id}`, error);
+          this.deleteError = true;
+        },
       },
     );
   }
