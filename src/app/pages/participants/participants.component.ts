@@ -81,9 +81,12 @@ export class ParticipantsComponent implements OnInit {
     this.participantService.init();
   }
 
+  get allColumns(): string[] {
+    return ['index', ...this.displayedColumns];
+  }
+
   get displayedColumns(): string[] {
     return [
-      'index',
       'type',
       'name',
       'englishName',
@@ -170,7 +173,6 @@ export class ParticipantsComponent implements OnInit {
 
   getAttrType(attr: string): string {
     if (
-      attr === 'index' ||
       attr === 'type' ||
       attr === 'waiverAccepted' ||
       attr === 'waiverSignedOn'

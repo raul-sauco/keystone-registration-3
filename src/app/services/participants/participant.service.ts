@@ -50,20 +50,7 @@ export class ParticipantService {
               return a.name.localeCompare(b.name);
             },
           );
-
-        // Add an index value to all
-        let ti = 1;
-        let si = 1;
-        const indexedStudentArray: Student[] = [];
-        studentsArray.forEach((student: Student) => {
-          if (!student.type) {
-            student.index = ti++;
-          } else {
-            student.index = si++;
-          }
-          indexedStudentArray.push(student);
-        });
-        return indexedStudentArray;
+        return studentsArray;
       }),
     ).subscribe({
       next: (participants: Student[]) => {
