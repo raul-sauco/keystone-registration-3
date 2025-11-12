@@ -14,8 +14,6 @@ import { Sort, MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { AddParticipantComponent } from '@components/add-participant/add-participant.component';
 import { AdminBannerComponent } from '@components/admin-banner/admin-banner.component';
@@ -24,9 +22,8 @@ import { School } from '@models/school';
 import { Student } from '@models/student';
 import { CamelToSnakePipe } from '@pipes/camel-to-snake.pipe';
 import { ApiService } from '@services/api/api.service';
-import { AuthService } from '@services/auth/auth.service';
+import { ParticipantService } from '@services/participants/participant.service';
 import { SchoolService } from '@services/school/school.service';
-import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
 
 @Component({
@@ -67,52 +64,21 @@ import { TripService } from '@services/trip/trip.service';
 })
 export class ParticipantsComponent implements OnInit {
   private api = inject(ApiService);
-  private auth = inject(AuthService);
-  private logger = inject(NGXLogger);
   private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+  private logger = inject(NGXLogger);
   private schoolService = inject(SchoolService);
   private translate = inject(TranslateService);
   private tripService = inject(TripService);
-  private tripSwitcher = inject(TripSwitcherService);
-  private snackBar = inject(MatSnackBar);
 
-  participant$!: Observable<Student[]>;
-  sortableColumns: string[];
+  participantService = inject(ParticipantService);
   canDetermineTrip = true;
   school: School | null = null;
-  sortedParticipants: Student[] = [];
-
-  constructor() {
-    this.sortableColumns = [
-      // 'index',
-      'type',
-      'name',
-      'englishName',
-      'house',
-      'roomNumber',
-      'paid',
-      'paymentVerified',
-      'citizenship',
-      // 'travelDocument',
-      // 'gender',
-      // 'dob',
-      // 'guardianName',
-      // 'emergencyContact',
-      'waiverAccepted',
-      'waiverSignedOn',
-      // 'dietaryRequirements',
-      // 'dietaryRequirementsOther',
-      // 'allergies',
-      // 'allergiesOther',
-      // 'medicalInformation',
-      // 'delete',
-    ];
-  }
 
   ngOnInit(): void {
     this.logger.debug('ParticipantsComponent OnInit');
-    this.loadStudentData();
     this.subscribeToUpdates();
+    this.participantService.init();
   }
 
   get displayedColumns(): string[] {
@@ -142,21 +108,19 @@ export class ParticipantsComponent implements OnInit {
     ];
   }
 
-  /**
-   * Check component properties before fetch to load student data.
-   */
-  private loadStudentData() {
-    // School administrators should be able to see multiple trips.
-    if (this.auth.isSchoolAdmin) {
-      if (this.tripSwitcher.selectedTrip) {
-        this.fetch(this.tripSwitcher.selectedTrip.id);
-      } else {
-        this.canDetermineTrip = false;
-        this.logger.debug('ParticipantsComponent cannot determine trip');
-      }
-    } else {
-      this.fetch();
-    }
+  get sortableColumns(): string[] {
+    return [
+      'type',
+      'name',
+      'englishName',
+      'house',
+      'roomNumber',
+      'paid',
+      'paymentVerified',
+      'citizenship',
+      'waiverAccepted',
+      'waiverSignedOn',
+    ];
   }
 
   /**
@@ -164,13 +128,6 @@ export class ParticipantsComponent implements OnInit {
    * Keep this subscriptions alive for the lifetime of the component.
    */
   private subscribeToUpdates(): void {
-    this.participant$.subscribe({
-      next: (students: Student[]) => {
-        this.logger.debug('ParticipantsComponent participant$ next', students);
-        this.sortedParticipants = students;
-      },
-      error: (err: any) => this.logger.warn(err),
-    });
     // School service updates.
     this.schoolService.school$.subscribe({
       next: (school: School) => {
@@ -185,51 +142,6 @@ export class ParticipantsComponent implements OnInit {
   }
 
   /**
-   * Subscribe to the ApiService to get student data
-   */
-  private fetch(tripId?: number): void {
-    this.logger.debug('ParticipantsComponent fetch() called');
-    const endpoint = tripId ? `participants?trip-id=${tripId}` : 'participants';
-    this.participant$ = this.api.get(endpoint).pipe(
-      map((studentsJson: any) => {
-        const studentsArray = studentsJson
-          .map((s: any) => new Student(s, this.translate))
-          .sort(
-            // Sort by type first and then last name.
-            // Strings can be null strings do not use localCompare
-            (a: Student, b: Student) => {
-              const t = (b.type || 0) - (a.type || 0);
-              if (t) {
-                return t;
-              }
-              if (!a.name) {
-                return 1;
-              }
-              if (!b.name) {
-                return -1;
-              }
-              return a.name.localeCompare(b.name);
-            },
-          );
-
-        // Add an index value to all
-        let ti = 1;
-        let si = 1;
-        const indexedStudentArray: Student[] = [];
-        studentsArray.forEach((student: Student) => {
-          if (!student.type) {
-            student.index = ti++;
-          } else {
-            student.index = si++;
-          }
-          indexedStudentArray.push(student);
-        });
-        return indexedStudentArray;
-      }),
-    );
-  }
-
-  /**
    * The payment info columns are displayed conditionally, encapsulate the
    * display logic in a function.
    *
@@ -239,12 +151,7 @@ export class ParticipantsComponent implements OnInit {
    * the trip that they are currently visualizing.
    */
   private displayPaymentInfoColumns(): boolean {
-    return (
-      (this.tripService.trip?.acceptDirectPayment ||
-        (this.auth.isSchoolAdmin &&
-          this.tripSwitcher.selectedTrip?.acceptDirectPayment)) ??
-      false
-    );
+    return this.tripService.trip?.acceptDirectPayment ?? false;
   }
 
   /**
@@ -254,7 +161,7 @@ export class ParticipantsComponent implements OnInit {
     const dialogRef = this.dialog.open(AddParticipantComponent);
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
-        this.loadStudentData();
+        this.participantService.refresh();
       }
     });
   }
@@ -385,7 +292,7 @@ export class ParticipantsComponent implements OnInit {
     );
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
-        this.loadStudentData();
+        this.participantService.refresh();
         this.snackBar.open(
           this.translate.instant('PARTICIPANT_DELETED'),
           undefined,
@@ -401,38 +308,12 @@ export class ParticipantsComponent implements OnInit {
    */
   sortData(event: Sort) {
     this.logger.debug(`Sorting data by ${event.active} ${event.direction}`);
-    const data = this.sortedParticipants.slice();
-    if (!event.active || event.direction === '') {
-      this.sortedParticipants = data;
+    const attribute = event.active;
+    const direction = event.direction;
+    if (!attribute || direction === '' || !this.sortableColumns.includes(attribute)) {
       return;
     }
-
-    this.sortedParticipants = data.sort((a, b) => {
-      const isAsc = event.direction === 'asc';
-      if (this.sortableColumns.includes(event.active)) {
-        return this.compareStudentAttributeValues(
-          a.getAttributeText(event.active as keyof Student),
-          b.getAttributeText(event.active as keyof Student),
-          isAsc,
-        );
-      }
-      return 0;
-    });
-  }
-
-  /**
-   * Compare two values of the same type obtained from a Student attribute.
-   * @param a the first value.
-   * @param b the second value.
-   * @param isAsc whether to sort in ascending order.
-   * @returns number indicating the order of the values.
-   */
-  compareStudentAttributeValues(
-    a: number | string,
-    b: number | string,
-    isAsc: boolean,
-  ): number {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+    this.participantService.sortBy(attribute, direction);
   }
 }
 

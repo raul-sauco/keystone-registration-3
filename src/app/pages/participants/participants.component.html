@@ -1,5 +1,5 @@
 <!-- https://material.angular.io/components/table/overview -->
-@if (sortedParticipants) {
+@if (participantService.participants() !== null) {
   <div id="participants-table-container">
     <app-admin-banner></app-admin-banner>
     <table
@@ -7,7 +7,7 @@
       mat-table
       matSort
       (matSortChange)="sortData($event)"
-      [dataSource]="sortedParticipants"
+      [dataSource]="participantService.participants()!"
       class="mat-elevation-z8"
     >
       @for (attr of displayedColumns; track attr) {
