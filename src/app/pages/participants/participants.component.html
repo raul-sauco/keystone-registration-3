@@ -20,7 +20,8 @@
           <th
             mat-header-cell
             *matHeaderCellDef
-            mat-sort-header="{{ sortableColumns.includes(attr) ? attr : null }}"
+            [mat-sort-header]="attr"
+            [disabled]="!sortableColumns.includes(attr)"
           >
             {{ attr | camelToSnake | translate }}
           </th>

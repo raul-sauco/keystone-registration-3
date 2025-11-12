@@ -63,6 +63,7 @@ export class ParticipantService {
   }
 
   sortBy(attr: string, direction: string): void {
+    this.logger.error(`ParticipantService: Sorting by "${attr}:${direction}"`);
     this._participants.update((data: Student[] | null) => {
       if (data !== null) {
         const copy = [...data];
