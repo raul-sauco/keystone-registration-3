@@ -63,7 +63,6 @@ import { TripService } from '@services/trip/trip.service';
   ],
 })
 export class ParticipantsComponent implements OnInit {
-  private api = inject(ApiService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   private logger = inject(NGXLogger);
@@ -216,7 +215,7 @@ export class ParticipantsComponent implements OnInit {
       if (updatedValue !== student[studentKey]) {
         // TODO check if this line could be removed using Angular binding
         student.setAttribute(studentKey, updatedValue);
-        this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
+        this.updateParticipantInfo(student, { [attrSnakeCase]: updatedValue });
       }
     }
   }
@@ -236,7 +235,7 @@ export class ParticipantsComponent implements OnInit {
         (letter) => `_${letter.toLowerCase()}`,
       );
       // TODO this update happens twice, find a way to only update when the value has changed.
-      this.updateStudentInfo(student, { [attrSnakeCase]: updatedValue });
+      this.updateParticipantInfo(student, { [attrSnakeCase]: updatedValue });
     }
   }
 
@@ -250,7 +249,7 @@ export class ParticipantsComponent implements OnInit {
     if (dob instanceof Date && !isNaN(dob.getTime())) {
       // Format date as YYYY-MM-DD using Angular's formatDate
       const dobString = formatDate(dob, 'yyyy-MM-dd', 'en-US');
-      this.updateStudentInfo(student, { dob: dobString });
+      this.updateParticipantInfo(student, { dob: dobString });
     } else {
       // The date object is not valid.
       this.snackBar.open(this.translate.instant('DATE_NOT_VALID'), undefined, {
@@ -260,25 +259,25 @@ export class ParticipantsComponent implements OnInit {
   }
 
   /**
-   * Post updated Student data to the backend.
+   * Post updated Participant data to the backend.
    * @param id the ID of the `Student` model to update.
    * @param data an object with updated attribute names and values.
    */
-  updateStudentInfo(student: Student, data: any): void {
-    const endpoint = `students/${student.id}`;
-    this.api.patch(endpoint, data).subscribe({
-      next: (_res: any) => {
-        this.snackBar.open(
-          this.translate.instant('INFORMATION_UPDATED'),
-          undefined,
-          { duration: 2000 },
-        );
-      },
-      error: (error: any) => {
-        this.logger.error(`Error updating student ${student.id}`, error);
-        this.snackBar.open(error.error.message, undefined, { duration: 2000 });
-      },
-    });
+  updateParticipantInfo(student: Student, data: any): void {
+    this.participantService
+      .updateParticipantInfo(student, data)
+      .subscribe({
+        next: (_res: any) => {
+          this.snackBar.open(
+            this.translate.instant('INFORMATION_UPDATED'),
+            undefined,
+            { duration: 2000 },
+          );
+        },
+        error: (error: any) => {
+          this.snackBar.open(error.error.message, undefined, { duration: 2000 });
+        },
+      });
   }
 
   /**

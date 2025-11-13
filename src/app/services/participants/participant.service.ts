@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { map } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 import { Student } from '@models/student';
 import { ApiService } from '@services/api/api.service';
@@ -44,6 +44,25 @@ export class ParticipantService {
       },
       error: (err) => this.logger.error('ParticipantService. Error fetching participant info', err),
     });
+  }
+
+  updateParticipantInfo(participant: Student, data: any): Observable<ArrayBuffer> {
+    return this.api.patch(`students/${participant.id}`, data).pipe(
+      tap({
+        next: (_res: any) => {
+          // UI matches server state, no need to update.
+          this.logger.debug(`ParticipantService. Updated participant ${participant.id} information`);
+        },
+        error: (error: any) => {
+          // Update the UI to reflect that the update failed.
+          this._participants.update((data: Student[] | null) => [...(data ?? [])]);
+          this.logger.error(
+            `ParticipantService. Error updating participant ${participant.id} information`,
+            error,
+          );
+        }
+      }),
+    );
   }
 
   sortBy(attr: string, direction: string): void {
