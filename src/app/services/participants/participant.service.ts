@@ -33,23 +33,7 @@ export class ParticipantService {
       map((studentsJson: any) => {
         const studentsArray = studentsJson
           .map((s: any) => new Student(s, this.translate))
-          .sort(
-            // Sort by type first and then last name.
-            // Strings can be null strings do not use localCompare
-            (a: Student, b: Student) => {
-              const t = (b.type || 0) - (a.type || 0);
-              if (t) {
-                return t;
-              }
-              if (!a.name) {
-                return 1;
-              }
-              if (!b.name) {
-                return -1;
-              }
-              return a.name.localeCompare(b.name);
-            },
-          );
+          .sort((a: Student, b: Student) => a.cmp(b));
         return studentsArray;
       }),
     ).subscribe({
@@ -63,36 +47,23 @@ export class ParticipantService {
   }
 
   sortBy(attr: string, direction: string): void {
-    this.logger.error(`ParticipantService: Sorting by "${attr}:${direction}"`);
+    this.logger.debug(`ParticipantService: Sorting by "${attr}:${direction}"`);
     this._participants.update((data: Student[] | null) => {
       if (data !== null) {
         const copy = [...data];
         copy.sort((a, b) => {
-          const isAsc = direction === 'asc';
-          return this.compareStudentAttributeValues(
-            a.getAttributeText(attr as keyof Student),
-            b.getAttributeText(attr as keyof Student),
-            isAsc,
-          );
+          switch (direction) {
+            case 'asc':
+              return b.cmp(a, attr as keyof Student);
+            case 'desc':
+              return a.cmp(b, attr as keyof Student);
+            default:
+              return a.cmp(b);
+          }
         });
         return copy;
       }
       return data;
     });
-  }
-
-  /**
-   * Compare two values of the same type obtained from a Student attribute.
-   * @param a the first value.
-   * @param b the second value.
-   * @param isAsc whether to sort in ascending order.
-   * @returns number indicating the order of the values.
-   */
-  private compareStudentAttributeValues(
-    a: number | string,
-    b: number | string,
-    isAsc: boolean,
-  ): number {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

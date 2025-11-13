@@ -181,7 +181,7 @@ export class Student {
   /**
    * Get the attribute value element content.
    */
-  public getAttributeText(attr: keyof Student) {
+  public getAttributeText(attr: keyof Student): string {
     if (attr === 'type') {
       if (this[attr]) {
         return this.translations.TEACHER;
@@ -204,21 +204,18 @@ export class Student {
     if (attr === 'allergies' && this['allergies']) {
       return this.translations.ALLER[this['allergies']];
     }
-
     if (!this[attr]) {
       return '';
     }
-
     // Customize a few attributes
     if (attr === 'waiverSignedOn' || attr === 'dob') {
       return formatDate(
         this[attr] || '',
         'longDate',
-        this.translate.currentLang.includes('zh') ? 'zh' : 'en-US',
+        this.translate.getCurrentLang().includes('zh') ? 'zh' : 'en-US',
       );
     }
-
-    return this[attr];
+    return `${this[attr]}`;
   }
 
   /**
@@ -389,5 +386,32 @@ export class Student {
       }
     });
     return provided;
+  }
+
+  /**
+   * Compare this model with another one by the given attribute, or using
+   * the default comare method if `attr` is undefined.
+   */
+  public cmp(other: Student, attr?: keyof Student): number {
+    if (attr === undefined) {
+      // Default sort, type, then last name, don't use localCompare because
+      // strings can be null.
+      const t = (other.type || 0) - (this.type || 0);
+      if (t) {
+        return t;
+      }
+      if (!this.name) {
+        return 1;
+      }
+      if (!other.name) {
+        return -1;
+      }
+      return this.name.localeCompare(other.name, undefined, { sensitivity: 'base' });
+    }
+    return this.getAttributeText(attr).localeCompare(
+      other.getAttributeText(attr),
+      undefined,
+      { sensitivity: 'base' },
+    );
   }
 }

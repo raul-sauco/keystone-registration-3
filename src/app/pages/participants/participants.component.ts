@@ -305,14 +305,13 @@ export class ParticipantsComponent implements OnInit {
   }
 
   /**
-   * Sort the participant data based on the selected column content and
-   * selected direction.
+   * Sort the participant data based on the selected column content and selected direction.
    */
   sortData(event: Sort) {
     this.logger.debug(`Sorting data by ${event.active} ${event.direction}`);
     const attribute = event.active;
     const direction = event.direction;
-    if (!attribute || direction === '' || !this.sortableColumns.includes(attribute)) {
+    if (!attribute || !this.sortableColumns.includes(attribute)) {
       return;
     }
     this.participantService.sortBy(attribute, direction);
