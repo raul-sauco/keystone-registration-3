@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit, inject } from '@angular/core';
 import {
   FormsModule,
@@ -29,7 +29,6 @@ import { RouteStateService } from '@services/route-state/route-state.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
@@ -38,8 +37,8 @@ import { RouteStateService } from '@services/route-state/route-state.service';
     MatInputModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    TranslateModule,
-  ],
+    TranslateModule
+],
 })
 export class LoginComponent implements OnInit {
   private router = inject(Router);

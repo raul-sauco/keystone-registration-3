@@ -4,7 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Trip } from 'src/app/models/trip';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
     selector: 'app-admin-banner',
     templateUrl: './admin-banner.component.html',
     styleUrls: ['./admin-banner.component.scss'],
-    imports: [NgIf, MatButton, RouterLink, AsyncPipe, TranslatePipe]
+    imports: [MatButton, RouterLink, AsyncPipe, TranslatePipe]
 })
 export class AdminBannerComponent implements OnInit {
   private logger = inject(NGXLogger);

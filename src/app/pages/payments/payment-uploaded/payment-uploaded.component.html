@@ -1,32 +1,29 @@
 <div id="payment-uploaded-proof-container">
   <div id="payment-uploaded-images-wrapper">
-    <ng-container
-      *ngIf="
-        paymentService.paymentProof$ | async as images;
-        else loadingQrCodes
-      "
-    >
-      <ng-container *ngIf="images.length > 0">
-        <div class="payment-proof-item" *ngFor="let image of images">
-          <img
-            class="mat-elevation-z8 payment-proof-item"
-            [src]="staticUrl + image.name"
-            [alt]="image.name"
-          />
-        </div>
+    @if (
+      paymentService.paymentProof$ | async; as images) {
+      @if (images.length > 0) {
+        @for (image of images; track image) {
+          <div class="payment-proof-item">
+            <img
+              class="mat-elevation-z8 payment-proof-item"
+              [src]="staticUrl + image.name"
+              [alt]="image.name"
+              />
+          </div>
+        }
         <div id="complete-payment-button-container">
           <button
             mat-raised-button
             color="primary"
             (click)="navigateAway()"
             class="primary-action-button"
-          >
+            >
             <mat-icon>upload</mat-icon> {{ "SUBMIT" | translate }}
           </button>
         </div>
-      </ng-container>
-    </ng-container>
-    <ng-template #loadingQrCodes>
+      }
+    } @else {
       <div id="loading-wrapper">
         <mat-progress-spinner
           mode="indeterminate"
@@ -34,6 +31,6 @@
           diameter="32"
         ></mat-progress-spinner>
       </div>
-    </ng-template>
+    }
   </div>
 </div>

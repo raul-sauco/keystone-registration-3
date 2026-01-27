@@ -1,8 +1,7 @@
-<ng-container *ngIf="needsLogin; else app">
+@if (needsLogin) {
   <app-login-required-message></app-login-required-message>
-</ng-container>
-<ng-template #app>
-  <ng-container *ngIf="displayStaffingNotConfirmedTemplate; else guides">
+} @else {
+  @if (displayStaffingNotConfirmedTemplate) {
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
         <app-admin-banner></app-admin-banner>
@@ -11,40 +10,40 @@
             <img matCardImage [src]="url + 'img/portal/ka-staff-2023.jpg'" />
             <mat-card-content
               ><mat-card-subtitle id="staffing-not-confirmed-subtitle">{{
-                "STAFFING_NOT_YET_CONFIRMED" | translate
-              }}</mat-card-subtitle></mat-card-content
+              "STAFFING_NOT_YET_CONFIRMED" | translate
+            }}</mat-card-subtitle></mat-card-content
             >
           </mat-card>
         </div>
       </div>
     </div>
-  </ng-container>
-  <ng-template #guides>
-    <ng-container *ngIf="guide$ | async as guides; else loading">
+  } @else {
+    @if (guide$ | async; as guides) {
       <div class="app-page-wrapper">
         <div class="app-content-wrapper">
           <app-admin-banner></app-admin-banner>
           <ul class="guides-list mat-typography">
-            <li class="guide-item" *ngFor="let guide of guides">
-              <div class="avatar-container">
-                <img
-                  [src]="url + 'img/users/' + guide.getAvatar()"
-                  alt="{{ guide.getName(lang) }} profile image"
-                />
-              </div>
-              <div class="guide-details">
-                <header class="guide-nickname">
-                  {{ guide.getName(lang) }}
-                </header>
-                <div class="guide-bio" [innerHtml]="guide.getBio(lang)"></div>
-              </div>
-            </li>
+            @for (guide of guides; track guide) {
+              <li class="guide-item">
+                <div class="avatar-container">
+                  <img
+                    [src]="url + 'img/users/' + guide.getAvatar()"
+                    alt="{{ guide.getName(lang) }} profile image"
+                    />
+                </div>
+                <div class="guide-details">
+                  <header class="guide-nickname">
+                    {{ guide.getName(lang) }}
+                  </header>
+                  <div class="guide-bio" [innerHtml]="guide.getBio(lang)"></div>
+                </div>
+              </li>
+            }
           </ul>
         </div>
       </div>
-    </ng-container>
-  </ng-template>
-  <ng-template #loading>
-    <app-loading-spinner-content></app-loading-spinner-content>
-  </ng-template>
-</ng-template>
+    } @else {
+      <app-loading-spinner-content></app-loading-spinner-content>
+    }
+  }
+}

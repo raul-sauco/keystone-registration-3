@@ -1,4 +1,4 @@
-<ng-container *ngIf="paymentService.getPaymentInfo()?.open; else closed">
+@if (paymentService.getPaymentInfo()?.open) {
   <div class="app-page-wrapper">
     <div class="app-content-wrapper mat-typography">
       <app-payment-instructions></app-payment-instructions>
@@ -7,7 +7,6 @@
       <app-payment-uploaded></app-payment-uploaded>
     </div>
   </div>
-</ng-container>
-<ng-template #closed>
+} @else {
   <app-payment-closed></app-payment-closed>
-</ng-template>
+}

@@ -10,7 +10,7 @@ import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -19,7 +19,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     selector: 'app-payment-instructions',
     templateUrl: './payment-instructions.component.html',
     styleUrls: ['./payment-instructions.component.scss'],
-    imports: [NgIf, MarkdownComponent, MatIconButton, MatIcon, MatProgressSpinner, AsyncPipe]
+    imports: [MarkdownComponent, MatIconButton, MatIcon, MatProgressSpinner, AsyncPipe]
 })
 export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);

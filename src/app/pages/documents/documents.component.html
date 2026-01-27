@@ -1,47 +1,45 @@
-<ng-container *ngIf="!isGuest; else guest">
-  <ng-container *ngIf="document$ | async as documents; else loading">
-    <ul
-      *ngIf="documents.length > 0; else noItems"
-      class="files-list mat-typography"
-    >
-      <li class="file-item" *ngFor="let doc of documents">
-        <div class="icon-container">
-          <img
-            [src]="url + doc.getIconLink()"
-            alt="{{ doc.getNamei18n() }} icon"
-          />
-        </div>
-        <div class="file-details">
-          <div class="file-name">
-            {{ doc.getNamei18n() }}
-          </div>
-          <div class="file-size">
-            {{ doc.getSize() }}
-          </div>
-          <a
-            [href]="url + doc.getDownloadLink()"
-            download="{{ doc.getNamei18n() }}.pdf"
-            class="file-download-link"
-          >
-            <mat-icon color="primary">get_app</mat-icon>
-          </a>
-        </div>
-      </li>
-    </ul>
-
-    <ng-template #noItems>
+@if (!isGuest) {
+  @if (document$ | async; as documents) {
+    @if (documents.length > 0) {
+      <ul
+        class="files-list mat-typography"
+        >
+        @for (doc of documents; track doc) {
+          <li class="file-item">
+            <div class="icon-container">
+              <img
+                [src]="url + doc.getIconLink()"
+                alt="{{ doc.getNamei18n() }} icon"
+                />
+            </div>
+            <div class="file-details">
+              <div class="file-name">
+                {{ doc.getNamei18n() }}
+              </div>
+              <div class="file-size">
+                {{ doc.getSize() }}
+              </div>
+              <a
+                [href]="url + doc.getDownloadLink()"
+                download="{{ doc.getNamei18n() }}.pdf"
+                class="file-download-link"
+                >
+                <mat-icon color="primary">get_app</mat-icon>
+              </a>
+            </div>
+          </li>
+        }
+      </ul>
+    } @else {
       <app-no-items-notification
         message="NO_DOCUMENTS_FOR_TRIP"
       ></app-no-items-notification>
-    </ng-template>
-  </ng-container>
-
-  <ng-template #loading>
+    }
+  } @else {
     <app-loading-spinner-content></app-loading-spinner-content>
-  </ng-template>
-</ng-container>
-<ng-template #guest>
+  }
+} @else {
   <app-login-required-message
     message="LOGIN_PAGE_ALLOWS_REGISTRATION"
   ></app-login-required-message>
-</ng-template>
+}

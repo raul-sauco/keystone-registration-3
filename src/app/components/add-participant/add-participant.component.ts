@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { NgIf } from '@angular/common';
+
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -30,7 +30,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     selector: 'app-add-participant',
     templateUrl: './add-participant.component.html',
     styleUrls: ['./add-participant.component.scss'],
-    imports: [FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, NgIf, MatError, MatProgressBar, MatButton, TranslatePipe]
+    imports: [FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatProgressBar, MatButton, TranslatePipe]
 })
 export class AddParticipantComponent implements OnInit {
   private api = inject(ApiService);

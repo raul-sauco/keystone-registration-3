@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { NgIf } from '@angular/common';
+
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -19,7 +19,7 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
     styleUrls: ['./forgot-password.component.scss'],
-    imports: [MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, NgIf, MatProgressBar, MatButton, RouterLink, TranslatePipe]
+    imports: [MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatProgressBar, MatButton, RouterLink, TranslatePipe]
 })
 export class ForgotPasswordComponent implements OnInit {
   private api = inject(ApiService);
@@ -132,7 +132,7 @@ export class ForgotPasswordComponent implements OnInit {
 @Component({
     selector: 'app-forgot-password-dialog-component',
     templateUrl: './forgot-password-dialog-component.html',
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, NgIf, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class ForgotPasswordDialogComponent {
   dialogRef = inject<MatDialogRef<ForgotPasswordDialogComponent>>(MatDialogRef);

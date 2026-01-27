@@ -26,16 +26,17 @@
             "FORGOT_MY_PASSWORD" | translate
           }}</a>
         </div>
-        <mat-progress-bar
-          mode="indeterminate"
-          *ngIf="loading"
-          class="progress-bar"
-        ></mat-progress-bar>
+        @if (loading) {
+          <mat-progress-bar
+            mode="indeterminate"
+            class="progress-bar"
+          ></mat-progress-bar>
+        }
         <button
           mat-raised-button
           color="primary"
           [disabled]="!loginForm.valid || loading"
-        >
+          >
           {{ "LOGIN" | translate }}
         </button>
       </form>
@@ -45,6 +46,6 @@
         </div>
         <a routerLink="/trip-codes">{{ "REGISTER" | translate }}</a>
       </div></mat-card-content
-    >
-  </mat-card>
-</div>
+      >
+    </mat-card>
+  </div>

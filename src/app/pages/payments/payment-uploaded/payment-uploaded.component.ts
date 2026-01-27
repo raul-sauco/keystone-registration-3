@@ -10,7 +10,7 @@ import { PaymentService } from 'src/app/services/payment/payment.service';
 import { StudentService } from 'src/app/services/student/student.service';
 import { MatButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -18,7 +18,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   selector: 'app-payment-uploaded',
   templateUrl: './payment-uploaded.component.html',
   styleUrls: ['./payment-uploaded.component.scss'],
-  imports: [NgIf, NgFor, MatButton, MatIcon, MatProgressSpinner, AsyncPipe, TranslatePipe]
+  imports: [MatButton, MatIcon, MatProgressSpinner, AsyncPipe, TranslatePipe]
 })
 export class PaymentUploadedComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);

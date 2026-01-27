@@ -1,25 +1,26 @@
 <div id="payment-upload-proof">
-  <ng-container *ngIf="!success">
+  @if (!success) {
     <div id="file-upload-wrapper">
       <input
         type="file"
         id="file-input"
         (change)="onFileSelected($event)"
         #fileUpload
-      />
+        />
       <div id="file-preview-container" class="mat-elevation-z2">
-        <ng-container *ngIf="file; else noFile">
+        @if (file) {
           <img
             id="image-preview"
             class="mat-elevation-z8"
             [src]="imgSrc || '../assets/img/placeholder.png'"
             [alt]="file.name"
-          />
-          <div id="uploading-message" *ngIf="uploadSub">
-            {{ "UPLOADING" | translate }}...
-          </div>
-        </ng-container>
-        <ng-template #noFile>
+            />
+          @if (uploadSub) {
+            <div id="uploading-message">
+              {{ "UPLOADING" | translate }}...
+            </div>
+          }
+        } @else {
           <div id="no-file-message">
             <mat-icon id="no-file-download-icon">download</mat-icon>
             <div id="no-file-prompt-container">
@@ -31,35 +32,34 @@
               (click)="fileUpload.click()"
               class="primary-action-button"
               id="no-file-select-file-btn"
-            >
+              >
               <mat-icon>attach_file</mat-icon>
               {{ "SELECT_IMAGE_PROMPT" | translate }}
             </button>
           </div>
-        </ng-template>
+        }
       </div>
-      <ng-container *ngIf="file">
-        <ng-container *ngIf="uploadSub; else uploadPrompt">
+      @if (file) {
+        @if (uploadSub) {
           <div id="progress">
             <mat-progress-bar
               class="progress-bar"
               [mode]="uploadProgress ? 'determinate' : 'indeterminate'"
               [value]="uploadProgress"
-            >
+              >
             </mat-progress-bar>
           </div>
-        </ng-container>
-        <ng-template #uploadPrompt>
+        } @else {
           <button
             mat-raised-button
             color="primary"
             (click)="uploadFile()"
             class="primary-action-button"
-          >
+            >
             <mat-icon>upload</mat-icon> {{ "UPLOAD" | translate }}
           </button>
-        </ng-template>
-      </ng-container>
+        }
+      }
     </div>
-  </ng-container>
+  }
 </div>

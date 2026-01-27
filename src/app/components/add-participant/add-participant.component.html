@@ -4,7 +4,7 @@
     [formGroup]="participantForm"
     id="participant-form"
     (ngSubmit)="submitForm()"
-  >
+    >
     <mat-form-field appearance="outline">
       <mat-label>{{ "NAME" | translate }}</mat-label>
       <input type="text" matInput formControlName="name" />
@@ -12,29 +12,39 @@
     <mat-form-field appearance="outline">
       <mat-label>{{ "USERNAME" | translate }}</mat-label>
       <input type="text" matInput formControlName="username" required />
-      <mat-error *ngIf="username?.errors?.required">
-        {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-      </mat-error>
-      <mat-error *ngIf="username?.errors?.uniqueUsername">
-        {{ "USERNAME_IS_TAKEN" | translate }}
-      </mat-error>
+      @if (username?.errors?.required) {
+        <mat-error>
+          {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+        </mat-error>
+      }
+      @if (username?.errors?.uniqueUsername) {
+        <mat-error>
+          {{ "USERNAME_IS_TAKEN" | translate }}
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>{{ "EMAIL" | translate }}</mat-label>
       <input type="email" matInput formControlName="email" />
-      <mat-error *ngIf="email?.errors?.email">
-        {{ "EMAIL_IS_NOT_VALID" | translate }}
-      </mat-error>
+      @if (email?.errors?.email) {
+        <mat-error>
+          {{ "EMAIL_IS_NOT_VALID" | translate }}
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>{{ "PASSWORD" | translate }}</mat-label>
       <input type="password" matInput formControlName="password" required />
-      <mat-error *ngIf="password?.errors?.required">
-        {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-      </mat-error>
-      <mat-error *ngIf="password?.errors?.minlength">
-        {{ "MIN_LENGTH_8_CHAR" | translate }}
-      </mat-error>
+      @if (password?.errors?.required) {
+        <mat-error>
+          {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+        </mat-error>
+      }
+      @if (password?.errors?.minlength) {
+        <mat-error>
+          {{ "MIN_LENGTH_8_CHAR" | translate }}
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>{{ "PASSWORD_CONFIRM" | translate }}</mat-label>
@@ -44,22 +54,29 @@
         formControlName="passwordConfirm"
         required
         [errorStateMatcher]="errorMatcher"
-      />
-      <mat-error *ngIf="participantForm.errors?.passwordMismatch">
-        {{ "PASSWORDS_DO_NOT_MATCH" | translate }}
-      </mat-error>
-      <mat-error *ngIf="passwordConfirm?.errors?.required">
-        {{ "THIS_FIELD_IS_REQUIRED" | translate }}
-      </mat-error>
-      <mat-error *ngIf="passwordConfirm?.errors?.minlength">
-        {{ "MIN_LENGTH_8_CHAR" | translate }}
-      </mat-error>
+        />
+      @if (participantForm.errors?.passwordMismatch) {
+        <mat-error>
+          {{ "PASSWORDS_DO_NOT_MATCH" | translate }}
+        </mat-error>
+      }
+      @if (passwordConfirm?.errors?.required) {
+        <mat-error>
+          {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+        </mat-error>
+      }
+      @if (passwordConfirm?.errors?.minlength) {
+        <mat-error>
+          {{ "MIN_LENGTH_8_CHAR" | translate }}
+        </mat-error>
+      }
     </mat-form-field>
-    <mat-progress-bar
-      mode="indeterminate"
-      *ngIf="loading"
-      class="progress-bar"
-    ></mat-progress-bar>
+    @if (loading) {
+      <mat-progress-bar
+        mode="indeterminate"
+        class="progress-bar"
+      ></mat-progress-bar>
+    }
     <div class="actions">
       <button mat-button type="button" (click)="cancel()">
         {{ "CANCEL" | translate }}
@@ -68,7 +85,7 @@
         mat-raised-button
         color="primary"
         [disabled]="!participantForm.valid || loading"
-      >
+        >
         {{ "SEND" | translate }}
       </button>
     </div>

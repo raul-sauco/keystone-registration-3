@@ -13,7 +13,7 @@ import { GlobalsService } from '@services/globals/globals.service';
 import { RouteStateService } from '@services/route-state/route-state.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
 import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
 import { MatCard, MatCardImage, MatCardContent, MatCardSubtitle } from '@angular/material/card';
@@ -23,7 +23,7 @@ import { LoadingSpinnerContentComponent } from '../../components/loading-spinner
     selector: 'app-guides',
     templateUrl: './guides.component.html',
     styleUrls: ['./guides.component.scss'],
-    imports: [NgIf, LoginRequiredMessageComponent, AdminBannerComponent, MatCard, MatCardImage, MatCardContent, MatCardSubtitle, NgFor, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
+    imports: [LoginRequiredMessageComponent, AdminBannerComponent, MatCard, MatCardImage, MatCardContent, MatCardSubtitle, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
 })
 export class GuidesComponent implements OnInit {
   private auth = inject(AuthService);

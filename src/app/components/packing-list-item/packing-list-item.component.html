@@ -8,14 +8,15 @@
       <span
         class="pli-remarks"
         [innerHtml]="pli.getRemarks() ? '(' + pli.getRemarks() + ')' : ''"
-      >
+        >
       </span>
-      <span
-        class="pli-quantity"
-        *ngIf="pli.hasQuantityMoreThanOne()"
-        [innerHtml]="', ' + pli.getQuantity()"
-      >
-      </span>
+      @if (pli.hasQuantityMoreThanOne()) {
+        <span
+          class="pli-quantity"
+          [innerHtml]="', ' + pli.getQuantity()"
+          >
+        </span>
+      }
     </h2>
     <markdown
       class="description-container"

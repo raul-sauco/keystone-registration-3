@@ -1,24 +1,25 @@
-<ng-container *ngIf="needsLogin; else app">
+@if (needsLogin) {
   <app-login-required-message></app-login-required-message>
-</ng-container>
-<ng-template #app>
-  <ng-container *ngIf="supplier$ | async as suppliers; else loading">
+} @else {
+  @if (supplier$ | async; as suppliers) {
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
         <app-admin-banner></app-admin-banner>
         <div class="accommodation-page-container">
-          <ng-container *ngIf="suppliers.length; else noResults">
-            <div *ngFor="let supplier of suppliers">
-              <app-supplier-item [supplier]="supplier"></app-supplier-item></div
-          ></ng-container>
-          <ng-template #noResults
-            ><app-no-results></app-no-results
-          ></ng-template>
+          @if (suppliers.length) {
+            @for (supplier of suppliers; track supplier) {
+              <div>
+                <app-supplier-item [supplier]="supplier"></app-supplier-item></div
+                >
+              }
+            } @else {
+              <app-no-results></app-no-results
+                >
+              }
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </ng-container>
-  <ng-template #loading>
-    <app-loading-spinner-content></app-loading-spinner-content>
-  </ng-template>
-</ng-template>
+      } @else {
+        <app-loading-spinner-content></app-loading-spinner-content>
+      }
+    }

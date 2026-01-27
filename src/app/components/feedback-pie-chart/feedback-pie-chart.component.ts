@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
@@ -8,7 +8,7 @@ import { BaseChartDirective } from 'ng2-charts';
   templateUrl: './feedback-pie-chart.component.html',
   styleUrls: ['./feedback-pie-chart.component.scss'],
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [BaseChartDirective],
 })
 export class FeedbackPieChartComponent implements OnInit {
   @Input() rawData!: { label: string; data: { name: string; value: number }[] };

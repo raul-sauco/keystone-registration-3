@@ -6,7 +6,7 @@ import { ComponentCanDeactivate } from '@interfaces/component-can-deactivate';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 import { PaymentService } from '@services/payment/payment.service';
-import { NgIf } from '@angular/common';
+
 import { PaymentInstructionsComponent } from './payment-instructions/payment-instructions.component';
 import { PaymentQrCodesComponent } from './payment-qr-codes/payment-qr-codes.component';
 import { PaymentUploadProofComponent } from './payment-upload-proof/payment-upload-proof.component';
@@ -17,7 +17,7 @@ import { PaymentClosedComponent } from './payment-closed/payment-closed.componen
     selector: 'app-payments',
     templateUrl: './payments.component.html',
     styleUrls: ['./payments.component.scss'],
-    imports: [NgIf, PaymentInstructionsComponent, PaymentQrCodesComponent, PaymentUploadProofComponent, PaymentUploadedComponent, PaymentClosedComponent]
+    imports: [PaymentInstructionsComponent, PaymentQrCodesComponent, PaymentUploadProofComponent, PaymentUploadedComponent, PaymentClosedComponent]
 })
 export class PaymentsComponent implements OnInit, ComponentCanDeactivate {
   private logger = inject(NGXLogger);

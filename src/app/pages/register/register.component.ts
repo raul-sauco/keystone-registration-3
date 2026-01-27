@@ -15,7 +15,7 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { TripService } from '@services/trip/trip.service';
-import { formatDate, NgIf, AsyncPipe } from '@angular/common';
+import { formatDate, AsyncPipe } from '@angular/common';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MarkdownComponent } from 'ngx-markdown';
 import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
@@ -41,7 +41,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [NgIf, MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MarkdownComponent, MatFormField, MatLabel, MatInput, MatError, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, RouterLink, MatProgressBar, MatButton, AsyncPipe, TranslatePipe]
+  imports: [MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MarkdownComponent, MatFormField, MatLabel, MatInput, MatError, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, RouterLink, MatProgressBar, MatButton, AsyncPipe, TranslatePipe]
 })
 export class RegisterComponent implements OnInit {
   private api = inject(ApiService);

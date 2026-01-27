@@ -1,4 +1,4 @@
-<ng-container *ngIf="content$ | async as content; else loading">
+@if (content$ | async; as content) {
   <div id="payment-instructions-wrapper">
     <markdown id="payment-instructions" [data]="content"></markdown>
     <button
@@ -6,12 +6,11 @@
       mat-icon-button
       color="primary"
       (click)="displayPaymentProofHelp()"
-    >
+      >
       <mat-icon>help</mat-icon>
     </button>
   </div>
-</ng-container>
-<ng-template #loading>
+} @else {
   <div id="loading-wrapper">
     <mat-progress-spinner
       mode="indeterminate"
@@ -19,4 +18,4 @@
       diameter="32"
     ></mat-progress-spinner>
   </div>
-</ng-template>
+}

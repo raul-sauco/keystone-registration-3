@@ -1,8 +1,7 @@
-<ng-container *ngIf="needsLogin; else app">
+@if (needsLogin) {
   <app-login-required-message></app-login-required-message>
-</ng-container>
-<ng-template #app>
-  <ng-container *ngIf="!fetching; else loading">
+} @else {
+  @if (!fetching) {
     <div class="app-page-wrapper">
       <div class="app-content-wrapper" id="packing-list-outer-wrapper">
         <app-admin-banner></app-admin-banner>
@@ -13,92 +12,89 @@
                 <ng-template mat-tab-label>
                   <mat-icon class="tab-icon" color="primary"
                     >check_circle_outline</mat-icon
-                  >
-                  {{ "BRING" | translate }}
-                </ng-template>
-
-                <div class="tab-content">
-                  <header
-                    class="pli-header"
+                    >
+                    {{ "BRING" | translate }}
+                  </ng-template>
+                  <div class="tab-content">
+                    <header
+                      class="pli-header"
                     [innerHtml]="
                       'PACKING_LIST_HEADER' | translate | markdown | async
                     "
-                  ></header>
-
-                  <ul class="pli-list">
-                    <li *ngFor="let item of itemsBring" class="pli-item">
-                      <app-packing-list-item
-                        [pli]="item"
-                      ></app-packing-list-item>
-                    </li>
-                  </ul>
-                </div>
-              </mat-tab>
-
-              <mat-tab>
-                <ng-template mat-tab-label>
-                  <mat-icon class="tab-icon" color="accent"
-                    >help_outline</mat-icon
-                  >
-                  {{ "OPTIONAL" | translate }}
-                </ng-template>
-
-                <div class="tab-content">
-                  <header
-                    class="pli-header"
+                    ></header>
+                    <ul class="pli-list">
+                      @for (item of itemsBring; track item) {
+                        <li class="pli-item">
+                          <app-packing-list-item
+                            [pli]="item"
+                          ></app-packing-list-item>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon class="tab-icon" color="accent"
+                      >help_outline</mat-icon
+                      >
+                      {{ "OPTIONAL" | translate }}
+                    </ng-template>
+                    <div class="tab-content">
+                      <header
+                        class="pli-header"
                     [innerHtml]="
                       'PACKING_LIST_HEADER_OPTIONAL'
                         | translate
                         | markdown
                         | async
                     "
-                  ></header>
-
-                  <ul class="pli-list">
-                    <li *ngFor="let item of itemsOptional">
-                      <app-packing-list-item
-                        [pli]="item"
-                      ></app-packing-list-item>
-                    </li>
-                  </ul>
-                </div>
-              </mat-tab>
-
-              <mat-tab>
-                <ng-template mat-tab-label>
-                  <mat-icon class="tab-icon" color="warn"
-                    >highlight_off</mat-icon
-                  >
-                  {{ "DO_NOT_BRING" | translate }}
-                </ng-template>
-
-                <div class="tab-content">
-                  <header
-                    class="pli-header"
+                      ></header>
+                      <ul class="pli-list">
+                        @for (item of itemsOptional; track item) {
+                          <li>
+                            <app-packing-list-item
+                              [pli]="item"
+                            ></app-packing-list-item>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  </mat-tab>
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <mat-icon class="tab-icon" color="warn"
+                        >highlight_off</mat-icon
+                        >
+                        {{ "DO_NOT_BRING" | translate }}
+                      </ng-template>
+                      <div class="tab-content">
+                        <header
+                          class="pli-header"
                     [innerHtml]="
                       'PACKING_LIST_HEADER_DO_NOT_BRING'
                         | translate
                         | markdown
                         | async
                     "
-                  ></header>
-
-                  <ul class="pli-list">
-                    <li *ngFor="let item of itemsDoNotBring">
-                      <app-packing-list-item
-                        [pli]="item"
-                      ></app-packing-list-item>
-                    </li>
-                  </ul>
+                        ></header>
+                        <ul class="pli-list">
+                          @for (item of itemsDoNotBring; track item) {
+                            <li>
+                              <app-packing-list-item
+                                [pli]="item"
+                              ></app-packing-list-item>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    </mat-tab>
+                  </mat-tab-group>
                 </div>
-              </mat-tab>
-            </mat-tab-group>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </ng-container>
-  <ng-template #loading>
-    <app-loading-spinner-content></app-loading-spinner-content>
-  </ng-template>
-</ng-template>
+        } @else {
+          <app-loading-spinner-content></app-loading-spinner-content>
+        }
+      }

@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import en from '@angular/common/locales/en';
 import zh from '@angular/common/locales/zh';
 import zhHans from '@angular/common/locales/zh-Hans';
-import { importProvidersFrom, enableProdMode } from '@angular/core';
+import { importProvidersFrom, enableProdMode, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
@@ -30,7 +30,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(
+    provideZoneChangeDetection(),importProvidersFrom(
       ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
       MarkdownModule.forRoot(),
       LoggerModule.forRoot({

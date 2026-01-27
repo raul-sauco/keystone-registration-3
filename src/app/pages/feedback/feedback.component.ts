@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
 import { FeedbackPieChartComponent } from '../../components/feedback-pie-chart/feedback-pie-chart.component';
@@ -19,17 +19,15 @@ import { TranslatePipe } from '@ngx-translate/core';
     styleUrls: ['./feedback.component.scss'],
     encapsulation: ViewEncapsulation.None,
     imports: [
-        NgIf,
-        AdminBannerComponent,
-        MatTabGroup,
-        MatTab,
-        NgFor,
-        FeedbackPieChartComponent,
-        NoItemsNotificationComponent,
-        LoadingSpinnerContentComponent,
-        AsyncPipe,
-        TranslatePipe,
-    ],
+    AdminBannerComponent,
+    MatTabGroup,
+    MatTab,
+    FeedbackPieChartComponent,
+    NoItemsNotificationComponent,
+    LoadingSpinnerContentComponent,
+    AsyncPipe,
+    TranslatePipe
+],
 })
 export class FeedbackComponent implements OnInit {
   private logger = inject(NGXLogger);

@@ -1,5 +1,5 @@
 <div class="chart-container mat-typography">
-  <ng-container *ngIf="chartTitle">
+  @if (chartTitle) {
     <h4 class="chart-title">{{ chartTitle }}</h4>
     <canvas
       baseChart
@@ -8,7 +8,7 @@
       [options]="pieChartOptions"
       [plugins]="pieChartPlugins"
       [legend]="pieChartLegend"
-    >
+      >
     </canvas>
-  </ng-container>
+  }
 </div>

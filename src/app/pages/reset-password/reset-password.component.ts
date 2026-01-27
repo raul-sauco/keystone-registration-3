@@ -10,7 +10,7 @@ import { Credentials } from 'src/app/models/credentials';
 
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { NgIf } from '@angular/common';
+
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -34,7 +34,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     selector: 'app-reset-password',
     templateUrl: './reset-password.component.html',
     styleUrls: ['./reset-password.component.scss'],
-    imports: [NgIf, MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatProgressBar, MatButton, RouterLink, LoadingSpinnerContentComponent, TranslatePipe]
+    imports: [MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatProgressBar, MatButton, RouterLink, LoadingSpinnerContentComponent, TranslatePipe]
 })
 export class ResetPasswordComponent implements OnInit {
   dialog = inject(MatDialog);
@@ -182,7 +182,7 @@ export class ResetPasswordComponent implements OnInit {
 @Component({
     selector: 'app-password-reset-dialog-component',
     templateUrl: './reset-password-dialog-component.html',
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, NgIf, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
 })
 export class ResetPasswordDialogComponent {
   dialogRef = inject<MatDialogRef<ResetPasswordDialogComponent>>(MatDialogRef);

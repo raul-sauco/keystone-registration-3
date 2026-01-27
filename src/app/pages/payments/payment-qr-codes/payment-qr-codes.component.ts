@@ -6,14 +6,14 @@ import { Observable } from 'rxjs';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-payment-qr-codes',
     templateUrl: './payment-qr-codes.component.html',
     styleUrls: ['./payment-qr-codes.component.scss'],
-    imports: [NgIf, NgFor, MatProgressSpinner, AsyncPipe]
+    imports: [MatProgressSpinner, AsyncPipe]
 })
 export class PaymentQrCodesComponent implements OnInit {
   private api = inject(ApiService);
