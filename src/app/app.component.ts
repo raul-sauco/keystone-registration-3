@@ -70,7 +70,8 @@ export class AppComponent implements OnInit {
   studentService = inject(StudentService);
   tripSwitcher = inject(TripSwitcherService);
   tripService = inject(TripService);
-  eAuthState = AuthState;
+  // Expose the enum to the template, otherwise not available
+  AuthState = AuthState;
 
   @ViewChild('drawer', { static: true })
   drawer!: MatSidenav;

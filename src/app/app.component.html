@@ -1,4 +1,5 @@
 <!--App Component HTML file. App bar and sidebar menu, render router outlet on the rest -->
+@let authState = auth.auth$ | async;
 <mat-toolbar id="main-header">
   @if (isHandset$ | async) {
     <button
@@ -64,14 +65,8 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-nav-list>
-      @if (auth.auth$ | async) {
-        <!-- Log in/out side menu links -->
+      @if (authState === AuthState.Authenticated) {
         <a mat-list-item (click)="logout()">
-          <!--
-        Mat icon rendering with color broken in Angular Material >= 15, the
-        following does not work. Workaround wrap icons in a div.
-        <mat-icon matListItemIcon color="primary">paid</mat-icon>
-        -->
           <div matListItemIcon>
             <mat-icon color="primary">open_in_new</mat-icon>
           </div>
@@ -92,17 +87,8 @@
         <span>{{ "HOME" | translate | uppercase }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </a>
-      @if ((auth.auth$ | async) && auth.isSchoolAdmin) {
-        <a mat-list-item routerLink="/trip-switcher">
-          <div matListItemIcon>
-            <mat-icon color="primary">restart_alt</mat-icon>
-          </div>
-          <span>{{ "SWITCH_TRIP" | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider>
-        </a>
-      }
       <!-- Registration links -->
-      @if ((auth.auth$ | async) && !auth.isSchoolAdmin) {
+      @if (authState === AuthState.Authenticated) {
         <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
         <a mat-list-item routerLink="/personal-info">
           <div matListItemIcon>
@@ -185,7 +171,7 @@
       }
 
       <!-- This links should only be available for teachers -->
-      @if ((auth.auth$ | async) && (auth.isTeacher || auth.isSchoolAdmin)) {
+      @if (authState === AuthState.Authenticated && auth.isTeacher) {
         <h3 matSubheader>{{ "TEACHER_AREA" | translate | uppercase }}</h3>
         @for (page of teacherPages; track page.title) {
           <a mat-list-item [routerLink]="page.url">
@@ -227,11 +213,7 @@
           }
         }
       }
-      @if (
-        (auth.isSchoolAdmin &&
-          tripSwitcher.selectedTrip?.acceptDirectPayment) ||
-        (paymentService.paymentInfo$ | async)?.required
-      ) {
+      @if ((paymentService.paymentInfo$ | async)?.required) {
         <a mat-list-item routerLink="/payment-policy">
           <div matListItemIcon><mat-icon color="primary">paid</mat-icon></div>
           <span>{{ "PAYMENT_TERMS" | translate | uppercase }}</span>
@@ -246,7 +228,7 @@
         <div class="trip-name-wrapper">{{ tripName }}</div>
       </div>
     }
-    @if ((this.auth.auth$ | async) === eAuthState.Unknown) {
+    @if (authState === AuthState.Unknown) {
       <app-loading-spinner-content></app-loading-spinner-content>
     } @else {
       <router-outlet></router-outlet>
