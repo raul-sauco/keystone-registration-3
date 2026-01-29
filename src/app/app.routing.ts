@@ -203,9 +203,9 @@ export const routes: Routes = [
   },
   {
     path: 'forgot-password',
-    loadChildren: () =>
-      import('./pages/forgot-password/forgot-password.module').then(
-        (m) => m.ForgotPasswordModule,
+    loadComponent: () =>
+      import('./pages/forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent,
       ),
     canActivate: [NoAuthGuard],
   },

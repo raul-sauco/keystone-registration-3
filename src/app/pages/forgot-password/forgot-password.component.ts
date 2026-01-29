@@ -1,11 +1,25 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { DialogData } from 'src/app/interfaces/dialog-data';
 import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -14,12 +28,25 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-    selector: 'app-forgot-password',
-    templateUrl: './forgot-password.component.html',
-    styleUrls: ['./forgot-password.component.scss'],
-    imports: [MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatProgressBar, MatButton, RouterLink, TranslatePipe]
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss'],
+  imports: [
+    MatCard,
+    MatCardContent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatProgressBar,
+    MatButton,
+    RouterLink,
+    TranslatePipe,
+  ],
 })
 export class ForgotPasswordComponent implements OnInit {
   private api = inject(ApiService);
@@ -41,7 +68,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.passwordRecoveryForm = this.formBuilder.group({
       email: new UntypedFormControl(
         '',
-        Validators.compose([Validators.required, Validators.email])
+        Validators.compose([Validators.required, Validators.email]),
       ),
     });
   }
@@ -50,14 +77,14 @@ export class ForgotPasswordComponent implements OnInit {
   submit(): void {
     this.loading = true;
     const params = { email: this.passwordRecoveryForm.value.email };
-    this.api.post('forgot-password', params).subscribe(
-      (res: any) => {
+    this.api.post('forgot-password', params).subscribe({
+      next: (res) => {
         this.handleResponse(res);
       },
-      (err: any) => {
+      error: (err: HttpErrorResponse) => {
         this.handleError(err);
-      }
-    );
+      },
+    });
   }
 
   /**
@@ -116,7 +143,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   /** Handle an error while posting recovery email to the server. */
-  handleError(err: any): void {
+  handleError(err: HttpErrorResponse): void {
     this.passwordRecoveryForm.reset();
     this.loading = false;
     this.logger.error(err.message, err);
@@ -130,9 +157,17 @@ export class ForgotPasswordComponent implements OnInit {
 }
 
 @Component({
-    selector: 'app-forgot-password-dialog-component',
-    templateUrl: './forgot-password-dialog-component.html',
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  selector: 'app-forgot-password-dialog-component',
+  templateUrl: './forgot-password-dialog-component.html',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class ForgotPasswordDialogComponent {
   dialogRef = inject<MatDialogRef<ForgotPasswordDialogComponent>>(MatDialogRef);
