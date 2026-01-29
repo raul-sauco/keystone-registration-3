@@ -1,10 +1,23 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap, RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/services/api/api.service';
-import { UntypedFormGroup, UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormGroup,
+  UntypedFormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { TripService } from 'src/app/services/trip/trip.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { NGXLogger } from 'ngx-logger';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
@@ -22,10 +35,23 @@ export interface DialogData {
 }
 
 @Component({
-    selector: 'app-trip-codes',
-    templateUrl: './trip-codes.component.html',
-    styleUrls: ['./trip-codes.component.scss'],
-    imports: [MatCard, MatCardContent, MatIcon, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatProgressBar, MatButton, RouterLink, TranslatePipe]
+  selector: 'app-trip-codes',
+  templateUrl: './trip-codes.component.html',
+  styleUrls: ['./trip-codes.component.scss'],
+  imports: [
+    MatCard,
+    MatCardContent,
+    MatIcon,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatProgressBar,
+    MatButton,
+    RouterLink,
+    TranslatePipe,
+  ],
 })
 export class TripCodesComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -83,12 +109,12 @@ export class TripCodesComponent implements OnInit {
     const params = {
       id: this.tripId || this.tripCodeForm.value.tripId,
       code: this.tripCodeForm.value.code,
-      lang: this.translate.currentLang,
+      lang: this.translate.getCurrentLang(),
     };
     const endpoint = 'trip-codes';
     this.loading = true;
-    this.api.post(endpoint, params).subscribe(
-      (response: any) => {
+    this.api.post(endpoint, params).subscribe({
+      next: (response: any) => {
         this.loading = false;
         if (response.error === false) {
           const tripData = {
@@ -106,15 +132,15 @@ export class TripCodesComponent implements OnInit {
           });
         }
       },
-      (error: any) => {
+      error: (error: any) => {
         this.resetForm();
         this.loading = false;
         this.logger.warn('Error posting trip-codes', params, error);
         this.dialog.open(CodeErrorDialogComponent, {
           data: { title: 'ERROR', content: 'SERVER_ERROR_TRY_LATER' },
         });
-      }
-    );
+      },
+    });
   }
 
   /**
@@ -131,20 +157,26 @@ export class TripCodesComponent implements OnInit {
    */
   showHelp() {
     this.dialog.open(TripCodeHelpDialogComponent, {
-      data: { lang: this.translate.currentLang },
+      data: { lang: this.translate.getCurrentLang() },
     });
   }
 }
 
 @Component({
-    selector: 'app-code-error-dialog-component',
-    templateUrl: './code-error-dialog.component.html',
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, TranslatePipe]
+  selector: 'app-code-error-dialog-component',
+  templateUrl: './code-error-dialog.component.html',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    TranslatePipe,
+  ],
 })
 export class CodeErrorDialogComponent {
   dialogRef = inject<MatDialogRef<CodeErrorDialogComponent>>(MatDialogRef);
   data = inject<DialogData>(MAT_DIALOG_DATA);
-
 
   onClose() {
     this.dialogRef.close();
@@ -152,14 +184,20 @@ export class CodeErrorDialogComponent {
 }
 
 @Component({
-    selector: 'app-trip-code-help-dialog-component',
-    templateUrl: './trip-code-help-dialog.component.html',
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, TranslatePipe]
+  selector: 'app-trip-code-help-dialog-component',
+  templateUrl: './trip-code-help-dialog.component.html',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    TranslatePipe,
+  ],
 })
 export class TripCodeHelpDialogComponent {
   dialogRef = inject<MatDialogRef<TripCodeHelpDialogComponent>>(MatDialogRef);
   data = inject<DialogData>(MAT_DIALOG_DATA);
-
 
   dismiss() {
     this.dialogRef.close();
