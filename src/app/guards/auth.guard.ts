@@ -5,9 +5,10 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { filter, map, Observable, take } from 'rxjs';
 
 import { AuthService } from '@services/auth/auth.service';
+import { AuthState } from '@models/auth-state';
 
 @Injectable({
   providedIn: 'root',
@@ -17,27 +18,19 @@ export class AuthGuard {
   private router = inject(Router);
 
   canActivate(
-    next: ActivatedRouteSnapshot,
+    _next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    // If we have no user, redirect to the login page.
-    if (!this.auth.authenticated) {
-      this.auth.redirectUrl = state.url;
-      this.router.navigateByUrl('/login');
-      return false;
-    }
-    // Async check the authenticated status.
-    return this.auth.checkAuthenticated().then((res) => {
-      if (!res) {
-        this.auth.redirectUrl = state.url;
-        this.router.navigateByUrl('/login');
-        return false;
-      }
-      return true;
-    });
+  ): Observable<boolean | UrlTree> {
+    return this.auth.auth$.pipe(
+      filter((authState: AuthState) => authState !== AuthState.Unknown),
+      take(1),
+      map((authState: AuthState) => {
+        if (authState === AuthState.Unauthenticated) {
+          this.auth.redirectUrl = state.url;
+          return this.router.createUrlTree(['/login']);
+        }
+        return true;
+      })
+    );
   }
 }

@@ -5,8 +5,9 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { filter, map, Observable, take } from 'rxjs';
 
+import { AuthState } from '@models/auth-state';
 import { AuthService } from '@services/auth/auth.service';
 
 @Injectable({
@@ -17,23 +18,15 @@ export class NoAuthGuard {
   private router = inject(Router);
 
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    if (this.auth.authenticated) {
-      this.router.navigateByUrl('/home');
-      return false;
-    }
-    return this.auth.checkAuthenticated().then((res) => {
-      if (res) {
-        this.router.navigateByUrl('/home');
-        return false;
-      }
-      return true;
-    });
+    _next: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> {
+    return this.auth.auth$.pipe(
+      filter((authState: AuthState) => authState !== AuthState.Unknown),
+      take(1),
+      map((authState: AuthState) => authState === AuthState.Unauthenticated
+        ? true
+        : this.router.createUrlTree(['/home']))
+    );
   }
 }
