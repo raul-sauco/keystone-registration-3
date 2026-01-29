@@ -1,4 +1,3 @@
-
 import { Component, OnInit, inject } from '@angular/core';
 import {
   FormsModule,
@@ -14,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
@@ -37,8 +36,9 @@ import { RouteStateService } from '@services/route-state/route-state.service';
     MatInputModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    TranslateModule
-],
+    RouterLink,
+    TranslateModule,
+  ],
 })
 export class LoginComponent implements OnInit {
   private router = inject(Router);
@@ -86,7 +86,9 @@ export class LoginComponent implements OnInit {
           this.paymentService.fetchFromServer();
           this.router.navigateByUrl('/home');
         } else {
-          this.logger.debug(`Failed Login attempt for User: ${params.username}`);
+          this.logger.debug(
+            `Failed Login attempt for User: ${params.username}`,
+          );
           this.translate
             .get('AUTHENTICATION_FAILURE')
             .subscribe((translation: string) => {
@@ -97,7 +99,7 @@ export class LoginComponent implements OnInit {
       error: (error) => {
         this.logger.warn(
           `Server or Network login error. Username: ${params.username}`,
-          error
+          error,
         );
         this.translate
           .get('SERVER_ERROR_TRY_LATER')
