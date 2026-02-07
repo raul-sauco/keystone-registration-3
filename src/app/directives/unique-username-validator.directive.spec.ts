@@ -7,21 +7,19 @@ import {
 } from './unique-username-validator.directive';
 
 describe('UniqueUsernameValidatorDirective', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          {
-            provide: UsernameService,
-            useClass: UsernameServiceStub,
-          },
-        ],
-      });
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: UsernameService,
+          useClass: UsernameServiceStub,
+        },
+      ],
+    });
+  }));
   it('should create an instance', () => {
     const directive = new UniqueUsernameValidatorDirective(
-      new UniqueUsernameValidator(TestBed.inject(UsernameService))
+      new UniqueUsernameValidator(TestBed.inject(UsernameService)),
     );
     expect(directive).toBeTruthy();
   });

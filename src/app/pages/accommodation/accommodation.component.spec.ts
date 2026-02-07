@@ -11,19 +11,20 @@ describe('AccommodationComponent', () => {
   let component: AccommodationComponent;
   let fixture: ComponentFixture<AccommodationComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-    imports: [LoadingSpinnerContentModule,
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        LoadingSpinnerContentModule,
         LoggerTestingModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), AccommodationComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
-    })
-  );
+          en: require('src/assets/i18n/en.json'),
+        }),
+        AccommodationComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccommodationComponent);

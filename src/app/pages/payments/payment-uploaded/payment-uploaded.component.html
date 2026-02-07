@@ -1,7 +1,6 @@
 <div id="payment-uploaded-proof-container">
   <div id="payment-uploaded-images-wrapper">
-    @if (
-      paymentService.paymentProof$ | async; as images) {
+    @if (paymentService.paymentProof$ | async; as images) {
       @if (images.length > 0) {
         @for (image of images; track image) {
           <div class="payment-proof-item">
@@ -9,7 +8,7 @@
               class="mat-elevation-z8 payment-proof-item"
               [src]="staticUrl + image.name"
               [alt]="image.name"
-              />
+            />
           </div>
         }
         <div id="complete-payment-button-container">
@@ -18,8 +17,8 @@
             color="primary"
             (click)="navigateAway()"
             class="primary-action-button"
-            >
-            <mat-icon>upload</mat-icon> {{ "SUBMIT" | translate }}
+          >
+            <mat-icon>upload</mat-icon> {{ 'SUBMIT' | translate }}
           </button>
         </div>
       }

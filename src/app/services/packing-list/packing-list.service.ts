@@ -40,12 +40,8 @@ export class PackingListService {
     if (tripId !== null) {
       params['trip-id'] = tripId;
       fetch = true;
-    } else if (
-      this.auth.authenticated &&
-      this.auth.getAccessToken()
-    ) {
-      headers.authorization =
-        ' Bearer ' + this.auth.getAccessToken();
+    } else if (this.auth.authenticated && this.auth.getAccessToken()) {
+      headers.authorization = ' Bearer ' + this.auth.getAccessToken();
       fetch = true;
     }
 

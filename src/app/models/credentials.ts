@@ -23,8 +23,6 @@ export class Credentials {
     this.username = cred.username.trim();
     this.type = cred.type;
     this.studentId = cred.studentId;
-    this.paymentInfo = cred.paymentInfo
-      ? new PaymentInfo(cred.paymentInfo)
-      : null;
+    this.paymentInfo = cred.paymentInfo ? new PaymentInfo(cred.paymentInfo) : null;
   }
 }

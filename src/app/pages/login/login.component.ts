@@ -86,26 +86,17 @@ export class LoginComponent implements OnInit {
           this.paymentService.fetchFromServer();
           this.router.navigateByUrl('/home');
         } else {
-          this.logger.debug(
-            `Failed Login attempt for User: ${params.username}`,
-          );
-          this.translate
-            .get('AUTHENTICATION_FAILURE')
-            .subscribe((translation: string) => {
-              this.notifyError(translation);
-            });
+          this.logger.debug(`Failed Login attempt for User: ${params.username}`);
+          this.translate.get('AUTHENTICATION_FAILURE').subscribe((translation: string) => {
+            this.notifyError(translation);
+          });
         }
       },
       error: (error) => {
-        this.logger.warn(
-          `Server or Network login error. Username: ${params.username}`,
-          error,
-        );
-        this.translate
-          .get('SERVER_ERROR_TRY_LATER')
-          .subscribe((translation: string) => {
-            this.notifyError(translation);
-          });
+        this.logger.warn(`Server or Network login error. Username: ${params.username}`, error);
+        this.translate.get('SERVER_ERROR_TRY_LATER').subscribe((translation: string) => {
+          this.notifyError(translation);
+        });
       },
     });
   }

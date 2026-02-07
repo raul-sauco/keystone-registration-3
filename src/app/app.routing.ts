@@ -8,13 +8,11 @@ import { TeacherGuard } from '@guards/teacher.guard';
 export const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () =>
-      import('./pages/home/home.module').then((m) => m.HomeModule),
+    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
   },
   {
     path: 'home/:trip-id',
-    loadChildren: () =>
-      import('./pages/home/home.module').then((m) => m.HomeModule),
+    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
   },
   {
     path: 'program-overview',
@@ -33,88 +31,65 @@ export const routes: Routes = [
   {
     path: 'packing-list',
     loadChildren: () =>
-      import('./pages/packing-list/packing-list.module').then(
-        (m) => m.PackingListModule,
-      ),
+      import('./pages/packing-list/packing-list.module').then((m) => m.PackingListModule),
   },
   {
     path: 'packing-list/:trip-id',
     loadChildren: () =>
-      import('./pages/packing-list/packing-list.module').then(
-        (m) => m.PackingListModule,
-      ),
+      import('./pages/packing-list/packing-list.module').then((m) => m.PackingListModule),
   },
   {
     path: 'guides',
-    loadChildren: () =>
-      import('./pages/guides/guides.module').then((m) => m.GuidesModule),
+    loadChildren: () => import('./pages/guides/guides.module').then((m) => m.GuidesModule),
   },
   {
     path: 'guides/:trip-id',
-    loadChildren: () =>
-      import('./pages/guides/guides.module').then((m) => m.GuidesModule),
+    loadChildren: () => import('./pages/guides/guides.module').then((m) => m.GuidesModule),
   },
   {
     path: 'faq',
-    loadComponent: () =>
-      import('./pages/faq/faq.component').then((m) => m.FaqComponent),
+    loadComponent: () => import('./pages/faq/faq.component').then((m) => m.FaqComponent),
   },
   {
     path: 'documents',
-    loadChildren: () =>
-      import('./pages/documents/documents.module').then(
-        (m) => m.DocumentsModule,
-      ),
+    loadChildren: () => import('./pages/documents/documents.module').then((m) => m.DocumentsModule),
   },
   {
     path: 'documents/:trip-id',
-    loadChildren: () =>
-      import('./pages/documents/documents.module').then(
-        (m) => m.DocumentsModule,
-      ),
+    loadChildren: () => import('./pages/documents/documents.module').then((m) => m.DocumentsModule),
   },
   {
     path: 'accommodation',
     loadChildren: () =>
-      import('./pages/accommodation/accommodation.module').then(
-        (m) => m.AccommodationModule,
-      ),
+      import('./pages/accommodation/accommodation.module').then((m) => m.AccommodationModule),
     // canActivate: [AuthGuard],
   },
   {
     path: 'accommodation/:trip-id',
     loadChildren: () =>
-      import('./pages/accommodation/accommodation.module').then(
-        (m) => m.AccommodationModule,
-      ),
+      import('./pages/accommodation/accommodation.module').then((m) => m.AccommodationModule),
     // canActivate: [AuthGuard],
   },
   {
     path: 'feedback',
-    loadChildren: () =>
-      import('./pages/feedback/feedback.module').then((m) => m.FeedbackModule),
+    loadChildren: () => import('./pages/feedback/feedback.module').then((m) => m.FeedbackModule),
     canActivate: [TeacherGuard],
   },
   {
     path: 'participants',
     loadComponent: () =>
-      import('./pages/participants/participants.component').then(
-        (m) => m.ParticipantsComponent,
-      ),
+      import('./pages/participants/participants.component').then((m) => m.ParticipantsComponent),
     canActivate: [TeacherGuard],
   },
   {
     path: 'personal-info',
     loadComponent: () =>
-      import('./pages/personal-info/personal-info.component').then(
-        (m) => m.PersonalInfoComponent,
-      ),
+      import('./pages/personal-info/personal-info.component').then((m) => m.PersonalInfoComponent),
     canActivate: [AuthGuard],
   },
   {
     path: 'payments',
-    loadChildren: () =>
-      import('./pages/payments/payments.module').then((m) => m.PaymentsModule),
+    loadChildren: () => import('./pages/payments/payments.module').then((m) => m.PaymentsModule),
     canActivate: [AuthGuard],
   },
   {
@@ -134,9 +109,7 @@ export const routes: Routes = [
   {
     path: 'covid-policy',
     loadComponent: () =>
-      import('./pages/covid-policy/covid-policy.component').then(
-        (m) => m.CovidPolicyComponent,
-      ),
+      import('./pages/covid-policy/covid-policy.component').then((m) => m.CovidPolicyComponent),
   },
   {
     path: 'child-protection',
@@ -148,57 +121,44 @@ export const routes: Routes = [
   {
     path: 'teacher-note',
     loadComponent: () =>
-      import('./pages/teacher-note/teacher-note.component').then(
-        (m) => m.TeacherNoteComponent,
-      ),
+      import('./pages/teacher-note/teacher-note.component').then((m) => m.TeacherNoteComponent),
   },
   {
     path: 'help',
-    loadChildren: () =>
-      import('./pages/help/help.module').then((m) => m.HelpModule),
+    loadChildren: () => import('./pages/help/help.module').then((m) => m.HelpModule),
   },
   {
     path: 'login',
-    loadComponent: () =>
-      import('./pages/login/login.component').then((m) => m.LoginComponent),
+    loadComponent: () => import('./pages/login/login.component').then((m) => m.LoginComponent),
     canActivate: [NoAuthGuard],
   },
   {
     path: 'register',
     loadComponent: () =>
-      import('./pages/register/register.component').then(
-        (m) => m.RegisterComponent,
-      ),
+      import('./pages/register/register.component').then((m) => m.RegisterComponent),
     canActivate: [NoAuthGuard],
   },
   {
     path: 'trip-codes',
     loadComponent: () =>
-      import('./pages/trip-codes/trip-codes.component').then(
-        (m) => m.TripCodesComponent,
-      ),
+      import('./pages/trip-codes/trip-codes.component').then((m) => m.TripCodesComponent),
     canActivate: [NoAuthGuard],
   },
   {
     path: 'trip-codes/:id',
     loadComponent: () =>
-      import('./pages/trip-codes/trip-codes.component').then(
-        (m) => m.TripCodesComponent,
-      ),
+      import('./pages/trip-codes/trip-codes.component').then((m) => m.TripCodesComponent),
     canActivate: [NoAuthGuard],
   },
   {
     path: 'waiver',
-    loadComponent: () =>
-      import('./pages/waiver/waiver.component').then((m) => m.WaiverComponent),
+    loadComponent: () => import('./pages/waiver/waiver.component').then((m) => m.WaiverComponent),
     canActivate: [AuthGuard],
   },
   {
     path: 'trip-switcher',
     loadChildren: () =>
-      import('./pages/trip-switcher/trip-switcher.module').then(
-        (m) => m.TripSwitcherModule,
-      ),
+      import('./pages/trip-switcher/trip-switcher.module').then((m) => m.TripSwitcherModule),
     canActivate: [SchoolAdminGuard],
   },
   {
@@ -212,9 +172,7 @@ export const routes: Routes = [
   {
     path: 'reset-password/:token',
     loadChildren: () =>
-      import('./pages/reset-password/reset-password.module').then(
-        (m) => m.ResetPasswordModule,
-      ),
+      import('./pages/reset-password/reset-password.module').then((m) => m.ResetPasswordModule),
     canActivate: [NoAuthGuard],
   },
   {

@@ -12,20 +12,21 @@ describe('FeedbackComponent', () => {
   let component: FeedbackComponent;
   let fixture: ComponentFixture<FeedbackComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-    imports: [AdminBannerModule,
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        AdminBannerModule,
         LoggerTestingModule,
         NoItemsNotificationModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), FeedbackComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
-    })
-  );
+          en: require('src/assets/i18n/en.json'),
+        }),
+        FeedbackComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FeedbackComponent);

@@ -15,14 +15,9 @@ import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
   selector: 'app-id-photo',
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatProgressBarModule,
-    TranslateModule,
-  ],
+  imports: [MatButtonModule, MatIconModule, MatProgressBarModule, TranslateModule],
   templateUrl: './id-photo.component.html',
-  styleUrl: './id-photo.component.scss'
+  styleUrl: './id-photo.component.scss',
 })
 export class IdPhotoComponent implements OnInit {
   private api = inject(ApiService);
@@ -45,9 +40,7 @@ export class IdPhotoComponent implements OnInit {
     this.urlPrefix = `${this.globals.getResUrl()}img/trip/pop/${this.student.id}/`;
     this.api.get('student-id-photos').subscribe({
       next: (res: any) => {
-        this.logger.debug(
-          `IDPhotoComponent fetched ${res.length} id images from server`,
-        );
+        this.logger.debug(`IDPhotoComponent fetched ${res.length} id images from server`);
         this.images = res.map((name: any) => this.urlPrefix + name);
         if (this.images.length > 0) {
           this.idUploadedEvent.emit(true);
@@ -92,10 +85,7 @@ export class IdPhotoComponent implements OnInit {
       });
       this.uploadSub = upload$.subscribe({
         next: (res: any) => {
-          this.logger.debug(
-            'IDPhotoComponent::uploadFile upload completed',
-            res,
-          );
+          this.logger.debug('IDPhotoComponent::uploadFile upload completed', res);
           this.images.push(this.urlPrefix + res.name);
           this.idUploadedEvent.emit(true);
           this.reset();

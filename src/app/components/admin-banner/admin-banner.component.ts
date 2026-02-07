@@ -9,10 +9,10 @@ import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-admin-banner',
-    templateUrl: './admin-banner.component.html',
-    styleUrls: ['./admin-banner.component.scss'],
-    imports: [MatButton, RouterLink, AsyncPipe, TranslatePipe]
+  selector: 'app-admin-banner',
+  templateUrl: './admin-banner.component.html',
+  styleUrls: ['./admin-banner.component.scss'],
+  imports: [MatButton, RouterLink, AsyncPipe, TranslatePipe],
 })
 export class AdminBannerComponent implements OnInit {
   private logger = inject(NGXLogger);

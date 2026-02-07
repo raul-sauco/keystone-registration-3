@@ -30,9 +30,9 @@ describe('HomeComponent', () => {
         paramMap: of(
           convertToParamMap({
             'trip-id': 111,
-          })
+          }),
         ),
-      }
+      },
     );
     routeStateServiceSpy = jasmine.createSpyObj('RouteStateService', {
       getTripId: '112',
@@ -40,28 +40,28 @@ describe('HomeComponent', () => {
       setNullTripIdParamState: null,
     });
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         BrowserAnimationsModule,
         RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
+          en: require('src/assets/i18n/en.json'),
         }),
         MarkdownModule.forRoot(),
         MatCardModule,
         HomeComponent,
-    ],
-    providers: [
+      ],
+      providers: [
         {
-            provide: ActivatedRoute,
-            useValue: activatedRouteSpy,
+          provide: ActivatedRoute,
+          useValue: activatedRouteSpy,
         },
         {
-            provide: RouteStateService,
-            useValue: routeStateServiceSpy,
+          provide: RouteStateService,
+          useValue: routeStateServiceSpy,
         },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     element = fixture.debugElement;
@@ -89,8 +89,7 @@ describe('HomeComponent', () => {
   });
 
   it('paramMap should return 111 trip-id', waitForAsync(() => {
-    const paramMap =
-      activatedRouteSpy.paramMap as unknown as Observable<ParamMap>;
+    const paramMap = activatedRouteSpy.paramMap as unknown as Observable<ParamMap>;
     paramMap.subscribe((params: ParamMap) => {
       expect(params.get('trip-id')?.toString()).toEqual('111');
     });
@@ -100,27 +99,22 @@ describe('HomeComponent', () => {
     spyOn(component, 'checkTripIdParam').and.callThrough();
     fixture.detectChanges();
     expect(component.checkTripIdParam).toHaveBeenCalledOnceWith();
-    expect(
-      routeStateServiceSpy.updateTripIdParamState
-    ).toHaveBeenCalledOnceWith(111);
+    expect(routeStateServiceSpy.updateTripIdParamState).toHaveBeenCalledOnceWith(111);
   });
 
   it('should not do anything when url does not have trip id', () => {
     spyOn(component, 'checkTripIdParam').and.callThrough();
     // Update spy object property value
     // https://jasmine.github.io/tutorials/spying_on_properties
-    const propertyDescriptor = Object.getOwnPropertyDescriptor(
-      activatedRouteSpy,
-      'paramMap'
-    );
+    const propertyDescriptor = Object.getOwnPropertyDescriptor(activatedRouteSpy, 'paramMap');
     if (propertyDescriptor) {
       const paramMap = propertyDescriptor.get as jasmine.Spy;
       paramMap.and.returnValue(
         of(
           convertToParamMap({
             'trip-id': null,
-          })
-        )
+          }),
+        ),
       );
     }
     fixture.detectChanges();

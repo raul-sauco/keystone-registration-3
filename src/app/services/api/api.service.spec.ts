@@ -11,9 +11,13 @@ describe('ApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [LoggerTestingModule],
-    providers: [{ provide: GlobalsService }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [LoggerTestingModule],
+      providers: [
+        { provide: GlobalsService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    });
     service = TestBed.inject(ApiService);
   });
 

@@ -12,13 +12,13 @@ describe('PackingListService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [LoggerTestingModule],
-    providers: [
+      imports: [LoggerTestingModule],
+      providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-});
+      ],
+    });
     service = TestBed.inject(PackingListService);
   });
 

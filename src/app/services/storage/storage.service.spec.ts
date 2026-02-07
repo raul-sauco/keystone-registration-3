@@ -8,9 +8,7 @@ describe('StorageService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        LoggerTestingModule
-      ]
+      imports: [LoggerTestingModule],
     });
     service = TestBed.inject(StorageService);
   });

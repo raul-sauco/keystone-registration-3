@@ -1,11 +1,5 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -47,7 +41,7 @@ describe('ParticipantsComponent', () => {
         }),
         checkAuthenticated: Promise.resolve(true),
       },
-      { auth$: of(true) }
+      { auth$: of(true) },
     );
     apiServiceSpy = jasmine.createSpyObj('ApiService', {
       get: of({ id: 123 }),
@@ -57,7 +51,8 @@ describe('ParticipantsComponent', () => {
       error: undefined,
     });
     TestBed.configureTestingModule({
-    imports: [AdminBannerModule,
+      imports: [
+        AdminBannerModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatDialogModule,
@@ -69,10 +64,16 @@ describe('ParticipantsComponent', () => {
         PipesModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), ParticipantsComponent],
-    providers: [{ provide: AuthService, useValue: authServiceSpy }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+          en: require('src/assets/i18n/en.json'),
+        }),
+        ParticipantsComponent,
+      ],
+      providers: [
+        { provide: AuthService, useValue: authServiceSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

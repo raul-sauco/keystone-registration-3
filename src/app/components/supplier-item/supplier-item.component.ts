@@ -8,10 +8,18 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'app-supplier-item',
-    templateUrl: './supplier-item.component.html',
-    styleUrls: ['./supplier-item.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatButton, MatIcon, TranslatePipe]
+  selector: 'app-supplier-item',
+  templateUrl: './supplier-item.component.html',
+  styleUrls: ['./supplier-item.component.scss'],
+  imports: [
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatButton,
+    MatIcon,
+    TranslatePipe,
+  ],
 })
 export class SupplierItemComponent implements OnInit {
   private globals = inject(GlobalsService);

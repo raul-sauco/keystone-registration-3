@@ -23,10 +23,14 @@ describe('AuthGuard', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [LoggerTestingModule,
-        RouterTestingModule],
-    providers: [AuthGuard, { provide: Router, useValue: routerMock }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [LoggerTestingModule, RouterTestingModule],
+      providers: [
+        AuthGuard,
+        { provide: Router, useValue: routerMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    });
     injector = getTestBed();
     authService = injector.inject(AuthService);
     guard = injector.inject(AuthGuard);
@@ -43,25 +47,19 @@ describe('AuthGuard', () => {
 
   it('should redirect an unauthenticated user to the login route using async login check', async () => {
     authService.authenticated = true;
-    spyOn(authService, 'checkAuthenticated').and.returnValue(
-      Promise.resolve(false)
-    );
+    spyOn(authService, 'checkAuthenticated').and.returnValue(Promise.resolve(false));
     expect(await guard.canActivate(routeMock, routeStateMock)).toEqual(false);
   });
 
   it('should allow the authenticated user to access app', async () => {
     authService.authenticated = true;
-    spyOn(authService, 'checkAuthenticated').and.returnValue(
-      Promise.resolve(true)
-    );
+    spyOn(authService, 'checkAuthenticated').and.returnValue(Promise.resolve(true));
     expect(await guard.canActivate(routeMock, routeStateMock)).toEqual(true);
   });
 
   it('should remember the requested url for failed logins', async () => {
     authService.authenticated = false;
-    spyOn(authService, 'checkAuthenticated').and.returnValue(
-      Promise.resolve(false)
-    );
+    spyOn(authService, 'checkAuthenticated').and.returnValue(Promise.resolve(false));
     expect(await guard.canActivate(routeMock, routeStateMock)).toEqual(false);
     expect(authService.redirectUrl).toEqual(requestedUrl);
   });

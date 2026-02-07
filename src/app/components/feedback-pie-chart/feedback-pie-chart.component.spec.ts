@@ -34,8 +34,8 @@ describe('FeedbackPieChartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [BaseChartDirective, FeedbackPieChartComponent],
-}).compileComponents();
+      imports: [BaseChartDirective, FeedbackPieChartComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -54,8 +54,6 @@ describe('FeedbackPieChartComponent', () => {
   }));
 
   it('should assign data', waitForAsync(() => {
-    expect(component.pieChartData.datasets[0].data).toEqual(
-      data.data.map((e) => e.value)
-    );
+    expect(component.pieChartData.datasets[0].data).toEqual(data.data.map((e) => e.value));
   }));
 });

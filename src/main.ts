@@ -3,21 +3,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import en from '@angular/common/locales/en';
 import zh from '@angular/common/locales/zh';
 import zhHans from '@angular/common/locales/zh-Hans';
-import {
-  importProvidersFrom,
-  enableProdMode,
-  provideZoneChangeDetection,
-} from '@angular/core';
+import { importProvidersFrom, enableProdMode, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
-import {
-  provideTranslateLoader,
-  provideTranslateService,
-} from '@ngx-translate/core';
+import { provideTranslateLoader, provideTranslateService } from '@ngx-translate/core';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
@@ -53,9 +43,7 @@ bootstrapApplication(AppComponent, {
       MarkdownModule.forRoot(),
       LoggerModule.forRoot({
         serverLoggingUrl: environment.apiUrl + 'portal-logs',
-        level: environment.production
-          ? NgxLoggerLevel.INFO
-          : NgxLoggerLevel.TRACE,
+        level: environment.production ? NgxLoggerLevel.INFO : NgxLoggerLevel.TRACE,
         serverLogLevel: NgxLoggerLevel.WARN,
       }),
     ),

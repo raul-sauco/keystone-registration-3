@@ -17,8 +17,7 @@ export class SchoolService {
   private logger = inject(NGXLogger);
   private storage = inject(StorageService);
 
-  private SCHOOL_SERVICE_STORAGE_KEY =
-    'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY';
+  private SCHOOL_SERVICE_STORAGE_KEY = 'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY';
   school$: BehaviorSubject<School> = new BehaviorSubject(new School({}));
   private school?: School;
 
@@ -53,7 +52,7 @@ export class SchoolService {
         }
         this.logger.debug(
           'SchoolService found expired info in storage, fetching from server',
-          json
+          json,
         );
       } else {
         this.logger.debug('SchoolService found no info in storage');
@@ -71,26 +70,18 @@ export class SchoolService {
         const endpoint = 'school-details';
         let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         if (this.auth.getAccessToken()) {
-          headers = headers.append(
-            'Authorization',
-            `Bearer ${this.auth.getAccessToken()}`
-          );
+          headers = headers.append('Authorization', `Bearer ${this.auth.getAccessToken()}`);
         }
         const options = { headers };
         this.api.get(endpoint, null, options).subscribe({
           next: (schoolData: any) => {
-            this.logger.debug(
-              'SchoolService got school data from server',
-              schoolData
-            );
+            this.logger.debug('SchoolService got school data from server', schoolData);
             // Construct a new School object from the data.
             this.school = new School(schoolData);
             // Send the new school data to the subscribers.
             this.school$.next(this.school);
             // Add a TTL field to the school data, 10 minutes.
-            schoolData.ttl = isDevMode()
-              ? Date.now()
-              : Date.now() + 1000 * 60 * 10;
+            schoolData.ttl = isDevMode() ? Date.now() : Date.now() + 1000 * 60 * 10;
             // Save the school data to local storage. Use JSON format.
             this.storage.set(this.SCHOOL_SERVICE_STORAGE_KEY, schoolData);
           },

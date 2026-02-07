@@ -1,6 +1,12 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -59,7 +65,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
     this.studentService.student$
       .pipe(
         filter((student): student is Student => student !== null),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe({
         next: (student) => {
@@ -69,10 +75,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
           }
         },
         error: (error) => {
-          this.logger.error(
-            'WaiverComponent studentService.student$ error',
-            error,
-          );
+          this.logger.error('WaiverComponent studentService.student$ error', error);
         },
       });
     this.listenToPaymentInfoUpdates();
@@ -85,13 +88,11 @@ export class WaiverComponent implements OnInit, OnDestroy {
   }
 
   listenToPaymentInfoUpdates(): void {
-    this.paymentService.paymentInfo$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (paymentInfo: PaymentInfo) => {
-          this.paymentInfo = paymentInfo;
-        },
-      });
+    this.paymentService.paymentInfo$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (paymentInfo: PaymentInfo) => {
+        this.paymentInfo = paymentInfo;
+      },
+    });
   }
 
   get name() {
@@ -104,10 +105,7 @@ export class WaiverComponent implements OnInit, OnDestroy {
   initWaiverForm(stu: Student): void {
     this.waiverForm = this.formBuilder.group({
       name: [stu.name || '', Validators.required],
-      guardianName: [
-        stu.guardianName || '',
-        this.auth.isStudent ? Validators.required : null,
-      ],
+      guardianName: [stu.guardianName || '', this.auth.isStudent ? Validators.required : null],
     });
   }
 
@@ -126,15 +124,11 @@ export class WaiverComponent implements OnInit, OnDestroy {
     this.studentService.updateStudent(studentData).subscribe({
       next: () => {
         this.posting = false;
-        const snackBar = this.snackBar.open(
-          this.translate.instant('WAIVER_ACCEPTED'),
-          undefined,
-          { duration: 2000 },
-        );
+        const snackBar = this.snackBar.open(this.translate.instant('WAIVER_ACCEPTED'), undefined, {
+          duration: 2000,
+        });
         snackBar.afterDismissed().subscribe(() => {
-          const destination = this.paymentInfo?.required
-            ? '/payments'
-            : '/home';
+          const destination = this.paymentInfo?.required ? '/payments' : '/home';
           this.router.navigateByUrl(destination);
         });
       },

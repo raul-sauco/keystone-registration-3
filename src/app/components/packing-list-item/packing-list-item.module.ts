@@ -4,11 +4,7 @@ import { PackingListItemComponent } from './packing-list-item.component';
 import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
-    exports: [PackingListItemComponent],
-    imports: [
-        CommonModule,
-        MarkdownModule,
-        PackingListItemComponent
-    ]
+  exports: [PackingListItemComponent],
+  imports: [CommonModule, MarkdownModule, PackingListItemComponent],
 })
-export class PackingListItemModule { }
+export class PackingListItemModule {}

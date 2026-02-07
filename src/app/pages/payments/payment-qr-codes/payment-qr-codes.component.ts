@@ -10,10 +10,10 @@ import { AsyncPipe } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-    selector: 'app-payment-qr-codes',
-    templateUrl: './payment-qr-codes.component.html',
-    styleUrls: ['./payment-qr-codes.component.scss'],
-    imports: [MatProgressSpinner, AsyncPipe]
+  selector: 'app-payment-qr-codes',
+  templateUrl: './payment-qr-codes.component.html',
+  styleUrls: ['./payment-qr-codes.component.scss'],
+  imports: [MatProgressSpinner, AsyncPipe],
 })
 export class PaymentQrCodesComponent implements OnInit {
   private api = inject(ApiService);

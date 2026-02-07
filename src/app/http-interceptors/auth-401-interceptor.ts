@@ -36,10 +36,7 @@ export class Auth401Interceptor implements HttpInterceptor {
     this.url = globals.getApiUrl();
   }
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Avoid circular intercept of the refresh token request.
     if (req.url.endsWith('/auth/refresh') || req.url.endsWith('/auth/logout')) {
       return next.handle(req);
@@ -55,10 +52,7 @@ export class Auth401Interceptor implements HttpInterceptor {
     );
   }
 
-  private handle401(
-    req: HttpRequest<any>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<any>> {
+  private handle401(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.refreshing) {
       return this.refreshSubject.pipe(
         filter((token) => token !== null),
@@ -96,9 +90,7 @@ export class Auth401Interceptor implements HttpInterceptor {
           const cred = this.auth.credentials;
           this.logger.info(
             'Failed to refresh access token, logging out ' +
-              (cred === null
-                ? ''
-                : `user ${cred?.username} student ID: ${cred?.studentId}`),
+              (cred === null ? '' : `user ${cred?.username} student ID: ${cred?.studentId}`),
           );
           this.auth.logout();
           // Do not redirect here, delegate to the guards

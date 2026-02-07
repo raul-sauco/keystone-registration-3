@@ -16,18 +16,21 @@ describe('PaymentInstructionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [MatDialogModule,
+      imports: [
+        MatDialogModule,
         MatProgressSpinnerModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), PaymentInstructionsComponent],
-    providers: [
+          en: require('src/assets/i18n/en.json'),
+        }),
+        PaymentInstructionsComponent,
+      ],
+      providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

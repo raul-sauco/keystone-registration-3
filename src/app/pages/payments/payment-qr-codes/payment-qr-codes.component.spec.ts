@@ -12,13 +12,16 @@ describe('PaymentQrCodesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [LoggerTestingModule,
+      imports: [
+        LoggerTestingModule,
         MatProgressSpinnerModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), PaymentQrCodesComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+          en: require('src/assets/i18n/en.json'),
+        }),
+        PaymentQrCodesComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,10 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { filter, map, Observable, take } from 'rxjs';
 
 import { AuthService } from '@services/auth/auth.service';
@@ -19,7 +14,7 @@ export class AuthGuard {
 
   canActivate(
     _next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> {
     return this.auth.auth$.pipe(
       filter((authState: AuthState) => authState !== AuthState.Unknown),
@@ -30,7 +25,7 @@ export class AuthGuard {
           return this.router.createUrlTree(['/login']);
         }
         return true;
-      })
+      }),
     );
   }
 }

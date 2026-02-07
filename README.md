@@ -42,7 +42,7 @@ If the test already imports `RouterTestingModule` but it still fails because of 
 The router method can be mocked as seen [here][2], probably the best option.
 
 ```typescript
-spyOn(component.router, "navigate").and.returnValue(lastValueFrom(of(true)));
+spyOn(component.router, 'navigate').and.returnValue(lastValueFrom(of(true)));
 ```
 
 Or a route can be configured directly on the import, as seen [here][3].

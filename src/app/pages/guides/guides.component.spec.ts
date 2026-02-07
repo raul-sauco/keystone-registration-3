@@ -17,17 +17,20 @@ describe('GuidesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [AdminBannerModule,
+      imports: [
+        AdminBannerModule,
         LoggerTestingModule,
         RouterTestingModule,
         MatCardModule,
         MatSnackBarModule,
         LoadingSpinnerContentModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), GuidesComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+          en: require('src/assets/i18n/en.json'),
+        }),
+        GuidesComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

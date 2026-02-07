@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NoResultsComponent } from './no-results.component';
 
 @NgModule({
-    imports: [CommonModule, MatIconModule, TranslateModule, NoResultsComponent],
-    exports: [NoResultsComponent],
+  imports: [CommonModule, MatIconModule, TranslateModule, NoResultsComponent],
+  exports: [NoResultsComponent],
 })
 export class NoResultsModule {}

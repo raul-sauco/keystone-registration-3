@@ -1,4 +1,3 @@
-
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
@@ -24,7 +23,7 @@ export class FeedbackPieChartComponent implements OnInit {
   public pieChartLegend = true;
   public pieChartPlugins = [];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     // The API data needs to be mapped to the shape expected by the

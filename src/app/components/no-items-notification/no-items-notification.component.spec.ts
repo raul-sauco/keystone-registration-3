@@ -9,14 +9,14 @@ describe('NoItemsNotificationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         MatIconModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
+          en: require('src/assets/i18n/en.json'),
         }),
         NoItemsNotificationComponent,
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

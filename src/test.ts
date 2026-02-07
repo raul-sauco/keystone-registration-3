@@ -13,13 +13,9 @@ import {
 import { ngMocks } from 'ng-mocks';
 
 // First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting(),
-  {
-    teardown: { destroyAfterEach: false },
-  }
-);
+getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), {
+  teardown: { destroyAfterEach: false },
+});
 // All methods in mock declarations and providers
 // will be automatically spied on their creation.
 // https://ng-mocks.sudo.eu/extra/auto-spy

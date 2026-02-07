@@ -72,14 +72,14 @@ describe('TripService', () => {
     translateServiceSpy = jasmine.createSpyObj(
       'TranslateServiceSpy',
       {},
-      { currentLang: 'en', onLangChange: eventEmitter }
+      { currentLang: 'en', onLangChange: eventEmitter },
     );
     tripSwitcherSpy = jasmine.createSpyObj(
       'TripSwitcherSpy',
       {
         selectTrip: true,
       },
-      { selectedTrip$: of(tripA) }
+      { selectedTrip$: of(tripA) },
     );
     TestBed.configureTestingModule({
       providers: [
@@ -102,23 +102,16 @@ describe('TripService', () => {
   it('should subscribe to authentication status changes', () => {
     expect(loggerSpy.debug).toHaveBeenCalledTimes(1);
     authSubject.next(true);
-    expect(loggerSpy.debug).toHaveBeenCalledWith(
-      'Updated authentication status true'
-    );
+    expect(loggerSpy.debug).toHaveBeenCalledWith('Updated authentication status true');
   });
 
   it('should clear state on auth false', (done: DoneFn) => {
     expect(loggerSpy.debug).toHaveBeenCalledTimes(1);
     service.tripName$.subscribe((name) => {
-      expect(name).toEqual(
-        '',
-        'We are sending a false auth value, it should clear the service'
-      );
+      expect(name).toEqual('', 'We are sending a false auth value, it should clear the service');
     });
     authSubject.next(false);
-    expect(storageServiceSpy.remove).toHaveBeenCalledWith(
-      'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA'
-    );
+    expect(storageServiceSpy.remove).toHaveBeenCalledWith('KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA');
     done();
   });
 
@@ -140,7 +133,7 @@ describe('TripService', () => {
     service.tripName$.subscribe((name) => {
       expect(name).toEqual(
         marbles[calls],
-        `Expected call #${calls} to equal ${marbles[calls]} but found ${name}`
+        `Expected call #${calls} to equal ${marbles[calls]} but found ${name}`,
       );
       calls++;
     });
@@ -148,9 +141,7 @@ describe('TripService', () => {
     authSubject.next(true);
     // This should trigger a call to clear.
     authSubject.next(false);
-    expect(storageServiceSpy.remove).toHaveBeenCalledWith(
-      'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA'
-    );
+    expect(storageServiceSpy.remove).toHaveBeenCalledWith('KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA');
     done();
   });
 
@@ -163,7 +154,7 @@ describe('TripService', () => {
     service.tripName$.subscribe((name) => {
       expect(name).toEqual(
         marbles[calls],
-        `Expected call #${calls} to equal ${marbles[calls]} but found ${name}`
+        `Expected call #${calls} to equal ${marbles[calls]} but found ${name}`,
       );
       calls++;
     });
@@ -173,14 +164,10 @@ describe('TripService', () => {
     // Trigger a call to set trip.
     authSubject.next(true);
     // A student user should trigger a call to the API to fetch the trip.
-    expect(loggerSpy.debug).toHaveBeenCalledWith(
-      'TripService fetching from API'
-    );
+    expect(loggerSpy.debug).toHaveBeenCalledWith('TripService fetching from API');
     // Trigger a call to clear.
     authSubject.next(false);
-    expect(storageServiceSpy.remove).toHaveBeenCalledWith(
-      'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA'
-    );
+    expect(storageServiceSpy.remove).toHaveBeenCalledWith('KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA');
     done();
   });
 
@@ -194,13 +181,8 @@ describe('TripService', () => {
     // Trigger a call to set trip.
     authSubject.next(true);
     // A student user should trigger a call to the API to fetch the trip.
-    expect(loggerSpy.debug).toHaveBeenCalledWith(
-      'TripService fetching from API'
-    );
-    expect(loggerSpy.warn).toHaveBeenCalledWith(
-      'Error fetching my trip',
-      error
-    );
+    expect(loggerSpy.debug).toHaveBeenCalledWith('TripService fetching from API');
+    expect(loggerSpy.warn).toHaveBeenCalledWith('Error fetching my trip', error);
   });
 
   it('should log a warning when auth is true and credentials empty', (done: DoneFn) => {
@@ -212,9 +194,7 @@ describe('TripService', () => {
     authSubject.next(true);
     // Trigger a call to clear.
     authSubject.next(false);
-    expect(loggerSpy.warn).toHaveBeenCalledWith(
-      'Expected credentials to exists and be valid'
-    );
+    expect(loggerSpy.warn).toHaveBeenCalledWith('Expected credentials to exists and be valid');
     done();
   });
 });

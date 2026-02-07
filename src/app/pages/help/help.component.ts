@@ -14,11 +14,21 @@ import { LoadingSpinnerContentComponent } from '../../components/loading-spinner
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-help',
-    templateUrl: './help.component.html',
-    styleUrls: ['./help.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    imports: [MatCard, MatCardTitle, MatFabButton, MatIcon, MatCardContent, MarkdownComponent, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
+  selector: 'app-help',
+  templateUrl: './help.component.html',
+  styleUrls: ['./help.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  imports: [
+    MatCard,
+    MatCardTitle,
+    MatFabButton,
+    MatIcon,
+    MatCardContent,
+    MarkdownComponent,
+    LoadingSpinnerContentComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HelpComponent implements OnInit {
   private api = inject(ApiService);
@@ -47,9 +57,7 @@ export class HelpComponent implements OnInit {
     this.content$ = this.api
       .get(endpoint, null, options)
       .pipe(
-        map((doc: any) =>
-          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text
-        )
+        map((doc: any) => (this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text)),
       );
   }
 }

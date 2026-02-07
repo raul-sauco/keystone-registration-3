@@ -10,18 +10,17 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { NoItemsNotificationModule } from 'src/app/components/no-items-notification/no-items-notification.module';
 
-
 @NgModule({
-    imports: [
-        CommonModule,
-        DocumentsRoutingModule,
-        LoadingSpinnerContentModule,
-        LoginRequiredMessageModule,
-        NoItemsNotificationModule,
-        MatButtonModule,
-        MatIconModule,
-        TranslateModule,
-        DocumentsComponent
-    ]
+  imports: [
+    CommonModule,
+    DocumentsRoutingModule,
+    LoadingSpinnerContentModule,
+    LoginRequiredMessageModule,
+    NoItemsNotificationModule,
+    MatButtonModule,
+    MatIconModule,
+    TranslateModule,
+    DocumentsComponent,
+  ],
 })
-export class DocumentsModule { }
+export class DocumentsModule {}

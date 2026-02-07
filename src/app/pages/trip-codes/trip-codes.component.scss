@@ -1,4 +1,4 @@
-@use "../../../sass/mixins" as mixins;
+@use '../../../sass/mixins' as mixins;
 
 #trip-codes-form-container {
   position: fixed;
@@ -12,8 +12,7 @@
   justify-content: center;
   box-sizing: border-box;
   background:
-    top 24px right 16px / 150px no-repeat
-      url(https://static.keystone-adventures.cn/img/kalogo.png),
+    top 24px right 16px / 150px no-repeat url(https://static.keystone-adventures.cn/img/kalogo.png),
     center / cover no-repeat
       url(https://static.keystone-adventures.cn/img/portal/bg/f/FM54269YGLNS.jpg);
   // /** Angular media queries have an error here */

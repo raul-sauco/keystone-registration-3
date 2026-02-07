@@ -9,12 +9,12 @@ import { LoadingSpinnerContentModule } from '@components/loading-spinner-content
 import { ApiService } from '@services/api/api.service';
 
 @Component({
-    selector: 'app-ka-md-document',
-    templateUrl: './ka-md-document.component.html',
-    styleUrl: './ka-md-document.component.scss',
-    imports: [CommonModule, LoadingSpinnerContentModule, MarkdownModule],
-    // This is needed to style shadow DOM markdown content.
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-ka-md-document',
+  templateUrl: './ka-md-document.component.html',
+  styleUrl: './ka-md-document.component.scss',
+  imports: [CommonModule, LoadingSpinnerContentModule, MarkdownModule],
+  // This is needed to style shadow DOM markdown content.
+  encapsulation: ViewEncapsulation.None,
 })
 export class KaMdDocumentComponent implements OnInit {
   private logger = inject(NGXLogger);
@@ -34,9 +34,7 @@ export class KaMdDocumentComponent implements OnInit {
     this.content$ = this.api
       .get(this.endpoint)
       .pipe(
-        map((doc: any) =>
-          this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text,
-        ),
+        map((doc: any) => (this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text)),
       );
   }
 }

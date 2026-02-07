@@ -5,23 +5,13 @@
   <div class="text-container {{ pli.getBringClass() }}">
     <h2>
       <span class="pli-name" [innerHtml]="pli.getName() | titlecase"> </span>
-      <span
-        class="pli-remarks"
-        [innerHtml]="pli.getRemarks() ? '(' + pli.getRemarks() + ')' : ''"
-        >
+      <span class="pli-remarks" [innerHtml]="pli.getRemarks() ? '(' + pli.getRemarks() + ')' : ''">
       </span>
       @if (pli.hasQuantityMoreThanOne()) {
-        <span
-          class="pli-quantity"
-          [innerHtml]="', ' + pli.getQuantity()"
-          >
-        </span>
+        <span class="pli-quantity" [innerHtml]="', ' + pli.getQuantity()"> </span>
       }
     </h2>
-    <markdown
-      class="description-container"
-      [data]="pli.getDescription()"
-    ></markdown>
+    <markdown class="description-container" [data]="pli.getDescription()"></markdown>
     <footer [innerHtml]="pli.getFooter() | markdown | async"></footer>
   </div>
 </div>

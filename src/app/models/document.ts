@@ -2,15 +2,70 @@
  * Document model class
  */
 export class Document {
-
   /** A list of extensions we have icons for */
   private acceptedExtensions = [
-    'aac', 'ai', 'aiff', 'avi', 'bmp', 'c', 'cpp', 'csv', 'dat', 'dmg', 'doc',
-    'docx', 'dotx', 'dwg', 'dxf', 'eps', 'exe', 'flv', 'gif', 'h', 'hpp',
-    'html', 'ics', 'iso', 'java', 'jpg', 'js', 'key', 'less', 'mid', 'mp3',
-    'mp4', 'mpg', 'odf', 'ods', 'odt', 'otp', 'ots', 'ott', 'pdf', 'php',
-    'png', 'ppt', 'psd', 'py', 'qt', 'rar', 'rb', 'rtf', 'sass', 'scss',
-    'sql', 'tga', 'tgz', 'tiff', 'txt', 'wav', 'xls', 'xlsx', 'xml', 'yml', 'zip'
+    'aac',
+    'ai',
+    'aiff',
+    'avi',
+    'bmp',
+    'c',
+    'cpp',
+    'csv',
+    'dat',
+    'dmg',
+    'doc',
+    'docx',
+    'dotx',
+    'dwg',
+    'dxf',
+    'eps',
+    'exe',
+    'flv',
+    'gif',
+    'h',
+    'hpp',
+    'html',
+    'ics',
+    'iso',
+    'java',
+    'jpg',
+    'js',
+    'key',
+    'less',
+    'mid',
+    'mp3',
+    'mp4',
+    'mpg',
+    'odf',
+    'ods',
+    'odt',
+    'otp',
+    'ots',
+    'ott',
+    'pdf',
+    'php',
+    'png',
+    'ppt',
+    'psd',
+    'py',
+    'qt',
+    'rar',
+    'rb',
+    'rtf',
+    'sass',
+    'scss',
+    'sql',
+    'tga',
+    'tgz',
+    'tiff',
+    'txt',
+    'wav',
+    'xls',
+    'xlsx',
+    'xml',
+    'yml',
+    'zip',
   ];
 
   private nameEn: string;
@@ -44,8 +99,7 @@ export class Document {
    * Get the link for the file icon
    */
   getIconLink(): string {
-    const ext = this.acceptedExtensions.indexOf(this.fileType) === -1 ?
-      '_blank' : this.fileType;
+    const ext = this.acceptedExtensions.indexOf(this.fileType) === -1 ? '_blank' : this.fileType;
     return `file-icons/48px/${ext}.png`;
   }
 
@@ -73,15 +127,15 @@ export class Document {
   humanFileSize(bytes: number, si: boolean): string {
     const thresh = si ? 1000 : 1024;
     if (Math.abs(bytes) < thresh) {
-        return bytes + ' B';
+      return bytes + ' B';
     }
     const units = si
-        ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+      ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+      : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
     let u = -1;
     do {
-        bytes /= thresh;
-        ++u;
+      bytes /= thresh;
+      ++u;
     } while (Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1) + ' ' + units[u];
   }

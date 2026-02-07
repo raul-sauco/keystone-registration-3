@@ -1,7 +1,24 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormGroupDirective, NgForm, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  FormGroupDirective,
+  NgForm,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
@@ -24,17 +41,31 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(
     control: UntypedFormControl | null,
-    form: FormGroupDirective | NgForm | null
+    form: FormGroupDirective | NgForm | null,
   ): boolean {
     return (control?.dirty && form?.invalid) || false;
   }
 }
 
 @Component({
-    selector: 'app-reset-password',
-    templateUrl: './reset-password.component.html',
-    styleUrls: ['./reset-password.component.scss'],
-    imports: [MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatProgressBar, MatButton, RouterLink, LoadingSpinnerContentComponent, TranslatePipe]
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.scss'],
+  imports: [
+    MatCard,
+    MatCardContent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatProgressBar,
+    MatButton,
+    RouterLink,
+    LoadingSpinnerContentComponent,
+    TranslatePipe,
+  ],
 })
 export class ResetPasswordComponent implements OnInit {
   dialog = inject(MatDialog);
@@ -107,23 +138,17 @@ export class ResetPasswordComponent implements OnInit {
         dialogRef.afterClosed().subscribe((res: any) => {
           this.router.navigateByUrl('/home');
         });
-      }
+      },
     );
   }
 
   initPasswordResetForm(): void {
     this.passwordResetForm = this.formBuilder.group(
       {
-        password: [
-          '',
-          Validators.compose([Validators.required, Validators.minLength(8)]),
-        ],
-        passwordConfirm: [
-          '',
-          Validators.compose([Validators.required, Validators.minLength(8)]),
-        ],
+        password: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+        passwordConfirm: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
       },
-      { validator: passwordMatchValidator }
+      { validator: passwordMatchValidator },
     );
   }
 
@@ -148,10 +173,7 @@ export class ResetPasswordComponent implements OnInit {
         if (!res.error) {
           this.auth.setAuth(res);
         } else {
-          this.logger.warn(
-            'Password reset error',
-            res
-          );
+          this.logger.warn('Password reset error', res);
         }
         const dialogRef = this.dialog.open(ResetPasswordDialogComponent, {
           data: {
@@ -174,15 +196,23 @@ export class ResetPasswordComponent implements OnInit {
             content: 'SERVER_ERROR_TRY_LATER',
           },
         });
-      }
+      },
     );
   }
 }
 
 @Component({
-    selector: 'app-password-reset-dialog-component',
-    templateUrl: './reset-password-dialog-component.html',
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  selector: 'app-password-reset-dialog-component',
+  templateUrl: './reset-password-dialog-component.html',
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class ResetPasswordDialogComponent {
   dialogRef = inject<MatDialogRef<ResetPasswordDialogComponent>>(MatDialogRef);

@@ -1,24 +1,19 @@
 <div class="mat-typography">
   <div mat-dialog-title>
     <div id="add-participant-info-to-payment-reminder-title">
-      {{ "IMPORTANT_REMINDER" | translate }}
+      {{ 'IMPORTANT_REMINDER' | translate }}
     </div>
   </div>
   <div mat-dialog-content id="add-participant-info-to-payment-reminder-content">
-    <p>{{ "ADD_PARTICIPANT_INFO_REMINDER" | translate }}</p>
-    <p>{{ "REMEMBER_PAYMENT_SCREENSHOT_UPLOAD" | translate }}</p>
+    <p>{{ 'ADD_PARTICIPANT_INFO_REMINDER' | translate }}</p>
+    <p>{{ 'REMEMBER_PAYMENT_SCREENSHOT_UPLOAD' | translate }}</p>
     <div id="img-wrapper">
       <img [src]="exampleImgUrl" alt="Example payment proof" />
     </div>
   </div>
   <div mat-dialog-actions id="add-participant-info-to-payment-reminder-actions">
-    <button
-      mat-raised-button
-      mat-dialog-close
-      color="primary"
-      id="dismiss-reminder-button"
-    >
-      {{ "OK" | translate }}
+    <button mat-raised-button mat-dialog-close color="primary" id="dismiss-reminder-button">
+      {{ 'OK' | translate }}
     </button>
   </div>
 </div>

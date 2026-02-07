@@ -12,17 +12,17 @@ import { FeedbackComponent } from './feedback.component';
 import { FeedbackPieChartComponent } from '@components/feedback-pie-chart/feedback-pie-chart.component';
 
 @NgModule({
-    imports: [
-        AdminBannerModule,
-        CommonModule,
-        FeedbackPieChartComponent,
-        FeedbackRoutingModule,
-        LoadingSpinnerContentModule,
-        NoItemsNotificationModule,
-        TranslateModule,
-        MatIconModule,
-        MatTabsModule,
-        FeedbackComponent,
-    ],
+  imports: [
+    AdminBannerModule,
+    CommonModule,
+    FeedbackPieChartComponent,
+    FeedbackRoutingModule,
+    LoadingSpinnerContentModule,
+    NoItemsNotificationModule,
+    TranslateModule,
+    MatIconModule,
+    MatTabsModule,
+    FeedbackComponent,
+  ],
 })
-export class FeedbackModule { }
+export class FeedbackModule {}

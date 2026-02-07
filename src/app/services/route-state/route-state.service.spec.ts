@@ -8,9 +8,7 @@ describe('RouteStateService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        LoggerTestingModule
-      ]
+      imports: [LoggerTestingModule],
     });
     service = TestBed.inject(RouteStateService);
   });

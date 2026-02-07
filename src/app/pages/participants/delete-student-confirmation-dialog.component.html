@@ -1,24 +1,19 @@
 @if (deleteError) {
-  <h1 mat-dialog-title>{{ "SERVER_ERROR" | translate }}</h1>
+  <h1 mat-dialog-title>{{ 'SERVER_ERROR' | translate }}</h1>
   <div mat-dialog-content>
-    <p>{{ "SERVER_ERROR_TRY_LATER" | translate }}</p>
+    <p>{{ 'SERVER_ERROR_TRY_LATER' | translate }}</p>
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="cancelDelete()">
-      {{ "CANCEL" | translate }}
+      {{ 'CANCEL' | translate }}
     </button>
-    <button
-      mat-button
-      color="primary"
-      cdkFocusInitial
-      (click)="confirmDelete()"
-    >
-      {{ "TRY_AGAIN" | translate }}
+    <button mat-button color="primary" cdkFocusInitial (click)="confirmDelete()">
+      {{ 'TRY_AGAIN' | translate }}
     </button>
   </div>
 } @else {
   @if (loading) {
-    <h1 mat-dialog-title>{{ "DELETING_PARTICIPANT" | translate }}</h1>
+    <h1 mat-dialog-title>{{ 'DELETING_PARTICIPANT' | translate }}</h1>
     <div mat-dialog-content>
       <div class="loading-spinner-wrapper">
         <mat-progress-spinner
@@ -29,12 +24,12 @@
       </div>
     </div>
   } @else {
-    <h1 mat-dialog-title>{{ "CONFIRM_DELETE" | translate }}</h1>
+    <h1 mat-dialog-title>{{ 'CONFIRM_DELETE' | translate }}</h1>
     <div mat-dialog-content>
-      <p>{{ "SURE_DELETE_PARTICIPANT" | translate }}</p>
+      <p>{{ 'SURE_DELETE_PARTICIPANT' | translate }}</p>
       <p>
         {{
-          "PARTICIPANT_ID_IS"
+          'PARTICIPANT_ID_IS'
             | translate
               : {
                   id: data.id,
@@ -45,15 +40,10 @@
     </div>
     <div mat-dialog-actions>
       <button mat-button (click)="cancelDelete()">
-        {{ "CANCEL" | translate }}
+        {{ 'CANCEL' | translate }}
       </button>
-      <button
-        mat-button
-        color="primary"
-        cdkFocusInitial
-        (click)="confirmDelete()"
-      >
-        {{ "DELETE" | translate }}
+      <button mat-button color="primary" cdkFocusInitial (click)="confirmDelete()">
+        {{ 'DELETE' | translate }}
       </button>
     </div>
   }

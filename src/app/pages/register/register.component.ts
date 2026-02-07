@@ -1,8 +1,25 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormGroupDirective, NgForm, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroupDirective,
+  NgForm,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -20,7 +37,11 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 import { MarkdownComponent } from 'ngx-markdown';
 import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import {
+  MatDatepickerInput,
+  MatDatepickerToggle,
+  MatDatepicker,
+} from '@angular/material/datepicker';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
 import { CdkScrollable } from '@angular/cdk/scrolling';
@@ -41,7 +62,26 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [MatCard, MatCardContent, FormsModule, ReactiveFormsModule, MarkdownComponent, MatFormField, MatLabel, MatInput, MatError, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, RouterLink, MatProgressBar, MatButton, AsyncPipe, TranslatePipe]
+  imports: [
+    MatCard,
+    MatCardContent,
+    FormsModule,
+    ReactiveFormsModule,
+    MarkdownComponent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatSuffix,
+    MatDatepicker,
+    RouterLink,
+    MatProgressBar,
+    MatButton,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class RegisterComponent implements OnInit {
   private api = inject(ApiService);
@@ -99,22 +139,14 @@ export class RegisterComponent implements OnInit {
       {
         id: new UntypedFormControl('', {
           validators: [Validators.required],
-          asyncValidators: [
-            this.usernameValidator.validate.bind(this.usernameValidator),
-          ],
+          asyncValidators: [this.usernameValidator.validate.bind(this.usernameValidator)],
           updateOn: 'blur',
         }),
         // email: ['', Validators.email],
         name: ['', Validators.required],
         dob: ['', Validators.required],
-        password: [
-          '',
-          Validators.compose([Validators.required, Validators.minLength(8)]),
-        ],
-        passwordConfirm: [
-          '',
-          Validators.compose([Validators.required, Validators.minLength(8)]),
-        ],
+        password: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+        passwordConfirm: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
       },
       { validator: passwordMatchValidator },
     );
@@ -217,7 +249,15 @@ export class RegisterComponent implements OnInit {
 @Component({
   selector: 'app-error-message-dialog-component',
   templateUrl: './error-message-dialog.component.html',
-  imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class ErrorMessageDialogComponent {
   dialogRef = inject<MatDialogRef<ErrorMessageDialogComponent>>(MatDialogRef);
@@ -228,7 +268,14 @@ export class ErrorMessageDialogComponent {
   selector: 'app-registration-success-dialog-component',
   templateUrl: './registration-success-dialog.component.html',
   styleUrls: ['./registration-success-dialog.component.scss'],
-  imports: [CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class RegistrationSuccessDialogComponent {
   dialogRef = inject<MatDialogRef<RegistrationSuccessDialogComponent>>(MatDialogRef);

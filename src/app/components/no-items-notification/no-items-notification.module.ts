@@ -5,12 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        TranslateModule,
-        MatIconModule,
-        NoItemsNotificationComponent
-    ],
-    exports: [NoItemsNotificationComponent]
+  imports: [CommonModule, TranslateModule, MatIconModule, NoItemsNotificationComponent],
+  exports: [NoItemsNotificationComponent],
 })
-export class NoItemsNotificationModule { }
+export class NoItemsNotificationModule {}

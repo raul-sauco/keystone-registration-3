@@ -12,25 +12,21 @@ describe('SupplierItemComponent', () => {
   let component: SupplierItemComponent;
   let fixture: ComponentFixture<SupplierItemComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const mockTranslateService = {};
-      TestBed.configureTestingModule({
-    providers: [
-        { provide: TranslateService, useClass: TranslateServiceStub },
-    ],
-    imports: [
+  beforeEach(waitForAsync(() => {
+    const mockTranslateService = {};
+    TestBed.configureTestingModule({
+      providers: [{ provide: TranslateService, useClass: TranslateServiceStub }],
+      imports: [
         MatButtonModule,
         MatCardModule,
         MatIconModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
+          en: require('src/assets/i18n/en.json'),
         }),
         SupplierItemComponent,
-    ],
-}).compileComponents();
-    })
-  );
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     const supplier = new Supplier({

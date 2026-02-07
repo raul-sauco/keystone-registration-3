@@ -43,14 +43,10 @@ export class StorageService {
           resolve(null);
         }
         const stringValue = storageValue as string;
-        this.logger.debug(
-          `StorageService found value for ${key}: ${stringValue}`
-        );
+        this.logger.debug(`StorageService found value for ${key}: ${stringValue}`);
         resolve(JSON.parse(stringValue));
       } else {
-        this.logger.warn(
-          'StorageService.get() warning; localStorage not available in platform'
-        );
+        this.logger.warn('StorageService.get() warning; localStorage not available in platform');
         reject({
           error: true,
           msg: 'localStorage not available in browser',
@@ -81,10 +77,7 @@ export class StorageService {
         try {
           localStorage.setItem(key, stringValue);
         } catch (e: any) {
-          this.logger.warn(
-            'StorageService.set() warning; localStorage error setting value',
-            e
-          );
+          this.logger.warn('StorageService.set() warning; localStorage error setting value', e);
           reject({
             error: true,
             msg: e.message,
@@ -95,9 +88,7 @@ export class StorageService {
         this.logger.debug(`StorageService; set ${key}: ${stringValue}`);
         resolve(true);
       } else {
-        this.logger.warn(
-          'StorageService.set() warning; localStorage not available in platform'
-        );
+        this.logger.warn('StorageService.set() warning; localStorage not available in platform');
         reject({
           error: true,
           msg: 'localStorage not available in browser',
@@ -121,9 +112,7 @@ export class StorageService {
         this.logger.debug(`StorageService; removing ${key}`);
         resolve(localStorage.removeItem(key));
       } else {
-        this.logger.warn(
-          'StorageService.remove() warning; localStorage not available in platform'
-        );
+        this.logger.warn('StorageService.remove() warning; localStorage not available in platform');
         reject({
           error: true,
           msg: 'localStorage not available in browser',
@@ -166,9 +155,7 @@ export class StorageService {
       storage.removeItem(x);
       return true;
     } catch (e) {
-      this.logger.warn(
-        `StorageService: Storage type: "${type}" is not available`
-      );
+      this.logger.warn(`StorageService: Storage type: "${type}" is not available`);
       return (
         e instanceof DOMException &&
         // everything except Firefox

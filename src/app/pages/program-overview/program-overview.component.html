@@ -12,19 +12,17 @@
                 [href]="url + 'files/' + document.link"
                 target="_blank"
                 class="document-item-wrapper"
-                >
+              >
                 <li class="document-item">
                   <div class="icon-container">
                     <img [src]="url + 'file-icons/48px/pdf.png'" alt="pdf icon" />
                   </div>
                   <div class="file-details">
                     <header class="file-name">
-                      {{
-                      lang.includes("zh") ? document.name_zh : document.name_en
-                      }}
+                      {{ lang.includes('zh') ? document.name_zh : document.name_en }}
                     </header>
                     <div class="downloadable-element-feedback">
-                      <div>{{ "DOWNLOAD" | translate }}</div>
+                      <div>{{ 'DOWNLOAD' | translate }}</div>
                       <mat-icon>download</mat-icon>
                     </div>
                   </div>

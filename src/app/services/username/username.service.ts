@@ -9,7 +9,6 @@ import { ApiService } from '../api/api.service';
 export class UsernameService {
   private api = inject(ApiService);
 
-
   isUsernameTaken(username: string): Observable<boolean> {
     const endpoint = 'username-available?username=' + username;
     return this.api.get(endpoint).pipe(map((res: any) => !res.free));

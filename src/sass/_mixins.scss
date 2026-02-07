@@ -1,4 +1,4 @@
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 
 @mixin alert-dialog($color: rgba(255, 255, 10, 0.3), $elevation: 8) {
   @include mat.elevation($elevation);

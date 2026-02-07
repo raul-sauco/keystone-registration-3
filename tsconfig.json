@@ -16,33 +16,15 @@
     "noFallthroughCasesInSwitch": true,
     "useDefineForClassFields": false,
     "paths": {
-      "@components/*": [
-        "./src/app/components/*"
-      ],
-      "@directives/*": [
-        "./src/app/directives/*"
-      ],
-      "@guards/*": [
-        "./src/app/guards/*"
-      ],
-      "@interfaces/*": [
-        "./src/app/interfaces/*"
-      ],
-      "@models/*": [
-        "./src/app/models/*"
-      ],
-      "@pages/*": [
-        "./src/app/pages/*"
-      ],
-      "@pipes/*": [
-        "./src/app/pipes/*"
-      ],
-      "@services/*": [
-        "./src/app/services/*"
-      ],
-      "chart.js/dist/types/utils": [
-        "node_modules/chart.js/dist/types/utils"
-      ]
+      "@components/*": ["./src/app/components/*"],
+      "@directives/*": ["./src/app/directives/*"],
+      "@guards/*": ["./src/app/guards/*"],
+      "@interfaces/*": ["./src/app/interfaces/*"],
+      "@models/*": ["./src/app/models/*"],
+      "@pages/*": ["./src/app/pages/*"],
+      "@pipes/*": ["./src/app/pipes/*"],
+      "@services/*": ["./src/app/services/*"],
+      "chart.js/dist/types/utils": ["node_modules/chart.js/dist/types/utils"]
     }
   },
   "angularCompilerOptions": {

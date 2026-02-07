@@ -33,14 +33,11 @@ describe('AppRoutingModule', () => {
         auth$: of(true),
         authenticated: true,
         isTeacher: false,
-      }
+      },
     );
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([]), AppRoutingModule],
-      providers: [
-        TeacherGuard,
-        { provide: AuthService, useValue: authServiceSpy },
-      ],
+      providers: [TeacherGuard, { provide: AuthService, useValue: authServiceSpy }],
     });
 
     router = TestBed.inject(Router);
@@ -155,9 +152,7 @@ describe('AppRoutingModule', () => {
         Object.defineProperty(authServiceSpy, 'authenticated', {
           get: spy,
         });
-        spyOn(authServiceSpy, 'checkAuthenticated').and.returnValue(
-          Promise.resolve(false)
-        );
+        spyOn(authServiceSpy, 'checkAuthenticated').and.returnValue(Promise.resolve(false));
         await router.navigate([route]);
         expect(router.url).toBe('/' + route);
         expect(spy).toHaveBeenCalled();
@@ -172,7 +167,7 @@ describe('AppRoutingModule', () => {
 
   it(`should fail to navigate to trip-switcher path`, waitForAsync(async () => {
     spyOn(authServiceSpy, 'getCredentials').and.returnValue(
-      new Credentials({ ...mockCredentialsData, ...{ type: 4 } })
+      new Credentials({ ...mockCredentialsData, ...{ type: 4 } }),
     );
     await router.navigate(['trip-switcher']);
     expect(router.url).toBe('/');

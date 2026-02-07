@@ -20,10 +20,20 @@ import { MatCard, MatCardImage, MatCardContent, MatCardSubtitle } from '@angular
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
-    selector: 'app-guides',
-    templateUrl: './guides.component.html',
-    styleUrls: ['./guides.component.scss'],
-    imports: [LoginRequiredMessageComponent, AdminBannerComponent, MatCard, MatCardImage, MatCardContent, MatCardSubtitle, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
+  selector: 'app-guides',
+  templateUrl: './guides.component.html',
+  styleUrls: ['./guides.component.scss'],
+  imports: [
+    LoginRequiredMessageComponent,
+    AdminBannerComponent,
+    MatCard,
+    MatCardImage,
+    MatCardContent,
+    MatCardSubtitle,
+    LoadingSpinnerContentComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class GuidesComponent implements OnInit {
   private auth = inject(AuthService);
@@ -56,9 +66,7 @@ export class GuidesComponent implements OnInit {
       const trip = this.tripService.trip;
       if (trip !== null) {
         if (trip.isStaffingConfirmed) {
-          this.logger.debug(
-            `Trip ${trip.id} staffing confirmed, fetching staff information`
-          );
+          this.logger.debug(`Trip ${trip.id} staffing confirmed, fetching staff information`);
           this.displayStaffingNotConfirmedTemplate = false;
           this.fetch({ 'trip-id': trip.id }, headers);
         } else {
@@ -70,17 +78,12 @@ export class GuidesComponent implements OnInit {
           if (res && this.auth.getAccessToken()) {
             if (this.auth.isSchoolAdmin) {
               if (this.tripSwitcher.selectedTrip) {
-                this.fetch(
-                  { 'trip-id': this.tripSwitcher.selectedTrip.id },
-                  headers
-                );
+                this.fetch({ 'trip-id': this.tripSwitcher.selectedTrip.id }, headers);
               } else {
                 this.guide$ = of([]);
               }
             } else {
-              headers.authorization = `Bearer ${
-                this.auth.getAccessToken()
-              }`;
+              headers.authorization = `Bearer ${this.auth.getAccessToken()}`;
               this.fetch(null, headers);
             }
           } else {
@@ -110,7 +113,7 @@ export class GuidesComponent implements OnInit {
         return res
           .sort((a: any, b: any) => a.nickname.localeCompare(b.nickname))
           .map((guideJSON: any) => new Guide(guideJSON));
-      })
+      }),
     );
   }
 }

@@ -2,11 +2,7 @@ import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatRippleModule } from '@angular/material/core';
-import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
@@ -20,18 +16,21 @@ describe('TripSwitcherComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [LoadingSpinnerContentModule,
+      imports: [
+        LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatRippleModule,
         TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient],
-            },
-        }), TripSwitcherComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient],
+          },
+        }),
+        TripSwitcherComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');

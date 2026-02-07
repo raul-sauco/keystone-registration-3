@@ -13,13 +13,16 @@ describe('DocumentsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [LoadingSpinnerContentModule,
+      imports: [
+        LoadingSpinnerContentModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), DocumentsComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+          en: require('src/assets/i18n/en.json'),
+        }),
+        DocumentsComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

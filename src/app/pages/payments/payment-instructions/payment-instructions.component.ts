@@ -1,6 +1,13 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, map } from 'rxjs';
@@ -16,10 +23,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-    selector: 'app-payment-instructions',
-    templateUrl: './payment-instructions.component.html',
-    styleUrls: ['./payment-instructions.component.scss'],
-    imports: [MarkdownComponent, MatIconButton, MatIcon, MatProgressSpinner, AsyncPipe]
+  selector: 'app-payment-instructions',
+  templateUrl: './payment-instructions.component.html',
+  styleUrls: ['./payment-instructions.component.scss'],
+  imports: [MarkdownComponent, MatIconButton, MatIcon, MatProgressSpinner, AsyncPipe],
 })
 export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
@@ -36,8 +43,7 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.logger.debug('PaymentInstructionsComponent on init');
     this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
-    const endpoint =
-      `payment-instructions/` + this.auth.getCredentials()?.studentId;
+    const endpoint = `payment-instructions/` + this.auth.getCredentials()?.studentId;
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -87,15 +93,22 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-    selector: 'app-add-participant-info-to-payment-reminder-dialog-component',
-    templateUrl: './add-participant-info-to-payment-reminder-dialog.component.html',
-    styleUrls: [
-        './add-participant-info-to-payment-reminder-dialog.component.scss',
-    ],
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  selector: 'app-add-participant-info-to-payment-reminder-dialog-component',
+  templateUrl: './add-participant-info-to-payment-reminder-dialog.component.html',
+  styleUrls: ['./add-participant-info-to-payment-reminder-dialog.component.scss'],
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class AddParticipantInfoToPaymentReminderDialogComponent {
-  dialogRef = inject<MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>>(MatDialogRef);
+  dialogRef =
+    inject<MatDialogRef<AddParticipantInfoToPaymentReminderDialogComponent>>(MatDialogRef);
 
   exampleImgUrl: string;
   constructor() {
@@ -111,10 +124,10 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
 }
 
 @Component({
-    selector: 'app-add-student-name-to-payment-proof-help-dialog-component',
-    templateUrl: './add-student-name-to-payment-proof-help-dialog.component.html',
-    styleUrls: ['./add-student-name-to-payment-proof-help-dialog.component.scss'],
-    imports: [CdkScrollable, MatDialogContent]
+  selector: 'app-add-student-name-to-payment-proof-help-dialog-component',
+  templateUrl: './add-student-name-to-payment-proof-help-dialog.component.html',
+  styleUrls: ['./add-student-name-to-payment-proof-help-dialog.component.scss'],
+  imports: [CdkScrollable, MatDialogContent],
 })
 export class AddStudentNameToPaymentProofHelpDialogComponent {
   dialogRef = inject<MatDialogRef<AddStudentNameToPaymentProofHelpDialogComponent>>(MatDialogRef);

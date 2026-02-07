@@ -34,8 +34,10 @@ export class AuthService {
       this.logger.debug(`AuthService: Updating Auth access token and credentials.`);
     } else {
       this._auth$.next(AuthState.Authenticated);
-      this.logger.debug(`AuthService: Setting Auth access token and credentials.`
-        + 'And updating authenticated state to `Authenticated');
+      this.logger.debug(
+        `AuthService: Setting Auth access token and credentials.` +
+          'And updating authenticated state to `Authenticated',
+      );
     }
   }
 
@@ -73,15 +75,17 @@ export class AuthService {
     const now = Date.now();
     if (exp > now) {
       this.logger.info(
-        `Checking access token. Not Expired. Issued ${new Date(payload.iat * 1000).toLocaleString()} `
-        + `Expires at: ${new Date(exp).toLocaleString()} `
-        + `Has ${(exp - now) / 1000} seconds left`);
+        `Checking access token. Not Expired. Issued ${new Date(payload.iat * 1000).toLocaleString()} ` +
+          `Expires at: ${new Date(exp).toLocaleString()} ` +
+          `Has ${(exp - now) / 1000} seconds left`,
+      );
       return false;
     } else {
       this.logger.info(
-        `Checking access token. Expired. Issued ${new Date(payload.iat * 1000).toLocaleString()} `
-        + `Expired at: ${new Date(exp).toLocaleString()} `
-        + `${Math.floor((now - exp) / 1000)} seconds ago`);
+        `Checking access token. Expired. Issued ${new Date(payload.iat * 1000).toLocaleString()} ` +
+          `Expired at: ${new Date(exp).toLocaleString()} ` +
+          `${Math.floor((now - exp) / 1000)} seconds ago`,
+      );
       return true;
     }
   }
@@ -117,29 +121,35 @@ export class AuthService {
   /** Remove all the login info associated with this user */
   logout(): void {
     this.logger.debug(`AuthService; logging out ${this.credentials?.username}`);
-    this.http.post(`${this.apiUrl}auth/logout`, {}, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.accessToken}`,
-      },
-      withCredentials: true,
-    }).subscribe({
-      next: (res) => {
-        this.logger.debug('AuthService: logout response from server', res);
-        this._credentials = null;
-        this._accessToken = null;
-        this._auth$.next(AuthState.Unauthenticated);
-      },
-      error: (error) => {
-        if (error.status === 401) {
-          // Refresh token was already invalid.
+    this.http
+      .post(
+        `${this.apiUrl}auth/logout`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+          withCredentials: true,
+        },
+      )
+      .subscribe({
+        next: (res) => {
+          this.logger.debug('AuthService: logout response from server', res);
           this._credentials = null;
           this._accessToken = null;
           this._auth$.next(AuthState.Unauthenticated);
-        } else {
-          this.logger.error('Error logging out user', error);
-        }
-      },
-    });
+        },
+        error: (error) => {
+          if (error.status === 401) {
+            // Refresh token was already invalid.
+            this._credentials = null;
+            this._accessToken = null;
+            this._auth$.next(AuthState.Unauthenticated);
+          } else {
+            this.logger.error('Error logging out user', error);
+          }
+        },
+      });
   }
 }

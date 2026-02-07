@@ -4,10 +4,7 @@
       <mat-card-content>
         <h1>
           {{
-          (trip.type === "student"
-          ? "REGISTER_NEW_STUDENT"
-          : "REGISTER_NEW_TEACHER"
-          ) | translate
+            (trip.type === 'student' ? 'REGISTER_NEW_STUDENT' : 'REGISTER_NEW_TEACHER') | translate
           }}
         </h1>
         @if (trip.name) {
@@ -17,148 +14,128 @@
           [formGroup]="userRegistrationForm"
           id="registration-form"
           (ngSubmit)="submitUserRegistration()"
-          >
-          @if(namePromptContent$ | async; as content) {
+        >
+          @if (namePromptContent$ | async; as content) {
             <markdown class="inner-form-prompt" [data]="content"></markdown>
           }
           <mat-form-field appearance="outline">
             <mat-label>{{
-              (trip.type === "student" ? "STUDENT_NAME" : "NAME") | translate
+              (trip.type === 'student' ? 'STUDENT_NAME' : 'NAME') | translate
             }}</mat-label>
             <input type="text" matInput formControlName="name" required />
             @if (name?.errors?.required) {
               <mat-error>
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
               </mat-error>
             }
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>{{
-              (trip.type === "student" ? "STUDENT_DOB" : "DOB") | translate
+              (trip.type === 'student' ? 'STUDENT_DOB' : 'DOB') | translate
             }}</mat-label>
-            <input
-              type="text"
-              matInput
-              formControlName="dob"
-              [matDatepicker]="picker"
-              />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
+            <input type="text" matInput formControlName="dob" [matDatepicker]="picker" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker touchUi #picker></mat-datepicker>
             @if (dob?.errors?.matDatepickerParse) {
               <mat-error>
-                {{ "PIF_ERROR_INVALID_DATE" | translate }}
+                {{ 'PIF_ERROR_INVALID_DATE' | translate }}
               </mat-error>
             }
             @if (dob?.errors?.required) {
               <mat-error>
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
               </mat-error>
             }
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>{{
-              (trip.type === "student"
-              ? "GOVERNMENT_ID_NUMBER"
-              : "TRAVEL_DOCUMENT_NUMBER"
-              ) | translate
+              (trip.type === 'student' ? 'GOVERNMENT_ID_NUMBER' : 'TRAVEL_DOCUMENT_NUMBER')
+                | translate
             }}</mat-label>
             <input type="text" matInput formControlName="id" />
             @if (id?.errors?.required) {
               <mat-error>
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
               </mat-error>
             }
             @if (id?.errors?.uniqueUsername) {
               <mat-error>
-                {{ "ID_ALREADY_IN_USE" | translate }}
+                {{ 'ID_ALREADY_IN_USE' | translate }}
               </mat-error>
             }
           </mat-form-field>
           @if (id?.errors?.uniqueUsername) {
-            <div
-              id="duplicate-id-prompt"
-              class="inner-form-prompt"
-              >
+            <div id="duplicate-id-prompt" class="inner-form-prompt">
               @if (translate.currentLang.includes('zh')) {
-                请确认证件号码是准确的，或直接'<a routerLink="/login">{{
-                "LOGIN" | translate
-                }}</a
-                >'。请'<a routerLink="/forgot-password">{{
-                "FORGOT_MY_PASSWORD" | translate
-                }}</a
+                请确认证件号码是准确的，或直接'<a routerLink="/login">{{ 'LOGIN' | translate }}</a
+                >'。请'<a routerLink="/forgot-password">{{ 'FORGOT_MY_PASSWORD' | translate }}</a
                 >'找回您的密码。
               } @else {
                 <div class="inner-field-prompt has-error">
                   Please double check the ID number or
-                  <a routerLink="/login">{{ "LOGIN" | translate }}</a> directly
-                  using your existing password. Click
-                  <a routerLink="/forgot-password">{{ "HERE" | translate }}</a>
+                  <a routerLink="/login">{{ 'LOGIN' | translate }}</a> directly using your existing
+                  password. Click
+                  <a routerLink="/forgot-password">{{ 'HERE' | translate }}</a>
                   to retrieve your password.
                 </div>
               }
             </div>
           }
           <mat-form-field appearance="outline">
-            <mat-label>{{ "CREATE_A_PASSWORD" | translate }}</mat-label>
+            <mat-label>{{ 'CREATE_A_PASSWORD' | translate }}</mat-label>
             <input type="password" matInput formControlName="password" required />
             @if (password?.errors?.required) {
               <mat-error>
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
               </mat-error>
             }
             @if (password?.errors?.minlength) {
               <mat-error>
-                {{ "MIN_LENGTH_8_CHAR" | translate }}
+                {{ 'MIN_LENGTH_8_CHAR' | translate }}
               </mat-error>
             }
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>{{ "PASSWORD_CONFIRM" | translate }}</mat-label>
+            <mat-label>{{ 'PASSWORD_CONFIRM' | translate }}</mat-label>
             <input
               type="password"
               matInput
               formControlName="passwordConfirm"
               required
               [errorStateMatcher]="errorMatcher"
-              />
+            />
             @if (userRegistrationForm.errors?.passwordMismatch) {
               <mat-error>
-                {{ "PASSWORDS_DO_NOT_MATCH" | translate }}
+                {{ 'PASSWORDS_DO_NOT_MATCH' | translate }}
               </mat-error>
             }
             @if (passwordConfirm?.errors?.required) {
               <mat-error>
-                {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
               </mat-error>
             }
             @if (passwordConfirm?.errors?.minlength) {
               <mat-error>
-                {{ "MIN_LENGTH_8_CHAR" | translate }}
+                {{ 'MIN_LENGTH_8_CHAR' | translate }}
               </mat-error>
             }
           </mat-form-field>
           @if (loading) {
-            <mat-progress-bar
-              mode="indeterminate"
-              class="progress-bar"
-            ></mat-progress-bar>
+            <mat-progress-bar mode="indeterminate" class="progress-bar"></mat-progress-bar>
           }
           <button
             mat-raised-button
             color="primary"
             [disabled]="!userRegistrationForm.valid || loading"
-            >
-            {{ "SUBMIT" | translate }}
+          >
+            {{ 'SUBMIT' | translate }}
           </button>
         </form>
         <div class="navigation-links">
-          <a routerLink="/login">{{ "LOGIN" | translate }}</a> /
-          <a routerLink="/privacy-policy">{{ "PRIVACY_POLICY" | translate }}</a>
+          <a routerLink="/login">{{ 'LOGIN' | translate }}</a> /
+          <a routerLink="/privacy-policy">{{ 'PRIVACY_POLICY' | translate }}</a>
         </div></mat-card-content
-        ></mat-card
-        >
-      </div>
-    }
+      ></mat-card
+    >
+  </div>
+}

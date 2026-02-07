@@ -1,16 +1,11 @@
 @if (!isGuest) {
   @if (document$ | async; as documents) {
     @if (documents.length > 0) {
-      <ul
-        class="files-list mat-typography"
-        >
+      <ul class="files-list mat-typography">
         @for (doc of documents; track doc) {
           <li class="file-item">
             <div class="icon-container">
-              <img
-                [src]="url + doc.getIconLink()"
-                alt="{{ doc.getNamei18n() }} icon"
-                />
+              <img [src]="url + doc.getIconLink()" alt="{{ doc.getNamei18n() }} icon" />
             </div>
             <div class="file-details">
               <div class="file-name">
@@ -23,7 +18,7 @@
                 [href]="url + doc.getDownloadLink()"
                 download="{{ doc.getNamei18n() }}.pdf"
                 class="file-download-link"
-                >
+              >
                 <mat-icon color="primary">get_app</mat-icon>
               </a>
             </div>
@@ -31,15 +26,11 @@
         }
       </ul>
     } @else {
-      <app-no-items-notification
-        message="NO_DOCUMENTS_FOR_TRIP"
-      ></app-no-items-notification>
+      <app-no-items-notification message="NO_DOCUMENTS_FOR_TRIP"></app-no-items-notification>
     }
   } @else {
     <app-loading-spinner-content></app-loading-spinner-content>
   }
 } @else {
-  <app-login-required-message
-    message="LOGIN_PAGE_ALLOWS_REGISTRATION"
-  ></app-login-required-message>
+  <app-login-required-message message="LOGIN_PAGE_ALLOWS_REGISTRATION"></app-login-required-message>
 }

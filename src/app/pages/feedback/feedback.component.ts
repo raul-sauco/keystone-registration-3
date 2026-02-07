@@ -14,11 +14,11 @@ import { LoadingSpinnerContentComponent } from '../../components/loading-spinner
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-feedback',
-    templateUrl: './feedback.component.html',
-    styleUrls: ['./feedback.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    imports: [
+  selector: 'app-feedback',
+  templateUrl: './feedback.component.html',
+  styleUrls: ['./feedback.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  imports: [
     AdminBannerComponent,
     MatTabGroup,
     MatTab,
@@ -26,8 +26,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     NoItemsNotificationComponent,
     LoadingSpinnerContentComponent,
     AsyncPipe,
-    TranslatePipe
-],
+    TranslatePipe,
+  ],
 })
 export class FeedbackComponent implements OnInit {
   private logger = inject(NGXLogger);
@@ -59,8 +59,8 @@ export class FeedbackComponent implements OnInit {
     } else {
       this.logger.error(
         'Called FeedbackComponent OnInit without valid ' +
-        'authentication status. AuthGuard failure?',
-        this.auth.getCredentials()
+          'authentication status. AuthGuard failure?',
+        this.auth.getCredentials(),
       );
       this.setEmptyContent();
     }

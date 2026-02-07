@@ -1,11 +1,5 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -31,10 +25,10 @@ describe('PersonalInfoComponent', () => {
   let apiServiceSpy: Spied<ApiService>;
   let loggerSpy: Spied<NGXLogger>;
   let element: HTMLElement;
-  const translateService = jasmine.createSpyObj<TranslateService>(
-    'translateService',
-    ['instant', 'get']
-  );
+  const translateService = jasmine.createSpyObj<TranslateService>('translateService', [
+    'instant',
+    'get',
+  ]);
   const translateServiceMock = {
     currentLang: 'de',
     onLangChange: new EventEmitter<LangChangeEvent>(),
@@ -56,7 +50,7 @@ describe('PersonalInfoComponent', () => {
         }),
         checkAuthenticated: Promise.resolve(true),
       },
-      { auth$: of(true) }
+      { auth$: of(true) },
     );
     apiServiceSpy = jasmine.createSpyObj('ApiService', {
       get: of({ id: 123 }),
@@ -66,24 +60,27 @@ describe('PersonalInfoComponent', () => {
       error: undefined,
     });
     TestBed.configureTestingModule({
-    imports: [FormsModule,
+      imports: [
+        FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatSnackBarModule,
         ReactiveFormsModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), PersonalInfoComponent],
-    providers: [
+          en: require('src/assets/i18n/en.json'),
+        }),
+        PersonalInfoComponent,
+      ],
+      providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: NGXLogger, useValue: loggerSpy },
         { provide: TranslateService, useValue: translateServiceMock },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -126,14 +123,14 @@ describe('PersonalInfoComponent', () => {
         accessToken: '',
         type: 4, // Student type
         studentId: 123,
-      })
+      }),
     );
     fixture.detectChanges();
     expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
     tick();
     expect(component.needsLogin).toEqual(true);
     expect(loggerSpy.error).toHaveBeenCalledOnceWith(
-      'Authentication error, expected access token.'
+      'Authentication error, expected access token.',
     );
   }));
 
@@ -144,7 +141,7 @@ describe('PersonalInfoComponent', () => {
         accessToken: 'test-token',
         type: 4, // Student type
         studentId: undefined,
-      })
+      }),
     );
     fixture.detectChanges();
     expect(authServiceSpy.checkAuthenticated).toHaveBeenCalledWith();
@@ -152,7 +149,7 @@ describe('PersonalInfoComponent', () => {
     // We have auth token, it is an error but not a need-login error
     expect(component.needsLogin).toEqual(false);
     expect(loggerSpy.error).toHaveBeenCalledOnceWith(
-      'Authentication error, expected valid student ID.'
+      'Authentication error, expected valid student ID.',
     );
   }));
 
@@ -164,7 +161,7 @@ describe('PersonalInfoComponent', () => {
     // We have auth token, it is an error but not a need-login error
     expect(component.needsLogin).toEqual(true);
     expect(loggerSpy.error).toHaveBeenCalledOnceWith(
-      'Authentication error, expected having auth info.'
+      'Authentication error, expected having auth info.',
     );
   }));
 });

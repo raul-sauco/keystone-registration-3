@@ -4,8 +4,7 @@ import { PasswordMatchValidatorDirective } from './password-match-validator.dire
 import { UniqueUsernameValidatorDirective } from './unique-username-validator.directive';
 
 @NgModule({
-    imports: [CommonModule, PasswordMatchValidatorDirective,
-        UniqueUsernameValidatorDirective],
-    exports: [],
+  imports: [CommonModule, PasswordMatchValidatorDirective, UniqueUsernameValidatorDirective],
+  exports: [],
 })
 export class DirectivesModule {}

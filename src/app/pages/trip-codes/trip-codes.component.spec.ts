@@ -16,10 +16,10 @@ describe('TripCodesComponent', () => {
   let component: TripCodesComponent;
   let fixture: ComponentFixture<TripCodesComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-    imports: [FormsModule,
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
         LoggerTestingModule,
         MatCardModule,
         MatDialogModule,
@@ -29,12 +29,13 @@ describe('TripCodesComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), TripCodesComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
-    })
-  );
+          en: require('src/assets/i18n/en.json'),
+        }),
+        TripCodesComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TripCodesComponent);

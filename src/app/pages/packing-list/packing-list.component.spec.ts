@@ -18,10 +18,10 @@ describe('PackingListComponent', () => {
   let component: PackingListComponent;
   let fixture: ComponentFixture<PackingListComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-    imports: [AdminBannerModule,
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        AdminBannerModule,
         BrowserAnimationsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
@@ -29,16 +29,17 @@ describe('PackingListComponent', () => {
         MatSnackBarModule,
         MatTabsModule,
         MarkdownModule.forRoot({
-            sanitize: SecurityContext.NONE,
+          sanitize: SecurityContext.NONE,
         }),
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), PackingListComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
-    })
-  );
+          en: require('src/assets/i18n/en.json'),
+        }),
+        PackingListComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PackingListComponent);

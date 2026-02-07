@@ -3,15 +3,13 @@
     <div class="app-content-wrapper">
       @if (!student.waiverAccepted) {
         <div id="scroll-to-bottom-prompt">
-          <div
-            [innerHtml]="'READ_AND_AGREE_TO_WAIVER_DETAILS' | translate"
-          ></div>
+          <div [innerHtml]="'READ_AND_AGREE_TO_WAIVER_DETAILS' | translate"></div>
         </div>
       }
       <div id="waiver-page-container">
         @if (student.waiverAccepted) {
           <p>
-            {{ "WAIVER_SIGNED_ON" | translate }}
+            {{ 'WAIVER_SIGNED_ON' | translate }}
             <strong>{{ student.waiverSignedOn | date }}</strong>
           </p>
         }
@@ -21,40 +19,28 @@
             <form [formGroup]="waiverForm" id="waiver-form">
               <mat-form-field appearance="outline">
                 <mat-label>{{
-                  auth.isStudent
-                    ? ("STUDENT_NAME" | translate)
-                    : student.getAttributeLabel("name")
+                  auth.isStudent ? ('STUDENT_NAME' | translate) : student.getAttributeLabel('name')
                 }}</mat-label>
                 <input type="text" matInput formControlName="name" required />
                 @if (name?.errors?.required) {
                   <mat-error>
-                    {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                    {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
                   </mat-error>
                 }
               </mat-form-field>
               @if (auth.isStudent) {
                 <mat-form-field appearance="outline">
-                  <mat-label>{{
-                    student.getAttributeLabel("guardianName")
-                  }}</mat-label>
-                  <input
-                    type="text"
-                    matInput
-                    formControlName="guardianName"
-                    required
-                  />
+                  <mat-label>{{ student.getAttributeLabel('guardianName') }}</mat-label>
+                  <input type="text" matInput formControlName="guardianName" required />
                   @if (guardianName?.errors?.required) {
                     <mat-error>
-                      {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                      {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
                     </mat-error>
                   }
                 </mat-form-field>
               }
               @if (posting) {
-                <mat-progress-bar
-                  mode="indeterminate"
-                  class="progress-bar"
-                ></mat-progress-bar>
+                <mat-progress-bar mode="indeterminate" class="progress-bar"></mat-progress-bar>
               }
               <button
                 mat-raised-button
@@ -62,7 +48,7 @@
                 color="primary"
                 (click)="acceptWaiver()"
               >
-                {{ "ACCEPT_WAIVER" | translate }}
+                {{ 'ACCEPT_WAIVER' | translate }}
               </button>
             </form>
           </div>

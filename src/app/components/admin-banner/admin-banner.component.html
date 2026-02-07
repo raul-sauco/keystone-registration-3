@@ -2,24 +2,18 @@
   <div id="admin-banner-container">
     <div
       id="admin-banner-content-wrapper"
-      [classList]="
-        (tripService.selectedTrip$ | async) ? '' : 'no-trip-admin-banner'
-      "
-      >
+      [classList]="(tripService.selectedTrip$ | async) ? '' : 'no-trip-admin-banner'"
+    >
       @if (tripService.selectedTrip$ | async; as trip) {
-        <div
-          >
-          <div class="browsing-header">{{ "BROWSING" | translate }}</div>
+        <div>
+          <div class="browsing-header">{{ 'BROWSING' | translate }}</div>
           <div class="trip-name">{{ trip.getName(lang) }}</div>
         </div>
       } @else {
-        <div class="no-trip-selected">{{ "NO_TRIP_SELECTED" | translate }}</div>
+        <div class="no-trip-selected">{{ 'NO_TRIP_SELECTED' | translate }}</div>
       }
       <button mat-raised-button color="primary" routerLink="/trip-switcher">
-        {{
-        ((tripService.selectedTrip$ | async) ? "SWITCH" : "SELECT")
-        | translate
-        }}
+        {{ ((tripService.selectedTrip$ | async) ? 'SWITCH' : 'SELECT') | translate }}
       </button>
     </div>
   </div>

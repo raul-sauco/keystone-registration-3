@@ -9,9 +9,9 @@ describe('TripSwitcherService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [LoggerTestingModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [LoggerTestingModule],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    });
     service = TestBed.inject(TripSwitcherService);
   });
 

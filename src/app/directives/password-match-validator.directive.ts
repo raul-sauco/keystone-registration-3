@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 
 export const passwordMatchValidator: ValidatorFn = (
-  control: AbstractControl
+  control: AbstractControl,
 ): ValidationErrors | null => {
   const password = control.get('password');
   const passwordConfirm = control.get('passwordConfirm');
@@ -18,14 +18,14 @@ export const passwordMatchValidator: ValidatorFn = (
 };
 
 @Directive({
-    selector: '[appPasswordMatchValidator]',
-    providers: [
-        {
-            provide: NG_VALIDATORS,
-            useExisting: PasswordMatchValidatorDirective,
-            multi: true,
-        },
-    ]
+  selector: '[appPasswordMatchValidator]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: PasswordMatchValidatorDirective,
+      multi: true,
+    },
+  ],
 })
 export class PasswordMatchValidatorDirective {
   static validate(control: AbstractControl): ValidationErrors | null {

@@ -115,22 +115,14 @@ export class Student {
     this.emergencyContact = json.emergency_contact;
     this.email = json.email;
     this.wechatId = json.wechat_id;
-    this.waiverAccepted = json.waiver_accepted
-      ? true
-      : json.waiver_accepted === 0
-        ? false
-        : null;
+    this.waiverAccepted = json.waiver_accepted ? true : json.waiver_accepted === 0 ? false : null;
     this.waiverSignedOn = json.waiver_signed_on;
     this.dietaryRequirements = json.dietary_requirements;
     this.dietaryRequirementsOther = json.dietary_requirements_other;
     this.allergies = json.allergies;
     this.allergiesOther = json.allergies_other;
     this.medicalInformation = json.medical_information;
-    this.termsAccepted = json.terms_accepted
-      ? true
-      : json.terms_accepted === 0
-        ? false
-        : null;
+    this.termsAccepted = json.terms_accepted ? true : json.terms_accepted === 0 ? false : null;
     this.termsAcceptedOn = json.terms_accepted_on;
     this.paid = json.paid ? true : json.paid === 0 ? false : null;
     this.paymentVerified = json.payment_verified
@@ -408,10 +400,8 @@ export class Student {
       }
       return this.name.localeCompare(other.name, undefined, { sensitivity: 'base' });
     }
-    return this.getAttributeText(attr).localeCompare(
-      other.getAttributeText(attr),
-      undefined,
-      { sensitivity: 'base' },
-    );
+    return this.getAttributeText(attr).localeCompare(other.getAttributeText(attr), undefined, {
+      sensitivity: 'base',
+    });
   }
 }

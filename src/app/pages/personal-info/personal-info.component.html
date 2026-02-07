@@ -9,7 +9,7 @@
             id="personal-info-form"
           >
             <!-- START Personal information section -->
-            <h2>{{ "PERSONAL_INFORMATION" | translate }}</h2>
+            <h2>{{ 'PERSONAL_INFORMATION' | translate }}</h2>
             @if (requiredFieldsPromptContent$ | async; as content) {
               <markdown
                 id="required-fields-prompt"
@@ -28,11 +28,11 @@
               <markdown class="inner-form-prompt" [data]="content"></markdown>
             }
             <mat-form-field appearance="outline">
-              <mat-label>{{ student.getAttributeLabel("name") }}</mat-label>
+              <mat-label>{{ student.getAttributeLabel('name') }}</mat-label>
               <input type="text" matInput formControlName="name" />
               @if (name?.errors?.required) {
                 <mat-error>
-                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                  {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
                 </mat-error>
               }
             </mat-form-field>
@@ -40,86 +40,65 @@
               <markdown class="inner-form-prompt" [data]="content"></markdown>
             }
             <mat-form-field appearance="outline">
-              <mat-label>{{
-                student.getAttributeLabel("englishName")
-              }}</mat-label>
+              <mat-label>{{ student.getAttributeLabel('englishName') }}</mat-label>
               <input type="text" matInput formControlName="englishName" />
             </mat-form-field>
             <div
               class="inner-form-prompt"
               [innerHTML]="
-                (auth.isStudent
-                  ? 'PIF_HINT_CITIZENSHIP_STUDENT'
-                  : 'PIF_HINT_CITIZENSHIP'
-                ) | translate
+                (auth.isStudent ? 'PIF_HINT_CITIZENSHIP_STUDENT' : 'PIF_HINT_CITIZENSHIP')
+                  | translate
               "
             ></div>
             <mat-form-field appearance="outline">
-              <mat-label>{{
-                student.getAttributeLabel("citizenship")
-              }}</mat-label>
+              <mat-label>{{ student.getAttributeLabel('citizenship') }}</mat-label>
               <input type="text" matInput formControlName="citizenship" />
             </mat-form-field>
             <div
               class="inner-form-prompt"
               [innerHTML]="
-                (auth.isStudent
-                  ? 'PIF_HINT_TRAVEL_DOCUMENT_STUDENT'
-                  : 'PIF_HINT_TRAVEL_DOCUMENT'
-                ) | translate
+                (auth.isStudent ? 'PIF_HINT_TRAVEL_DOCUMENT_STUDENT' : 'PIF_HINT_TRAVEL_DOCUMENT')
+                  | translate
               "
             ></div>
             <mat-form-field appearance="outline">
-              <mat-label>{{
-                student.getAttributeLabel("travelDocument")
-              }}</mat-label>
+              <mat-label>{{ student.getAttributeLabel('travelDocument') }}</mat-label>
               <input type="text" matInput formControlName="travelDocument" />
               @if (travelDocument?.errors?.required) {
                 <mat-error>
-                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                  {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
                 </mat-error>
               }
             </mat-form-field>
             <mat-form-field appearance="outline">
-              <mat-label>{{ student.getAttributeLabel("gender") }}</mat-label>
-              <mat-select
-                formControlName="gender"
-                [compareWith]="intValueCompare"
-              >
+              <mat-label>{{ student.getAttributeLabel('gender') }}</mat-label>
+              <mat-select formControlName="gender" [compareWith]="intValueCompare">
                 @if (gender?.value === null) {
                   <mat-option value="">
                     <!-- Acts as a placeholder when gender is null -->
-                    {{ "SELECT_GENDER" | translate }}
+                    {{ 'SELECT_GENDER' | translate }}
                   </mat-option>
                 }
                 @for (i of [0, 1, 2, 3]; track i) {
                   <mat-option [value]="i">
-                    {{ "G." + i | translate }}
+                    {{ 'G.' + i | translate }}
                   </mat-option>
                 }
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">
-              <mat-label>{{ student.getAttributeLabel("dob") }}</mat-label>
-              <input
-                type="text"
-                matInput
-                formControlName="dob"
-                [matDatepicker]="picker"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
+              <mat-label>{{ student.getAttributeLabel('dob') }}</mat-label>
+              <input type="text" matInput formControlName="dob" [matDatepicker]="picker" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker touchUi #picker></mat-datepicker>
               @if (dob?.errors?.matDatepickerParse) {
                 <mat-error>
-                  {{ "PIF_ERROR_INVALID_DATE" | translate }}
+                  {{ 'PIF_ERROR_INVALID_DATE' | translate }}
                 </mat-error>
               }
               @if (dob?.errors?.required) {
                 <mat-error>
-                  {{ "THIS_FIELD_IS_REQUIRED" | translate }}
+                  {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
                 </mat-error>
               }
             </mat-form-field>
@@ -127,40 +106,27 @@
 
             <!-- START Contact information section -->
             <h2>
-              {{
-                (auth.isStudent ? "CONTACT_DETAILS_STUDENT" : "CONTACT_DETAILS")
-                  | translate
-              }}
+              {{ (auth.isStudent ? 'CONTACT_DETAILS_STUDENT' : 'CONTACT_DETAILS') | translate }}
             </h2>
             @if (auth.isStudent) {
               <mat-form-field appearance="outline">
-                <mat-label>{{
-                  student.getAttributeLabel("guardianName")
-                }}</mat-label>
+                <mat-label>{{ student.getAttributeLabel('guardianName') }}</mat-label>
                 <input type="text" matInput formControlName="guardianName" />
               </mat-form-field>
               <mat-form-field appearance="outline">
-                <mat-label>{{
-                  student.getAttributeLabel("emergencyContact")
-                }}</mat-label>
-                <input
-                  type="text"
-                  matInput
-                  formControlName="emergencyContact"
-                />
+                <mat-label>{{ student.getAttributeLabel('emergencyContact') }}</mat-label>
+                <input type="text" matInput formControlName="emergencyContact" />
               </mat-form-field>
               <mat-form-field appearance="outline">
-                <mat-label>{{
-                  student.getAttributeLabel("wechatId")
-                }}</mat-label>
+                <mat-label>{{ student.getAttributeLabel('wechatId') }}</mat-label>
                 <input type="text" matInput formControlName="wechatId" />
               </mat-form-field>
               <mat-form-field appearance="outline">
-                <mat-label>{{ "EMAIL" | translate }}</mat-label>
+                <mat-label>{{ 'EMAIL' | translate }}</mat-label>
                 <input type="email" matInput formControlName="email" />
                 @if (email?.errors?.email) {
                   <mat-error>
-                    {{ "EMAIL_IS_NOT_VALID" | translate }}
+                    {{ 'EMAIL_IS_NOT_VALID' | translate }}
                   </mat-error>
                 }
               </mat-form-field>
@@ -171,41 +137,30 @@
             @if (schoolService.school$ | async; as school) {
               @if (
                 auth.isStudent &&
-                (school.useHouse ||
-                  school.useRoomNumber ||
-                  school.useGrade ||
-                  school.useHomeroom)
+                (school.useHouse || school.useRoomNumber || school.useGrade || school.useHomeroom)
               ) {
-                <h2>{{ "SCHOOL_INFORMATION" | translate }}</h2>
+                <h2>{{ 'SCHOOL_INFORMATION' | translate }}</h2>
                 @if (school.useHouse) {
                   <mat-form-field appearance="outline">
-                    <mat-label>{{
-                      student.getAttributeLabel("house")
-                    }}</mat-label>
+                    <mat-label>{{ student.getAttributeLabel('house') }}</mat-label>
                     <input type="text" matInput formControlName="house" />
                   </mat-form-field>
                 }
                 @if (school.useRoomNumber) {
                   <mat-form-field appearance="outline">
-                    <mat-label>{{
-                      student.getAttributeLabel("roomNumber")
-                    }}</mat-label>
+                    <mat-label>{{ student.getAttributeLabel('roomNumber') }}</mat-label>
                     <input type="text" matInput formControlName="roomNumber" />
                   </mat-form-field>
                 }
                 @if (school.useGrade) {
                   <mat-form-field appearance="outline">
-                    <mat-label>{{
-                      student.getAttributeLabel("grade")
-                    }}</mat-label>
+                    <mat-label>{{ student.getAttributeLabel('grade') }}</mat-label>
                     <input type="text" matInput formControlName="grade" />
                   </mat-form-field>
                 }
                 @if (school.useHomeroom) {
                   <mat-form-field appearance="outline">
-                    <mat-label>{{
-                      student.getAttributeLabel("homeroom")
-                    }}</mat-label>
+                    <mat-label>{{ student.getAttributeLabel('homeroom') }}</mat-label>
                     <input type="text" matInput formControlName="homeroom" />
                   </mat-form-field>
                 }
@@ -214,79 +169,55 @@
             <!-- END School information section -->
 
             <!-- START Medical & dietary section -->
-            <h2>{{ "DIETARY_REQUIREMENTS" | translate }}</h2>
+            <h2>{{ 'DIETARY_REQUIREMENTS' | translate }}</h2>
             <p class="form-field-extra-hint">
-              {{ "PIF_HINT_DIETARY" | translate }}
+              {{ 'PIF_HINT_DIETARY' | translate }}
             </p>
             <mat-form-field appearance="outline">
-              <mat-label>{{
-                student.getAttributeLabel("dietaryRequirements")
-              }}</mat-label>
-              <mat-select
-                formControlName="dietaryRequirements"
-                [compareWith]="intValueCompare"
-              >
+              <mat-label>{{ student.getAttributeLabel('dietaryRequirements') }}</mat-label>
+              <mat-select formControlName="dietaryRequirements" [compareWith]="intValueCompare">
                 @for (i of [0, 2, 3, 4, 5, 1]; track i) {
                   <mat-option [value]="i">
-                    {{ "DR." + i | translate }}
+                    {{ 'DR.' + i | translate }}
                   </mat-option>
                 }
               </mat-select>
             </mat-form-field>
             @if (personalInfoForm.value.dietaryRequirements === 1) {
               <mat-form-field appearance="outline">
-                <mat-label>{{
-                  student.getAttributeLabel("dietaryRequirementsOther")
-                }}</mat-label>
-                <input
-                  type="text"
-                  matInput
-                  formControlName="dietaryRequirementsOther"
-                />
+                <mat-label>{{ student.getAttributeLabel('dietaryRequirementsOther') }}</mat-label>
+                <input type="text" matInput formControlName="dietaryRequirementsOther" />
               </mat-form-field>
             }
             <!-- END Dietary requirements section -->
 
             <!-- START Medical information section -->
-            <h2>{{ "MEDICAL_INFORMATION" | translate }}</h2>
+            <h2>{{ 'MEDICAL_INFORMATION' | translate }}</h2>
             <p class="form-field-extra-hint">
-              {{ "PIF_HINT_ALLERGIES" | translate }}
+              {{ 'PIF_HINT_ALLERGIES' | translate }}
             </p>
             <mat-form-field appearance="outline">
-              <mat-label>{{
-                student.getAttributeLabel("allergies")
-              }}</mat-label>
-              <mat-select
-                formControlName="allergies"
-                [compareWith]="intValueCompare"
-              >
+              <mat-label>{{ student.getAttributeLabel('allergies') }}</mat-label>
+              <mat-select formControlName="allergies" [compareWith]="intValueCompare">
                 @for (i of [0, 2, 3, 1]; track i) {
                   <mat-option [value]="i">
-                    {{ "ALLER." + i | translate }}
+                    {{ 'ALLER.' + i | translate }}
                   </mat-option>
                 }
               </mat-select>
             </mat-form-field>
             @if (personalInfoForm.value.allergies === 1) {
               <mat-form-field appearance="outline">
-                <mat-label>{{
-                  student.getAttributeLabel("allergiesOther")
-                }}</mat-label>
+                <mat-label>{{ student.getAttributeLabel('allergiesOther') }}</mat-label>
                 <input type="text" matInput formControlName="allergiesOther" />
               </mat-form-field>
             }
             <p class="form-field-extra-hint">
-              {{ "PIF_HINT_MEDICAL" | translate }}
+              {{ 'PIF_HINT_MEDICAL' | translate }}
             </p>
             <mat-form-field appearance="outline">
-              <mat-label>{{
-                student.getAttributeLabel("medicalInformation")
-              }}</mat-label>
-              <textarea
-                type="text"
-                matInput
-                formControlName="medicalInformation"
-              ></textarea>
+              <mat-label>{{ student.getAttributeLabel('medicalInformation') }}</mat-label>
+              <textarea type="text" matInput formControlName="medicalInformation"></textarea>
             </mat-form-field>
             <!-- END Medical information section -->
             <button
@@ -295,7 +226,7 @@
               color="primary"
               [disabled]="!personalInfoForm.valid"
             >
-              {{ "SUBMIT" | translate }}
+              {{ 'SUBMIT' | translate }}
             </button>
           </form>
         </div>

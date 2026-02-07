@@ -6,18 +6,16 @@ describe('LoginRequiredMessageComponent', () => {
   let component: LoginRequiredMessageComponent;
   let fixture: ComponentFixture<LoginRequiredMessageComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-    imports: [
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
+          en: require('src/assets/i18n/en.json'),
         }),
         LoginRequiredMessageComponent,
-    ],
-}).compileComponents();
-    })
-  );
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginRequiredMessageComponent);

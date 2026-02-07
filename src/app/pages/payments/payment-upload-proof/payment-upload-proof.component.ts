@@ -14,10 +14,10 @@ import { MatButton } from '@angular/material/button';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
-    selector: 'app-payment-upload-proof',
-    templateUrl: './payment-upload-proof.component.html',
-    styleUrls: ['./payment-upload-proof.component.scss'],
-    imports: [MatIcon, MatButton, MatProgressBar, TranslatePipe]
+  selector: 'app-payment-upload-proof',
+  templateUrl: './payment-upload-proof.component.html',
+  styleUrls: ['./payment-upload-proof.component.scss'],
+  imports: [MatIcon, MatButton, MatProgressBar, TranslatePipe],
 })
 export class PaymentUploadProofComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);
@@ -84,7 +84,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
           finalize(() => {
             this.success = true;
             this.reset();
-          })
+          }),
         );
       this.uploadSub = upload$.subscribe((event) => {
         if (event.type == HttpEventType.UploadProgress && event.total) {

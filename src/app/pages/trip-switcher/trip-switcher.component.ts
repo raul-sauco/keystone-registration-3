@@ -7,10 +7,10 @@ import { MatRipple } from '@angular/material/core';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
-    selector: 'app-trip-switcher',
-    templateUrl: './trip-switcher.component.html',
-    styleUrls: ['./trip-switcher.component.scss'],
-    imports: [MatRipple, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe]
+  selector: 'app-trip-switcher',
+  templateUrl: './trip-switcher.component.html',
+  styleUrls: ['./trip-switcher.component.scss'],
+  imports: [MatRipple, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe],
 })
 export class TripSwitcherComponent implements OnInit {
   private logger = inject(NGXLogger);

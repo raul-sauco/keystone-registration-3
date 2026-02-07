@@ -13,22 +13,23 @@ describe('WaiverContentComponent', () => {
   let component: WaiverContentComponent;
   let fixture: ComponentFixture<WaiverContentComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-    imports: [RouterTestingModule,
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), WaiverContentComponent],
-    providers: [
+          en: require('src/assets/i18n/en.json'),
+        }),
+        WaiverContentComponent,
+      ],
+      providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
-    })
-  );
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WaiverContentComponent);

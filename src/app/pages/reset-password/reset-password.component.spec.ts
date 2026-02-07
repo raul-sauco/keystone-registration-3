@@ -1,10 +1,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  UntypedFormBuilder,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,7 +24,8 @@ describe('ResetPasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [FormsModule,
+      imports: [
+        FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatButtonModule,
@@ -43,18 +40,20 @@ describe('ResetPasswordComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), ResetPasswordComponent],
-    providers: [
+          en: require('src/assets/i18n/en.json'),
+        }),
+        ResetPasswordComponent,
+      ],
+      providers: [
         {
-            provide: MatDialogRef,
-            useValue: {},
+          provide: MatDialogRef,
+          useValue: {},
         },
         UntypedFormBuilder,
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

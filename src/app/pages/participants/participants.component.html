@@ -27,37 +27,26 @@
           </th>
           <td mat-cell *matCellDef="let student">
             @switch (getAttrType(attr)) {
-              @case ("inline") {
-                <div
-                  (focusout)="handleFocusOut($event, attr, student)"
-                  contenteditable="true"
-                >
+              @case ('inline') {
+                <div (focusout)="handleFocusOut($event, attr, student)" contenteditable="true">
                   {{ student.getParticipantTableDisplayValue(attr) }}
                 </div>
               }
-              @case ("paid") {
+              @case ('paid') {
                 @if (student.paid) {
-                  <mat-icon color="primary" class="icon-container-cell"
-                    >done</mat-icon
-                  >
+                  <mat-icon color="primary" class="icon-container-cell">done</mat-icon>
                 } @else {
-                  <mat-icon color="error" class="icon-container-cell">
-                    clear
-                  </mat-icon>
+                  <mat-icon color="error" class="icon-container-cell"> clear </mat-icon>
                 }
               }
-              @case ("paymentVerified") {
+              @case ('paymentVerified') {
                 @if (student.paymentVerified) {
-                  <mat-icon color="primary" class="icon-container-cell"
-                    >done</mat-icon
-                  >
+                  <mat-icon color="primary" class="icon-container-cell">done</mat-icon>
                 } @else {
-                  <mat-icon color="error" class="icon-container-cell">
-                    clear
-                  </mat-icon>
+                  <mat-icon color="error" class="icon-container-cell"> clear </mat-icon>
                 }
               }
-              @case ("gender") {
+              @case ('gender') {
                 <mat-form-field>
                   <mat-select
                     [(value)]="student.gender"
@@ -66,13 +55,13 @@
                   >
                     @for (i of [0, 1, 2, 3]; track i) {
                       <mat-option [value]="i">
-                        {{ "G." + i | translate }}
+                        {{ 'G.' + i | translate }}
                       </mat-option>
                     }
                   </mat-select>
                 </mat-form-field>
               }
-              @case ("dietaryRequirements") {
+              @case ('dietaryRequirements') {
                 <mat-form-field>
                   <mat-select
                     [(value)]="student.dietaryRequirements"
@@ -81,13 +70,13 @@
                   >
                     @for (i of [0, 2, 3, 4, 5, 1]; track i) {
                       <mat-option [value]="i">
-                        {{ "DR." + i | translate }}
+                        {{ 'DR.' + i | translate }}
                       </mat-option>
                     }
                   </mat-select>
                 </mat-form-field>
               }
-              @case ("allergies") {
+              @case ('allergies') {
                 <mat-form-field>
                   <mat-select
                     [(value)]="student.allergies"
@@ -96,13 +85,13 @@
                   >
                     @for (i of [0, 2, 3, 1]; track i) {
                       <mat-option [value]="i">
-                        {{ "ALLER." + i | translate }}
+                        {{ 'ALLER.' + i | translate }}
                       </mat-option>
                     }
                   </mat-select>
                 </mat-form-field>
               }
-              @case ("dob") {
+              @case ('dob') {
                 <mat-form-field>
                   <input
                     [value]="student.dob"
@@ -111,14 +100,11 @@
                     matInput
                     [matDatepicker]="picker"
                   />
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="picker"
-                  ></mat-datepicker-toggle>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker touchUi #picker></mat-datepicker>
                 </mat-form-field>
               }
-              @case ("delete") {
+              @case ('delete') {
                 <button
                   mat-icon-button
                   color="warn"

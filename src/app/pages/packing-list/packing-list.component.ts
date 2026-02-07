@@ -18,10 +18,22 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MarkdownPipe } from 'ngx-markdown';
 
 @Component({
-    selector: 'app-packing-list',
-    templateUrl: './packing-list.component.html',
-    styleUrls: ['./packing-list.component.scss'],
-    imports: [LoginRequiredMessageComponent, AdminBannerComponent, MatTabGroup, MatTab, MatTabLabel, MatIcon, PackingListItemComponent, LoadingSpinnerContentComponent, AsyncPipe, TranslatePipe, MarkdownPipe]
+  selector: 'app-packing-list',
+  templateUrl: './packing-list.component.html',
+  styleUrls: ['./packing-list.component.scss'],
+  imports: [
+    LoginRequiredMessageComponent,
+    AdminBannerComponent,
+    MatTabGroup,
+    MatTab,
+    MatTabLabel,
+    MatIcon,
+    PackingListItemComponent,
+    LoadingSpinnerContentComponent,
+    AsyncPipe,
+    TranslatePipe,
+    MarkdownPipe,
+  ],
 })
 export class PackingListComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);
@@ -112,9 +124,9 @@ export class PackingListComponent implements OnInit, OnDestroy {
           (array: TripPackingListItem[]) => {
             array.sort(
               (a: TripPackingListItem, b: TripPackingListItem) =>
-                (a.getOrder() || 0) - (b.getOrder() || 0)
+                (a.getOrder() || 0) - (b.getOrder() || 0),
             );
-          }
+          },
         );
       },
       error: (err: string) => {

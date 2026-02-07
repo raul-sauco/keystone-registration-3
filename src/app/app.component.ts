@@ -12,14 +12,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerModule, NGXLogger } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
 import { Observable, combineLatest, of } from 'rxjs';
-import {
-  delay,
-  filter,
-  map,
-  shareReplay,
-  startWith,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { delay, filter, map, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { AuthState } from '@models/auth-state';
@@ -135,12 +128,10 @@ export class AppComponent implements OnInit {
     },
   ];
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay(),
-    );
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    map((result) => result.matches),
+    shareReplay(),
+  );
 
   ngOnInit() {
     this.checkAuth();
@@ -190,9 +181,7 @@ export class AppComponent implements OnInit {
     } else {
       this.translate.use('en');
     }
-    this.logger.debug(
-      `TranslateService language set to "${this.translate.getCurrentLang()}"`,
-    );
+    this.logger.debug(`TranslateService language set to "${this.translate.getCurrentLang()}"`);
   }
 
   toggleLanguage() {
@@ -226,16 +215,14 @@ export class AppComponent implements OnInit {
         this.paymentService.paymentInfo$.pipe(startWith(null)),
         this.auth.auth$,
       ],
-      (
-        student: Student | null,
-        paymentInfo: PaymentInfo | null,
-        authState: AuthState,
-      ) => {
-        if (authState !== AuthState.Authenticated
-          || student === null
-          || paymentInfo === null
-          || !student.waiverAccepted
-          || (this.auth.isStudent && paymentInfo.required && !paymentInfo.paid)) {
+      (student: Student | null, paymentInfo: PaymentInfo | null, authState: AuthState) => {
+        if (
+          authState !== AuthState.Authenticated ||
+          student === null ||
+          paymentInfo === null ||
+          !student.waiverAccepted ||
+          (this.auth.isStudent && paymentInfo.required && !paymentInfo.paid)
+        ) {
           this.logger.debug('AppComponent: Blocking full navigation');
           return false;
         }

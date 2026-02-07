@@ -13,10 +13,16 @@ import { LoadingSpinnerContentComponent } from '../../components/loading-spinner
 import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
 
 @Component({
-    selector: 'app-documents',
-    templateUrl: './documents.component.html',
-    styleUrls: ['./documents.component.scss'],
-    imports: [MatIcon, NoItemsNotificationComponent, LoadingSpinnerContentComponent, LoginRequiredMessageComponent, AsyncPipe]
+  selector: 'app-documents',
+  templateUrl: './documents.component.html',
+  styleUrls: ['./documents.component.scss'],
+  imports: [
+    MatIcon,
+    NoItemsNotificationComponent,
+    LoadingSpinnerContentComponent,
+    LoginRequiredMessageComponent,
+    AsyncPipe,
+  ],
 })
 export class DocumentsComponent implements OnInit {
   private logger = inject(NGXLogger);
@@ -50,8 +56,6 @@ export class DocumentsComponent implements OnInit {
     const endpoint = 'files';
     this.document$ = this.api
       .get(endpoint, null)
-      .pipe(
-        map((docs: any) => docs.map((docJson: any) => new Document(docJson)))
-      );
+      .pipe(map((docs: any) => docs.map((docJson: any) => new Document(docJson))));
   }
 }

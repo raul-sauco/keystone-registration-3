@@ -1,6 +1,15 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormGroupDirective, NgForm, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroupDirective,
+  NgForm,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NGXLogger } from 'ngx-logger';
@@ -18,19 +27,26 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: UntypedFormControl,
-    form: FormGroupDirective | NgForm
-  ): boolean {
+  isErrorState(control: UntypedFormControl, form: FormGroupDirective | NgForm): boolean {
     return control.dirty && form.invalid!;
   }
 }
 
 @Component({
-    selector: 'app-add-participant',
-    templateUrl: './add-participant.component.html',
-    styleUrls: ['./add-participant.component.scss'],
-    imports: [FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatProgressBar, MatButton, TranslatePipe]
+  selector: 'app-add-participant',
+  templateUrl: './add-participant.component.html',
+  styleUrls: ['./add-participant.component.scss'],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatProgressBar,
+    MatButton,
+    TranslatePipe,
+  ],
 })
 export class AddParticipantComponent implements OnInit {
   private api = inject(ApiService);
@@ -58,24 +74,16 @@ export class AddParticipantComponent implements OnInit {
         username: new UntypedFormControl('', {
           validators: [Validators.required],
           asyncValidators: [
-            this.uniqueUsernameValidator.validate.bind(
-              this.uniqueUsernameValidator
-            ),
+            this.uniqueUsernameValidator.validate.bind(this.uniqueUsernameValidator),
           ],
           updateOn: 'blur',
         }),
         name: ['', Validators.maxLength(120)],
         email: ['', Validators.email],
-        password: [
-          '',
-          Validators.compose([Validators.required, Validators.minLength(8)]),
-        ],
-        passwordConfirm: [
-          '',
-          Validators.compose([Validators.required, Validators.minLength(8)]),
-        ],
+        password: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+        passwordConfirm: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
       },
-      { validator: passwordMatchValidator }
+      { validator: passwordMatchValidator },
     );
   }
 
@@ -116,11 +124,7 @@ export class AddParticipantComponent implements OnInit {
         this.dialogRef.close(true);
       },
       error: (error: any) => {
-        this.logger.error(
-          'Error creating new participant',
-          error,
-          this.auth.getCredentials()
-        );
+        this.logger.error('Error creating new participant', error, this.auth.getCredentials());
       },
     });
   }

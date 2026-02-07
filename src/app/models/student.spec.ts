@@ -46,7 +46,7 @@ describe('Student', () => {
       {
         get: of(translations),
       },
-      { currentLang: 'en' }
+      { currentLang: 'en' },
     );
     loggerSpy = jasmine.createSpyObj('NGXLogger', { error: null });
   });
@@ -101,9 +101,7 @@ describe('Student', () => {
 
     it('for dietary requirements', () => {
       const student = new Student(studentData, translateSpy);
-      expect(student.getAttributeText('dietaryRequirements')).toEqual(
-        'Dietary Requirements 1'
-      );
+      expect(student.getAttributeText('dietaryRequirements')).toEqual('Dietary Requirements 1');
     });
 
     it('for allergies', () => {
@@ -119,13 +117,11 @@ describe('Student', () => {
     it('for medical info', () => {
       const student = new Student(studentData, translateSpy);
       const teacher = new Student(teacherData, translateSpy);
-      expect(
-        student.getParticipantTableDisplayValue('medicalInformation')
-      ).toEqual('Medical Information');
+      expect(student.getParticipantTableDisplayValue('medicalInformation')).toEqual(
+        'Medical Information',
+      );
       expect(teacher.getParticipantTableDisplayValue('medicalInformation'))
-        .withContext(
-          'teacher medical information should not be visible on the participant table'
-        )
+        .withContext('teacher medical information should not be visible on the participant table')
         .toEqual('');
     });
   });
@@ -157,60 +153,33 @@ describe('Student', () => {
       expect(student.getAttributeText('name')).toEqual('New Name');
       expect(student.setAttribute('englishName', 'New E Name')).toBeUndefined();
       expect(student.getAttributeText('englishName')).toEqual('New E Name');
-      expect(
-        student.setAttribute('citizenship', 'New Citizenship')
-      ).toBeUndefined();
-      expect(student.getAttributeText('citizenship')).toEqual(
-        'New Citizenship'
-      );
-      expect(
-        student.setAttribute('travelDocument', 'New travel doc')
-      ).toBeUndefined();
-      expect(student.getAttributeText('travelDocument')).toEqual(
-        'New travel doc'
-      );
+      expect(student.setAttribute('citizenship', 'New Citizenship')).toBeUndefined();
+      expect(student.getAttributeText('citizenship')).toEqual('New Citizenship');
+      expect(student.setAttribute('travelDocument', 'New travel doc')).toBeUndefined();
+      expect(student.getAttributeText('travelDocument')).toEqual('New travel doc');
       expect(student.setAttribute('gender', '2')).toBeUndefined();
       expect(student.getAttributeText('gender')).toEqual('Gender 2');
-      expect(
-        student.setAttribute('emergencyContact', 'New emergencyContact')
-      ).toBeUndefined();
-      expect(student.getAttributeText('emergencyContact')).toEqual(
-        'New emergencyContact'
-      );
+      expect(student.setAttribute('emergencyContact', 'New emergencyContact')).toBeUndefined();
+      expect(student.getAttributeText('emergencyContact')).toEqual('New emergencyContact');
       expect(student.setAttribute('wechatId', 'New wechatId')).toBeUndefined();
       expect(student.getAttributeText('wechatId')).toEqual('New wechatId');
       expect(student.setAttribute('dietaryRequirements', '2')).toBeUndefined();
-      expect(student.getAttributeText('dietaryRequirements')).toEqual(
-        'Dietary Requirements 2'
-      );
+      expect(student.getAttributeText('dietaryRequirements')).toEqual('Dietary Requirements 2');
       expect(
-        student.setAttribute(
-          'dietaryRequirementsOther',
-          'New dietaryRequirementsOther'
-        )
+        student.setAttribute('dietaryRequirementsOther', 'New dietaryRequirementsOther'),
       ).toBeUndefined();
       expect(student.getAttributeText('dietaryRequirementsOther')).toEqual(
-        'New dietaryRequirementsOther'
+        'New dietaryRequirementsOther',
       );
       expect(student.setAttribute('allergies', '2')).toBeUndefined();
       expect(student.getAttributeText('allergies')).toEqual('Allergy 2');
-      expect(
-        student.setAttribute('allergiesOther', 'New allergiesOther')
-      ).toBeUndefined();
-      expect(student.getAttributeText('allergiesOther')).toEqual(
-        'New allergiesOther'
-      );
-      expect(
-        student.setAttribute('medicalInformation', 'New medicalInformation')
-      ).toBeUndefined();
-      expect(student.getAttributeText('medicalInformation')).toEqual(
-        'New medicalInformation'
-      );
+      expect(student.setAttribute('allergiesOther', 'New allergiesOther')).toBeUndefined();
+      expect(student.getAttributeText('allergiesOther')).toEqual('New allergiesOther');
+      expect(student.setAttribute('medicalInformation', 'New medicalInformation')).toBeUndefined();
+      expect(student.getAttributeText('medicalInformation')).toEqual('New medicalInformation');
       expect(student.setAttribute('house', 'New house')).toBeUndefined();
       expect(student.getAttributeText('house')).toEqual('New house');
-      expect(
-        student.setAttribute('roomNumber', 'New roomNumber')
-      ).toBeUndefined();
+      expect(student.setAttribute('roomNumber', 'New roomNumber')).toBeUndefined();
       expect(student.getAttributeText('roomNumber')).toEqual('New roomNumber');
     });
   });
@@ -219,12 +188,8 @@ describe('Student', () => {
     it('required information has been provided', () => {
       const student = new Student(studentData, translateSpy);
       expect(student.hasProvidedInformation()).toEqual(false);
-      expect(
-        student.setAttribute('citizenship', 'New citizenship')
-      ).toBeUndefined();
-      expect(
-        student.setAttribute('travelDocument', 'New travelDocument')
-      ).toBeUndefined();
+      expect(student.setAttribute('citizenship', 'New citizenship')).toBeUndefined();
+      expect(student.setAttribute('travelDocument', 'New travelDocument')).toBeUndefined();
       expect(student.hasProvidedInformation()).toEqual(true);
     });
   });
@@ -243,7 +208,7 @@ describe('Student', () => {
           dob: null,
           medical_information: 'Medical Information',
         },
-        translateSpy
+        translateSpy,
       );
       expect(student.getAttributeText('waiverSignedOn')).toEqual('');
       expect(student.getAttributeText('dob')).toEqual('');

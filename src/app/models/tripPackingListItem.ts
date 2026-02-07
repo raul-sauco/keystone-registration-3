@@ -123,10 +123,7 @@ export class TripPackingListItem extends AbstractPackingListItem {
   getQuantity(): string | null {
     if (this.quantity !== null && this.quantity?.trim() !== '') {
       return this.quantity || null;
-    } else if (
-      this.item.quantity !== null &&
-      this.item.quantity?.trim() !== ''
-    ) {
+    } else if (this.item.quantity !== null && this.item.quantity?.trim() !== '') {
       return this.item.quantity || null;
     }
     return null;

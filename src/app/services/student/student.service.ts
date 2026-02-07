@@ -30,16 +30,12 @@ export class StudentService {
     const endpoint = 'students/' + this.auth.credentials?.studentId;
     this.api.get(endpoint).subscribe({
       next: (studentJson) => {
-        this.logger.debug(
-          'StudentService got student json from server',
-          studentJson
-        );
+        this.logger.debug('StudentService got student json from server', studentJson);
         this._student$.next(new Student(studentJson, this.translate));
         this.initialized = true;
       },
       error: (err) => this.logger.error('StudentService::fetch Error', err),
     });
-
   }
 
   /**
@@ -55,7 +51,7 @@ export class StudentService {
         const student = new Student(studentJson, this.translate);
         this._student$.next(student);
         return student;
-      })
+      }),
     );
   }
 }

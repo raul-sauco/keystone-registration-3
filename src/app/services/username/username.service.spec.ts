@@ -7,15 +7,11 @@ import { UsernameService } from './username.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('UsernameService', () => {
-  beforeEach(
-    waitForAsync(() =>
-      TestBed.configureTestingModule({
-    imports: [RouterTestingModule,
-        LoggerTestingModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-})
-    )
-  );
+  beforeEach(waitForAsync(() =>
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, LoggerTestingModule],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    })));
 
   it('should be created', () => {
     const service: UsernameService = TestBed.inject(UsernameService);

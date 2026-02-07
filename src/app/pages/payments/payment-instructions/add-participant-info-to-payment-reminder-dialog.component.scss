@@ -1,4 +1,4 @@
-@use "../../../../sass/mixins" as mixins;
+@use '../../../../sass/mixins' as mixins;
 
 #add-participant-info-to-payment-reminder-title {
   @include mixins.alert-dialog;

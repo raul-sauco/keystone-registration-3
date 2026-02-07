@@ -12,7 +12,7 @@ import { ComponentCanDeactivate } from '@interfaces/component-can-deactivate';
  * @returns
  */
 export const PendingChangesGuard: CanDeactivateFn<ComponentCanDeactivate> = (
-  component: ComponentCanDeactivate
+  component: ComponentCanDeactivate,
 ): Observable<boolean | UrlTree> => {
   // No pending changes, allow deactivate; pending changes, request confirm.
   return new Observable<boolean | UrlTree>((obs) => {
@@ -23,7 +23,7 @@ export const PendingChangesGuard: CanDeactivateFn<ComponentCanDeactivate> = (
         // see http://stackoverflow.com/a/42207299/2557030
         obs.next(
           // TODO: Update the message to use the TranslateService.
-          confirm('Warning: You have not submitted a payment proof image')
+          confirm('Warning: You have not submitted a payment proof image'),
         );
   });
 };

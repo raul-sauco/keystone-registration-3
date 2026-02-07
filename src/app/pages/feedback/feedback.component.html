@@ -2,24 +2,17 @@
   @if (feedback$ | async; as feedback) {
     <app-admin-banner></app-admin-banner>
     @if (feedback.count > 0) {
-      <mat-tab-group
-        dynamicHeight
-        id="feedback-container"
-        >
+      <mat-tab-group dynamicHeight id="feedback-container">
         <mat-tab [label]="'OVERVIEW' | translate">
           <div class="charts-container">
             @for (chartData of feedback.charts; track chartData) {
-              <app-feedback-pie-chart
-                [rawData]="chartData"
-              ></app-feedback-pie-chart>
+              <app-feedback-pie-chart [rawData]="chartData"></app-feedback-pie-chart>
             }
           </div>
         </mat-tab>
         <mat-tab [label]="'DETAILS' | translate">
           @for (item of feedback.questions; track item) {
-            <div
-              class="question-container mat-typography"
-              >
+            <div class="question-container mat-typography">
               <h2>{{ item.question }}</h2>
               <ol class="answer-list">
                 @for (answer of item.answers; track answer) {
@@ -33,9 +26,7 @@
         </mat-tab>
       </mat-tab-group>
     } @else {
-      <app-no-items-notification
-        message="NO_FEEDBACK_FOR_TRIP"
-      ></app-no-items-notification>
+      <app-no-items-notification message="NO_FEEDBACK_FOR_TRIP"></app-no-items-notification>
     }
   } @else {
     <app-loading-spinner-content></app-loading-spinner-content>

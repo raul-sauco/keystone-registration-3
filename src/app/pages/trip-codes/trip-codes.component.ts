@@ -92,11 +92,7 @@ export class TripCodesComponent implements OnInit {
       ],
       code: [
         '',
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(6),
-        ]),
+        Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(6)]),
       ],
     });
   }

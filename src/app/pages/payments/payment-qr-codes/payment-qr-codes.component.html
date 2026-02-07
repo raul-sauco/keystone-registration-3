@@ -7,17 +7,17 @@
             class="mat-elevation-z8 qr-code-item"
             [src]="staticUrl + 'img/trip/' + image.name"
             [alt]="image.name"
-            /></div
-            >
-        }
-      } @else {
-        <div id="loading-wrapper">
-          <mat-progress-spinner
-            mode="indeterminate"
-            strokeWidth="3"
-            diameter="32"
-          ></mat-progress-spinner>
+          />
         </div>
       }
-    </div>
+    } @else {
+      <div id="loading-wrapper">
+        <mat-progress-spinner
+          mode="indeterminate"
+          strokeWidth="3"
+          diameter="32"
+        ></mat-progress-spinner>
+      </div>
+    }
   </div>
+</div>

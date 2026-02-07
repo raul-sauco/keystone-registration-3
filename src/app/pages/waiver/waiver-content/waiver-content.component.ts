@@ -7,10 +7,10 @@ import { ApiService } from '@services/api/api.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { MarkdownComponent } from 'ngx-markdown';
 @Component({
-    selector: 'app-waiver-content',
-    templateUrl: './waiver-content.component.html',
-    styleUrls: ['./waiver-content.component.scss'],
-    imports: [MarkdownComponent]
+  selector: 'app-waiver-content',
+  templateUrl: './waiver-content.component.html',
+  styleUrls: ['./waiver-content.component.scss'],
+  imports: [MarkdownComponent],
 })
 export class WaiverContentComponent implements OnInit {
   private logger = inject(NGXLogger);
@@ -41,9 +41,7 @@ export class WaiverContentComponent implements OnInit {
 
   pushContent() {
     this.content.set(
-      this.translate.currentLang.includes('zh')
-        ? this.document.text_zh
-        : this.document.text,
+      this.translate.currentLang.includes('zh') ? this.document.text_zh : this.document.text,
     );
   }
 }

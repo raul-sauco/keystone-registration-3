@@ -75,17 +75,17 @@ describe('AppComponent', () => {
         { currentLang: 'zh-CN', onLangChange: eventEmitter },
       );
       TestBed.configureTestingModule({
-    providers: [
-        AppComponent,
-        { provide: AuthService, useValue: defaultAuthServiceSpy },
-        { provide: TranslateService, useValue: translateServiceSpy },
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        provideRouter,
-    ],
-    imports,
-    declarations: [AppComponent],
-});
+        providers: [
+          AppComponent,
+          { provide: AuthService, useValue: defaultAuthServiceSpy },
+          { provide: TranslateService, useValue: translateServiceSpy },
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          provideRouter,
+        ],
+        imports,
+        declarations: [AppComponent],
+      });
     });
 
     beforeEach(() => {
@@ -111,10 +111,7 @@ describe('AppComponent', () => {
     });
 
     it('should have access to credentials from AuthService', () => {
-      expect(component.auth.getCredentials()?.username).toBe(
-        'test',
-        'wrong username',
-      );
+      expect(component.auth.getCredentials()?.username).toBe('test', 'wrong username');
     });
 
     it('should have received true on the auth$ subscription', () => {

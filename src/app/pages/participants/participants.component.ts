@@ -2,8 +2,19 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 import { NgClass, formatDate } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { MatIconButton, MatFabButton, MatButton } from '@angular/material/button';
-import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import {
+  MatDatepickerInput,
+  MatDatepickerToggle,
+  MatDatepicker,
+} from '@angular/material/datepicker';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { MatFormField, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
@@ -11,7 +22,18 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort, MatSort, MatSortHeader } from '@angular/material/sort';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+} from '@angular/material/table';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
@@ -171,11 +193,7 @@ export class ParticipantsComponent implements OnInit {
   // The following section deals with editable table fields.
 
   getAttrType(attr: string): string {
-    if (
-      attr === 'type' ||
-      attr === 'waiverAccepted' ||
-      attr === 'waiverSignedOn'
-    ) {
+    if (attr === 'type' || attr === 'waiverAccepted' || attr === 'waiverSignedOn') {
       return 'non-editable';
     }
     if (
@@ -208,10 +226,7 @@ export class ParticipantsComponent implements OnInit {
     if (attr in student) {
       const studentKey = attr as keyof Student;
       const updatedValue: string = event.currentTarget.textContent.trim();
-      const attrSnakeCase = attr.replace(
-        /[A-Z]/g,
-        (letter) => `_${letter.toLowerCase()}`,
-      );
+      const attrSnakeCase = attr.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
       if (updatedValue !== student[studentKey]) {
         // TODO check if this line could be removed using Angular binding
         student.setAttribute(studentKey, updatedValue);
@@ -230,10 +245,7 @@ export class ParticipantsComponent implements OnInit {
     if (attr in student) {
       const studentKey = attr as keyof Student;
       const updatedValue = student[studentKey];
-      const attrSnakeCase = attr.replace(
-        /[A-Z]/g,
-        (letter) => `_${letter.toLowerCase()}`,
-      );
+      const attrSnakeCase = attr.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
       // TODO this update happens twice, find a way to only update when the value has changed.
       this.updateParticipantInfo(student, { [attrSnakeCase]: updatedValue });
     }
@@ -264,20 +276,16 @@ export class ParticipantsComponent implements OnInit {
    * @param data an object with updated attribute names and values.
    */
   updateParticipantInfo(student: Student, data: any): void {
-    this.participantService
-      .updateParticipantInfo(student, data)
-      .subscribe({
-        next: (_res: any) => {
-          this.snackBar.open(
-            this.translate.instant('INFORMATION_UPDATED'),
-            undefined,
-            { duration: 2000 },
-          );
-        },
-        error: (error: any) => {
-          this.snackBar.open(error.error.message, undefined, { duration: 2000 });
-        },
-      });
+    this.participantService.updateParticipantInfo(student, data).subscribe({
+      next: (_res: any) => {
+        this.snackBar.open(this.translate.instant('INFORMATION_UPDATED'), undefined, {
+          duration: 2000,
+        });
+      },
+      error: (error: any) => {
+        this.snackBar.open(error.error.message, undefined, { duration: 2000 });
+      },
+    });
   }
 
   /**
@@ -285,20 +293,15 @@ export class ParticipantsComponent implements OnInit {
    * @param student Student
    */
   showDeleteConfirm(student: Student) {
-    const dialogRef = this.dialog.open(
-      DeleteStudentConfirmationDialogComponent,
-      {
-        data: student,
-      },
-    );
+    const dialogRef = this.dialog.open(DeleteStudentConfirmationDialogComponent, {
+      data: student,
+    });
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
         this.participantService.refresh();
-        this.snackBar.open(
-          this.translate.instant('PARTICIPANT_DELETED'),
-          undefined,
-          { duration: 2000 },
-        );
+        this.snackBar.open(this.translate.instant('PARTICIPANT_DELETED'), undefined, {
+          duration: 2000,
+        });
       }
     });
   }
@@ -348,15 +351,15 @@ export class DeleteStudentConfirmationDialogComponent {
     this.loading = true;
     this.logger.debug(`Sending DELETE for student ${this.data.id}`);
     const endpoint = `students/${this.data.id}`;
-    this.api.delete(endpoint).subscribe(
-      {
-        next: () => { this.dialogRef.close(true); },
-        error: (error: any) => {
-          this.logger.error(`Error deleting student ${this.data.id}`, error);
-          this.deleteError = true;
-        },
+    this.api.delete(endpoint).subscribe({
+      next: () => {
+        this.dialogRef.close(true);
       },
-    );
+      error: (error: any) => {
+        this.logger.error(`Error deleting student ${this.data.id}`, error);
+        this.deleteError = true;
+      },
+    });
   }
 
   /**

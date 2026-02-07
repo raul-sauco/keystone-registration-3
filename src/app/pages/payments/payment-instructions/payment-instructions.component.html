@@ -6,16 +6,12 @@
       mat-icon-button
       color="primary"
       (click)="displayPaymentProofHelp()"
-      >
+    >
       <mat-icon>help</mat-icon>
     </button>
   </div>
 } @else {
   <div id="loading-wrapper">
-    <mat-progress-spinner
-      mode="indeterminate"
-      strokeWidth="3"
-      diameter="32"
-    ></mat-progress-spinner>
+    <mat-progress-spinner mode="indeterminate" strokeWidth="3" diameter="32"></mat-progress-spinner>
   </div>
 }

@@ -17,19 +17,20 @@ describe('RegisterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [FormsModule,
+      imports: [
+        FormsModule,
         LoggerTestingModule,
         MatDialogModule,
         ReactiveFormsModule,
-        RouterTestingModule.withRoutes([
-            { path: 'trip-codes', component: TripCodesComponent },
-        ]), RegisterComponent],
-    providers: [
+        RouterTestingModule.withRoutes([{ path: 'trip-codes', component: TripCodesComponent }]),
+        RegisterComponent,
+      ],
+      providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -52,10 +52,7 @@ export class TripSwitcherService {
     };
     this.api.get(endpoint, null, options).subscribe({
       next: (tripsJson: any) => {
-        this.logger.debug(
-          'TripSwitcherService got trips json from server',
-          tripsJson
-        );
+        this.logger.debug('TripSwitcherService got trips json from server', tripsJson);
         tripsJson.forEach((t: any) => {
           this.trips.push(new Trip(t));
         });
@@ -73,9 +70,7 @@ export class TripSwitcherService {
     this.logger.debug(`TripSwitcher Service selecting trip ${id}`);
     const trip = this.trips.find((t) => t.id === id);
     if (!trip) {
-      this.logger.warn(
-        `Tried selecting trip ${id} - not found in service's trip array`
-      );
+      this.logger.warn(`Tried selecting trip ${id} - not found in service's trip array`);
       return false;
     }
     this.selectedTrip = trip;

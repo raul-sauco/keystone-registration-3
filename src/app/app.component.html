@@ -12,18 +12,10 @@
     >
       <mat-icon>menu</mat-icon>
     </button>
-    <img
-      id="main-header-logo"
-      src="../assets/img/ka-logo-text.png"
-      alt="{{ title }}"
-    />
+    <img id="main-header-logo" src="../assets/img/ka-logo-text.png" alt="{{ title }}" />
     <div class="toolbar-spacer"></div>
   } @else {
-    <img
-      id="main-header-logo"
-      src="../assets/img/ka-logo-long.jpeg"
-      alt="{{ title }}"
-    />
+    <img id="main-header-logo" src="../assets/img/ka-logo-long.jpeg" alt="{{ title }}" />
     <div class="toolbar-spacer">
       @if (tripService.tripName$ | async; as tripName) {
         <div class="trip-name-wrapper">{{ tripName }}</div>
@@ -37,10 +29,8 @@
     (click)="toggleLanguage()"
     id="toggle-lang-button"
   >
-    {{ translate.getCurrentLang() === "en" ? "中文" : "EN" }}
-    <mat-icon aria-label="Translate toggle icon" color="primary"
-      >translate</mat-icon
-    >
+    {{ translate.getCurrentLang() === 'en' ? '中文' : 'EN' }}
+    <mat-icon aria-label="Translate toggle icon" color="primary">translate</mat-icon>
   </button>
   <button
     type="button"
@@ -49,7 +39,7 @@
     aria-label="Display help"
     routerLink="help"
   >
-    {{ "HELP" | translate | uppercase }}
+    {{ 'HELP' | translate | uppercase }}
     <mat-icon aria-label="Help toggle icon" color="primary">help</mat-icon>
   </button>
 </mat-toolbar>
@@ -70,7 +60,7 @@
           <div matListItemIcon>
             <mat-icon color="primary">open_in_new</mat-icon>
           </div>
-          <span>{{ "LOG_OUT" | translate | uppercase }}</span>
+          <span>{{ 'LOG_OUT' | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       } @else {
@@ -78,31 +68,29 @@
           <div matListItemIcon>
             <mat-icon color="primary">exit_to_app</mat-icon>
           </div>
-          <span>{{ "LOG_IN" | translate | uppercase }}</span>
+          <span>{{ 'LOG_IN' | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
       }
       <a mat-list-item routerLink="/home">
         <div matListItemIcon><mat-icon color="primary">home</mat-icon></div>
-        <span>{{ "HOME" | translate | uppercase }}</span>
+        <span>{{ 'HOME' | translate | uppercase }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </a>
       <!-- Registration links -->
       @if (authState === AuthState.Authenticated) {
-        <h3 matSubheader>{{ "REGISTRATION" | translate | uppercase }}</h3>
+        <h3 matSubheader>{{ 'REGISTRATION' | translate | uppercase }}</h3>
         <a mat-list-item routerLink="/personal-info">
           <div matListItemIcon>
             <mat-icon
               color="primary"
               matBadge="!"
               matBadgeColor="warn"
-              [matBadgeHidden]="
-                (studentService.student$ | async)?.hasProvidedInformation()
-              "
+              [matBadgeHidden]="(studentService.student$ | async)?.hasProvidedInformation()"
               >person</mat-icon
             >
           </div>
-          <span>{{ "PERSONAL_INFORMATION" | translate | uppercase }}</span>
+          <span>{{ 'PERSONAL_INFORMATION' | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
         </a>
         <a mat-list-item routerLink="/waiver">
@@ -118,12 +106,10 @@
               >verified_user</mat-icon
             >
           </div>
-          <span>{{ "TERMS_CONDITIONS" | translate | uppercase }}</span>
+          <span>{{ 'TERMS_CONDITIONS' | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider
         ></a>
-        @if (
-          auth.isStudent && (paymentService.paymentInfo$ | async)?.required
-        ) {
+        @if (auth.isStudent && (paymentService.paymentInfo$ | async)?.required) {
           <a mat-list-item routerLink="/payments">
             <div matListItemIcon>
               <mat-icon
@@ -134,23 +120,20 @@
                 >payments</mat-icon
               >
             </div>
-            <span>{{ "PAYMENTS" | translate | uppercase }}</span>
+            <span>{{ 'PAYMENTS' | translate | uppercase }}</span>
             <mat-divider [inset]="true"></mat-divider
           ></a>
         }
       }
 
       <!-- General information links -->
-      <h3 matSubheader>{{ "GENERAL_INFORMATION" | translate | uppercase }}</h3>
+      <h3 matSubheader>{{ 'GENERAL_INFORMATION' | translate | uppercase }}</h3>
       @for (page of appPages; track page.title) {
         @if (page.render | async) {
           @if (enableFullNavigation$ | async) {
             <a
               mat-list-item
-              [routerLink]="
-                page.url +
-                ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-              "
+              [routerLink]="page.url + ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))"
             >
               <div matListItemIcon>
                 <mat-icon color="primary">{{ page.icon }}</mat-icon>
@@ -172,7 +155,7 @@
 
       <!-- This links should only be available for teachers -->
       @if (authState === AuthState.Authenticated && auth.isTeacher) {
-        <h3 matSubheader>{{ "TEACHER_AREA" | translate | uppercase }}</h3>
+        <h3 matSubheader>{{ 'TEACHER_AREA' | translate | uppercase }}</h3>
         @for (page of teacherPages; track page.title) {
           <a mat-list-item [routerLink]="page.url">
             <div matListItemIcon>
@@ -185,16 +168,13 @@
       }
 
       <!-- Policy pages -->
-      <h3 matSubheader>{{ "KA_POLICY" | translate | uppercase }}</h3>
+      <h3 matSubheader>{{ 'KA_POLICY' | translate | uppercase }}</h3>
       @for (page of policyPages; track page.title) {
         @if (page.render | async) {
           @if (enableFullNavigation$ | async) {
             <a
               mat-list-item
-              [routerLink]="
-                page.url +
-                ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))
-              "
+              [routerLink]="page.url + ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))"
             >
               <div matListItemIcon>
                 <mat-icon color="primary">{{ page.icon }}</mat-icon>
@@ -216,7 +196,7 @@
       @if ((paymentService.paymentInfo$ | async)?.required) {
         <a mat-list-item routerLink="/payment-policy">
           <div matListItemIcon><mat-icon color="primary">paid</mat-icon></div>
-          <span>{{ "PAYMENT_TERMS" | translate | uppercase }}</span>
+          <span>{{ 'PAYMENT_TERMS' | translate | uppercase }}</span>
         </a>
       }
     </mat-nav-list>

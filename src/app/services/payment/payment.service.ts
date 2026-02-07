@@ -19,9 +19,7 @@ export class PaymentService {
   private logger = inject(NGXLogger);
 
   private paymentInfo?: PaymentInfo;
-  paymentInfo$: BehaviorSubject<PaymentInfo> = new BehaviorSubject(
-    new PaymentInfo({})
-  );
+  paymentInfo$: BehaviorSubject<PaymentInfo> = new BehaviorSubject(new PaymentInfo({}));
   paymentProof$: Subject<Image[]> = new Subject();
 
   constructor() {
@@ -63,7 +61,7 @@ export class PaymentService {
       this.paymentInfo$.next(paymentInfo);
     } else {
       this.logger.warn(
-        'PaymentService::setPaymentInfo() expected paymentInfo$ to be open but it is closed'
+        'PaymentService::setPaymentInfo() expected paymentInfo$ to be open but it is closed',
       );
     }
     return this.storage.set(this.storage.keys.paymentInfo, paymentInfo);
@@ -94,10 +92,7 @@ export class PaymentService {
           this.logger.debug('PaymentService got info from server', res);
           this.setPaymentInfo(new PaymentInfo(res));
         } else {
-          this.logger.warn(
-            'PaymentService Unexpected response from the server',
-            res
-          );
+          this.logger.warn('PaymentService Unexpected response from the server', res);
         }
       },
       error: (err: any) => {
@@ -121,7 +116,7 @@ export class PaymentService {
     this.api.get(endpoint, null, options).subscribe({
       next: (res: any) => {
         this.logger.debug(
-          `PaymentService received ${res.length} payment proof images from the server`
+          `PaymentService received ${res.length} payment proof images from the server`,
         );
         const images: Image[] = res.map((e: any) => new Image(e.image));
         this.paymentProof$.next(images);

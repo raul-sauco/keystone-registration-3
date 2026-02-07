@@ -48,9 +48,7 @@ export class TripService {
       this.handleAuthStatusChange(authState);
     });
     this.translate.onLangChange.subscribe(() =>
-      this._tripName$.next(
-        this._trip?.getName(this.translate.getCurrentLang()) ?? ''
-      )
+      this._tripName$.next(this._trip?.getName(this.translate.getCurrentLang()) ?? ''),
     );
   }
 

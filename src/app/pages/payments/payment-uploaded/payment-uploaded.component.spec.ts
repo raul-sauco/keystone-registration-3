@@ -14,15 +14,18 @@ describe('PaymentUploadedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [LoggerTestingModule,
+      imports: [
+        LoggerTestingModule,
         MatDialogModule,
         MatProgressSpinnerModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
-        }), PaymentUploadedComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+          en: require('src/assets/i18n/en.json'),
+        }),
+        PaymentUploadedComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
   });
 
   beforeEach(() => {

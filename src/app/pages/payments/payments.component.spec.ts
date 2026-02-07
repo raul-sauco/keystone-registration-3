@@ -1,11 +1,7 @@
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { of } from 'rxjs';
 import { HttpLoaderFactory } from 'src/app/app.module';
@@ -35,25 +31,29 @@ describe('PaymentsComponent', () => {
         }),
         checkAuthenticated: Promise.resolve(true),
       },
-      { auth$: of(true) }
+      { auth$: of(true) },
     );
     TestBed.configureTestingModule({
-    imports: [LoadingSpinnerContentModule,
+      imports: [
+        LoadingSpinnerContentModule,
         LoggerTestingModule,
         TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient],
-            },
-        }), PaymentsComponent, PaymentClosedComponent],
-    providers: [
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient],
+          },
+        }),
+        PaymentsComponent,
+        PaymentClosedComponent,
+      ],
+      providers: [
         TranslateService,
         { provide: AuthService, useValue: authServiceSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
+      ],
+    }).compileComponents();
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');

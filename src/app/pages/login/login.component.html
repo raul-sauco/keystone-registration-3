@@ -7,44 +7,35 @@
         </div>
         <div id="login-form-header-text-container">
           <div class="login-form-header-sidelines"><hr /></div>
-          <div id="login-form-header-text">{{ "SIGN_IN" | translate }}</div>
+          <div id="login-form-header-text">{{ 'SIGN_IN' | translate }}</div>
           <div class="login-form-header-sidelines"><hr /></div>
         </div>
       </div>
       <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" id="login-form">
         <mat-form-field appearance="outline">
-          <mat-label>{{ "ID_NUMBER" | translate }}</mat-label>
+          <mat-label>{{ 'ID_NUMBER' | translate }}</mat-label>
           <input matInput formControlName="username" required type="text" />
-          <mat-hint>{{ "ID_NUMBER_HINT" | translate }}</mat-hint>
+          <mat-hint>{{ 'ID_NUMBER_HINT' | translate }}</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>{{ "PASSWORD" | translate }}</mat-label>
+          <mat-label>{{ 'PASSWORD' | translate }}</mat-label>
           <input matInput formControlName="password" type="password" required />
         </mat-form-field>
         <div id="forgot-password-link-container">
-          <a routerLink="/forgot-password">{{
-            "FORGOT_MY_PASSWORD" | translate
-          }}</a>
+          <a routerLink="/forgot-password">{{ 'FORGOT_MY_PASSWORD' | translate }}</a>
         </div>
         @if (loading) {
-          <mat-progress-bar
-            mode="indeterminate"
-            class="progress-bar"
-          ></mat-progress-bar>
+          <mat-progress-bar mode="indeterminate" class="progress-bar"></mat-progress-bar>
         }
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="!loginForm.valid || loading"
-        >
-          {{ "LOGIN" | translate }}
+        <button mat-raised-button color="primary" [disabled]="!loginForm.valid || loading">
+          {{ 'LOGIN' | translate }}
         </button>
       </form>
       <div class="navigation-links">
         <div id="need-account-hint">
-          {{ "REGISTER_FIRST_HINT" | translate }}
+          {{ 'REGISTER_FIRST_HINT' | translate }}
         </div>
-        <a routerLink="/trip-codes">{{ "REGISTER" | translate }}</a>
+        <a routerLink="/trip-codes">{{ 'REGISTER' | translate }}</a>
       </div>
     </mat-card-content>
   </mat-card>

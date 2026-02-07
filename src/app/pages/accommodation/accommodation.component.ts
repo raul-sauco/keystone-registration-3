@@ -17,10 +17,17 @@ import { NoResultsComponent } from '../../components/no-results/no-results.compo
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 @Component({
-    selector: 'app-accommodation',
-    templateUrl: './accommodation.component.html',
-    styleUrls: ['./accommodation.component.scss'],
-    imports: [LoginRequiredMessageComponent, AdminBannerComponent, SupplierItemComponent, NoResultsComponent, LoadingSpinnerContentComponent, AsyncPipe]
+  selector: 'app-accommodation',
+  templateUrl: './accommodation.component.html',
+  styleUrls: ['./accommodation.component.scss'],
+  imports: [
+    LoginRequiredMessageComponent,
+    AdminBannerComponent,
+    SupplierItemComponent,
+    NoResultsComponent,
+    LoadingSpinnerContentComponent,
+    AsyncPipe,
+  ],
 })
 export class AccommodationComponent implements OnInit {
   private api = inject(ApiService);
@@ -59,9 +66,7 @@ export class AccommodationComponent implements OnInit {
                 this.supplier$ = of([]);
               }
             } else {
-              headers.authorization = `Bearer ${
-                this.auth.getAccessToken()
-              }`;
+              headers.authorization = `Bearer ${this.auth.getAccessToken()}`;
               this.fetch(params, headers);
             }
           } else {
@@ -82,10 +87,6 @@ export class AccommodationComponent implements OnInit {
     };
     this.supplier$ = this.api
       .get(endpoint, params, options)
-      .pipe(
-        map((res: any) =>
-          res.map((supplierJson: any) => new Supplier(supplierJson))
-        )
-      );
+      .pipe(map((res: any) => res.map((supplierJson: any) => new Supplier(supplierJson))));
   }
 }

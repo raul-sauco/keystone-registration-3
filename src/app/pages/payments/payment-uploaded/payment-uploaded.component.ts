@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MatDialogTitle, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
@@ -18,7 +24,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   selector: 'app-payment-uploaded',
   templateUrl: './payment-uploaded.component.html',
   styleUrls: ['./payment-uploaded.component.scss'],
-  imports: [MatButton, MatIcon, MatProgressSpinner, AsyncPipe, TranslatePipe]
+  imports: [MatButton, MatIcon, MatProgressSpinner, AsyncPipe, TranslatePipe],
 })
 export class PaymentUploadedComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);
@@ -35,10 +41,7 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
     const globals = inject(GlobalsService);
 
     this.staticUrl =
-      globals.getResUrl() +
-      'img/trip/pop/' +
-      this.auth.getCredentials()?.studentId +
-      '/';
+      globals.getResUrl() + 'img/trip/pop/' + this.auth.getCredentials()?.studentId + '/';
   }
 
   ngOnDestroy(): void {
@@ -79,7 +82,7 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
   selector: 'app-payment-completed-confirmation-dialog-component',
   templateUrl: './payment-completed-confirmation-dialog.component.html',
   styleUrls: ['./payment-completed-confirmation-dialog.component.scss'],
-  imports: [MatDialogTitle, MatDialogActions, MatButton, MatDialogClose, TranslatePipe]
+  imports: [MatDialogTitle, MatDialogActions, MatButton, MatDialogClose, TranslatePipe],
 })
 export class PaymentCompletedConfirmationDialogComponent {
   dialogRef = inject<MatDialogRef<PaymentCompletedConfirmationDialogComponent>>(MatDialogRef);

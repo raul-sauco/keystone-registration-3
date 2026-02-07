@@ -1,6 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MatCard, MatCardImage, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import {
+  MatCard,
+  MatCardImage,
+  MatCardHeader,
+  MatCardTitle,
+  MatCardContent,
+} from '@angular/material/card';
 import { MarkdownPipe } from 'ngx-markdown';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -19,7 +25,7 @@ import { GlobalsService } from '@services/globals/globals.service';
     MatCardImage,
     MatCardTitle,
     TranslatePipe,
-  ]
+  ],
 })
 export class HomeComponent {
   url = inject(GlobalsService).getResUrl() + 'img/portal/';

@@ -1,8 +1,18 @@
 import { formatDate, AsyncPipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import {
+  MatDatepickerInput,
+  MatDatepickerToggle,
+  MatDatepicker,
+} from '@angular/material/datepicker';
 import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
@@ -73,45 +83,31 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.studentService.student$
       .pipe(
         filter((student): student is Student => student !== null),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe({
         next: (student: Student) => {
-          this.logger.debug(
-            'PersonalInfoComponent: student$ subscription update',
-            student,
-          );
+          this.logger.debug('PersonalInfoComponent: student$ subscription update', student);
           this.initPersonalInfoForm(student);
           this.idPhotoRequired = student.idPhotoRequired;
         },
         error: (error: any) => {
-          this.logger.error(
-            'PersonalInfoComponent StudentService student$ error',
-            error,
-          );
+          this.logger.error('PersonalInfoComponent StudentService student$ error', error);
         },
       });
     this.fetchContents();
   }
 
   fetchContents() {
-    this.namePromptContent$ = this.fetchDocumentById(
-      this.auth.isStudent ? 145 : 146,
-    );
-    this.englishNamePromptContent$ = this.fetchDocumentById(
-      this.auth.isStudent ? 147 : 142,
-    );
+    this.namePromptContent$ = this.fetchDocumentById(this.auth.isStudent ? 145 : 146);
+    this.englishNamePromptContent$ = this.fetchDocumentById(this.auth.isStudent ? 147 : 142);
     this.requiredFieldsPromptContent$ = this.fetchDocumentById(144);
   }
 
   fetchDocumentById(id: number): Observable<any> {
     return this.api
       .get(`documents/${id}`)
-      .pipe(
-        map((content: any) =>
-          this.lang === 'zh' ? content.text_zh : content.text,
-        ),
-      );
+      .pipe(map((content: any) => (this.lang === 'zh' ? content.text_zh : content.text)));
   }
 
   ngOnDestroy(): void {
@@ -176,14 +172,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   submitPersonalInfoForm(): void {
     this.logger.debug('PersonalInfoComponent::submitPersonalInfoForm()');
     if (this.idPhotoRequired && !this.idPhotoProvided) {
-      this.logger.debug(
-        'PersonalInfoComponent no photo ID provided yet, preventing submission.',
-      );
-      this.snackBar.open(
-        this.translate.instant('PIF_WARNING_PROVIDE_ID_PHOTO'),
-        undefined,
-        { duration: 3000 },
-      );
+      this.logger.debug('PersonalInfoComponent no photo ID provided yet, preventing submission.');
+      this.snackBar.open(this.translate.instant('PIF_WARNING_PROVIDE_ID_PHOTO'), undefined, {
+        duration: 3000,
+      });
       this.logger.debug(this.photoIdElement.nativeElement);
       this.photoIdElement.nativeElement.scrollIntoView({
         behavior: 'smooth',
@@ -194,10 +186,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     const studentData = this.sanitizeData(this.personalInfoForm.value);
     this.studentService.updateStudent(studentData).subscribe({
       next: (student: Student) => {
-        this.logger.debug(
-          'PersonalInfoComponent updated student data',
-          student,
-        );
+        this.logger.debug('PersonalInfoComponent updated student data', student);
         this.snackBar
           .open(this.translate.instant('PERSONAL_INFO_UPDATED'), undefined, {
             duration: 3000,
@@ -269,9 +258,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     }
     // const res = dateObject.toISOString().substring(0, 10);
     const res = formatDate(dateObject, 'yyyy-MM-dd', 'en-US');
-    this.logger.debug(
-      `Converted field value ${dateString} to YYYY-mm-dd ${res}`,
-    );
+    this.logger.debug(`Converted field value ${dateString} to YYYY-mm-dd ${res}`);
     return res;
   }
 }

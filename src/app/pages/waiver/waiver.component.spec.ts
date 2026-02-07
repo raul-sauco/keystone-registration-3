@@ -1,20 +1,10 @@
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
@@ -53,7 +43,7 @@ describe('WaiverComponent', () => {
         }),
         checkAuthenticated: Promise.resolve(true),
       },
-      { auth$: of(true) }
+      { auth$: of(true) },
     );
     loggerSpy = jasmine.createSpyObj('NGXLogger', {
       debug: null,
@@ -67,33 +57,37 @@ describe('WaiverComponent', () => {
       { refreshStudent: null },
       {
         student$: of(studentSpy),
-      }
+      },
     );
     TestBed.configureTestingModule({
-    imports: [FormsModule,
+      imports: [
+        FormsModule,
         LoadingSpinnerContentModule,
         LoggerTestingModule,
         MatSnackBarModule,
         ReactiveFormsModule,
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
+          en: require('src/assets/i18n/en.json'),
         }),
         TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient],
-            },
-        }), WaiverComponent, WaiverContentComponent],
-    providers: [
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient],
+          },
+        }),
+        WaiverComponent,
+        WaiverContentComponent,
+      ],
+      providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: NGXLogger, useValue: loggerSpy },
         { provide: StudentService, useValue: studentServiceSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
+      ],
+    }).compileComponents();
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');

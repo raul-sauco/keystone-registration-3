@@ -12,25 +12,23 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { ResetPasswordRoutingModule } from './reset-password-routing.module';
-import {
-  ResetPasswordComponent,
-  ResetPasswordDialogComponent,
-} from './reset-password.component';
+import { ResetPasswordComponent, ResetPasswordDialogComponent } from './reset-password.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        LoadingSpinnerContentModule,
-        MatButtonModule,
-        MatCardModule,
-        MatDialogModule,
-        MatInputModule,
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        ResetPasswordRoutingModule,
-        TranslateModule,
-        ResetPasswordComponent, ResetPasswordDialogComponent,
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    LoadingSpinnerContentModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatInputModule,
+    MatProgressBarModule,
+    ReactiveFormsModule,
+    ResetPasswordRoutingModule,
+    TranslateModule,
+    ResetPasswordComponent,
+    ResetPasswordDialogComponent,
+  ],
 })
 export class ResetPasswordModule {}

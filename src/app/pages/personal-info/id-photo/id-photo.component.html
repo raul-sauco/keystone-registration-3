@@ -1,7 +1,7 @@
 <div id="id-photo-component">
   @if (images.length === 0) {
     <div class="inner-form-prompt">
-      {{ "PIF_HINT_UPLOAD_ID_PHOTO" | translate }}
+      {{ 'PIF_HINT_UPLOAD_ID_PHOTO' | translate }}
     </div>
   } @else {
     <div id="images-wrapper">
@@ -27,10 +27,9 @@
           [alt]="file.name"
         />
         @if (uploadSub) {
-          <div id="uploading-message">{{ "UPLOADING" | translate }}...</div>
+          <div id="uploading-message">{{ 'UPLOADING' | translate }}...</div>
           <div id="progress">
-            <mat-progress-bar class="progress-bar" mode="indeterminate">
-            </mat-progress-bar>
+            <mat-progress-bar class="progress-bar" mode="indeterminate"> </mat-progress-bar>
           </div>
         } @else {
           <button
@@ -39,14 +38,14 @@
             (click)="uploadFile()"
             class="primary-action-button"
           >
-            <mat-icon>upload</mat-icon> {{ "UPLOAD" | translate }}
+            <mat-icon>upload</mat-icon> {{ 'UPLOAD' | translate }}
           </button>
         }
       } @else {
         <div id="no-file-message">
           <mat-icon id="no-file-download-icon">download</mat-icon>
           <div id="no-file-prompt-container">
-            {{ "SELECT_ID_PHOTO_TO_UPLOAD" | translate }}
+            {{ 'SELECT_ID_PHOTO_TO_UPLOAD' | translate }}
           </div>
           <button
             type="button"
@@ -57,7 +56,7 @@
             id="no-file-select-file-btn"
           >
             <mat-icon>attach_file</mat-icon>
-            {{ "SELECT_IMAGE_PROMPT" | translate }}
+            {{ 'SELECT_IMAGE_PROMPT' | translate }}
           </button>
         </div>
       }

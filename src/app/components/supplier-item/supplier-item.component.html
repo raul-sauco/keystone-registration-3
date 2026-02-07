@@ -4,9 +4,9 @@
       <mat-card-title>
         <h4>
           {{
-          lang === "en"
-          ? supplier.name + " (" + supplier.nameZh + ")"
-          : supplier.nameZh + " (" + supplier.name + ")"
+            lang === 'en'
+              ? supplier.name + ' (' + supplier.nameZh + ')'
+              : supplier.nameZh + ' (' + supplier.name + ')'
           }}
         </h4>
       </mat-card-title>
@@ -15,34 +15,25 @@
       <div [innerText]="supplier.addressZh" class="supplier-address"></div>
       <div class="supplier-item-contact-actions">
         @if (supplier.phone) {
-          <a
-            href="tel:{{ supplier.phone }}"
-            mat-raised-button
-            class="supplier-action"
-            >
+          <a href="tel:{{ supplier.phone }}" mat-raised-button class="supplier-action">
             <div class="supplier-item-phone-number">
-              <div>{{ "CALL" | translate }}</div>
+              <div>{{ 'CALL' | translate }}</div>
               <mat-icon class="mat-18">phone</mat-icon>
               <span [innerText]="supplier.phone"></span></div
-            ></a>
-          }
-          @if (supplier.cTripUrl) {
-            <a
-              [href]="supplier.cTripUrl"
-              mat-raised-button
-              class="supplier-action"
-              target="_blank"
-              >
-              <div class="supplier-item-c-trip-link">
-                <div>{{ "CLICK_HERE_FOR_MORE_INFORMATION" | translate }}</div>
-                <img
-                  class="c-trip-logo mat-elevation-z1"
-                  [src]="url + 'img/portal/c-trip-logo-zh.png'"
-                  alt=""
-                  /></div
-                ></a>
-              }
-            </div>
-          </mat-card-content>
-        </mat-card>
+          ></a>
+        }
+        @if (supplier.cTripUrl) {
+          <a [href]="supplier.cTripUrl" mat-raised-button class="supplier-action" target="_blank">
+            <div class="supplier-item-c-trip-link">
+              <div>{{ 'CLICK_HERE_FOR_MORE_INFORMATION' | translate }}</div>
+              <img
+                class="c-trip-logo mat-elevation-z1"
+                [src]="url + 'img/portal/c-trip-logo-zh.png'"
+                alt=""
+              /></div
+          ></a>
+        }
       </div>
+    </mat-card-content>
+  </mat-card>
+</div>

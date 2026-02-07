@@ -41,16 +41,16 @@ describe('PaymentService', () => {
 
   function arrange() {
     TestBed.configureTestingModule({
-    imports: [LoggerTestingModule],
-    providers: [
+      imports: [LoggerTestingModule],
+      providers: [
         { provide: NGXLogger, useValue: loggerSpy },
         { provide: StorageService, useValue: storageServiceSpy },
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: AuthService, useValue: authServiceSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-});
+      ],
+    });
     service = TestBed.inject(PaymentService);
   }
 
@@ -64,7 +64,7 @@ describe('PaymentService', () => {
       },
       {
         keys,
-      }
+      },
     );
     authServiceSpy = jasmine.createSpyObj(
       'AuthService',
@@ -76,7 +76,7 @@ describe('PaymentService', () => {
         auth$: of(true),
         authenticated: true,
         isTeacher: false,
-      }
+      },
     );
     apiServiceSpy = jasmine.createSpyObj('ApiService', {
       get: of(mockPaymentInfoApiResponse),
@@ -95,13 +95,13 @@ describe('PaymentService', () => {
     expect(storageServiceSpy.get).toHaveBeenCalledOnceWith(keys.paymentInfo);
     expect(loggerSpy.debug).toHaveBeenCalledWith(
       'PaymentService found info in storage',
-      mockPaymentInfo
+      mockPaymentInfo,
     );
     expect(apiServiceSpy.get).toHaveBeenCalled();
     // tick();
     expect(service.getPaymentInfo()).toEqual(
       new PaymentInfo(mockPaymentInfoApiResponse),
-      'The payment info should have been updated with the server response'
+      'The payment info should have been updated with the server response',
     );
   }));
 
@@ -113,7 +113,7 @@ describe('PaymentService', () => {
     tick();
     expect(loggerSpy.warn).toHaveBeenCalledWith(
       'PaymentService Unexpected response from the server',
-      null
+      null,
     );
   }));
 
@@ -126,7 +126,7 @@ describe('PaymentService', () => {
     tick();
     expect(loggerSpy.warn).toHaveBeenCalledWith(
       'PaymentService Fetch payment information error',
-      expectedError
+      expectedError,
     );
   }));
 
@@ -152,9 +152,7 @@ describe('PaymentService', () => {
       arrange();
       service.paymentProof$.subscribe({
         next: (images: Image[]) => {
-          const expected = mockPaymentProofResponse.map(
-            (json) => new Image(json.image)
-          );
+          const expected = mockPaymentProofResponse.map((json) => new Image(json.image));
           expect(images).toEqual(expected);
           done();
         },
@@ -164,7 +162,7 @@ describe('PaymentService', () => {
       });
       service.fetchPaymentProofs();
       expect(loggerSpy.debug).toHaveBeenCalledWith(
-        'PaymentService received 1 payment proof images from the server'
+        'PaymentService received 1 payment proof images from the server',
       );
     });
 
@@ -184,10 +182,7 @@ describe('PaymentService', () => {
         },
       });
       service.fetchPaymentProofs();
-      expect(loggerSpy.warn).toHaveBeenCalledWith(
-        'PaymentService error',
-        expectedError
-      );
+      expect(loggerSpy.warn).toHaveBeenCalledWith('PaymentService error', expectedError);
     });
   });
 });

@@ -20,13 +20,13 @@ describe('AddParticipantComponent', () => {
   let component: AddParticipantComponent;
   let fixture: ComponentFixture<AddParticipantComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-    imports: [RouterTestingModule,
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
+          en: require('src/assets/i18n/en.json'),
         }),
         FormsModule,
         ReactiveFormsModule,
@@ -38,19 +38,20 @@ describe('AddParticipantComponent', () => {
         MatFormFieldModule,
         MatSidenavModule,
         MatToolbarModule,
-        MatListModule, AddParticipantComponent],
-    providers: [
+        MatListModule,
+        AddParticipantComponent,
+      ],
+      providers: [
         {
-            provide: MatDialogRef,
-            useValue: {},
+          provide: MatDialogRef,
+          useValue: {},
         },
         UntypedFormBuilder,
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
-    })
-  );
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddParticipantComponent);

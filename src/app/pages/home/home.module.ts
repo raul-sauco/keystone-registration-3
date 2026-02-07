@@ -8,13 +8,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        HomeRoutingModule,
-        MatCardModule,
-        TranslateModule,
-        MarkdownModule.forChild(),
-        HomeComponent
-    ]
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+    MatCardModule,
+    TranslateModule,
+    MarkdownModule.forChild(),
+    HomeComponent,
+  ],
 })
-export class HomeModule { }
+export class HomeModule {}

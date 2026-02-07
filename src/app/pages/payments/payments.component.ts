@@ -14,10 +14,16 @@ import { PaymentUploadedComponent } from './payment-uploaded/payment-uploaded.co
 import { PaymentClosedComponent } from './payment-closed/payment-closed.component';
 
 @Component({
-    selector: 'app-payments',
-    templateUrl: './payments.component.html',
-    styleUrls: ['./payments.component.scss'],
-    imports: [PaymentInstructionsComponent, PaymentQrCodesComponent, PaymentUploadProofComponent, PaymentUploadedComponent, PaymentClosedComponent]
+  selector: 'app-payments',
+  templateUrl: './payments.component.html',
+  styleUrls: ['./payments.component.scss'],
+  imports: [
+    PaymentInstructionsComponent,
+    PaymentQrCodesComponent,
+    PaymentUploadProofComponent,
+    PaymentUploadedComponent,
+    PaymentClosedComponent,
+  ],
 })
 export class PaymentsComponent implements OnInit, ComponentCanDeactivate {
   private logger = inject(NGXLogger);

@@ -20,10 +20,11 @@ describe('ForgotPasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [RouterTestingModule,
+      imports: [
+        RouterTestingModule,
         LoggerTestingModule,
         TranslateTestingModule.withTranslations({
-            en: require('src/assets/i18n/en.json'),
+          en: require('src/assets/i18n/en.json'),
         }),
         FormsModule,
         ReactiveFormsModule,
@@ -32,9 +33,11 @@ describe('ForgotPasswordComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatSnackBarModule,
-        NoopAnimationsModule, ForgotPasswordComponent],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+        NoopAnimationsModule,
+        ForgotPasswordComponent,
+      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

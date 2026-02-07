@@ -9,17 +9,16 @@
           @if (suppliers.length) {
             @for (supplier of suppliers; track supplier) {
               <div>
-                <app-supplier-item [supplier]="supplier"></app-supplier-item></div
-                >
-              }
-            } @else {
-              <app-no-results></app-no-results
-                >
-              }
-            </div>
-          </div>
+                <app-supplier-item [supplier]="supplier"></app-supplier-item>
+              </div>
+            }
+          } @else {
+            <app-no-results></app-no-results>
+          }
         </div>
-      } @else {
-        <app-loading-spinner-content></app-loading-spinner-content>
-      }
-    }
+      </div>
+    </div>
+  } @else {
+    <app-loading-spinner-content></app-loading-spinner-content>
+  }
+}

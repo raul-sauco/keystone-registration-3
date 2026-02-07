@@ -29,21 +29,25 @@ export class ParticipantService {
   }
 
   private fetch(): void {
-    this.api.get('participants').pipe(
-      map((studentsJson: any) => {
-        const studentsArray = studentsJson
-          .map((s: any) => new Student(s, this.translate))
-          .sort((a: Student, b: Student) => a.cmp(b));
-        return studentsArray;
-      }),
-    ).subscribe({
-      next: (participants: Student[]) => {
-        this._participants.set(participants);
-        this.logger.debug('ParticipantService fetched participants info');
-        this.initialized = true;
-      },
-      error: (err) => this.logger.error('ParticipantService. Error fetching participant info', err),
-    });
+    this.api
+      .get('participants')
+      .pipe(
+        map((studentsJson: any) => {
+          const studentsArray = studentsJson
+            .map((s: any) => new Student(s, this.translate))
+            .sort((a: Student, b: Student) => a.cmp(b));
+          return studentsArray;
+        }),
+      )
+      .subscribe({
+        next: (participants: Student[]) => {
+          this._participants.set(participants);
+          this.logger.debug('ParticipantService fetched participants info');
+          this.initialized = true;
+        },
+        error: (err) =>
+          this.logger.error('ParticipantService. Error fetching participant info', err),
+      });
   }
 
   updateParticipantInfo(participant: Student, data: any): Observable<ArrayBuffer> {
@@ -51,7 +55,9 @@ export class ParticipantService {
       tap({
         next: (_res: any) => {
           // UI matches server state, no need to update.
-          this.logger.debug(`ParticipantService. Updated participant ${participant.id} information`);
+          this.logger.debug(
+            `ParticipantService. Updated participant ${participant.id} information`,
+          );
         },
         error: (error: any) => {
           // Update the UI to reflect that the update failed.
@@ -60,7 +66,7 @@ export class ParticipantService {
             `ParticipantService. Error updating participant ${participant.id} information`,
             error,
           );
-        }
+        },
       }),
     );
   }

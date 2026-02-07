@@ -35,7 +35,7 @@ describe('AuthService', () => {
         },
         {
           keys,
-        }
+        },
       );
       loggerSpy = jasmine.createSpyObj('Logger', { debug: null, warn: null });
       TestBed.configureTestingModule({
@@ -57,17 +57,17 @@ describe('AuthService', () => {
       service = TestBed.inject(AuthService);
       expect(service.authenticated).toBeFalse();
       expect(loggerSpy.debug).toHaveBeenCalledWith(
-        'AuthService.checkAuthenticated(); did not have credentials, checking storage'
+        'AuthService.checkAuthenticated(); did not have credentials, checking storage',
       );
       tick();
       expect(storageServiceSpy.get).toHaveBeenCalledWith(
-        'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY'
+        'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY',
       );
       tick();
       expect(loggerSpy.warn).not.toHaveBeenCalled();
       expect(loggerSpy.debug).toHaveBeenCalledWith(
         'AuthService.checkAuthenticated(); got credentials from StorageService',
-        userData
+        userData,
       );
       expect(service.authenticated).toBeTrue();
     }));
@@ -77,11 +77,11 @@ describe('AuthService', () => {
       service = TestBed.inject(AuthService);
       tick();
       expect(storageServiceSpy.get).toHaveBeenCalledWith(
-        'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY'
+        'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY',
       );
       tick();
       expect(loggerSpy.debug).toHaveBeenCalledWith(
-        'AuthService.checkAuthenticated(); did not get credentials from StorageService'
+        'AuthService.checkAuthenticated(); did not get credentials from StorageService',
       );
       tick();
       expect(service.authenticated).toBeFalse();
@@ -96,12 +96,12 @@ describe('AuthService', () => {
       service = TestBed.inject(AuthService);
       tick();
       expect(storageServiceSpy.get).toHaveBeenCalledWith(
-        'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY'
+        'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY',
       );
       tick();
       expect(loggerSpy.warn).toHaveBeenCalledWith(
         'AuthService.checkAuthenticated(); Error getting credentials from storage',
-        rejectError
+        rejectError,
       );
       tick();
       expect(service.authenticated).toBeFalse();
@@ -118,7 +118,7 @@ describe('AuthService', () => {
           remove: Promise.resolve(true),
           removeAll: Promise.resolve(true),
         },
-        { keys }
+        { keys },
       );
       loggerSpy = jasmine.createSpyObj('Logger', { debug: null, warn: null });
       TestBed.configureTestingModule({
@@ -134,23 +134,23 @@ describe('AuthService', () => {
       service = TestBed.inject(AuthService);
       expect(service.authenticated).toBeFalse();
       expect(loggerSpy.debug).toHaveBeenCalledWith(
-        'AuthService.checkAuthenticated(); did not have credentials, checking storage'
+        'AuthService.checkAuthenticated(); did not have credentials, checking storage',
       );
       tick();
       expect(storageServiceSpy.get).toHaveBeenCalledWith(
-        'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY'
+        'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY',
       );
       tick();
       expect(loggerSpy.warn).not.toHaveBeenCalled();
       expect(loggerSpy.debug).toHaveBeenCalledWith(
         'AuthService.checkAuthenticated(); got credentials from StorageService',
-        userData
+        userData,
       );
       expect(service.authenticated).toBeTrue();
       service.checkAuthenticated().then((res) => {
         expect(loggerSpy.debug).toHaveBeenCalledWith(
           'AuthService.checkAuthenticated(); had credentials: ',
-          new Credentials(userData)
+          new Credentials(userData),
         );
         expect(res).toBeTrue();
       });

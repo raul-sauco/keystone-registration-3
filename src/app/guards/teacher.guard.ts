@@ -1,10 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AuthService } from '@services/auth/auth.service';
@@ -16,15 +11,10 @@ export class TeacherGuard {
   private auth = inject(AuthService);
   private router = inject(Router);
 
-
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+    state: RouterStateSnapshot,
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.checkIsTeacher(state.url);
   }
 
@@ -32,10 +22,7 @@ export class TeacherGuard {
    * Check if we have an authenticated user and it is of type teacher.
    */
   checkIsTeacher(url: string): boolean {
-    if (
-      this.auth.authenticated &&
-      (this.auth.isTeacher || this.auth.isSchoolAdmin)
-    ) {
+    if (this.auth.authenticated && (this.auth.isTeacher || this.auth.isSchoolAdmin)) {
       return true;
     }
     this.router.navigateByUrl('/home');

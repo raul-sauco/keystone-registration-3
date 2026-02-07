@@ -5,12 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        TranslateModule,
-        MatProgressSpinnerModule,
-        LoadingSpinnerContentComponent
-    ],
-    exports: [LoadingSpinnerContentComponent]
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MatProgressSpinnerModule,
+    LoadingSpinnerContentComponent,
+  ],
+  exports: [LoadingSpinnerContentComponent],
 })
 export class LoadingSpinnerContentModule {}

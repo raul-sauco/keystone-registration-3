@@ -48,40 +48,23 @@ export class ApiService {
         reqOpts.params = reqOpts.params.set(k, params[k]);
       }
     }
-    return this.http
-      .get(url, reqOpts)
-      .pipe(catchError((err) => this.handleError(err)));
+    return this.http.get(url, reqOpts).pipe(catchError((err) => this.handleError(err)));
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.post(
-      this.url + endpoint,
-      body,
-      this.addDefaultReqOps(reqOpts),
-    );
+    return this.http.post(this.url + endpoint, body, this.addDefaultReqOps(reqOpts));
   }
 
   put(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.put(
-      this.url + endpoint,
-      body,
-      this.addDefaultReqOps(reqOpts),
-    );
+    return this.http.put(this.url + endpoint, body, this.addDefaultReqOps(reqOpts));
   }
 
   delete(endpoint: string, reqOpts?: any) {
-    return this.http.delete(
-      this.url + endpoint,
-      this.addDefaultReqOps(reqOpts),
-    );
+    return this.http.delete(this.url + endpoint, this.addDefaultReqOps(reqOpts));
   }
 
   patch(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.patch(
-      this.url + endpoint,
-      body,
-      this.addDefaultReqOps(reqOpts),
-    );
+    return this.http.patch(this.url + endpoint, body, this.addDefaultReqOps(reqOpts));
   }
 
   /**
@@ -155,7 +138,7 @@ export class ApiService {
       reqOpts = {
         params: new HttpParams(),
         headers,
-        withCredentials: true
+        withCredentials: true,
       };
     }
     return reqOpts;

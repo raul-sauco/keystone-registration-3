@@ -14,30 +14,28 @@ import { UsernameService } from '../services/username/username.service';
 export class UniqueUsernameValidator implements AsyncValidator {
   private usernameService = inject(UsernameService);
 
-
   validate(
-    control: AbstractControl
+    control: AbstractControl,
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     return this.usernameService.isUsernameTaken(control.value).pipe(
       map((isTaken) => (isTaken ? { uniqueUsername: true } : null)),
-      catchError(async () => null)
+      catchError(async () => null),
     );
   }
 }
 
 @Directive({
-    selector: '[appUniqueUsernameValidatorDirective]',
-    providers: [
-        {
-            provide: NG_ASYNC_VALIDATORS,
-            useExisting: forwardRef(() => UniqueUsernameValidator),
-            multi: true,
-        },
-    ]
+  selector: '[appUniqueUsernameValidatorDirective]',
+  providers: [
+    {
+      provide: NG_ASYNC_VALIDATORS,
+      useExisting: forwardRef(() => UniqueUsernameValidator),
+      multi: true,
+    },
+  ],
 })
 export class UniqueUsernameValidatorDirective {
   private validator = inject(UniqueUsernameValidator);
-
 
   validate(control: AbstractControl) {
     this.validator.validate(control);
