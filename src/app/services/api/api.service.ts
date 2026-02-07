@@ -113,7 +113,6 @@ export class ApiService {
       name: error.name,
       message: error.message,
       status: error.status,
-      statusText: error.statusText,
       error,
       yiiError: error.error,
     });
@@ -133,7 +132,7 @@ export class ApiService {
         'Content-Type': 'application/json',
       };
       if (this.auth.authenticated) {
-        headers.Authorization = ` Bearer ${this.auth.getAccessToken()}`;
+        headers.Authorization = ` Bearer ${this.auth.accessToken}`;
       }
       reqOpts = {
         params: new HttpParams(),
