@@ -233,10 +233,10 @@ export class AppComponent implements OnInit {
   }
 
   /** Logout the current application user */
-  logout() {
+  async logout() {
     try {
       this.logger.debug(`Logging out user ${this.auth.credentials?.username}`);
-      this.auth.logout();
+      await this.auth.logout();
       this.router.navigateByUrl('/login');
     } catch (error) {
       this.logger.warn('AppComponent error logging out', error);

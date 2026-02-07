@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, firstValueFrom } from 'rxjs';
 
 import { AuthState } from '@models/auth-state';
 import { Credentials } from '@models/credentials';
@@ -119,37 +119,37 @@ export class AuthService {
   }
 
   /** Remove all the login info associated with this user */
-  logout(): void {
-    this.logger.debug(`AuthService; logging out ${this.credentials?.username}`);
-    this.http
-      .post(
-        `${this.apiUrl}auth/logout`,
-        {},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.accessToken}`,
+  async logout(): Promise<void> {
+    if (this.accessToken) {
+      this.logger.debug(`AuthService; logging out ${this.credentials?.username}`);
+      try {
+        // Direct use of http client to avoid circular dependency with api service
+        const logout$ = this.http.post(
+          `${this.apiUrl}auth/logout`,
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.accessToken}`,
+            },
+            withCredentials: true,
           },
-          withCredentials: true,
-        },
-      )
-      .subscribe({
-        next: (res) => {
-          this.logger.debug('AuthService: logout response from server', res);
-          this._credentials = null;
-          this._accessToken = null;
-          this._auth$.next(AuthState.Unauthenticated);
-        },
-        error: (error) => {
-          if (error.status === 401) {
-            // Refresh token was already invalid.
-            this._credentials = null;
-            this._accessToken = null;
-            this._auth$.next(AuthState.Unauthenticated);
-          } else {
-            this.logger.error('Error logging out user', error);
-          }
-        },
-      });
+        );
+        // Convert to promise to await
+        let res = await firstValueFrom(logout$);
+        this.logger.debug('AuthService: logout response from server', res);
+      } catch (error: any) {
+        if (error.status !== 401) {
+          this.logger.error('Error logging out user', error);
+        }
+      }
+    }
+    this.clearSession();
+  }
+
+  private clearSession(): void {
+    this._credentials = null;
+    this._accessToken = null;
+    this._auth$.next(AuthState.Unauthenticated);
   }
 }
