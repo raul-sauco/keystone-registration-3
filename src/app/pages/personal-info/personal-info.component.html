@@ -134,8 +134,10 @@
             <!-- END Contact information section -->
 
             <!-- START School information section, wait until we have school info -->
-            @if (schoolService.school$ | async; as school) {
+            @if (schoolService.school.status() === 'resolved') {
+              @let school = schoolService.school.value();
               @if (
+                school !== undefined &&
                 auth.isStudent &&
                 (school.useHouse || school.useRoomNumber || school.useGrade || school.useHomeroom)
               ) {

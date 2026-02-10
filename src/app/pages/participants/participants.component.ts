@@ -1,6 +1,6 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { NgClass, formatDate } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, computed, inject } from '@angular/core';
 import { MatIconButton, MatFabButton, MatButton } from '@angular/material/button';
 import {
   MatDatepickerInput,
@@ -98,23 +98,20 @@ export class ParticipantsComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('ParticipantsComponent OnInit');
-    this.subscribeToUpdates();
     this.participantService.init();
   }
 
-  get allColumns(): string[] {
-    return ['index', ...this.displayedColumns];
-  }
+  readonly allColumns = computed(() => ['index', ...this.displayedColumns()]);
 
-  get displayedColumns(): string[] {
+  readonly displayedColumns = computed(() => {
+    const school = this.schoolService.school.value();
     return [
       'type',
       'name',
       'englishName',
-      ...(this.school?.useHouse ? ['house'] : []),
-      ...(this.school?.useRoomNumber ? ['roomNumber'] : []),
-      ...(this.displayPaymentInfoColumns() ? ['paid'] : []),
-      ...(this.displayPaymentInfoColumns() ? ['paymentVerified'] : []),
+      ...(school?.useHouse ? ['house'] : []),
+      ...(school?.useRoomNumber ? ['roomNumber'] : []),
+      ...(this.tripService.trip?.acceptDirectPayment ? ['paid', 'paymentVerified'] : []),
       'citizenship',
       'travelDocument',
       'gender',
@@ -130,7 +127,7 @@ export class ParticipantsComponent implements OnInit {
       'medicalInformation',
       'delete',
     ];
-  }
+  });
 
   get sortableColumns(): string[] {
     return [
@@ -145,37 +142,6 @@ export class ParticipantsComponent implements OnInit {
       'waiverAccepted',
       'waiverSignedOn',
     ];
-  }
-
-  /**
-   * Subscribe to updates from the services used by the component.
-   * Keep this subscriptions alive for the lifetime of the component.
-   */
-  private subscribeToUpdates(): void {
-    // School service updates.
-    this.schoolService.school$.subscribe({
-      next: (school: School) => {
-        this.logger.debug('ParticipantsComponent school$ next', school);
-        this.school = school;
-        // Some of the columns are displayed conditionally based on the school
-        // data. Refresh the list of displayed columns.
-        // this.displayedColumns = this.getDisplayedColumns();
-      },
-      error: (err: any) => this.logger.warn(err),
-    });
-  }
-
-  /**
-   * The payment info columns are displayed conditionally, encapsulate the
-   * display logic in a function.
-   *
-   * There are two situations under which the payment info columns are displayed:
-   * - For regular users, check the acceptDirectPayment on the trip linked to their account.
-   * - For school administrators, the trip.acceptDirectPayment attribute is set to true for
-   * the trip that they are currently visualizing.
-   */
-  private displayPaymentInfoColumns(): boolean {
-    return this.tripService.trip?.acceptDirectPayment ?? false;
   }
 
   /**

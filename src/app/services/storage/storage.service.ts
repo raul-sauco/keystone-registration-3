@@ -19,7 +19,6 @@ export class StorageService {
     credentials: 'KEYSTONE_ADVENTURES_CREDENTIALS_STORAGE_KEY',
     currentTrip: 'KEYSTONE_ADVENTURES_CURRENT_TRIP_DATA',
     paymentInfo: 'KEYSTONE_ADVENTURES_PAYMENT_INFO_STORAGE_KEY',
-    schoolService: 'KEYSTONE_ADVENTURES_SCHOOL_SERVICE_STORAGE_KEY',
   };
 
   constructor() {
