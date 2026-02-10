@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { throwError } from 'rxjs';
+import { firstValueFrom, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AuthService } from '@services/auth/auth.service';
@@ -49,6 +49,32 @@ export class ApiService {
       }
     }
     return this.http.get(url, reqOpts).pipe(catchError((err) => this.handleError(err)));
+  }
+
+  /**
+   * Test this modern version of the get that returns a promise.
+   * Simplifies using signals on consumers instead of observables.
+   */
+  async getAsync<T = unknown>(
+    endpoint: string,
+    params?: any,
+    reqOpts?: JsonRequestOptions,
+  ): Promise<T> {
+    const url =
+      endpoint.includes('http://') || endpoint.includes('https://')
+        ? endpoint
+        : this.url + endpoint;
+    reqOpts = this.addDefaultReqOps(reqOpts);
+    // Support easy query params for GET requests
+    if (params) {
+      reqOpts.params = new HttpParams();
+      // TSLint complains about for (... in ...)
+      // https://stackoverflow.com/a/43083415/2557030
+      for (const k of Object.keys(params)) {
+        reqOpts.params = reqOpts.params.set(k, params[k]);
+      }
+    }
+    return firstValueFrom(this.http.get<T>(url, reqOpts));
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
@@ -126,13 +152,13 @@ export class ApiService {
    * @param reqOpts An object with the opts that the caller wants to include in the request.
    * @returns The caller opts merged with the default opts that will be sent in all requests.
    */
-  private addDefaultReqOps(reqOpts?: any): any {
+  private addDefaultReqOps(reqOpts?: JsonRequestOptions): JsonRequestOptions {
     if (!reqOpts) {
-      const headers: any = {
+      let headers = new HttpHeaders({
         'Content-Type': 'application/json',
-      };
+      });
       if (this.auth.authenticated) {
-        headers.Authorization = ` Bearer ${this.auth.accessToken}`;
+        headers = headers.set('Authorization', ` Bearer ${this.auth.accessToken}`);
       }
       reqOpts = {
         params: new HttpParams(),
@@ -143,3 +169,9 @@ export class ApiService {
     return reqOpts;
   }
 }
+
+type JsonRequestOptions = {
+  headers?: HttpHeaders;
+  params?: HttpParams;
+  withCredentials?: boolean;
+};
