@@ -132,16 +132,11 @@ export class TripPackingListItem extends AbstractPackingListItem {
   /**
    * Returns the best i18n fit for the required attribute.
    */
-  geti18nAttribute(name: keyof TripPackingListItem) {
-    if (this.lang && this.lang.indexOf('zh') !== -1) {
-      const localizedName = (name + 'Zh') as keyof TripPackingListItem;
-      const val = this.getAttribute(localizedName);
-      if (val !== null) {
-        return val;
-      }
-    }
-    // If not localized version is found return default
-    return this.getAttribute(name);
+  geti18nAttribute(name: string): keyof TripPackingListItem {
+    const suffix = this.lang && this.lang.indexOf('zh') !== -1 ? 'Zh' : 'En';
+    const localizedName = (name + suffix) as keyof TripPackingListItem;
+    const val = this.getAttribute(localizedName);
+    return val;
   }
 
   /**

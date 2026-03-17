@@ -1,13 +1,13 @@
 /* Abstract PackingListItem */
 
 export abstract class AbstractPackingListItem {
-  name?: string;
+  nameEn?: string;
   nameZh?: string;
-  remarks?: string;
+  remarksEn?: string;
   remarksZh?: string;
-  description?: string;
+  descriptionEn?: string;
   descriptionZh?: string;
-  footer?: string;
+  footerEn?: string;
   footerZh?: string;
   image?: string;
   bring?: number;
@@ -16,13 +16,13 @@ export abstract class AbstractPackingListItem {
   lang?: string;
 
   constructor(data: any) {
-    this.name = data.name;
+    this.nameEn = data.name_en;
     this.nameZh = data.name_zh;
-    this.remarks = data.remarks;
+    this.remarksEn = data.remarks_en;
     this.remarksZh = data.remarks_zh;
-    this.description = data.description;
+    this.descriptionEn = data.description_en;
     this.descriptionZh = data.description_zh;
-    this.footer = data.footer;
+    this.footerEn = data.footer_en;
     this.footerZh = data.footer_zh;
     this.image = data.image;
     this.bring = data.bring;
