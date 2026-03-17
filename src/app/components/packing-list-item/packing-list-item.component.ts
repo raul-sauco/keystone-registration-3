@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
-import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MarkdownComponent, MarkdownPipe } from 'ngx-markdown';
+
+import { TripPackingListItem } from '@models/tripPackingListItem';
+import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
   selector: 'app-packing-list-item',
@@ -13,10 +14,12 @@ import { MarkdownComponent, MarkdownPipe } from 'ngx-markdown';
 export class PackingListItemComponent implements OnInit {
   private globals = inject(GlobalsService);
 
-  @Input() pli!: TripPackingListItem;
-  url!: string;
+  public imageBase: string = '';
 
-  ngOnInit(): void {
-    this.url = this.globals.getResUrl();
+  @Input() pli!: TripPackingListItem;
+
+  ngOnInit() {
+    // Calculate it once when the component starts
+    this.imageBase = `${this.globals.getResUrl()}img/packlist/${this.pli.getImage()}`;
   }
 }

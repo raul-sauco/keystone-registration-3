@@ -1,6 +1,10 @@
 <div class="item-container">
   <div class="image-container">
-    <img [src]="url + 'img/packlist/' + pli.getImage()" />
+    <picture>
+      <source [srcset]="imageBase + '.avif'" type="image/avif" />
+      <source [srcset]="imageBase + '.webp'" type="image/webp" />
+      <img loading="lazy" [src]="imageBase + '.png'" [alt]="pli.getName()" />
+    </picture>
   </div>
   <div class="text-container {{ pli.getBringClass() }}">
     <h2>
