@@ -111,6 +111,7 @@ export class ParticipantsComponent implements OnInit {
       'englishName',
       ...(school?.useHouse ? ['house'] : []),
       ...(school?.useRoomNumber ? ['roomNumber'] : []),
+      ...(school?.useStudentId ? ['studentId'] : []),
       ...(this.tripService.trip?.acceptDirectPayment ? ['paid', 'paymentVerified'] : []),
       'citizenship',
       'travelDocument',
@@ -167,6 +168,7 @@ export class ParticipantsComponent implements OnInit {
       attr === 'englishName' ||
       attr === 'house' ||
       attr === 'roomNumber' ||
+      attr === 'studentId' ||
       attr === 'citizenship' ||
       attr === 'travelDocument' ||
       attr === 'guardianName' ||

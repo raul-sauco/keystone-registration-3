@@ -27,6 +27,7 @@ export class Student {
   termsAcceptedOn?: string;
   paid: boolean | null = null;
   paymentVerified: boolean | null = null;
+  studentId: string | null = null;
   house: string | null = null;
   roomNumber: string | null = null;
   homeroom: string | null = null;
@@ -92,6 +93,7 @@ export class Student {
         'COUNTRY_OF_CITIZENSHIP',
         'TEACHER',
         'STUDENT',
+        'STUDENT_ID',
       ])
       .subscribe((res) => (this.translations = res));
   }
@@ -134,6 +136,7 @@ export class Student {
     this.roomNumber = json.room_number;
     this.homeroom = json.homeroom;
     this.grade = json.grade;
+    this.studentId = json.student_id;
     this.idPhotoRequired = truthyValues.includes(json.is_photo_id_required);
   }
 
@@ -166,6 +169,7 @@ export class Student {
       roomNumber: this.translations.ROOM_NUMBER,
       homeroom: this.translations.HOMEROOM,
       grade: this.translations.GRADE,
+      studentId: this.translations.STUDENT_ID,
     };
     return labels[attribute] || '';
   }
@@ -354,6 +358,9 @@ export class Student {
         break;
       case 'grade':
         this.grade = value;
+        break;
+      case 'studentId':
+        this.studentId = value;
         break;
     }
   }

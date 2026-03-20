@@ -1,21 +1,24 @@
 export class School {
-  name: string;
+  nameEn: string;
   nameZh: string;
+  useStudentId: boolean;
   useHouse: boolean;
   useRoomNumber: boolean;
   useHomeroom: boolean;
   useGrade: boolean;
 
   constructor(json: {
-    name?: string;
-    nameZh?: string;
+    name_en?: string;
+    name_zh?: string;
+    use_student_id?: boolean | number | string | null;
     use_house?: boolean | number | string | null;
     use_room_number?: boolean | number | string | null;
     use_homeroom?: boolean | number | string | null;
     use_grade?: boolean | number | string | null;
   }) {
-    this.name = json.name ?? '';
-    this.nameZh = json.nameZh ?? '';
+    this.nameEn = json.name_en ?? '';
+    this.nameZh = json.name_zh ?? '';
+    this.useStudentId = this.setMaybeNullBool(json.use_student_id);
     this.useHouse = this.setMaybeNullBool(json.use_house);
     this.useRoomNumber = this.setMaybeNullBool(json.use_room_number);
     this.useHomeroom = this.setMaybeNullBool(json.use_homeroom);
