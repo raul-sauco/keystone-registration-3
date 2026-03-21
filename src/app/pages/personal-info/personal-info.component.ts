@@ -144,6 +144,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     return this.personalInfoForm.get('dob');
   }
 
+  get studentId() {
+    return this.personalInfoForm.get('studentId');
+  }
+
   initPersonalInfoForm(student: Student): void {
     this.personalInfoForm = this.formBuilder.group({
       name: [student.name, Validators.required],
@@ -159,6 +163,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       roomNumber: [student.roomNumber],
       homeroom: [student.homeroom],
       grade: [student.grade],
+      studentId: [student.studentId],
       wechatId: [student.wechatId],
       dietaryRequirements: [student.dietaryRequirements],
       dietaryRequirementsOther: [student.dietaryRequirementsOther],
@@ -230,6 +235,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       room_number: data.roomNumber,
       grade: data.grade,
       homeroom: data.homeroom,
+      student_id: data.studentId,
       wechat_id: data.wechatId,
       waiver_accepted: data.waiverAccepted,
       waiver_signed_on: data.waiverSignedOn,
