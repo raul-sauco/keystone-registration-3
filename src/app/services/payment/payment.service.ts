@@ -1,13 +1,10 @@
-import { HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, resource } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { BehaviorSubject, Subject } from 'rxjs';
 
 import { Image } from '@models/image';
 import { PaymentInfo } from '@models/paymentInfo';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
-import { StorageService } from '@services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,116 +12,60 @@ import { StorageService } from '@services/storage/storage.service';
 export class PaymentService {
   private api = inject(ApiService);
   private auth = inject(AuthService);
-  private storage = inject(StorageService);
   private logger = inject(NGXLogger);
 
-  private paymentInfo?: PaymentInfo;
-  paymentInfo$: BehaviorSubject<PaymentInfo> = new BehaviorSubject(new PaymentInfo({}));
-  paymentProof$: Subject<Image[]> = new Subject();
+  // TODO: Update all calls to the observables
+  // paymentInfo$: BehaviorSubject<PaymentInfo> = new BehaviorSubject(new PaymentInfo({}));
+  // paymentProof$: Subject<Image[]> = new Subject();
 
-  constructor() {
-    this.logger.debug('PaymentService constructor');
-    // Check credentials and do not load for School Administrators
-    this.auth.checkAuthenticated().then((res) => {
-      if (res && !this.auth.isSchoolAdmin) {
-        this.loadFromStorage();
-      }
-    });
-  }
-
-  /**
-   * Refresh the stored payment info value.
-   * It will first load from local storage and then, if the user is authenticated,
-   * initiate a request to refresh the data from the server.
-   */
-  loadFromStorage(): void {
-    this.storage.get(this.storage.keys.paymentInfo).then((json) => {
-      if (json) {
-        this.logger.debug('PaymentService found info in storage', json);
-        const paymentInfo = new PaymentInfo(json);
-        this.paymentInfo = paymentInfo;
-        this.paymentInfo$.next(paymentInfo);
-      }
-      this.fetchFromServer();
-    });
-  }
-
-  /**
-   * Payment info setter.
-   * @param paymentInfo
-   * @returns
-   */
-  setPaymentInfo(paymentInfo: PaymentInfo): Promise<any> {
-    this.logger.debug('PaymentService::setPaymentInfo()');
-    this.paymentInfo = paymentInfo;
-    if (!this.paymentInfo$.closed) {
-      this.paymentInfo$.next(paymentInfo);
-    } else {
-      this.logger.warn(
-        'PaymentService::setPaymentInfo() expected paymentInfo$ to be open but it is closed',
-      );
+  private readonly authParams = () => {
+    if (!this.auth.authenticated()) {
+      return null;
     }
-    return this.storage.set(this.storage.keys.paymentInfo, paymentInfo);
-  }
+    return {};
+  };
 
-  /**
-   * Payment info getter.
-   * @returns The current value of payment info.
-   */
-  getPaymentInfo(): PaymentInfo | undefined {
-    return this.paymentInfo;
-  }
-
-  /**
-   * Fetch the payment information for the current user from the server.
-   */
-  fetchFromServer() {
-    const endpoint = 'payment-info/' + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
-      }),
-    };
-    this.api.get(endpoint, null, options).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.logger.debug('PaymentService got info from server', res);
-          this.setPaymentInfo(new PaymentInfo(res));
-        } else {
-          this.logger.warn('PaymentService Unexpected response from the server', res);
-        }
-      },
-      error: (err: any) => {
-        this.logger.warn('PaymentService Fetch payment information error', err);
-      },
-    });
-  }
-
-  /**
-   * Fetch payment proofs for the current user from the server.
-   */
-  fetchPaymentProofs() {
-    this.logger.debug('PaymentService fetching payment proof images');
-    const endpoint = 'trip-direct-payment-proof?expand=image';
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
-      }),
-    };
-    this.api.get(endpoint, null, options).subscribe({
-      next: (res: any) => {
-        this.logger.debug(
-          `PaymentService received ${res.length} payment proof images from the server`,
+  readonly paymentInfo = resource({
+    params: this.authParams,
+    loader: async () => {
+      this.logger.debug('PaymentService: Fetching PaymentInfo');
+      try {
+        const data: any = await this.api.getAsync(
+          'payment-info/' + this.auth.credentials?.studentId,
         );
-        const images: Image[] = res.map((e: any) => new Image(e.image));
-        this.paymentProof$.next(images);
-      },
-      error: (err: any) => {
-        this.logger.warn('PaymentService error', err);
-        this.paymentProof$.error(err);
-      },
-    });
-  }
+        const paymentInfo = new PaymentInfo(data);
+        this.logger.debug('PaymentService: Got PaymentInfo from server', paymentInfo);
+        return paymentInfo;
+      } catch (err: any) {
+        this.logger.error(
+          'PaymentService: Error fetching payment info',
+          err,
+          this.auth.credentials,
+        );
+        throw err;
+      }
+    },
+  });
+
+  readonly paymentProofs = resource({
+    params: this.authParams,
+    loader: async () => {
+      this.logger.debug('PaymentService: Fetching PaymentProofs');
+      try {
+        const data: any = await this.api.getAsync('trip-direct-payment-proof?expand=image');
+        this.logger.debug(
+          `PaymentService received ${data.length} payment proof images from the server`,
+        );
+        const images: Image[] = data.map((json: any) => new Image(json.image));
+        return images;
+      } catch (err: any) {
+        this.logger.error(
+          'PaymentService: Error fetching PaymentProofs',
+          err,
+          this.auth.credentials,
+        );
+        throw err;
+      }
+    },
+  });
 }
