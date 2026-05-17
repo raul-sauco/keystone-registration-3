@@ -7,7 +7,8 @@ import {
 } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { UsernameService } from '../services/username/username.service';
+
+import { UsernameService } from '@services/username/username.service';
 
 // noinspection JSAnnotator
 @Injectable({ providedIn: 'root' })

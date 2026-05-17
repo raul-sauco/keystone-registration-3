@@ -1,16 +1,30 @@
-import { HttpHeaders } from '@angular/common/http';
+// 1. Angular core
 import { Component, OnInit, inject } from '@angular/core';
+
+// 2. Angular platform modules
+import { formatDate, AsyncPipe } from '@angular/common';
+import { HttpHeaders } from '@angular/common/http';
 import {
   FormGroupDirective,
   NgForm,
-  UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
   FormsModule,
   ReactiveFormsModule,
+  NonNullableFormBuilder,
 } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { Router, RouterLink } from '@angular/router';
+
+// 3. Angular Material / CDK
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButton } from '@angular/material/button';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import {
+  MatDatepickerInput,
+  MatDatepickerToggle,
+  MatDatepicker,
+} from '@angular/material/datepicker';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -20,11 +34,20 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { Router, RouterLink } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+// 4. Third-party
+import { MarkdownComponent } from 'ngx-markdown';
 import { NGXLogger } from 'ngx-logger';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+
+// 5. RxJS
 import { Observable, map } from 'rxjs';
 
+// 6. Internal (aliases)
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
 import { UniqueUsernameValidator } from '@directives/unique-username-validator.directive';
 import { DialogData } from '@interfaces/dialog-data';
@@ -32,21 +55,6 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { TripService } from '@services/trip/trip.service';
-import { formatDate, AsyncPipe } from '@angular/common';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MarkdownComponent } from 'ngx-markdown';
-import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import {
-  MatDatepickerInput,
-  MatDatepickerToggle,
-  MatDatepicker,
-} from '@angular/material/datepicker';
-import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatButton } from '@angular/material/button';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-
-// import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -63,30 +71,30 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   imports: [
+    AsyncPipe,
+    FormsModule,
+    MarkdownComponent,
+    MatButton,
     MatCard,
     MatCardContent,
-    FormsModule,
-    ReactiveFormsModule,
-    MarkdownComponent,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatError,
+    MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
-    MatSuffix,
-    MatDatepicker,
-    RouterLink,
+    MatError,
+    MatFormField,
+    MatInput,
+    MatLabel,
     MatProgressBar,
-    MatButton,
-    AsyncPipe,
+    MatSuffix,
+    ReactiveFormsModule,
+    RouterLink,
     TranslatePipe,
   ],
 })
 export class RegisterComponent implements OnInit {
   private api = inject(ApiService);
   private paymentService = inject(PaymentService);
-  private formBuilder = inject(UntypedFormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
   private logger = inject(NGXLogger);
   private usernameValidator = inject(UniqueUsernameValidator);
   auth = inject(AuthService);
@@ -137,9 +145,9 @@ export class RegisterComponent implements OnInit {
   initUserRegistrationForm(): void {
     this.userRegistrationForm = this.formBuilder.group(
       {
-        id: new UntypedFormControl('', {
+        id: this.formBuilder.control('', {
           validators: [Validators.required],
-          asyncValidators: [this.usernameValidator.validate.bind(this.usernameValidator)],
+          asyncValidators: [(control) => this.usernameValidator.validate(control)],
           updateOn: 'blur',
         }),
         // email: ['', Validators.email],
@@ -148,7 +156,7 @@ export class RegisterComponent implements OnInit {
         password: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
         passwordConfirm: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
       },
-      { validator: passwordMatchValidator },
+      { validators: passwordMatchValidator },
     );
   }
   get id() {
@@ -285,6 +293,6 @@ export class RegistrationSuccessDialogComponent {
   constructor() {
     const auth = inject(AuthService);
 
-    this.username = auth.getCredentials()?.username || null;
+    this.username = auth.credentials?.username || null;
   }
 }
