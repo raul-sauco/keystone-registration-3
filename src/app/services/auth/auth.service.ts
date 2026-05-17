@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { BehaviorSubject, distinctUntilChanged, firstValueFrom } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { distinctUntilChanged, firstValueFrom } from 'rxjs';
 
 import { AuthState } from '@models/auth-state';
 import { Credentials } from '@models/credentials';
@@ -14,12 +15,18 @@ export class AuthService {
   private logger = inject(NGXLogger);
   private http = inject(HttpClient);
 
-  private readonly _auth$ = new BehaviorSubject<AuthState>(AuthState.Unknown);
+  private readonly _auth = signal<AuthState>(AuthState.Unknown);
+
   private _credentials: Credentials | null = null;
   private _accessToken: string | null = null;
   private apiUrl: string;
 
-  readonly auth$ = this._auth$.pipe(distinctUntilChanged());
+  readonly auth = this._auth.asReadonly();
+  readonly authenticated = computed(() => this.auth() === AuthState.Authenticated);
+
+  // Legacy Observable API, update callers to use signals
+  readonly auth$ = toObservable(this.auth).pipe(distinctUntilChanged());
+
   public redirectUrl?: string;
 
   constructor() {
@@ -30,24 +37,16 @@ export class AuthService {
   setAuth(res: any) {
     this._accessToken = res.access_token;
     this._credentials = new Credentials(res.credentials);
-    if (this.authenticated) {
-      this.logger.debug(`AuthService: Updating Auth access token and credentials.`);
+    if (!this.authenticated()) {
+      this._auth.set(AuthState.Authenticated);
+      this.logger.debug('AuthService: Authenticated');
     } else {
-      this._auth$.next(AuthState.Authenticated);
-      this.logger.debug(
-        `AuthService: Setting Auth access token and credentials.` +
-          'And updating authenticated state to `Authenticated',
-      );
+      this.logger.debug(`AuthService: Updating Auth access token and credentials.`);
     }
   }
 
   get accessToken(): string | null {
     return this._accessToken;
-  }
-
-  /** Return whether the current service state is `Authenticated` */
-  get authenticated(): boolean {
-    return this._auth$.value === AuthState.Authenticated;
   }
 
   get credentials(): Credentials | null {
@@ -94,7 +93,7 @@ export class AuthService {
    * Get the current authenticated state for the service.
    */
   get state(): AuthState {
-    return this._auth$.value;
+    return this.auth();
   }
 
   /** @deprecated Use `auth.credentials` instead */
@@ -109,47 +108,54 @@ export class AuthService {
 
   /**
    * Checks whether the application has a user currently authenticated.
-   * @deprecated Use `auth.authenticated` for sync and `auth.auth$` for async.
+   * @deprecated Use `authenticated()` computed signal instead
    */
   checkAuthenticated(): Promise<boolean> {
     this.logger.debug('AuthService.checkAuthenticated called');
-    return new Promise<boolean>((resolve, _reject) => {
-      resolve(this._auth$.value === AuthState.Authenticated);
-    });
+    return Promise.resolve(this.authenticated());
   }
 
   /** Remove all the login info associated with this user */
   async logout(): Promise<void> {
-    if (this.accessToken) {
-      this.logger.debug(`AuthService; logging out ${this.credentials?.username}`);
-      try {
-        // Direct use of http client to avoid circular dependency with api service
-        const logout$ = this.http.post(
+    // Snapshot mutable auth state so async work uses consistent values
+    const token = this.accessToken;
+    const credentials = this.credentials;
+
+    if (!token) {
+      this.clearSession();
+      return;
+    }
+
+    this.logger.debug(`AuthService; logging out ${credentials?.username}`);
+
+    try {
+      const response = await firstValueFrom(
+        this.http.post(
           `${this.apiUrl}auth/logout`,
           {},
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${this.accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
             withCredentials: true,
           },
-        );
-        // Convert to promise to await
-        let res = await firstValueFrom(logout$);
-        this.logger.debug('AuthService: logout response from server', res);
-      } catch (error: any) {
-        if (error.status !== 401) {
-          this.logger.error('Error logging out user', error);
-        }
+        ),
+      );
+
+      this.logger.debug('AuthService: logout response from server', response);
+    } catch (error: any) {
+      if (error.status !== 401) {
+        this.logger.error('Error logging out user', error);
       }
+    } finally {
+      this.clearSession();
     }
-    this.clearSession();
   }
 
   private clearSession(): void {
     this._credentials = null;
     this._accessToken = null;
-    this._auth$.next(AuthState.Unauthenticated);
+    this._auth.set(AuthState.Unauthenticated);
   }
 }
