@@ -130,7 +130,7 @@
       <h3 matSubheader>{{ 'GENERAL_INFORMATION' | translate | uppercase }}</h3>
       @for (page of appPages; track page.title) {
         @if (page.render | async) {
-          @if (enableFullNavigation$ | async) {
+          @if (enableFullNavigation()) {
             <a
               mat-list-item
               [routerLink]="page.url + ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))"
@@ -171,7 +171,7 @@
       <h3 matSubheader>{{ 'KA_POLICY' | translate | uppercase }}</h3>
       @for (page of policyPages; track page.title) {
         @if (page.render | async) {
-          @if (enableFullNavigation$ | async) {
+          @if (enableFullNavigation()) {
             <a
               mat-list-item
               [routerLink]="page.url + ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))"
