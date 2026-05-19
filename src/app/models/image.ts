@@ -1,11 +1,16 @@
+export interface ImageJson {
+  id: number;
+  name: string;
+}
+
 /**
  * Model for image data.
  */
 export class Image {
   id: number;
   name: string;
-  constructor(imageJson: { id: number; name: string }) {
-    this.id = imageJson.id;
-    this.name = imageJson.name;
+  constructor(json: ImageJson) {
+    this.id = json.id;
+    this.name = json.name;
   }
 }

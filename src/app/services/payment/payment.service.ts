@@ -1,8 +1,8 @@
 import { Injectable, inject, resource } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 
-import { Image } from '@models/image';
-import { PaymentInfo } from '@models/paymentInfo';
+import { Image, ImageJson } from '@models/image';
+import { PaymentInfo, PaymentInfoJson } from '@models/paymentInfo';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 
@@ -14,10 +14,6 @@ export class PaymentService {
   private auth = inject(AuthService);
   private logger = inject(NGXLogger);
 
-  // TODO: Update all calls to the observables
-  // paymentInfo$: BehaviorSubject<PaymentInfo> = new BehaviorSubject(new PaymentInfo({}));
-  // paymentProof$: Subject<Image[]> = new Subject();
-
   private readonly authParams = () => {
     if (!this.auth.authenticated()) {
       return null;
@@ -25,12 +21,21 @@ export class PaymentService {
     return {};
   };
 
+  /**
+   * Utitily function to reload all service data with one call, no need for the
+   * callers to know what data needs to be loaded
+   */
+  reload(): void {
+    this.paymentInfo.reload();
+    this.paymentProofs.reload();
+  }
+
   readonly paymentInfo = resource({
     params: this.authParams,
     loader: async () => {
       this.logger.debug('PaymentService: Fetching PaymentInfo');
       try {
-        const data: any = await this.api.getAsync(
+        const data = await this.api.getAsync<PaymentInfoJson>(
           'payment-info/' + this.auth.credentials?.studentId,
         );
         const paymentInfo = new PaymentInfo(data);
@@ -52,7 +57,7 @@ export class PaymentService {
     loader: async () => {
       this.logger.debug('PaymentService: Fetching PaymentProofs');
       try {
-        const data: any = await this.api.getAsync('trip-direct-payment-proof?expand=image');
+        const data = await this.api.getAsync<ImageJson[]>('trip-direct-payment-proof?expand=image');
         this.logger.debug(
           `PaymentService received ${data.length} payment proof images from the server`,
         );

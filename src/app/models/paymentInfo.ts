@@ -1,3 +1,11 @@
+export interface PaymentInfoJson {
+  required?: boolean;
+  open?: boolean;
+  termsAccepted?: boolean;
+  paid?: boolean;
+  paidDate?: string | null;
+}
+
 /**
  * Payment Info model.
  */
@@ -8,13 +16,7 @@ export class PaymentInfo {
   paid: boolean;
   paidDate: string | null;
 
-  constructor(json: {
-    required?: boolean;
-    open?: boolean;
-    termsAccepted?: boolean;
-    paid?: boolean;
-    paidDate?: string;
-  }) {
+  constructor(json: PaymentInfoJson) {
     this.required = json.required ?? false;
     this.open = json.open ?? false;
     this.termsAccepted = json.termsAccepted ?? false;

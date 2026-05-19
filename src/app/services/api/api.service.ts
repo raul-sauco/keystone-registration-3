@@ -157,7 +157,7 @@ export class ApiService {
       let headers = new HttpHeaders({
         'Content-Type': 'application/json',
       });
-      if (this.auth.authenticated) {
+      if (this.auth.authenticated()) {
         headers = headers.set('Authorization', ` Bearer ${this.auth.accessToken}`);
       }
       reqOpts = {
