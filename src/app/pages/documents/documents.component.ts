@@ -1,16 +1,15 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Document } from 'src/app/models/document';
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { AsyncPipe } from '@angular/common';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { NoItemsNotificationComponent } from '../../components/no-items-notification/no-items-notification.component';
-import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
-import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { NGXLogger } from 'ngx-logger';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
+import { LoginRequiredMessageComponent } from '@components/login-required-message/login-required-message.component';
+import { NoItemsNotificationComponent } from '@components/no-items-notification/no-items-notification.component';
+import { Document } from '@models/document';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
+import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
   selector: 'app-documents',
@@ -21,7 +20,7 @@ import { LoginRequiredMessageComponent } from '../../components/login-required-m
     NoItemsNotificationComponent,
     LoadingSpinnerContentComponent,
     LoginRequiredMessageComponent,
-    AsyncPipe,
+    TranslatePipe,
   ],
 })
 export class DocumentsComponent implements OnInit {
@@ -30,32 +29,37 @@ export class DocumentsComponent implements OnInit {
   private auth = inject(AuthService);
   private globals = inject(GlobalsService);
 
-  document$!: Observable<any>;
   isGuest = false;
   url!: string;
 
-  ngOnInit(): void {
+  readonly documents = signal<Document[]>([]);
+  readonly hasDocuments = computed(() => this.documents().length > 0);
+  readonly loading = signal(false);
+  readonly error = signal<unknown | null>(null);
+
+  async ngOnInit(): Promise<void> {
     this.logger.debug('DocumentComponent OnInit');
     this.url = this.globals.getResUrl();
-    if (this.auth.authenticated) {
-      this.fetch();
-    } else {
-      // Also check async
-      this.auth.checkAuthenticated().then((res: boolean) => {
-        if (res) {
-          this.fetch();
-        } else {
-          this.isGuest = true;
-        }
-      });
+    this.fetch();
+    if (!this.auth.authenticated()) {
+      this.isGuest = true;
+      this.logger.warn('Guest user accessing files');
     }
+    await this.fetch();
   }
 
-  fetch() {
+  async fetch(): Promise<void> {
     this.logger.debug('DocumentComponent fetch() called');
-    const endpoint = 'files';
-    this.document$ = this.api
-      .get(endpoint, null)
-      .pipe(map((docs: any) => docs.map((docJson: any) => new Document(docJson))));
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      const docs = await this.api.getAsync<any[]>('files');
+      this.documents.set(docs.map((docJson) => new Document(docJson)));
+    } catch (err) {
+      this.error.set(err);
+      this.logger.error('DocumentComponent fetch error', err);
+    } finally {
+      this.loading.set(false);
+    }
   }
 }

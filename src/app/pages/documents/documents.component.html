@@ -1,8 +1,12 @@
 @if (!isGuest) {
-  @if (document$ | async; as documents) {
-    @if (documents.length > 0) {
+  @if (loading()) {
+    <app-loading-spinner-content></app-loading-spinner-content>
+  } @else if (error()) {
+    <div>{{ 'ERROR' | translate }}</div>
+  } @else {
+    @if (hasDocuments()) {
       <ul class="files-list mat-typography">
-        @for (doc of documents; track doc) {
+        @for (doc of documents(); track doc) {
           <li class="file-item">
             <div class="icon-container">
               <img [src]="url + doc.getIconLink()" alt="{{ doc.getNamei18n() }} icon" />
@@ -28,8 +32,6 @@
     } @else {
       <app-no-items-notification message="NO_DOCUMENTS_FOR_TRIP"></app-no-items-notification>
     }
-  } @else {
-    <app-loading-spinner-content></app-loading-spinner-content>
   }
 } @else {
   <app-login-required-message message="LOGIN_PAGE_ALLOWS_REGISTRATION"></app-login-required-message>
