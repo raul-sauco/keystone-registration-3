@@ -19,7 +19,7 @@ export class SchoolAdminGuard {
   }
 
   checkIsSchoolAdmin(_: string): boolean {
-    if (this.auth.authenticated && this.auth.getCredentials()?.type === 8) {
+    if (this.auth.authenticated() && this.auth.getCredentials()?.type === 8) {
       return true;
     }
     this.router.navigateByUrl('/home');

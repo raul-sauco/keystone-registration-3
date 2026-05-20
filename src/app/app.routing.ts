@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from '@guards/auth.guard';
 import { NoAuthGuard } from '@guards/no-auth.guard';
 import { SchoolAdminGuard } from '@guards/school-admin.guard';
-import { TeacherGuard } from '@guards/teacher.guard';
+import { teacherGuard } from '@guards/teacher.guard';
 
 export const routes: Routes = [
   {
@@ -73,13 +73,13 @@ export const routes: Routes = [
   {
     path: 'feedback',
     loadChildren: () => import('./pages/feedback/feedback.module').then((m) => m.FeedbackModule),
-    canActivate: [TeacherGuard],
+    canActivate: [teacherGuard],
   },
   {
     path: 'participants',
     loadComponent: () =>
       import('./pages/participants/participants.component').then((m) => m.ParticipantsComponent),
-    canActivate: [TeacherGuard],
+    canActivate: [teacherGuard],
   },
   {
     path: 'personal-info',
