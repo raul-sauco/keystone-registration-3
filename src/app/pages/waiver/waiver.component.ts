@@ -19,7 +19,6 @@ import { filter, Subject, takeUntil } from 'rxjs';
 
 import { WaiverContentComponent } from './waiver-content/waiver-content.component';
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
-import { PaymentInfo } from '@models/paymentInfo';
 import { Student } from '@models/student';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
@@ -46,18 +45,18 @@ import { StudentService } from '@services/student/student.service';
   ],
 })
 export class WaiverComponent implements OnInit, OnDestroy {
-  auth = inject(AuthService);
   private formBuilder = inject(UntypedFormBuilder);
   private logger = inject(NGXLogger);
-  private paymentService = inject(PaymentService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+
+  auth = inject(AuthService);
+  paymentService = inject(PaymentService);
   studentService = inject(StudentService);
   translate = inject(TranslateService);
 
   posting = false;
   waiverForm!: UntypedFormGroup;
-  private paymentInfo?: PaymentInfo | null = null;
   private readonly destroy$ = new Subject<void>();
 
   ngOnInit(): void {
@@ -78,21 +77,12 @@ export class WaiverComponent implements OnInit, OnDestroy {
           this.logger.error('WaiverComponent studentService.student$ error', error);
         },
       });
-    this.listenToPaymentInfoUpdates();
   }
 
   ngOnDestroy(): void {
     this.logger.debug('WaiverComponent on destroy');
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  listenToPaymentInfoUpdates(): void {
-    this.paymentService.paymentInfo$.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (paymentInfo: PaymentInfo) => {
-        this.paymentInfo = paymentInfo;
-      },
-    });
   }
 
   get name() {
@@ -128,7 +118,9 @@ export class WaiverComponent implements OnInit, OnDestroy {
           duration: 2000,
         });
         snackBar.afterDismissed().subscribe(() => {
-          const destination = this.paymentInfo?.required ? '/payments' : '/home';
+          const destination = this.paymentService.paymentInfo.value()?.required
+            ? '/payments'
+            : '/home';
           this.router.navigateByUrl(destination);
         });
       },

@@ -41,7 +41,7 @@ export class HelpComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('HelpComponent OnInit');
-    if (this.paymentService.paymentInfo$.getValue()?.required) {
+    if (this.paymentService.paymentInfo.value()?.required) {
       this.documentId = '131';
     }
     this.fetchContent();
@@ -57,7 +57,9 @@ export class HelpComponent implements OnInit {
     this.content$ = this.api
       .get(endpoint, null, options)
       .pipe(
-        map((doc: any) => (this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text)),
+        map((doc: any) =>
+          this.translate.getCurrentLang().includes('zh') ? doc.text_zh : doc.text,
+        ),
       );
   }
 }

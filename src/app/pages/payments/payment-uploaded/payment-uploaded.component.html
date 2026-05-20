@@ -1,35 +1,41 @@
 <div id="payment-uploaded-proof-container">
   <div id="payment-uploaded-images-wrapper">
-    @if (paymentService.paymentProof$ | async; as images) {
-      @if (images.length > 0) {
-        @for (image of images; track image) {
-          <div class="payment-proof-item">
-            <img
-              class="mat-elevation-z8 payment-proof-item"
-              [src]="staticUrl + image.name"
-              [alt]="image.name"
-            />
-          </div>
-        }
-        <div id="complete-payment-button-container">
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="navigateAway()"
-            class="primary-action-button"
-          >
-            <mat-icon>upload</mat-icon> {{ 'SUBMIT' | translate }}
-          </button>
+    @switch (paymentService.paymentProofs.status()) {
+      @case ('loading') {
+        <div id="loading-wrapper">
+          <mat-progress-spinner
+            mode="indeterminate"
+            strokeWidth="3"
+            diameter="32"
+          ></mat-progress-spinner>
         </div>
       }
-    } @else {
-      <div id="loading-wrapper">
-        <mat-progress-spinner
-          mode="indeterminate"
-          strokeWidth="3"
-          diameter="32"
-        ></mat-progress-spinner>
-      </div>
+      @case ('error') {
+        <div>{{ 'ERROR' | translate }}</div>
+      }
+      @case ('resolved') {
+        @if (paymentService.paymentProofs.value(); as images) {
+          @for (image of images; track image.id) {
+            <div class="payment-proof-item">
+              <img
+                class="mat-elevation-z8 payment-proof-item"
+                [src]="staticUrl + image.name"
+                [alt]="image.name"
+              />
+            </div>
+          }
+          <div id="complete-payment-button-container">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="navigateAway()"
+              class="primary-action-button"
+            >
+              <mat-icon>upload</mat-icon> {{ 'SUBMIT' | translate }}
+            </button>
+          </div>
+        }
+      }
     }
   </div>
 </div>

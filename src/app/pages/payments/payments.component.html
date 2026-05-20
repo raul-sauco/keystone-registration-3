@@ -1,4 +1,4 @@
-@if (paymentService.getPaymentInfo()?.open) {
+@if (paymentService.paymentInfo.value()?.open) {
   <div class="app-page-wrapper">
     <div class="app-content-wrapper mat-typography">
       <app-payment-instructions></app-payment-instructions>

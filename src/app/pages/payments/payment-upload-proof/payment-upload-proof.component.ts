@@ -113,8 +113,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
     this.logger.debug(`PaymentUploadProofComponent::reset()`);
     this.uploadProgress = null;
     this.uploadSub = null;
-    this.paymentService.fetchFromServer();
-    this.paymentService.fetchPaymentProofs();
+    this.paymentService.reload();
     this.file = null;
     this.imgSrc = null;
   }

@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
         // Todo
         if (!res.error && res.credentials && res.access_token) {
           this.auth.setAuth(res);
-          this.paymentService.fetchFromServer();
+          this.paymentService.reload();
           this.router.navigateByUrl('/home');
         } else {
           this.logger.debug(`Failed Login attempt for User: ${params.username}`);

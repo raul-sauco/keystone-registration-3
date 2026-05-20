@@ -47,7 +47,7 @@ export class PaymentsComponent implements OnInit, ComponentCanDeactivate {
   @HostListener('window:beforeunload')
   canDeactivate(): boolean | Observable<boolean> {
     this.logger.debug('PaymentComponent canDeactivate');
-    return this.paymentService.getPaymentInfo()?.paid === true;
+    return this.paymentService.paymentInfo.value()?.paid === true;
   }
 
   ngOnInit(): void {

@@ -49,7 +49,7 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.logger.debug('PaymentUploadedComponent on init');
-    this.paymentService.fetchPaymentProofs();
+    this.paymentService.paymentProofs.reload();
   }
 
   navigateAway() {

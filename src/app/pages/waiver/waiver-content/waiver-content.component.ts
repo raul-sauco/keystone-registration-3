@@ -1,11 +1,10 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
+import { MarkdownComponent } from 'ngx-markdown';
 
-import { PaymentInfo } from '@models/paymentInfo';
 import { ApiService } from '@services/api/api.service';
 import { PaymentService } from '@services/payment/payment.service';
-import { MarkdownComponent } from 'ngx-markdown';
 @Component({
   selector: 'app-waiver-content',
   templateUrl: './waiver-content.component.html',
@@ -28,20 +27,16 @@ export class WaiverContentComponent implements OnInit {
   }
 
   fetchDocument() {
-    this.paymentService.paymentInfo$.subscribe({
-      next: (paymentInfo: PaymentInfo) => {
-        const endpoint = 'documents/' + (paymentInfo?.required ? '104' : '75');
-        this.api.get(endpoint).subscribe((doc) => {
-          this.document = doc;
-          this.pushContent();
-        });
-      },
+    const documentId = this.paymentService.paymentInfo.value()?.required ? '104' : '75';
+    this.api.get(`documents/${documentId}`).subscribe((doc) => {
+      this.document = doc;
+      this.pushContent();
     });
   }
 
   pushContent() {
     this.content.set(
-      this.translate.currentLang.includes('zh') ? this.document.text_zh : this.document.text,
+      this.translate.getCurrentLang().includes('zh') ? this.document.text_zh : this.document.text,
     );
   }
 }

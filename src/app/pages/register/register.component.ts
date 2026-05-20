@@ -212,7 +212,7 @@ export class RegisterComponent implements OnInit {
         } else {
           this.auth.setAuth(response);
           this.loading = false;
-          this.paymentService.fetchFromServer();
+          this.paymentService.reload();
           this.displayRegistrationSuccess();
         }
       },
