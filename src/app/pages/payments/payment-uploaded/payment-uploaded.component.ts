@@ -40,8 +40,7 @@ export class PaymentUploadedComponent implements OnInit, OnDestroy {
   constructor() {
     const globals = inject(GlobalsService);
 
-    this.staticUrl =
-      globals.getResUrl() + 'img/trip/pop/' + this.auth.getCredentials()?.studentId + '/';
+    this.staticUrl = globals.getResUrl() + 'img/trip/pop/' + this.auth.credentials?.studentId + '/';
   }
 
   ngOnDestroy(): void {

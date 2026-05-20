@@ -71,7 +71,7 @@ export class PaymentUploadProofComponent implements OnInit, OnDestroy {
       const url = this.globals.getApiUrl() + 'trip-direct-payment-proof';
       const headers = new HttpHeaders({
         // 'Content-Type': Automatically assigned by the browser when it detects form data.
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
+        Authorization: ' Bearer ' + this.auth.accessToken,
       });
       formData.append('image', this.file);
       const upload$ = this.http

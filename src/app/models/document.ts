@@ -118,6 +118,13 @@ export class Document {
   }
 
   /**
+   * Unused by the app but it is here to document that it exists
+   */
+  getVersion(): string {
+    return this.version;
+  }
+
+  /**
    * Utility function from https://stackoverflow.com/a/14919494/2557030
    * If needed somewhere else we could extract it to a helper class.
    *

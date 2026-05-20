@@ -40,11 +40,7 @@ export class FeedbackComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('FeedbackComponent OnInit');
-    if (
-      this.auth.authenticated &&
-      this.auth.getAccessToken() &&
-      (this.auth.isSchoolAdmin || this.auth.isTeacher)
-    ) {
+    if (this.auth.authenticated() && this.auth.accessToken && this.auth.isTeacher) {
       if (this.auth.isSchoolAdmin) {
         if (this.tripSwitcher.selectedTrip) {
           this.fetch(this.tripSwitcher.selectedTrip.id);
