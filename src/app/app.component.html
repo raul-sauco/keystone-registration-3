@@ -109,14 +109,14 @@
           <span>{{ 'TERMS_CONDITIONS' | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider
         ></a>
-        @if (auth.isStudent && (paymentService.paymentInfo$ | async)?.required) {
+        @if (auth.isStudent && paymentService.paymentInfo.value()?.required) {
           <a mat-list-item routerLink="/payments">
             <div matListItemIcon>
               <mat-icon
                 color="primary"
                 matBadge="!"
                 matBadgeColor="warn"
-                [matBadgeHidden]="(paymentService.paymentInfo$ | async)?.paid"
+                [matBadgeHidden]="paymentService.paymentInfo.value()?.paid"
                 >payments</mat-icon
               >
             </div>
@@ -193,7 +193,7 @@
           }
         }
       }
-      @if ((paymentService.paymentInfo$ | async)?.required) {
+      @if (paymentService.paymentInfo.value()?.required) {
         <a mat-list-item routerLink="/payment-policy">
           <div matListItemIcon><mat-icon color="primary">paid</mat-icon></div>
           <span>{{ 'PAYMENT_TERMS' | translate | uppercase }}</span>

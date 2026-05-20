@@ -1,6 +1,7 @@
 import { BreakpointObserver, Breakpoints, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,8 +12,10 @@ import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerModule, NGXLogger } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
+import { delay, filter, map, Observable, of, shareReplay, withLatestFrom } from 'rxjs';
 
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
+import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { AuthState } from '@models/auth-state';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
@@ -21,8 +24,6 @@ import { RouteStateService } from '@services/route-state/route-state.service';
 import { StudentService } from '@services/student/student.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
-import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -145,7 +146,6 @@ export class AppComponent implements OnInit {
       });
     // Subscribe to the routeStateService to get updates on the trip ID parameter
     this.tripId$ = this.routeStateService.tripIdParam$.pipe(delay(0));
-    this.setEnableFullNavigationObserver();
   }
 
   /**
