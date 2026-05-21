@@ -1,12 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { NGXLogger } from 'ngx-logger';
 import { distinctUntilChanged, firstValueFrom } from 'rxjs';
 
 import { AuthState } from '@models/auth-state';
-import { Credentials } from '@models/credentials';
+import { Credentials, CredentialsJson, UserType } from '@models/credentials';
 import { GlobalsService } from '@services/globals/globals.service';
+
+interface AuthResponseJson {
+  access_token: string;
+  credentials: CredentialsJson;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,29 +19,59 @@ import { GlobalsService } from '@services/globals/globals.service';
 export class AuthService {
   private logger = inject(NGXLogger);
   private http = inject(HttpClient);
+  private globals = inject(GlobalsService);
 
+  private readonly apiUrl = this.globals.getApiUrl();
+
+  // Private state
   private readonly _auth = signal<AuthState>(AuthState.Unknown);
+  // Use the `signal` prefix while we keep the old getters
+  private readonly _credentials = signal<Credentials | null>(null);
+  private readonly _accessToken = signal<string | null>(null);
 
-  private _credentials: Credentials | null = null;
-  private _accessToken: string | null = null;
-  private apiUrl: string;
+  // Public signals
+  readonly initialized = signal(false);
 
   readonly auth = this._auth.asReadonly();
+  readonly credentialsSignal = this._credentials.asReadonly();
+  readonly accessTokenSignal = this._accessToken.asReadonly();
+
   readonly authenticated = computed(() => this.auth() === AuthState.Authenticated);
+  readonly isTeacherSignal = computed(() => this.credentialsSignal()?.type == UserType.Teacher);
+  readonly isStudentSignal = computed(() => this.credentialsSignal()?.type == UserType.Student);
 
   // Legacy Observable API, update callers to use signals
   readonly auth$ = toObservable(this.auth).pipe(distinctUntilChanged());
 
   public redirectUrl?: string;
 
-  constructor() {
-    this.logger.debug('AuthService constructor');
-    this.apiUrl = inject(GlobalsService).getApiUrl();
+  async initialize(): Promise<void> {
+    this.logger.debug('AuthService: Initializing auth');
+
+    try {
+      const response = await firstValueFrom(
+        this.http.get<AuthResponseJson>(`${this.apiUrl}auth/check`, {
+          withCredentials: true,
+        }),
+      );
+
+      if (response) {
+        this.setAuth(response);
+      } else {
+        this._auth.set(AuthState.Unauthenticated);
+      }
+    } catch (err) {
+      this.logger.warn('AuthService: User unauthenticated');
+
+      this._auth.set(AuthState.Unauthenticated);
+    } finally {
+      this.initialized.set(true);
+    }
   }
 
   setAuth(res: any) {
-    this._accessToken = res.access_token;
-    this._credentials = new Credentials(res.credentials);
+    this._accessToken.set(res.access_token);
+    this._credentials.set(new Credentials(res.credentials));
     if (!this.authenticated()) {
       this._auth.set(AuthState.Authenticated);
       this.logger.debug('AuthService: Authenticated');
@@ -45,65 +80,39 @@ export class AuthService {
     }
   }
 
+  /** @deprecated Use `auth.accessTokenSignal()` instead */
   get accessToken(): string | null {
-    return this._accessToken;
+    return this.accessTokenSignal();
   }
 
+  /** @deprecated Use `auth.credentialsSignal()` instead */
   get credentials(): Credentials | null {
-    return this._credentials;
+    return this.credentialsSignal();
   }
 
-  /** Return whether the current user is type teacher */
+  /** @deprecated Use `auth.isTeacherSignal()` instead */
   get isTeacher(): boolean {
-    return this.credentials?.type === 4;
+    return this.isTeacherSignal();
   }
 
-  /** Return whether the current user is type student */
+  /** @deprecated Use `auth.isStudentSignal()` instead */
   get isStudent(): boolean {
-    return this.credentials?.type === 6;
+    return this.isStudentSignal();
   }
 
-  /** Return whether the current user is type school admin */
+  /** @deprecated Removing SchoolAdminAccess, updating to sample accounts */
   get isSchoolAdmin(): boolean {
-    return this.credentials?.type === 8;
+    return this.credentialsSignal()?.type === 8;
   }
 
-  get isAccessTokenExpired(): boolean {
-    const payload = this.accessToken !== null && JSON.parse(atob(this.accessToken.split('.')[1]));
-    const exp = payload.exp * 1000;
-    const now = Date.now();
-    if (exp > now) {
-      this.logger.info(
-        `Checking access token. Not Expired. Issued ${new Date(payload.iat * 1000).toLocaleString()} ` +
-          `Expires at: ${new Date(exp).toLocaleString()} ` +
-          `Has ${(exp - now) / 1000} seconds left`,
-      );
-      return false;
-    } else {
-      this.logger.info(
-        `Checking access token. Expired. Issued ${new Date(payload.iat * 1000).toLocaleString()} ` +
-          `Expired at: ${new Date(exp).toLocaleString()} ` +
-          `${Math.floor((now - exp) / 1000)} seconds ago`,
-      );
-      return true;
-    }
-  }
-
-  /**
-   * Get the current authenticated state for the service.
-   */
-  get state(): AuthState {
-    return this.auth();
-  }
-
-  /** @deprecated Use `auth.credentials` instead */
+  /** @deprecated Use `auth.credentialsSignal()` instead */
   getCredentials(): Credentials | null {
-    return this.credentials;
+    return this.credentialsSignal();
   }
 
-  /** @deprecated Use `auth.accessToken` instead */
+  /** @deprecated Use `auth.accessTokenSignal()` instead */
   getAccessToken(): string | null {
-    return this.accessToken;
+    return this.accessTokenSignal();
   }
 
   /**
@@ -118,8 +127,8 @@ export class AuthService {
   /** Remove all the login info associated with this user */
   async logout(): Promise<void> {
     // Snapshot mutable auth state so async work uses consistent values
-    const token = this.accessToken;
-    const credentials = this.credentials;
+    const token = this.accessTokenSignal();
+    const credentials = this.credentialsSignal();
 
     if (!token) {
       this.clearSession();
@@ -143,7 +152,7 @@ export class AuthService {
         ),
       );
 
-      this.logger.debug('AuthService: logout response from server', response);
+      this.logger.debug('AuthService: logout response', response);
     } catch (error: any) {
       if (error.status !== 401) {
         this.logger.error('Error logging out user', error);
@@ -154,8 +163,8 @@ export class AuthService {
   }
 
   private clearSession(): void {
-    this._credentials = null;
-    this._accessToken = null;
+    this._credentials.set(null);
+    this._accessToken.set(null);
     this._auth.set(AuthState.Unauthenticated);
   }
 }

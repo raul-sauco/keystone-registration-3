@@ -1,28 +1,25 @@
-import { PaymentInfo } from './paymentInfo';
+export interface CredentialsJson {
+  username: string;
+  type: number;
+  studentId: number;
+}
+
+export enum UserType {
+  Teacher = 4,
+  Student = 6,
+}
 
 /**
  * Credentials model.
  */
 export class Credentials {
-  username: string;
-  type: number;
-  studentId?: number;
-  paymentInfo: PaymentInfo | null;
+  readonly username: string;
+  readonly type: number;
+  readonly studentId: number;
 
-  constructor(cred: {
-    username: string;
-    type: number;
-    studentId?: number;
-    paymentInfo?: {
-      required: boolean;
-      termsAccepted: boolean;
-      paid: boolean;
-      paidDate?: string;
-    };
-  }) {
-    this.username = cred.username.trim();
-    this.type = cred.type;
-    this.studentId = cred.studentId;
-    this.paymentInfo = cred.paymentInfo ? new PaymentInfo(cred.paymentInfo) : null;
+  constructor(json: CredentialsJson) {
+    this.username = json.username.trim();
+    this.type = json.type;
+    this.studentId = json.studentId;
   }
 }
