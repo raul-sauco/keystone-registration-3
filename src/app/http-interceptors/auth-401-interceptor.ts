@@ -73,7 +73,7 @@ export class Auth401Interceptor implements HttpInterceptor {
         access_token: string;
       }>(`${this.url}auth/refresh`, { withCredentials: true })
       .pipe(
-        tap((res) => this.auth.setAuth(res)),
+        tap((res) => this.auth.refreshAccessToken(res.access_token)),
         switchMap((res) => {
           const token = res.access_token;
           this.refreshing = false;
@@ -87,10 +87,10 @@ export class Auth401Interceptor implements HttpInterceptor {
         }),
         catchError((err) => {
           this.refreshing = false;
-          const cred = this.auth.credentials;
+          const cred = this.auth.credentialsSignal();
           this.logger.info(
             'Failed to refresh access token, logging out ' +
-              (cred === null ? '' : `user ${cred?.username} student ID: ${cred?.studentId}`),
+              (cred === null ? '' : `user ${cred.username} student ID: ${cred.studentId}`),
           );
           this.auth.logout();
           // Do not redirect here, delegate to the guards

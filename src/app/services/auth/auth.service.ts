@@ -69,6 +69,10 @@ export class AuthService {
     }
   }
 
+  refreshAccessToken(access_token: string) {
+    this._accessToken.set(access_token);
+  }
+
   setAuth(res: any) {
     this._accessToken.set(res.access_token);
     this._credentials.set(new Credentials(res.credentials));
