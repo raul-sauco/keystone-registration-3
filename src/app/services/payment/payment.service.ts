@@ -1,4 +1,4 @@
-import { Injectable, inject, resource } from '@angular/core';
+import { Injectable, computed, inject, resource } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { Image, ImageJson } from '@models/image';
@@ -14,12 +14,13 @@ export class PaymentService {
   private auth = inject(AuthService);
   private logger = inject(NGXLogger);
 
-  private readonly authParams = () => {
-    if (!this.auth.authenticated()) {
+  private readonly authParams = computed(() => {
+    const credentials = this.auth.credentialsSignal();
+    if (!this.auth.authenticated() || !credentials) {
       return null;
     }
-    return {};
-  };
+    return { credentials };
+  });
 
   /**
    * Utitily function to reload all service data with one call, no need for the
@@ -32,21 +33,22 @@ export class PaymentService {
 
   readonly paymentInfo = resource({
     params: this.authParams,
-    loader: async () => {
-      this.logger.debug('PaymentService: Fetching PaymentInfo');
+    loader: async ({ params }) => {
+      if (!params) {
+        this.logger.debug('PaymentService::paymentInfo null params not loading resource');
+        return;
+      }
+      const credentials = params.credentials;
+      this.logger.debug('PaymentService: Fetching PaymentInfo', credentials);
       try {
         const data = await this.api.getAsync<PaymentInfoJson>(
-          'payment-info/' + this.auth.credentials?.studentId,
+          'payment-info/' + credentials?.studentId,
         );
         const paymentInfo = new PaymentInfo(data);
         this.logger.debug('PaymentService: Got PaymentInfo from server', paymentInfo);
         return paymentInfo;
       } catch (err: any) {
-        this.logger.error(
-          'PaymentService: Error fetching payment info',
-          err,
-          this.auth.credentials,
-        );
+        this.logger.error('PaymentService: Error fetching payment info', err, credentials);
         throw err;
       }
     },
@@ -54,7 +56,12 @@ export class PaymentService {
 
   readonly paymentProofs = resource({
     params: this.authParams,
-    loader: async () => {
+    loader: async ({ params }) => {
+      if (!params) {
+        this.logger.debug('PaymentService::paymentProofs null params not loading resource');
+        return;
+      }
+      const credentials = params.credentials;
       this.logger.debug('PaymentService: Fetching PaymentProofs');
       try {
         const data = await this.api.getAsync<ImageJson[]>('trip-direct-payment-proof?expand=image');
@@ -64,11 +71,7 @@ export class PaymentService {
         const images: Image[] = data.map((json: any) => new Image(json.image));
         return images;
       } catch (err: any) {
-        this.logger.error(
-          'PaymentService: Error fetching PaymentProofs',
-          err,
-          this.auth.credentials,
-        );
+        this.logger.error('PaymentService: Error fetching PaymentProofs', err, credentials);
         throw err;
       }
     },
