@@ -73,6 +73,13 @@ export class AuthService {
     this._accessToken.set(access_token);
   }
 
+  /**
+   * This method is public because it is called from different components that handle
+   * different ways to authenticate. Register, Login and ResetPassword.
+   *
+   * It is also used by the initialize method.
+   * TODO: Update the parameter to AuthResponseJson once callers are updated
+   */
   setAuth(res: any) {
     this._accessToken.set(res.access_token);
     this._credentials.set(new Credentials(res.credentials));

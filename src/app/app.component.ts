@@ -1,6 +1,6 @@
 import { BreakpointObserver, Breakpoints, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
