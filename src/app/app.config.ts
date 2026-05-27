@@ -2,6 +2,8 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import {
   ApplicationConfig,
   importProvidersFrom,
+  inject,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
@@ -12,6 +14,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
 
+import { AuthService } from '@services/auth/auth.service';
 import { CustomTranslationsLoader } from '@services/custom-translate-loader/custom-translate-loader.service';
 import { environment } from 'src/environments/environment';
 import { routes } from './app.routing';
@@ -33,6 +36,9 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     { provide: HTTP_INTERCEPTORS, useClass: Auth401Interceptor, multi: true },
+    provideAppInitializer(async () => {
+      await inject(AuthService).initialize();
+    }),
     provideHttpClient(withInterceptorsFromDi()),
     provideCharts(withDefaultRegisterables()),
     provideNativeDateAdapter(),
