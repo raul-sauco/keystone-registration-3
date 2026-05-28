@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
       next: (res: any) => {
         // Todo
         if (!res.error && res.credentials && res.access_token) {
-          this.auth.setAuth(res);
+          this.auth.setCredentials(res);
           this.paymentService.reload();
           this.router.navigateByUrl('/home');
         } else {

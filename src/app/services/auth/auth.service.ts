@@ -8,8 +8,9 @@ import { AuthState } from '@models/auth-state';
 import { Credentials, CredentialsJson, UserType } from '@models/credentials';
 import { GlobalsService } from '@services/globals/globals.service';
 
-interface AuthResponseJson {
-  access_token: string;
+interface AuthCheckResponseJson {
+  error: boolean;
+  message: string;
   credentials: CredentialsJson;
 }
 
@@ -50,14 +51,14 @@ export class AuthService {
 
     try {
       const response = await firstValueFrom(
-        this.http.get<AuthResponseJson>(`${this.apiUrl}auth/check`, {
+        this.http.get<AuthCheckResponseJson>(`${this.apiUrl}auth/check`, {
           withCredentials: true,
         }),
       );
       this.logger.debug('AuthService::initialize got response from auth/check', response);
 
       if (response) {
-        this.setAuth(response);
+        this.setCredentials(response);
       } else {
         this._state.set(AuthState.Unauthenticated);
       }
@@ -71,7 +72,7 @@ export class AuthService {
     }
   }
 
-  refreshAccessToken(access_token: string) {
+  setAccessToken(access_token: string) {
     this._accessToken.set(access_token);
   }
 
@@ -81,8 +82,8 @@ export class AuthService {
    *
    * It is also used by the initialize method.
    */
-  setAuth(res: AuthResponseJson) {
-    this.logger.trace('AuthService::setAuth called', res);
+  setCredentials(res: AuthCheckResponseJson) {
+    this.logger.trace('AuthService::setCredentials called', res);
     this._credentials.set(new Credentials(res.credentials));
     if (!this.authenticated()) {
       this._state.set(AuthState.Authenticated);

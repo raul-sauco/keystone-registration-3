@@ -2,17 +2,17 @@
 import { Component, OnInit, inject } from '@angular/core';
 
 // 2. Angular platform modules
-import { formatDate, AsyncPipe } from '@angular/common';
+import { AsyncPipe, formatDate } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import {
   FormGroupDirective,
+  FormsModule,
   NgForm,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
-  FormsModule,
-  ReactiveFormsModule,
-  NonNullableFormBuilder,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -20,29 +20,29 @@ import { Router, RouterLink } from '@angular/router';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
+import { ErrorStateMatcher } from '@angular/material/core';
 import {
+  MatDatepicker,
   MatDatepickerInput,
   MatDatepickerToggle,
-  MatDatepicker,
 } from '@angular/material/datepicker';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
   MatDialogActions,
   MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
 } from '@angular/material/dialog';
-import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { ErrorStateMatcher } from '@angular/material/core';
 
 // 4. Third-party
-import { MarkdownComponent } from 'ngx-markdown';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { MarkdownComponent } from 'ngx-markdown';
 
 // 5. RxJS
 import { Observable, map } from 'rxjs';
@@ -210,7 +210,7 @@ export class RegisterComponent implements OnInit {
             },
           });
         } else {
-          this.auth.setAuth(response);
+          this.auth.setCredentials(response);
           this.loading = false;
           this.paymentService.reload();
           this.displayRegistrationSuccess();
@@ -293,6 +293,6 @@ export class RegistrationSuccessDialogComponent {
   constructor() {
     const auth = inject(AuthService);
 
-    this.username = auth.credentials?.username || null;
+    this.username = auth.credentialsSignal()?.username || null;
   }
 }

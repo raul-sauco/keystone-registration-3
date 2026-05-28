@@ -1,41 +1,40 @@
 import { Component, OnInit, inject } from '@angular/core';
 import {
+  FormGroupDirective,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  FormGroupDirective,
-  NgForm,
   Validators,
-  FormsModule,
-  ReactiveFormsModule,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import {
-  MatDialog,
-  MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialogTitle,
-  MatDialogContent,
+  MatDialog,
   MatDialogActions,
   MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
 } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
 import { DialogData } from 'src/app/interfaces/dialog-data';
-import { Credentials } from 'src/app/models/credentials';
 
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatButton } from '@angular/material/button';
-import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CdkScrollable } from '@angular/cdk/scrolling';
+import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -98,8 +97,8 @@ export class ResetPasswordComponent implements OnInit {
   /** Check the validity of the token against the backend. */
   validateToken(): void {
     const endpoint = 'reset-password?token=' + this.token;
-    this.api.get(endpoint).subscribe(
-      (res: any) => {
+    this.api.get(endpoint).subscribe({
+      next: (res: any) => {
         this.validating = false;
         if (!res.error) {
           this.isTokenValid = true;
@@ -125,7 +124,7 @@ export class ResetPasswordComponent implements OnInit {
           }
         }
       },
-      (err: any) => {
+      error: (err: any) => {
         this.validating = false;
         this.isTokenValid = false;
         this.logger.error('Error validating password reset token', err);
@@ -135,20 +134,24 @@ export class ResetPasswordComponent implements OnInit {
             content: 'ERROR_PERSISTS_CONTACT_US',
           },
         });
-        dialogRef.afterClosed().subscribe((res: any) => {
+        dialogRef.afterClosed().subscribe(() => {
           this.router.navigateByUrl('/home');
         });
       },
-    );
+    });
   }
 
   initPasswordResetForm(): void {
     this.passwordResetForm = this.formBuilder.group(
       {
-        password: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
-        passwordConfirm: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+        password: this.formBuilder.control('', {
+          validators: [Validators.required, Validators.minLength(8)],
+        }),
+        passwordConfirm: this.formBuilder.control('', {
+          validators: [Validators.required, Validators.minLength(8)],
+        }),
       },
-      { validator: passwordMatchValidator },
+      { validators: passwordMatchValidator },
     );
   }
 
@@ -166,12 +169,12 @@ export class ResetPasswordComponent implements OnInit {
       password: this.passwordResetForm.value.password,
       token: this.token,
     };
-    this.api.patch(endpoint, params).subscribe(
-      (res: any) => {
+    this.api.patch(endpoint, params).subscribe({
+      next: (res: any) => {
         this.loading = false;
         this.logger.debug('Success updating password', res);
         if (!res.error) {
-          this.auth.setAuth(res);
+          this.auth.setCredentials(res);
         } else {
           this.logger.warn('Password reset error', res);
         }
@@ -186,7 +189,7 @@ export class ResetPasswordComponent implements OnInit {
           this.router.navigateByUrl('/home');
         });
       },
-      (err: any) => {
+      error: (err: any) => {
         this.loading = false;
         this.passwordResetForm.reset();
         this.logger.error('Error updating password', err);
@@ -197,7 +200,7 @@ export class ResetPasswordComponent implements OnInit {
           },
         });
       },
-    );
+    });
   }
 }
 

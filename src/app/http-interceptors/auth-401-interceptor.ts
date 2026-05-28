@@ -73,7 +73,7 @@ export class Auth401Interceptor implements HttpInterceptor {
         access_token: string;
       }>(`${this.url}auth/refresh`, { withCredentials: true })
       .pipe(
-        tap((res) => this.auth.refreshAccessToken(res.access_token)),
+        tap((res) => this.auth.setAccessToken(res.access_token)),
         switchMap((res) => {
           const token = res.access_token;
           this.refreshing = false;
