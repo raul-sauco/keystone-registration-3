@@ -24,7 +24,7 @@ export class AuthService {
   private readonly apiUrl = this.globals.getApiUrl();
 
   // Private state
-  private readonly _auth = signal<AuthState>(AuthState.Unknown);
+  private readonly _state = signal<AuthState>(AuthState.Unknown);
   // Use the `signal` prefix while we keep the old getters
   private readonly _credentials = signal<Credentials | null>(null);
   private readonly _accessToken = signal<string | null>(null);
@@ -32,16 +32,16 @@ export class AuthService {
   // Public signals
   readonly initialized = signal(false);
 
-  readonly auth = this._auth.asReadonly();
+  readonly state = this._state.asReadonly();
   readonly credentialsSignal = this._credentials.asReadonly();
   readonly accessTokenSignal = this._accessToken.asReadonly();
 
-  readonly authenticated = computed(() => this.auth() === AuthState.Authenticated);
+  readonly authenticated = computed(() => this.state() === AuthState.Authenticated);
   readonly isTeacherSignal = computed(() => this.credentialsSignal()?.type == UserType.Teacher);
   readonly isStudentSignal = computed(() => this.credentialsSignal()?.type == UserType.Student);
 
-  // Legacy Observable API, update callers to use signals
-  readonly auth$ = toObservable(this.auth).pipe(distinctUntilChanged());
+  /** @deprecated update to signals */
+  readonly auth$ = toObservable(this.state).pipe(distinctUntilChanged());
 
   public redirectUrl?: string;
 
@@ -59,13 +59,13 @@ export class AuthService {
       if (response) {
         this.setAuth(response);
       } else {
-        this._auth.set(AuthState.Unauthenticated);
+        this._state.set(AuthState.Unauthenticated);
       }
     } catch (err) {
       this.logger.error(err);
       this.logger.warn('AuthService: User unauthenticated');
 
-      this._auth.set(AuthState.Unauthenticated);
+      this._state.set(AuthState.Unauthenticated);
     } finally {
       this.initialized.set(true);
     }
@@ -85,7 +85,7 @@ export class AuthService {
     this.logger.trace('AuthService::setAuth called', res);
     this._credentials.set(new Credentials(res.credentials));
     if (!this.authenticated()) {
-      this._auth.set(AuthState.Authenticated);
+      this._state.set(AuthState.Authenticated);
       this.logger.debug('AuthService: Authenticated');
     } else {
       this.logger.debug(`AuthService: Updating Auth access token and credentials.`);
@@ -177,6 +177,6 @@ export class AuthService {
   private clearSession(): void {
     this._credentials.set(null);
     this._accessToken.set(null);
-    this._auth.set(AuthState.Unauthenticated);
+    this._state.set(AuthState.Unauthenticated);
   }
 }
