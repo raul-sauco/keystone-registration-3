@@ -46,7 +46,7 @@ export class AuthService {
   public redirectUrl?: string;
 
   async initialize(): Promise<void> {
-    this.logger.debug('AuthService: Initializing auth');
+    this.logger.debug('AuthService::initialize called');
 
     try {
       const response = await firstValueFrom(
@@ -54,6 +54,7 @@ export class AuthService {
           withCredentials: true,
         }),
       );
+      this.logger.debug('AuthService::initialize got response from auth/check', response);
 
       if (response) {
         this.setAuth(response);
@@ -61,6 +62,7 @@ export class AuthService {
         this._auth.set(AuthState.Unauthenticated);
       }
     } catch (err) {
+      this.logger.error(err);
       this.logger.warn('AuthService: User unauthenticated');
 
       this._auth.set(AuthState.Unauthenticated);
@@ -80,7 +82,7 @@ export class AuthService {
    * It is also used by the initialize method.
    */
   setAuth(res: AuthResponseJson) {
-    this._accessToken.set(res.access_token);
+    this.logger.trace('AuthService::setAuth called', res);
     this._credentials.set(new Credentials(res.credentials));
     if (!this.authenticated()) {
       this._auth.set(AuthState.Authenticated);

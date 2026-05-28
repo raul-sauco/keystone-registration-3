@@ -132,7 +132,6 @@ export class AppComponent implements OnInit {
   );
 
   ngOnInit() {
-    this.checkAuth();
     this.initTranslate();
     this.router.events
       .pipe(
@@ -146,23 +145,6 @@ export class AppComponent implements OnInit {
       });
     // Subscribe to the routeStateService to get updates on the trip ID parameter
     this.tripId$ = this.routeStateService.tripIdParam$.pipe(delay(0));
-  }
-
-  /**
-   * Access token is only stored in-memory, check status when the app
-   * first launches, for example page refresh.
-   */
-  checkAuth() {
-    this.logger.debug('AppComponent::ngOnInit triggered authentication status check');
-    this.auth.auth$.subscribe({
-      next: (state: AuthState) => {
-        this.logger.debug(`AppComponent auth$ updated to ${state}`);
-        if (state === AuthState.Authenticated) {
-          this.studentService.init();
-        }
-      },
-    });
-    this.api.get('auth/check').subscribe();
   }
 
   initTranslate() {
