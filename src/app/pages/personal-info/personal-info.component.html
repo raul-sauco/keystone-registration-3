@@ -1,4 +1,5 @@
-@if (studentService.student$ | async; as student) {
+@let student = studentService.student();
+@if (student) {
   <div class="app-page-wrapper mat-typography">
     <div class="app-content-wrapper">
       @if (personalInfoForm) {
@@ -46,7 +47,7 @@
             <div
               class="inner-form-prompt"
               [innerHTML]="
-                (auth.isStudent ? 'PIF_HINT_CITIZENSHIP_STUDENT' : 'PIF_HINT_CITIZENSHIP')
+                (auth.isStudentSignal() ? 'PIF_HINT_CITIZENSHIP_STUDENT' : 'PIF_HINT_CITIZENSHIP')
                   | translate
               "
             ></div>
@@ -57,8 +58,10 @@
             <div
               class="inner-form-prompt"
               [innerHTML]="
-                (auth.isStudent ? 'PIF_HINT_TRAVEL_DOCUMENT_STUDENT' : 'PIF_HINT_TRAVEL_DOCUMENT')
-                  | translate
+                (auth.isStudentSignal()
+                  ? 'PIF_HINT_TRAVEL_DOCUMENT_STUDENT'
+                  : 'PIF_HINT_TRAVEL_DOCUMENT'
+                ) | translate
               "
             ></div>
             <mat-form-field appearance="outline">
@@ -106,9 +109,11 @@
 
             <!-- START Contact information section -->
             <h2>
-              {{ (auth.isStudent ? 'CONTACT_DETAILS_STUDENT' : 'CONTACT_DETAILS') | translate }}
+              {{
+                (auth.isStudentSignal() ? 'CONTACT_DETAILS_STUDENT' : 'CONTACT_DETAILS') | translate
+              }}
             </h2>
-            @if (auth.isStudent) {
+            @if (auth.isStudentSignal()) {
               <mat-form-field appearance="outline">
                 <mat-label>{{ student.getAttributeLabel('guardianName') }}</mat-label>
                 <input type="text" matInput formControlName="guardianName" />
@@ -138,7 +143,7 @@
               @let school = schoolService.school.value();
               @if (
                 school !== undefined &&
-                auth.isStudent &&
+                auth.isStudentSignal() &&
                 (school.useHouse ||
                   school.useRoomNumber ||
                   school.useGrade ||

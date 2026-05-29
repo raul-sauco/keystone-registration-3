@@ -1,35 +1,33 @@
-import { formatDate, AsyncPipe } from '@angular/common';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { AsyncPipe, formatDate } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild, effect, inject } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
   FormsModule,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import {
+  MatDatepicker,
   MatDatepickerInput,
   MatDatepickerToggle,
-  MatDatepicker,
 } from '@angular/material/datepicker';
-import { MatFormField, MatLabel, MatError, MatSuffix } from '@angular/material/form-field';
+import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { MatSelect, MatOption } from '@angular/material/select';
+import { MatOption, MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { MarkdownComponent } from 'ngx-markdown';
-import { Observable, Subject, filter, map, takeUntil } from 'rxjs';
+import { Observable, firstValueFrom, map } from 'rxjs';
 
-import { IdPhotoComponent } from './id-photo/id-photo.component';
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
-import { Student } from '@models/student';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { SchoolService } from '@services/school/school.service';
 import { StudentService } from '@services/student/student.service';
+import { IdPhotoComponent } from './id-photo/id-photo.component';
 
 @Component({
   selector: 'app-personal-info',
@@ -56,9 +54,9 @@ import { StudentService } from '@services/student/student.service';
     TranslatePipe,
   ],
 })
-export class PersonalInfoComponent implements OnInit, OnDestroy {
+export class PersonalInfoComponent implements OnInit {
   private api = inject(ApiService);
-  private formBuilder = inject(UntypedFormBuilder);
+  private formBuilder = inject(NonNullableFormBuilder);
   private snackBar = inject(MatSnackBar);
   private logger = inject(NGXLogger);
   private router = inject(Router);
@@ -68,8 +66,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   auth = inject(AuthService);
 
   @ViewChild('photoId') photoIdElement!: ElementRef;
-  private readonly destroy$ = new Subject<void>();
-  personalInfoForm!: UntypedFormGroup;
   idPhotoProvided = false;
   idPhotoRequired = false;
   lang: string = 'en';
@@ -77,30 +73,83 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   englishNamePromptContent$!: Observable<any>;
   requiredFieldsPromptContent$!: Observable<any>;
 
+  readonly personalInfoForm = this.formBuilder.group({
+    name: this.formBuilder.control('', {
+      validators: [Validators.required],
+    }),
+    englishName: this.formBuilder.control(''),
+    citizenship: this.formBuilder.control(''),
+    travelDocument: this.formBuilder.control('', {
+      validators: [Validators.required],
+    }),
+    email: this.formBuilder.control('', {
+      validators: [Validators.email],
+    }),
+    gender: this.formBuilder.control<number | null>(null),
+    dob: this.formBuilder.control('', {
+      validators: [Validators.required],
+    }),
+    guardianName: this.formBuilder.control(''),
+    emergencyContact: this.formBuilder.control(''),
+    house: this.formBuilder.control<string | null>(''),
+    roomNumber: this.formBuilder.control<string | null>(''),
+    homeroom: this.formBuilder.control<string | null>(''),
+    grade: this.formBuilder.control<string | null>(''),
+    studentId: this.formBuilder.control<string | null>(''),
+    wechatId: this.formBuilder.control(''),
+    dietaryRequirements: this.formBuilder.control<number | null>(null),
+    dietaryRequirementsOther: this.formBuilder.control(''),
+    allergies: this.formBuilder.control<number | null>(null),
+    allergiesOther: this.formBuilder.control(''),
+    medicalInformation: this.formBuilder.control(''),
+  });
+
+  constructor() {
+    effect(() => {
+      const student = this.studentService.student();
+
+      if (!student) {
+        return;
+      }
+
+      this.logger.debug('Updating personal info form from student signal', student);
+
+      this.personalInfoForm.patchValue({
+        name: student.name,
+        englishName: student.englishName,
+        citizenship: student.citizenship,
+        travelDocument: student.travelDocument,
+        email: student.email,
+        gender: student.gender,
+        dob: student.dob,
+        guardianName: student.guardianName,
+        emergencyContact: student.emergencyContact,
+        house: student.house,
+        roomNumber: student.roomNumber,
+        homeroom: student.homeroom,
+        grade: student.grade,
+        studentId: student.studentId,
+        wechatId: student.wechatId,
+        dietaryRequirements: student.dietaryRequirements,
+        dietaryRequirementsOther: student.dietaryRequirementsOther,
+        allergies: student.allergies,
+        allergiesOther: student.allergiesOther,
+        medicalInformation: student.medicalInformation,
+      });
+    });
+  }
+
   ngOnInit(): void {
     this.logger.debug('PersonalInfoComponent OnInit');
     this.lang = this.translate.getCurrentLang().includes('zh') ? 'zh' : 'en';
-    this.studentService.student$
-      .pipe(
-        filter((student): student is Student => student !== null),
-        takeUntil(this.destroy$),
-      )
-      .subscribe({
-        next: (student: Student) => {
-          this.logger.debug('PersonalInfoComponent: student$ subscription update', student);
-          this.initPersonalInfoForm(student);
-          this.idPhotoRequired = student.idPhotoRequired;
-        },
-        error: (error: any) => {
-          this.logger.error('PersonalInfoComponent StudentService student$ error', error);
-        },
-      });
     this.fetchContents();
   }
 
+  // TODO: This documents are small enough that could go into the translations
   fetchContents() {
-    this.namePromptContent$ = this.fetchDocumentById(this.auth.isStudent ? 145 : 146);
-    this.englishNamePromptContent$ = this.fetchDocumentById(this.auth.isStudent ? 147 : 142);
+    const isStudent = this.auth.isStudentSignal();
+    this.namePromptContent$ = this.fetchDocumentById(isStudent ? 145 : 146);
+    this.englishNamePromptContent$ = this.fetchDocumentById(isStudent ? 147 : 142);
     this.requiredFieldsPromptContent$ = this.fetchDocumentById(144);
   }
 
@@ -108,12 +157,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     return this.api
       .get(`documents/${id}`)
       .pipe(map((content: any) => (this.lang === 'zh' ? content.text_zh : content.text)));
-  }
-
-  ngOnDestroy(): void {
-    this.logger.debug('PersonalInfoComponent on destroy');
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   get name() {
@@ -148,66 +191,46 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     return this.personalInfoForm.get('studentId');
   }
 
-  initPersonalInfoForm(student: Student): void {
-    this.personalInfoForm = this.formBuilder.group({
-      name: [student.name, Validators.required],
-      englishName: [student.englishName],
-      citizenship: [student.citizenship],
-      travelDocument: [student.travelDocument, Validators.required],
-      email: [student.email, Validators.email],
-      gender: [student.gender],
-      dob: [student.dob, Validators.required],
-      guardianName: [student.guardianName],
-      emergencyContact: [student.emergencyContact],
-      house: [student.house],
-      roomNumber: [student.roomNumber],
-      homeroom: [student.homeroom],
-      grade: [student.grade],
-      studentId: [student.studentId],
-      wechatId: [student.wechatId],
-      dietaryRequirements: [student.dietaryRequirements],
-      dietaryRequirementsOther: [student.dietaryRequirementsOther],
-      allergies: [student.allergies],
-      allergiesOther: [student.allergiesOther],
-      medicalInformation: [student.medicalInformation],
-    });
-  }
-
   /** Handle form submission */
-  submitPersonalInfoForm(): void {
+  async submitPersonalInfoForm(): Promise<void> {
     this.logger.debug('PersonalInfoComponent::submitPersonalInfoForm()');
+
     if (this.idPhotoRequired && !this.idPhotoProvided) {
       this.logger.debug('PersonalInfoComponent no photo ID provided yet, preventing submission.');
+
       this.snackBar.open(this.translate.instant('PIF_WARNING_PROVIDE_ID_PHOTO'), undefined, {
         duration: 3000,
       });
-      this.logger.debug(this.photoIdElement.nativeElement);
+
       this.photoIdElement.nativeElement.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       });
+
       return;
     }
+
     const studentData = this.sanitizeData(this.personalInfoForm.value);
-    this.studentService.updateStudent(studentData).subscribe({
-      next: (student: Student) => {
-        this.logger.debug('PersonalInfoComponent updated student data', student);
-        this.snackBar
-          .open(this.translate.instant('PERSONAL_INFO_UPDATED'), undefined, {
-            duration: 3000,
-          })
-          .afterDismissed()
-          .subscribe({
-            next: () => {
-              if (student.waiverAccepted) {
-                this.router.navigateByUrl('/home');
-              } else {
-                this.router.navigateByUrl('/waiver');
-              }
-            },
-          });
-      },
-    });
+    try {
+      await this.studentService.updateStudent(studentData);
+      const student = this.studentService.student();
+      this.logger.debug('PersonalInfoComponent: updated student data', student);
+      if (student === null) {
+        throw Error('Got empty student data');
+      }
+      const snackBarRef = this.snackBar.open(
+        this.translate.instant('PERSONAL_INFO_UPDATED'),
+        undefined,
+        { duration: 3000 },
+      );
+
+      await firstValueFrom(snackBarRef.afterDismissed());
+
+      await this.router.navigateByUrl(student.waiverAccepted ? '/home' : '/waiver');
+    } catch (err) {
+      this.logger.error('PersonalInfoComponent: Error updating student data', err);
+      // TODO: Display the error in the UI
+    }
   }
 
   /** Compare number select values to determine if we have a value already. */

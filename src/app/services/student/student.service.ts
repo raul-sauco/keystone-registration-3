@@ -55,6 +55,7 @@ export class StudentService {
       this._student.set(new Student(studentJson, this.translate));
     } catch (err: any) {
       this.logger.error('StudentService::updateStudent Error patching student', err, credentials);
+      throw err;
     }
   }
 }
