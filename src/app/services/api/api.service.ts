@@ -60,10 +60,6 @@ export class ApiService {
     params?: any,
     reqOpts?: JsonRequestOptions,
   ): Promise<T> {
-    const url =
-      endpoint.includes('http://') || endpoint.includes('https://')
-        ? endpoint
-        : this.url + endpoint;
     reqOpts = this.addDefaultReqOps(reqOpts);
     // Support easy query params for GET requests
     if (params) {
@@ -74,7 +70,13 @@ export class ApiService {
         reqOpts.params = reqOpts.params.set(k, params[k]);
       }
     }
-    return firstValueFrom(this.http.get<T>(url, reqOpts));
+    return firstValueFrom(this.http.get<T>(this.buildUrl(endpoint), reqOpts));
+  }
+
+  patchAsync<T = unknown>(endpoint: string, body: any, reqOpts?: JsonRequestOptions): Promise<T> {
+    return firstValueFrom(
+      this.http.patch<T>(this.buildUrl(endpoint), body, this.addDefaultReqOps(reqOpts)),
+    );
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
@@ -158,7 +160,7 @@ export class ApiService {
         'Content-Type': 'application/json',
       });
       if (this.auth.authenticated()) {
-        headers = headers.set('Authorization', ` Bearer ${this.auth.accessToken}`);
+        headers = headers.set('Authorization', ` Bearer ${this.auth.accessTokenSignal()}`);
       }
       reqOpts = {
         params: new HttpParams(),
@@ -167,6 +169,12 @@ export class ApiService {
       };
     }
     return reqOpts;
+  }
+
+  private buildUrl(endpoint: string): string {
+    return endpoint.startsWith('http://') || endpoint.startsWith('https://')
+      ? endpoint
+      : this.url + endpoint;
   }
 }
 
