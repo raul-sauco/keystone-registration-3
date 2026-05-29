@@ -1,35 +1,27 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Component, effect, inject } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { filter, Subject, takeUntil } from 'rxjs';
 
-import { WaiverContentComponent } from './waiver-content/waiver-content.component';
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { Student } from '@models/student';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { StudentService } from '@services/student/student.service';
+import { WaiverContentComponent } from './waiver-content/waiver-content.component';
 
 @Component({
   selector: 'app-waiver',
   templateUrl: './waiver.component.html',
   styleUrls: ['./waiver.component.scss'],
   imports: [
-    AsyncPipe,
     DatePipe,
     FormsModule,
     LoadingSpinnerContentComponent,
@@ -44,90 +36,84 @@ import { StudentService } from '@services/student/student.service';
     WaiverContentComponent,
   ],
 })
-export class WaiverComponent implements OnInit, OnDestroy {
-  private formBuilder = inject(UntypedFormBuilder);
+export class WaiverComponent {
+  private formBuilder = inject(FormBuilder);
   private logger = inject(NGXLogger);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
 
-  auth = inject(AuthService);
-  paymentService = inject(PaymentService);
-  studentService = inject(StudentService);
-  translate = inject(TranslateService);
+  readonly auth = inject(AuthService);
+  readonly paymentService = inject(PaymentService);
+  readonly studentService = inject(StudentService);
+  readonly translate = inject(TranslateService);
 
   posting = false;
-  waiverForm!: UntypedFormGroup;
-  private readonly destroy$ = new Subject<void>();
 
-  ngOnInit(): void {
+  readonly waiverForm = this.formBuilder.nonNullable.group({
+    name: ['', Validators.required],
+    guardianName: [''],
+  });
+
+  constructor() {
     this.logger.debug('WaiverComponent OnInit');
-    this.studentService.student$
-      .pipe(
-        filter((student): student is Student => student !== null),
-        takeUntil(this.destroy$),
-      )
-      .subscribe({
-        next: (student) => {
-          if (student !== null) {
-            this.logger.debug('WaiverComponent next student$', student);
-            this.initWaiverForm(student);
-          }
-        },
-        error: (error) => {
-          this.logger.error('WaiverComponent studentService.student$ error', error);
-        },
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.logger.debug('WaiverComponent on destroy');
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  get name() {
-    return this.waiverForm.get('name');
-  }
-  get guardianName() {
-    return this.waiverForm.get('guardianName');
-  }
-
-  initWaiverForm(stu: Student): void {
-    this.waiverForm = this.formBuilder.group({
-      name: [stu.name || '', Validators.required],
-      guardianName: [stu.guardianName || '', this.auth.isStudent ? Validators.required : null],
+    effect(() => {
+      const student = this.studentService.student();
+      if (!student) {
+        return;
+      }
+      this.logger.debug('WaiverComponent student updated', student);
+      this.populateForm(student);
     });
   }
 
-  /** Mark the student as having accepted the terms&conditions today. */
-  acceptWaiver(): void {
+  get name() {
+    return this.waiverForm.controls.name;
+  }
+  get guardianName() {
+    return this.waiverForm.controls.guardianName;
+  }
+
+  private populateForm(student: Student): void {
+    this.waiverForm.patchValue({
+      name: student.name || '',
+      guardianName: student.guardianName || '',
+    });
+
+    if (this.auth.isStudentSignal()) {
+      this.guardianName.addValidators(Validators.required);
+    } else {
+      this.guardianName.clearValidators();
+    }
+
+    this.guardianName.updateValueAndValidity();
+  }
+
+  async acceptWaiver(): Promise<void> {
     const today = new Date().toISOString().substring(0, 10);
     const studentData = {
-      name: this.waiverForm.value.name,
-      guardian_name: this.waiverForm.value.guardianName,
+      name: this.name.value,
+      guardian_name: this.guardianName.value,
       waiver_accepted: 1,
       waiver_signed_on: today,
       terms_accepted: 1,
       terms_accepted_on: today,
     };
     this.posting = true;
-    this.studentService.updateStudent(studentData).subscribe({
-      next: () => {
-        this.posting = false;
-        const snackBar = this.snackBar.open(this.translate.instant('WAIVER_ACCEPTED'), undefined, {
-          duration: 2000,
-        });
-        snackBar.afterDismissed().subscribe(() => {
-          const destination = this.paymentService.paymentInfo.value()?.required
-            ? '/payments'
-            : '/home';
-          this.router.navigateByUrl(destination);
-        });
-      },
-      error: (error: any) => {
-        this.posting = false;
-        this.logger.error(`Error sending waiver`, error);
-      },
-    });
+    try {
+      await this.studentService.updateStudent(studentData);
+      const snackBar = this.snackBar.open(this.translate.instant('WAIVER_ACCEPTED'), undefined, {
+        duration: 2000,
+      });
+      snackBar.afterDismissed().subscribe(() => {
+        const destination = this.paymentService.paymentInfo.value()?.required
+          ? '/payments'
+          : '/home';
+        this.router.navigateByUrl(destination);
+      });
+    } catch (error) {
+      this.logger.error('Error sending waiver', error);
+    } finally {
+      this.posting = false;
+    }
   }
 }

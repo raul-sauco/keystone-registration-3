@@ -1,4 +1,4 @@
-@if (studentService.student$ | async; as student) {
+@if (studentService.student(); as student) {
   <div class="app-page-wrapper mat-typography">
     <div class="app-content-wrapper">
       @if (!student.waiverAccepted) {
@@ -14,25 +14,27 @@
           </p>
         }
         <app-waiver-content></app-waiver-content>
-        @if (waiverForm && !student.waiverAccepted) {
+        @if (!student.waiverAccepted) {
           <div id="waiver-form-container">
             <form [formGroup]="waiverForm" id="waiver-form">
               <mat-form-field appearance="outline">
                 <mat-label>{{
-                  auth.isStudent ? ('STUDENT_NAME' | translate) : student.getAttributeLabel('name')
+                  auth.isStudentSignal()
+                    ? ('STUDENT_NAME' | translate)
+                    : student.getAttributeLabel('name')
                 }}</mat-label>
                 <input type="text" matInput formControlName="name" required />
-                @if (name?.errors?.required) {
+                @if (name.hasError('required')) {
                   <mat-error>
                     {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
                   </mat-error>
                 }
               </mat-form-field>
-              @if (auth.isStudent) {
+              @if (auth.isStudentSignal()) {
                 <mat-form-field appearance="outline">
                   <mat-label>{{ student.getAttributeLabel('guardianName') }}</mat-label>
                   <input type="text" matInput formControlName="guardianName" required />
-                  @if (guardianName?.errors?.required) {
+                  @if (guardianName.hasError('required')) {
                     <mat-error>
                       {{ 'THIS_FIELD_IS_REQUIRED' | translate }}
                     </mat-error>
