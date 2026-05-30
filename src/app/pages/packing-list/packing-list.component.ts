@@ -1,21 +1,20 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
+import { MarkdownPipe } from 'ngx-markdown';
 import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PackingListService } from 'src/app/services/packing-list/packing-list.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
-import { AsyncPipe } from '@angular/common';
-import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
 import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
-import { MatTabGroup, MatTab, MatTabLabel } from '@angular/material/tabs';
-import { MatIcon } from '@angular/material/icon';
-import { PackingListItemComponent } from '../../components/packing-list-item/packing-list-item.component';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { MarkdownPipe } from 'ngx-markdown';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { PackingListItemComponent } from '../../components/packing-list-item/packing-list-item.component';
 
 @Component({
   selector: 'app-packing-list',
@@ -41,7 +40,6 @@ export class PackingListComponent implements OnInit, OnDestroy {
   private packingListService = inject(PackingListService);
   private logger = inject(NGXLogger);
   private routeStateService = inject(RouteStateService);
-  private tripSwitcher = inject(TripSwitcherService);
   sanitizer = inject(DomSanitizer);
 
   itemsBring: TripPackingListItem[] = [];
@@ -63,14 +61,7 @@ export class PackingListComponent implements OnInit, OnDestroy {
       } else {
         this.auth.checkAuthenticated().then((res: boolean) => {
           if (res) {
-            if (this.auth.isSchoolAdmin) {
-              if (this.tripSwitcher.selectedTrip) {
-                this.fetch(`${this.tripSwitcher.selectedTrip.id}`);
-              }
-              // Nothing to do for school admins that haven't selected a trip.
-            } else {
-              this.fetch();
-            }
+            this.fetch();
           } else {
             this.needsLogin = true;
           }

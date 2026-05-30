@@ -20,7 +20,6 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { StudentService } from '@services/student/student.service';
-import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
 
 @Component({
@@ -56,7 +55,6 @@ export class AppComponent implements OnInit {
   auth = inject(AuthService);
   paymentService = inject(PaymentService);
   studentService = inject(StudentService);
-  tripSwitcher = inject(TripSwitcherService);
   tripService = inject(TripService);
   // Expose the enum to the template, otherwise not available
   AuthState = AuthState;

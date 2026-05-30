@@ -1,20 +1,19 @@
+import { AsyncPipe } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
-import { AsyncPipe } from '@angular/common';
-import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
 import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
-import { MatIcon } from '@angular/material/icon';
-import { NoResultsComponent } from '../../components/no-results/no-results.component';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
+import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
+import { NoResultsComponent } from '../../components/no-results/no-results.component';
 
 @Component({
   selector: 'app-program-overview',
@@ -38,7 +37,6 @@ export class ProgramOverviewComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private routeStateService = inject(RouteStateService);
   private translate = inject(TranslateService);
-  private tripSwitcher = inject(TripSwitcherService);
 
   document$: Observable<any> | null = null;
   url: string;
@@ -64,15 +62,7 @@ export class ProgramOverviewComponent implements OnInit {
         // No trip id router parameter
         this.auth.checkAuthenticated().then((res: boolean) => {
           if (res) {
-            if (this.auth.isSchoolAdmin) {
-              if (this.tripSwitcher.selectedTrip) {
-                this.fetchPdfData(`${this.tripSwitcher.selectedTrip.id}`);
-              } else {
-                this.document$ = of([]);
-              }
-            } else {
-              this.fetchPdfData();
-            }
+            this.fetchPdfData();
           } else {
             // We are not fetching anything, inform the user
             this.needsLogin = true;

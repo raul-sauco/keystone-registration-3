@@ -2,27 +2,26 @@ import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import {
   FormGroupDirective,
+  FormsModule,
   NgForm,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
-  FormsModule,
-  ReactiveFormsModule,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { NGXLogger } from 'ngx-logger';
 import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
 import { UniqueUsernameValidator } from 'src/app/directives/unique-username-validator.directive';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { TripSwitcherService } from 'src/app/services/trip-switcher/trip-switcher.service';
-import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 
-import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
 import { TranslatePipe } from '@ngx-translate/core';
 
 /** Error when the parent is invalid */
@@ -55,7 +54,6 @@ export class AddParticipantComponent implements OnInit {
   private formBuilder = inject(UntypedFormBuilder);
   private logger = inject(NGXLogger);
   private uniqueUsernameValidator = inject(UniqueUsernameValidator);
-  private tripSwitcher = inject(TripSwitcherService);
 
   participantForm!: UntypedFormGroup;
   errorMatcher!: CrossFieldErrorMatcher;
@@ -109,9 +107,6 @@ export class AddParticipantComponent implements OnInit {
    */
   submitForm(): void {
     const data = this.participantForm.value;
-    if (this.auth.isSchoolAdmin && this.tripSwitcher.selectedTrip) {
-      data.tripId = this.tripSwitcher.selectedTrip.id;
-    }
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

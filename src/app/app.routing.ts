@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 
 import { AuthGuard } from '@guards/auth.guard';
 import { NoAuthGuard } from '@guards/no-auth.guard';
-import { SchoolAdminGuard } from '@guards/school-admin.guard';
 import { teacherGuard } from '@guards/teacher.guard';
 
 export const routes: Routes = [
@@ -154,12 +153,6 @@ export const routes: Routes = [
     path: 'waiver',
     loadComponent: () => import('./pages/waiver/waiver.component').then((m) => m.WaiverComponent),
     canActivate: [AuthGuard],
-  },
-  {
-    path: 'trip-switcher',
-    loadChildren: () =>
-      import('./pages/trip-switcher/trip-switcher.module').then((m) => m.TripSwitcherModule),
-    canActivate: [SchoolAdminGuard],
   },
   {
     path: 'forgot-password',
