@@ -79,6 +79,12 @@ export class ApiService {
     );
   }
 
+  postAsync<T = unknown>(endpoint: string, body: any, reqOpts?: JsonRequestOptions): Promise<T> {
+    return firstValueFrom(
+      this.http.post<T>(this.buildUrl(endpoint), body, this.addDefaultReqOps(reqOpts)),
+    );
+  }
+
   post(endpoint: string, body: any, reqOpts?: any) {
     return this.http.post(this.url + endpoint, body, this.addDefaultReqOps(reqOpts));
   }
