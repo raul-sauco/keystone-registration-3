@@ -1,5 +1,6 @@
 <!--App Component HTML file. App bar and sidebar menu, render router outlet on the rest -->
-@let authState = auth.auth$ | async;
+@let authState = auth.state();
+@let authenticated = auth.authenticated();
 <mat-toolbar id="main-header">
   @if (isHandset$ | async) {
     <button
@@ -78,7 +79,8 @@
         <mat-divider [inset]="true"></mat-divider>
       </a>
       <!-- Registration links -->
-      @if (authState === AuthState.Authenticated) {
+      @let student = studentService.student();
+      @if (authenticated && student) {
         <h3 matSubheader>{{ 'REGISTRATION' | translate | uppercase }}</h3>
         <a mat-list-item routerLink="/personal-info">
           <div matListItemIcon>
@@ -86,7 +88,7 @@
               color="primary"
               matBadge="!"
               matBadgeColor="warn"
-              [matBadgeHidden]="(studentService.student$ | async)?.hasProvidedInformation()"
+              [matBadgeHidden]="student.hasProvidedInformation()"
               >person</mat-icon
             >
           </div>
@@ -99,10 +101,7 @@
               color="primary"
               matBadge="!"
               matBadgeColor="warn"
-              [matBadgeHidden]="
-                (studentService.student$ | async)?.isSampleAccount ||
-                (studentService.student$ | async)?.waiverAccepted
-              "
+              [matBadgeHidden]="student.isSampleAccount || student.waiverAccepted"
               >verified_user</mat-icon
             >
           </div>

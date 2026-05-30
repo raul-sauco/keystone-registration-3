@@ -1,7 +1,6 @@
 import { BreakpointObserver, Breakpoints, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
 import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +11,7 @@ import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerModule, NGXLogger } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
-import { delay, filter, map, Observable, of, shareReplay, withLatestFrom } from 'rxjs';
+import { filter, map, Observable, of, shareReplay, withLatestFrom } from 'rxjs';
 
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
@@ -20,7 +19,6 @@ import { AuthState } from '@models/auth-state';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
-import { RouteStateService } from '@services/route-state/route-state.service';
 import { StudentService } from '@services/student/student.service';
 import { TripSwitcherService } from '@services/trip-switcher/trip-switcher.service';
 import { TripService } from '@services/trip/trip.service';
@@ -53,7 +51,6 @@ export class AppComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
   translate = inject(TranslateService);
   private logger = inject(NGXLogger);
-  private routeStateService = inject(RouteStateService);
   private router = inject(Router);
   private api = inject(ApiService);
   auth = inject(AuthService);
@@ -71,6 +68,7 @@ export class AppComponent implements OnInit {
   tripId: string | null = null;
   enableFullNavigation$!: Observable<boolean>;
 
+  // TODO: Cleanup moving pages to a separate file
   public appPages = [
     {
       title: 'ITINERARY',
@@ -126,6 +124,7 @@ export class AppComponent implements OnInit {
     },
   ];
 
+  // TODO: Review if this is the best way to work the drawer currently
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map((result) => result.matches),
     shareReplay(),
@@ -143,8 +142,6 @@ export class AppComponent implements OnInit {
           this.drawer.close();
         }
       });
-    // Subscribe to the routeStateService to get updates on the trip ID parameter
-    this.tripId$ = this.routeStateService.tripIdParam$.pipe(delay(0));
   }
 
   initTranslate() {
@@ -191,7 +188,7 @@ export class AppComponent implements OnInit {
       return false;
     }
 
-    const student = this.student();
+    const student = this.studentService.student();
     if (!student) {
       return false;
     }
@@ -205,7 +202,7 @@ export class AppComponent implements OnInit {
       return false;
     }
 
-    if (this.auth.isStudent && paymentInfo.required && !paymentInfo.paid) {
+    if (this.auth.isStudentSignal() && paymentInfo.required && !paymentInfo.paid) {
       return false;
     }
 
@@ -214,15 +211,13 @@ export class AppComponent implements OnInit {
 
   /** Logout the current application user */
   async logout() {
+    const username = this.auth.credentialsSignal()?.username;
     try {
-      this.logger.debug(`Logging out user ${this.auth.credentials?.username}`);
+      this.logger.debug(`Logging out user ${username}`);
       await this.auth.logout();
       this.router.navigateByUrl('/login');
     } catch (error) {
       this.logger.warn('AppComponent error logging out', error);
     }
   }
-
-  // TODO: Transitional method while StudentService is still using Obserbables.
-  readonly student = toSignal(this.studentService.student$, { initialValue: null });
 }

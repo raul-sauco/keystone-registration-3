@@ -1,7 +1,9 @@
-import { AuthService } from './../auth/auth.service';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { AuthService } from './../auth/auth.service';
+
+// TODO: Delete this service, we do not use trip id any more, migrated to sample accounts
 
 @Injectable({
   providedIn: 'root',
