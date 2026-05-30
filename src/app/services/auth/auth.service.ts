@@ -62,9 +62,11 @@ export class AuthService {
       } else {
         this._state.set(AuthState.Unauthenticated);
       }
-    } catch (err) {
-      this.logger.error(err);
-      this.logger.warn('AuthService: User unauthenticated');
+    } catch (err: any) {
+      this.logger.info('AuthService::initialize Could not authenticate a User');
+      if (err.status !== 401) {
+        this.logger.error(err);
+      }
 
       this._state.set(AuthState.Unauthenticated);
     } finally {
