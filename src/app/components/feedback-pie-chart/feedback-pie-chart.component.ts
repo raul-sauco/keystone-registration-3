@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
@@ -7,6 +7,7 @@ import { BaseChartDirective } from 'ng2-charts';
   templateUrl: './feedback-pie-chart.component.html',
   styleUrls: ['./feedback-pie-chart.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BaseChartDirective],
 })
 export class FeedbackPieChartComponent implements OnInit {

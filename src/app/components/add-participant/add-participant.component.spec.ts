@@ -1,6 +1,7 @@
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +15,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { AddParticipantComponent } from './add-participant.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AddParticipantComponent', () => {
   let component: AddParticipantComponent;
@@ -47,7 +47,7 @@ describe('AddParticipantComponent', () => {
           useValue: {},
         },
         UntypedFormBuilder,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 
@@ -7,16 +7,17 @@ import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 import { PaymentService } from '@services/payment/payment.service';
 
+import { PaymentClosedComponent } from './payment-closed/payment-closed.component';
 import { PaymentInstructionsComponent } from './payment-instructions/payment-instructions.component';
 import { PaymentQrCodesComponent } from './payment-qr-codes/payment-qr-codes.component';
 import { PaymentUploadProofComponent } from './payment-upload-proof/payment-upload-proof.component';
 import { PaymentUploadedComponent } from './payment-uploaded/payment-uploaded.component';
-import { PaymentClosedComponent } from './payment-closed/payment-closed.component';
 
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     PaymentInstructionsComponent,
     PaymentQrCodesComponent,

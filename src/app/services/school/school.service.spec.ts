@@ -7,11 +7,11 @@ import { Spied } from 'src/app/interfaces/spied';
 import { Credentials } from 'src/app/models/credentials';
 import { School } from 'src/app/models/school';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SchoolService } from 'src/app/services/school/school.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SchoolService', () => {
   let service: SchoolService;
@@ -25,7 +25,10 @@ describe('SchoolService', () => {
   it('should be created', () => {
     TestBed.configureTestingModule({
       imports: [LoggerTestingModule],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
     service = TestBed.inject(SchoolService);
     expect(service).toBeTruthy();
@@ -64,7 +67,7 @@ describe('SchoolService', () => {
           { provide: AuthService, useValue: authServiceSpy },
           { provide: StorageService, useValue: storageServiceSpy },
           { provide: NGXLogger, useValue: loggerSpy },
-          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClient(withXhr(), withInterceptorsFromDi()),
           provideHttpClientTesting(),
         ],
       });
@@ -142,7 +145,7 @@ describe('SchoolService', () => {
           { provide: StorageService, useValue: storageServiceSpy },
           { provide: NGXLogger, useValue: loggerSpy },
           { provide: ApiService, useValue: apiServiceSpy },
-          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClient(withXhr(), withInterceptorsFromDi()),
           provideHttpClientTesting(),
         ],
       });
@@ -201,7 +204,7 @@ describe('SchoolService', () => {
           { provide: StorageService, useValue: storageServiceSpy },
           { provide: NGXLogger, useValue: loggerSpy },
           { provide: ApiService, useValue: apiServiceSpy },
-          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClient(withXhr(), withInterceptorsFromDi()),
           provideHttpClientTesting(),
         ],
       });
@@ -256,7 +259,7 @@ describe('SchoolService', () => {
           { provide: StorageService, useValue: storageServiceSpy },
           { provide: NGXLogger, useValue: loggerSpy },
           { provide: ApiService, useValue: apiServiceSpy },
-          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClient(withXhr(), withInterceptorsFromDi()),
           provideHttpClientTesting(),
         ],
       });

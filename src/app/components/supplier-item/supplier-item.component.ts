@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Supplier } from 'src/app/models/supplier';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import { MatIcon } from '@angular/material/icon';
   selector: 'app-supplier-item',
   templateUrl: './supplier-item.component.html',
   styleUrls: ['./supplier-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardHeader,

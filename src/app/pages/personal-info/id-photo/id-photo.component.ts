@@ -1,5 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,6 +25,7 @@ import { GlobalsService } from '@services/globals/globals.service';
   selector: 'app-id-photo',
   imports: [MatButtonModule, MatIconModule, MatProgressBarModule, TranslateModule],
   templateUrl: './id-photo.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './id-photo.component.scss',
 })
 export class IdPhotoComponent implements OnInit {

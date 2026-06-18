@@ -76,7 +76,7 @@
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel('gender') }}</mat-label>
               <mat-select formControlName="gender" [compareWith]="intValueCompare">
-                @if (gender?.value === null) {
+                @if ($safeNavigationMigration(gender?.value) === null) {
                   <mat-option value="">
                     <!-- Acts as a placeholder when gender is null -->
                     {{ 'SELECT_GENDER' | translate }}

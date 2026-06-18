@@ -11,8 +11,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { ForgotPasswordComponent } from './forgot-password.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ForgotPasswordComponent', () => {
   let component: ForgotPasswordComponent;
@@ -36,7 +36,10 @@ describe('ForgotPasswordComponent', () => {
         NoopAnimationsModule,
         ForgotPasswordComponent,
       ],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   }));
 

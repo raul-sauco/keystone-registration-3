@@ -1,18 +1,19 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 
+import { AsyncPipe } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
-import { AsyncPipe } from '@angular/common';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-payment-qr-codes',
   templateUrl: './payment-qr-codes.component.html',
   styleUrls: ['./payment-qr-codes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatProgressSpinner, AsyncPipe],
 })
 export class PaymentQrCodesComponent implements OnInit {

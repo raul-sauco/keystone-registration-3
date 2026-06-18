@@ -6,10 +6,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { TripCodesComponent } from '@pages/trip-codes/trip-codes.component';
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
 import { RegisterComponent } from './register.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -27,7 +27,7 @@ describe('RegisterComponent', () => {
       ],
       providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();

@@ -1,39 +1,40 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import {
+  FormsModule,
+  ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
-  FormsModule,
-  ReactiveFormsModule,
 } from '@angular/forms';
+import { MatCard, MatCardContent } from '@angular/material/card';
 import {
-  MatDialog,
-  MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialogTitle,
-  MatDialogContent,
+  MatDialog,
   MatDialogActions,
   MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
 } from '@angular/material/dialog';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { DialogData } from 'src/app/interfaces/dialog-data';
 import { ApiService } from 'src/app/services/api/api.service';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 
-import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatButton } from '@angular/material/button';
-import { TranslatePipe } from '@ngx-translate/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardContent,
@@ -159,6 +160,7 @@ export class ForgotPasswordComponent implements OnInit {
 @Component({
   selector: 'app-forgot-password-dialog-component',
   templateUrl: './forgot-password-dialog-component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     CdkScrollable,

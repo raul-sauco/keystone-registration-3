@@ -1,3 +1,4 @@
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SecurityContext } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -12,7 +13,6 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { PackingListComponent } from './packing-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PackingListComponent', () => {
   let component: PackingListComponent;
@@ -37,7 +37,10 @@ describe('PackingListComponent', () => {
         }),
         PackingListComponent,
       ],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   }));
 

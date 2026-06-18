@@ -1,31 +1,32 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   MatDialog,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
   MatDialogActions,
   MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
 } from '@angular/material/dialog';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, map } from 'rxjs';
 
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { AsyncPipe } from '@angular/common';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { AsyncPipe } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
-import { MatIcon } from '@angular/material/icon';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-payment-instructions',
   templateUrl: './payment-instructions.component.html',
   styleUrls: ['./payment-instructions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MarkdownComponent, MatIconButton, MatIcon, MatProgressSpinner, AsyncPipe],
 })
 export class PaymentInstructionsComponent implements OnInit, OnDestroy {
@@ -96,6 +97,7 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   selector: 'app-add-participant-info-to-payment-reminder-dialog-component',
   templateUrl: './add-participant-info-to-payment-reminder-dialog.component.html',
   styleUrls: ['./add-participant-info-to-payment-reminder-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -127,6 +129,7 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
   selector: 'app-add-student-name-to-payment-proof-help-dialog-component',
   templateUrl: './add-student-name-to-payment-proof-help-dialog.component.html',
   styleUrls: ['./add-student-name-to-payment-proof-help-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CdkScrollable, MatDialogContent],
 })
 export class AddStudentNameToPaymentProofHelpDialogComponent {

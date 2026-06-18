@@ -4,6 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { of, throwError } from 'rxjs';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { Spied } from '@interfaces/spied';
 import { Credentials } from '@models/credentials';
 import { Image } from '@models/image';
@@ -12,7 +13,6 @@ import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { StorageService } from '@services/storage/storage.service';
 import { PaymentService } from './payment.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -47,7 +47,7 @@ describe('PaymentService', () => {
         { provide: StorageService, useValue: storageServiceSpy },
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: AuthService, useValue: authServiceSpy },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

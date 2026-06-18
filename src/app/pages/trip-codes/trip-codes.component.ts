@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -40,6 +40,7 @@ export interface DialogData {
   selector: 'app-trip-codes',
   templateUrl: './trip-codes.component.html',
   styleUrls: ['./trip-codes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardContent,
@@ -152,6 +153,7 @@ export class TripCodesComponent {
 @Component({
   selector: 'app-code-error-dialog-component',
   templateUrl: './code-error-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -173,6 +175,7 @@ export class CodeErrorDialogComponent {
 @Component({
   selector: 'app-trip-code-help-dialog-component',
   templateUrl: './trip-code-help-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     CdkScrollable,

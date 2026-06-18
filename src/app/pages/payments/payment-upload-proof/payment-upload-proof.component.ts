@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription, finalize } from 'rxjs';
 
@@ -9,14 +9,15 @@ import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 import { PaymentService } from '@services/payment/payment.service';
 
-import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-payment-upload-proof',
   templateUrl: './payment-upload-proof.component.html',
   styleUrls: ['./payment-upload-proof.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIcon, MatButton, MatProgressBar, TranslatePipe],
 })
 export class PaymentUploadProofComponent implements OnInit, OnDestroy {

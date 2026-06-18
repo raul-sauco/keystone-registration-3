@@ -1,3 +1,4 @@
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -6,7 +7,6 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
 import { NoItemsNotificationModule } from 'src/app/components/no-items-notification/no-items-notification.module';
 import { FeedbackComponent } from './feedback.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FeedbackComponent', () => {
   let component: FeedbackComponent;
@@ -24,7 +24,10 @@ describe('FeedbackComponent', () => {
         }),
         FeedbackComponent,
       ],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   }));
 

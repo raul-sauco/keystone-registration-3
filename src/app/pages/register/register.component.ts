@@ -1,5 +1,5 @@
 // 1. Angular core
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 // 2. Angular platform modules
 import { AsyncPipe, formatDate } from '@angular/common';
@@ -70,6 +70,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AsyncPipe,
     FormsModule,
@@ -257,6 +258,7 @@ export class RegisterComponent implements OnInit {
 @Component({
   selector: 'app-error-message-dialog-component',
   templateUrl: './error-message-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -276,6 +278,7 @@ export class ErrorMessageDialogComponent {
   selector: 'app-registration-success-dialog-component',
   templateUrl: './registration-success-dialog.component.html',
   styleUrls: ['./registration-success-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CdkScrollable,
     MatDialogContent,

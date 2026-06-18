@@ -1,40 +1,47 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { NgClass, formatDate } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, computed, inject } from '@angular/core';
-import { MatIconButton, MatFabButton, MatButton } from '@angular/material/button';
 import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  computed,
+  inject,
+} from '@angular/core';
+import { MatButton, MatFabButton, MatIconButton } from '@angular/material/button';
+import {
+  MatDatepicker,
   MatDatepickerInput,
   MatDatepickerToggle,
-  MatDatepicker,
 } from '@angular/material/datepicker';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
+  MatDialogActions,
+  MatDialogContent,
   MatDialogRef,
   MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
 } from '@angular/material/dialog';
 import { MatFormField, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatSelect, MatOption } from '@angular/material/select';
+import { MatOption, MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Sort, MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import {
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
   MatCell,
-  MatHeaderRowDef,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatRowDef,
+  MatHeaderRowDef,
   MatRow,
+  MatRowDef,
+  MatTable,
 } from '@angular/material/table';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { AddParticipantComponent } from '@components/add-participant/add-participant.component';
@@ -53,6 +60,7 @@ import { TripService } from '@services/trip/trip.service';
   templateUrl: './participants.component.html',
   styleUrls: ['./participants.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AdminBannerComponent,
     CamelToSnakePipe,
@@ -292,6 +300,7 @@ export class ParticipantsComponent implements OnInit {
   selector: 'app-delete-student-confirmation-dialog-component',
   templateUrl: './delete-student-confirmation-dialog.component.html',
   styleUrls: ['./delete-student-confirmation-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CdkScrollable,
     MatButton,

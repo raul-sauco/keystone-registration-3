@@ -6,9 +6,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
 import { PaymentInstructionsComponent } from './payment-instructions.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentInstructionsComponent', () => {
   let component: PaymentInstructionsComponent;
@@ -27,7 +27,7 @@ describe('PaymentInstructionsComponent', () => {
       ],
       providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();

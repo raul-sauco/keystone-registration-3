@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+  inject,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { MarkdownModule } from 'ngx-markdown';
@@ -14,6 +21,7 @@ import { ApiService } from '@services/api/api.service';
   styleUrl: './ka-md-document.component.scss',
   imports: [CommonModule, LoadingSpinnerContentModule, MarkdownModule],
   // This is needed to style shadow DOM markdown content.
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None,
 })
 export class KaMdDocumentComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { MarkdownComponent } from 'ngx-markdown';
@@ -9,6 +9,7 @@ import { PaymentService } from '@services/payment/payment.service';
   selector: 'app-waiver-content',
   templateUrl: './waiver-content.component.html',
   styleUrls: ['./waiver-content.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MarkdownComponent],
 })
 export class WaiverContentComponent implements OnInit {

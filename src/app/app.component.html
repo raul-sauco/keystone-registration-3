@@ -115,7 +115,9 @@
                 color="primary"
                 matBadge="!"
                 matBadgeColor="warn"
-                [matBadgeHidden]="paymentService.paymentInfo.value()?.paid"
+                [matBadgeHidden]="
+                  $safeNavigationMigration(paymentService.paymentInfo.value()?.paid)
+                "
                 >payments</mat-icon
               >
             </div>

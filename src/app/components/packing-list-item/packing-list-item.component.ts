@@ -1,5 +1,5 @@
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { MarkdownComponent, MarkdownPipe } from 'ngx-markdown';
 
 import { TripPackingListItem } from '@models/tripPackingListItem';
@@ -9,6 +9,7 @@ import { GlobalsService } from '@services/globals/globals.service';
   selector: 'app-packing-list-item',
   templateUrl: './packing-list-item.component.html',
   styleUrls: ['./packing-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MarkdownComponent, AsyncPipe, TitleCasePipe, MarkdownPipe],
 })
 export class PackingListItemComponent implements OnInit {

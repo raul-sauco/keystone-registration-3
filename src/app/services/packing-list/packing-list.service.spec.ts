@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PackingListService } from './packing-list.service';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { PackingListService } from './packing-list.service';
 
 describe('PackingListService', () => {
   let service: PackingListService;
@@ -15,7 +15,7 @@ describe('PackingListService', () => {
       imports: [LoggerTestingModule],
       providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

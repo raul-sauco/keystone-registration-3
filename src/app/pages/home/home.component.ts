@@ -1,14 +1,14 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   MatCard,
-  MatCardImage,
-  MatCardHeader,
-  MatCardTitle,
   MatCardContent,
+  MatCardHeader,
+  MatCardImage,
+  MatCardTitle,
 } from '@angular/material/card';
-import { MarkdownPipe } from 'ngx-markdown';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MarkdownPipe } from 'ngx-markdown';
 
 import { GlobalsService } from '@services/globals/globals.service';
 
@@ -16,6 +16,7 @@ import { GlobalsService } from '@services/globals/globals.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AsyncPipe,
     MarkdownPipe,

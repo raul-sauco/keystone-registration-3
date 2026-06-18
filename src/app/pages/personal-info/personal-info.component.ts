@@ -1,5 +1,13 @@
 import { AsyncPipe, formatDate } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild, effect, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  effect,
+  inject,
+} from '@angular/core';
 import {
   FormsModule,
   NonNullableFormBuilder,
@@ -33,6 +41,7 @@ import { IdPhotoComponent } from './id-photo/id-photo.component';
   selector: 'app-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AsyncPipe,
     FormsModule,

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatCard, MatCardContent, MatCardImage, MatCardSubtitle } from '@angular/material/card';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -19,6 +19,7 @@ import { TripService } from '@services/trip/trip.service';
   selector: 'app-guides',
   templateUrl: './guides.component.html',
   styleUrls: ['./guides.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoginRequiredMessageComponent,
     AdminBannerComponent,

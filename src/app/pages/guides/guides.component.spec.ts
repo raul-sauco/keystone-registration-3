@@ -7,9 +7,9 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { GuidesComponent } from './guides.component';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('GuidesComponent', () => {
   let component: GuidesComponent;
@@ -29,7 +29,10 @@ describe('GuidesComponent', () => {
         }),
         GuidesComponent,
       ],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   }));
 

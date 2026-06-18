@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import {
   FormGroupDirective,
   FormsModule,
@@ -50,6 +50,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardContent,
@@ -207,6 +208,7 @@ export class ResetPasswordComponent implements OnInit {
 @Component({
   selector: 'app-password-reset-dialog-component',
   templateUrl: './reset-password-dialog-component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     CdkScrollable,

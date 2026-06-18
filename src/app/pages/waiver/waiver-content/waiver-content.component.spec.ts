@@ -6,8 +6,8 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { WaiverContentComponent } from './waiver-content.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('WaiverContentComponent', () => {
   let component: WaiverContentComponent;
@@ -25,7 +25,7 @@ describe('WaiverContentComponent', () => {
       ],
       providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();

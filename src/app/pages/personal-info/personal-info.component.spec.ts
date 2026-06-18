@@ -8,6 +8,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { of } from 'rxjs';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
 import { Spied } from '@interfaces/spied';
@@ -16,7 +17,6 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { PersonalInfoComponent } from './personal-info.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PersonalInfoComponent', () => {
   let component: PersonalInfoComponent;
@@ -77,7 +77,7 @@ describe('PersonalInfoComponent', () => {
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: NGXLogger, useValue: loggerSpy },
         { provide: TranslateService, useValue: translateServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();

@@ -1,10 +1,10 @@
-import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { TestBed } from '@angular/core/testing';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
 
-import { ApiService } from './api.service';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ApiService } from './api.service';
 
 describe('ApiService', () => {
   let service: ApiService;
@@ -14,7 +14,7 @@ describe('ApiService', () => {
       imports: [LoggerTestingModule],
       providers: [
         { provide: GlobalsService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

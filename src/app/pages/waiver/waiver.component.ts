@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
@@ -21,6 +21,7 @@ import { WaiverContentComponent } from './waiver-content/waiver-content.componen
   selector: 'app-waiver',
   templateUrl: './waiver.component.html',
   styleUrls: ['./waiver.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DatePipe,
     FormsModule,

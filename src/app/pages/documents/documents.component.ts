@@ -1,7 +1,14 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { NGXLogger } from 'ngx-logger';
 import { TranslatePipe } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
 
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { LoginRequiredMessageComponent } from '@components/login-required-message/login-required-message.component';
@@ -15,6 +22,7 @@ import { GlobalsService } from '@services/globals/globals.service';
   selector: 'app-documents',
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatIcon,
     NoItemsNotificationComponent,

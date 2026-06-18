@@ -1,10 +1,10 @@
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateServiceStub } from 'src/testing/src/stubs/translate-service-stub';
 import { StudentService } from './student.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('StudentService', () => {
   let service: StudentService;
@@ -14,7 +14,7 @@ describe('StudentService', () => {
       imports: [LoggerTestingModule],
       providers: [
         { provide: TranslateService, useClass: TranslateServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

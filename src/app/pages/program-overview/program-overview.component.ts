@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -19,6 +19,7 @@ import { NoResultsComponent } from '../../components/no-results/no-results.compo
   selector: 'app-program-overview',
   templateUrl: './program-overview.component.html',
   styleUrls: ['./program-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoginRequiredMessageComponent,
     AdminBannerComponent,

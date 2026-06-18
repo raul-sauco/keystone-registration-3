@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -20,6 +20,7 @@ import { PackingListItemComponent } from '../../components/packing-list-item/pac
   selector: 'app-packing-list',
   templateUrl: './packing-list.component.html',
   styleUrls: ['./packing-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoginRequiredMessageComponent,
     AdminBannerComponent,

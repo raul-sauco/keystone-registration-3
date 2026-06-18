@@ -11,7 +11,7 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import { of } from 'rxjs';
 
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { Spied } from '@interfaces/spied';
@@ -79,7 +79,7 @@ describe('AppComponent', () => {
           AppComponent,
           { provide: AuthService, useValue: defaultAuthServiceSpy },
           { provide: TranslateService, useValue: translateServiceSpy },
-          provideHttpClient(),
+          provideHttpClient(withXhr()),
           provideHttpClientTesting(),
           provideRouter,
         ],

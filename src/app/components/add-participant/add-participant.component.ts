@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import {
   FormGroupDirective,
   FormsModule,
@@ -35,6 +35,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   selector: 'app-add-participant',
   templateUrl: './add-participant.component.html',
   styleUrls: ['./add-participant.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

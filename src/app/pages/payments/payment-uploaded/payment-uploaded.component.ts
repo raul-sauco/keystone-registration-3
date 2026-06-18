@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
   MatDialog,
@@ -23,6 +23,7 @@ import { firstValueFrom } from 'rxjs';
   selector: 'app-payment-uploaded',
   templateUrl: './payment-uploaded.component.html',
   styleUrls: ['./payment-uploaded.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButton, MatIcon, MatProgressSpinner, TranslatePipe],
 })
 export class PaymentUploadedComponent {
@@ -76,6 +77,7 @@ export class PaymentUploadedComponent {
   selector: 'app-payment-completed-confirmation-dialog-component',
   templateUrl: './payment-completed-confirmation-dialog.component.html',
   styleUrls: ['./payment-completed-confirmation-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogTitle, MatDialogActions, MatButton, MatDialogClose, TranslatePipe],
 })
 export class PaymentCompletedConfirmationDialogComponent {

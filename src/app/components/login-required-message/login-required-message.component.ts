@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-login-required-message',
   templateUrl: './login-required-message.component.html',
   styleUrls: ['./login-required-message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButton, RouterLink, TranslatePipe],
 })
 export class LoginRequiredMessageComponent {

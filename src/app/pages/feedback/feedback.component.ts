@@ -1,5 +1,11 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  inject,
+} from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
@@ -15,6 +21,7 @@ import { NoItemsNotificationComponent } from '../../components/no-items-notifica
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AdminBannerComponent,
     MatTabGroup,

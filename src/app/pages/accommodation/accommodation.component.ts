@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
@@ -18,6 +18,7 @@ import { SupplierItemComponent } from '../../components/supplier-item/supplier-i
   selector: 'app-accommodation',
   templateUrl: './accommodation.component.html',
   styleUrls: ['./accommodation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoginRequiredMessageComponent,
     AdminBannerComponent,

@@ -1,4 +1,9 @@
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+  withXhr,
+} from '@angular/common/http';
 import {
   ApplicationConfig,
   importProvidersFrom,
@@ -39,7 +44,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(async () => {
       await inject(AuthService).initialize();
     }),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideCharts(withDefaultRegisterables()),
     provideNativeDateAdapter(),
     provideRouter(routes),

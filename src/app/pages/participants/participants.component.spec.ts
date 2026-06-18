@@ -12,6 +12,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { of } from 'rxjs';
 
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { AdminBannerModule } from 'src/app/components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentModule } from 'src/app/components/loading-spinner-content/loading-spinner-content.module';
 import { Spied } from 'src/app/interfaces/spied';
@@ -20,7 +21,6 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { ParticipantsComponent } from './participants.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ParticipantsComponent', () => {
   let component: ParticipantsComponent;
@@ -70,7 +70,7 @@ describe('ParticipantsComponent', () => {
       ],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();
