@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "ignoreDeprecations": "6.0",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "esModuleInterop": true,
@@ -16,15 +17,36 @@
     "noFallthroughCasesInSwitch": true,
     "useDefineForClassFields": false,
     "paths": {
-      "@components/*": ["./src/app/components/*"],
-      "@directives/*": ["./src/app/directives/*"],
-      "@guards/*": ["./src/app/guards/*"],
-      "@interfaces/*": ["./src/app/interfaces/*"],
-      "@models/*": ["./src/app/models/*"],
-      "@pages/*": ["./src/app/pages/*"],
-      "@pipes/*": ["./src/app/pipes/*"],
-      "@services/*": ["./src/app/services/*"],
-      "chart.js/dist/types/utils": ["node_modules/chart.js/dist/types/utils"]
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@components/*": [
+        "./src/app/components/*"
+      ],
+      "@directives/*": [
+        "./src/app/directives/*"
+      ],
+      "@guards/*": [
+        "./src/app/guards/*"
+      ],
+      "@interfaces/*": [
+        "./src/app/interfaces/*"
+      ],
+      "@models/*": [
+        "./src/app/models/*"
+      ],
+      "@pages/*": [
+        "./src/app/pages/*"
+      ],
+      "@pipes/*": [
+        "./src/app/pipes/*"
+      ],
+      "@services/*": [
+        "./src/app/services/*"
+      ],
+      "chart.js/dist/types/utils": [
+        "node_modules/chart.js/dist/types/utils"
+      ]
     }
   },
   "angularCompilerOptions": {
