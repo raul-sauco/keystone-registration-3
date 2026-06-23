@@ -1,13 +1,6 @@
 import { BreakpointObserver, Breakpoints, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerModule, NGXLogger } from 'ngx-logger';
-import { MarkdownModule } from 'ngx-markdown';
 import { filter, map, Observable, of, shareReplay, withLatestFrom } from 'rxjs';
 
 import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
@@ -33,7 +25,6 @@ import { TripService } from '@services/trip/trip.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AdminBannerModule,
     AsyncPipe,
@@ -41,7 +32,6 @@ import { TripService } from '@services/trip/trip.service';
     LayoutModule,
     LoadingSpinnerContentComponent,
     LoggerModule,
-    MarkdownModule,
     MatToolbarModule,
     MatBadgeModule,
     MatButtonModule,
@@ -143,7 +133,7 @@ export class AppComponent implements OnInit {
         withLatestFrom(this.isHandset$),
         filter(([a, b]) => b && a instanceof NavigationEnd),
       )
-      .subscribe((_) => {
+      .subscribe(() => {
         if (this.drawer.opened) {
           this.drawer.close();
         }
@@ -178,8 +168,8 @@ export class AppComponent implements OnInit {
     if (this.auth.authenticated()) {
       // Set the user's preference in the backend, 1 => en, 2 => zh.
       this.api.patch('user-preferences/1', { value }).subscribe({
-        next: (res: any) => this.logger.debug(res),
-        error: (err: any) => this.logger.warn(err),
+        next: (res) => this.logger.debug(res),
+        error: (err) => this.logger.warn(err),
       });
     }
   }

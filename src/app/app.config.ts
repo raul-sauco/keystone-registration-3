@@ -17,7 +17,7 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateLoader, provideTranslateService } from '@ngx-translate/core';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import { MarkdownModule } from 'ngx-markdown';
+import { provideMarkdown } from 'ngx-markdown';
 
 import { AuthService } from '@services/auth/auth.service';
 import { CustomTranslationsLoader } from '@services/custom-translate-loader/custom-translate-loader.service';
@@ -28,12 +28,12 @@ import { Auth401Interceptor } from './http-interceptors/auth-401-interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideMarkdown(),
     provideRouter(routes),
     // TODO: Experiment with removing zone
     // provideExperimentalZonelessChangeDetection(),
     provideZoneChangeDetection(),
     importProvidersFrom(
-      MarkdownModule.forRoot(),
       LoggerModule.forRoot({
         serverLoggingUrl: environment.apiUrl + 'portal-logs',
         level: environment.production ? NgxLoggerLevel.INFO : NgxLoggerLevel.TRACE,
