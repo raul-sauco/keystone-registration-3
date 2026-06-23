@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
@@ -7,7 +7,6 @@ import { BaseChartDirective } from 'ng2-charts';
   templateUrl: './feedback-pie-chart.component.html',
   styleUrls: ['./feedback-pie-chart.component.scss'],
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BaseChartDirective],
 })
 export class FeedbackPieChartComponent implements OnInit {
@@ -23,8 +22,6 @@ export class FeedbackPieChartComponent implements OnInit {
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [];
-
-  constructor() {}
 
   ngOnInit(): void {
     // The API data needs to be mapped to the shape expected by the
