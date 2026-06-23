@@ -1,62 +1,39 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
-import tsParser from "@typescript-eslint/parser";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
+import eslint from '@eslint/js';
+import angular from 'angular-eslint';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(["projects/**/*"]),
   {
-    files: ["**/*.ts"],
-
-    extends: compat.extends(
-      "plugin:@angular-eslint/recommended",
-      "plugin:@angular-eslint/template/process-inline-templates",
-    ),
-
-    languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: "module",
-      parser: tsParser,
-
-      parserOptions: {
-        project: ["tsconfig.json", "e2e/tsconfig.json"],
-        createDefaultProgram: true,
-      },
-    },
-
+    files: ['**/*.ts'],
+    extends: [
+      eslint.configs.recommended,
+      tseslint.configs.recommended,
+      tseslint.configs.stylistic,
+      angular.configs.tsRecommended,
+    ],
+    processor: angular.processInlineTemplates,
     rules: {
-      "@angular-eslint/component-selector": [
-        "error",
+      '@angular-eslint/directive-selector': [
+        'error',
         {
-          prefix: "app",
-          style: "kebab-case",
-          type: "element",
+          type: 'attribute',
+          prefix: 'app',
+          style: 'camelCase',
         },
       ],
-
-      "@angular-eslint/directive-selector": [
-        "error",
+      '@angular-eslint/component-selector': [
+        'error',
         {
-          prefix: "app",
-          style: "camelCase",
-          type: "attribute",
+          type: 'element',
+          prefix: 'app',
+          style: 'kebab-case',
         },
       ],
     },
   },
   {
-    files: ["**/*.html"],
-    extends: compat.extends("plugin:@angular-eslint/template/recommended"),
-    rules: {},
+    files: ['**/*.html'],
+    extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
   },
 ]);
