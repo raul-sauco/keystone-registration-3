@@ -1,48 +1,46 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-  ViewEncapsulation,
-  inject,
-} from '@angular/core';
+import { Component, computed, inject, input, resource } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
-import { MarkdownModule } from 'ngx-markdown';
-import { Observable, map } from 'rxjs';
+import { MarkdownComponent } from 'ngx-markdown';
+import { map } from 'rxjs';
 
 import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
 import { ApiService } from '@services/api/api.service';
+
+interface MdDocumentJson {
+  text: string;
+  text_zh: string;
+}
 
 @Component({
   selector: 'app-ka-md-document',
   templateUrl: './ka-md-document.component.html',
   styleUrl: './ka-md-document.component.scss',
-  imports: [CommonModule, LoadingSpinnerContentModule, MarkdownModule],
-  // This is needed to style shadow DOM markdown content.
-  changeDetection: ChangeDetectionStrategy.Eager,
-  encapsulation: ViewEncapsulation.None,
+  imports: [CommonModule, LoadingSpinnerContentModule, MarkdownComponent],
 })
-export class KaMdDocumentComponent implements OnInit {
-  private logger = inject(NGXLogger);
+export class KaMdDocumentComponent {
   private api = inject(ApiService);
   private translate = inject(TranslateService);
 
-  @Input() endpoint!: string;
-  content$!: Observable<string>;
+  // 1. Inputs
+  endpoint = input.required<string>();
 
-  ngOnInit(): void {
-    this.logger.debug('KAMdDocumentComponent::OnInit');
-    this.loadContent();
-    this.translate.onLangChange.subscribe((_) => this.loadContent());
-  }
+  // 2. Reactively track the current language from the translation service
+  readonly lang = toSignal(this.translate.onLangChange.pipe(map((e) => e.lang)), {
+    initialValue: this.translate.getCurrentLang(),
+  });
 
-  loadContent(): void {
-    this.content$ = this.api
-      .get(this.endpoint)
-      .pipe(
-        map((doc: any) => (this.translate.currentLang.includes('zh') ? doc.text_zh : doc.text)),
-      );
-  }
+  // 3. Automatically fetch the document whenever the endpoint changes
+  readonly docResource = resource({
+    params: () => this.endpoint(),
+    loader: ({ params: url }) => this.api.getAsync<MdDocumentJson>(url),
+  });
+
+  // 4. Derive the localized markdown content reactively
+  readonly content = computed(() => {
+    const doc = this.docResource.value(); // Extract value from the resource
+    if (!doc) return null;
+    return this.lang().includes('zh') ? doc.text_zh : doc.text;
+  });
 }

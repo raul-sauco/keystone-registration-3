@@ -1,8 +1,9 @@
-@if (content$ | async; as content) {
+@let markdown = content();
+@if (markdown !== null) {
   <div class="app-page-wrapper">
     <div class="app-content-wrapper">
       <div id="ka-md-document-wrapper" class="mat-typography">
-        <markdown [data]="content"></markdown>
+        <markdown [data]="markdown"></markdown>
       </div>
     </div>
   </div>
