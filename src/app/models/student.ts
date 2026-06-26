@@ -1,5 +1,48 @@
 import { formatDate } from '@angular/common';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, Translation } from '@ngx-translate/core';
+
+export interface StudentData {
+  name: string;
+  guardian_name: string;
+  waiver_accepted: number;
+  waiver_signed_on: string;
+  terms_accepted: number;
+  terms_accepted_on: string;
+}
+
+export interface StudentJson {
+  id: number;
+  index?: number;
+  type?: number;
+  is_sample_account: boolean;
+  name?: string;
+  english_name?: string;
+  citizenship?: string;
+  travel_document?: string;
+  gender?: number;
+  dob?: string;
+  guardian_name?: string;
+  emergency_contact?: string;
+  email?: string;
+  wechat_id?: string;
+  waiver_accepted: boolean | number | null;
+  waiver_signed_on?: string;
+  dietary_requirements?: number;
+  dietary_requirements_other?: string;
+  allergies?: number;
+  allergies_other?: string;
+  medical_information?: string;
+  terms_accepted: boolean | number | null;
+  terms_accepted_on?: string;
+  paid: boolean | number | null;
+  payment_verified: boolean | number | null;
+  student_id: string | null;
+  house: string | null;
+  room_number: string | null;
+  homeroom: string | null;
+  grade: string | null;
+  is_photo_id_required: boolean;
+}
 
 export class Student {
   id: number;
@@ -32,9 +75,9 @@ export class Student {
   roomNumber: string | null = null;
   homeroom: string | null = null;
   grade: string | null = null;
-  idPhotoRequired: boolean = false;
+  idPhotoRequired?: boolean;
 
-  private translations: any;
+  private translations: Translation;
 
   private personalAttributes: any;
   private legalAttributes: any;
@@ -42,7 +85,7 @@ export class Student {
   private medicalAttributes: any;
 
   constructor(
-    json: any,
+    json: StudentJson,
     private translate: TranslateService,
   ) {
     // Set the ID attribute only at creation
@@ -95,13 +138,13 @@ export class Student {
         'STUDENT',
         'STUDENT_ID',
       ])
-      .subscribe((res) => (this.translations = res));
+      .subscribe((res: Translation) => (this.translations = res));
   }
 
   /**
    * Use JSON data to set this student's attributes.
    */
-  private setFromJSON(json: any) {
+  private setFromJSON(json: StudentJson) {
     const truthyValues = [true, 'true', 1, '1'];
     // Use the id attribute for creation scenarios
     this.id = json.id;

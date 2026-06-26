@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { Credentials } from '@models/credentials';
-import { Student } from '@models/student';
+import { Student, StudentData, StudentJson } from '@models/student';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 
@@ -36,24 +36,27 @@ export class StudentService {
   private async fetchStudent(credentials: Credentials): Promise<void> {
     this.logger.debug(`StudentService::fetchStudent ${credentials.studentId}`);
     try {
-      const studentJson = await this.api.getAsync(`students/${credentials.studentId}`);
+      const studentJson = await this.api.getAsync<StudentJson>(`students/${credentials.studentId}`);
       this.logger.debug('StudentService got student json from server', studentJson);
       this._student.set(new Student(studentJson, this.translate));
-    } catch (err: any) {
+    } catch (err) {
       this.logger.error('StudentService: Error fetching student', err, credentials);
     }
   }
 
-  async updateStudent(data: any): Promise<void> {
+  async updateStudent(data: StudentData): Promise<void> {
     const credentials = this.auth.credentialsSignal();
     if (!credentials) {
       return;
     }
     try {
-      const studentJson = await this.api.patchAsync(`students/${credentials.studentId}`, data);
+      const studentJson = await this.api.patchAsync<StudentJson>(
+        `students/${credentials.studentId}`,
+        data,
+      );
       this.logger.debug('StudentService::updateStudent got student json from server', studentJson);
       this._student.set(new Student(studentJson, this.translate));
-    } catch (err: any) {
+    } catch (err) {
       this.logger.error('StudentService::updateStudent Error patching student', err, credentials);
       throw err;
     }

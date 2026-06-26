@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
@@ -11,7 +11,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
-import { Student } from '@models/student';
+import { Student, StudentData } from '@models/student';
 import { AuthService } from '@services/auth/auth.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { StudentService } from '@services/student/student.service';
@@ -21,7 +21,6 @@ import { WaiverContentComponent } from './waiver-content/waiver-content.componen
   selector: 'app-waiver',
   templateUrl: './waiver.component.html',
   styleUrls: ['./waiver.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DatePipe,
     FormsModule,
@@ -91,7 +90,7 @@ export class WaiverComponent {
 
   async acceptWaiver(): Promise<void> {
     const today = new Date().toISOString().substring(0, 10);
-    const studentData = {
+    const studentData: StudentData = {
       name: this.name.value,
       guardian_name: this.guardianName.value,
       waiver_accepted: 1,
