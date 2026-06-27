@@ -1,6 +1,8 @@
 <!--App Component HTML file. App bar and sidebar menu, render router outlet on the rest -->
 @let authState = auth.state();
 @let authenticated = auth.authenticated();
+@let trip = tripService.trip();
+@let tripName = (currentLang === 'en' ? trip?.nameEn : trip?.nameZh) ?? '';
 <mat-toolbar id="main-header">
   @if (isHandset$ | async) {
     <button
@@ -18,7 +20,7 @@
   } @else {
     <img id="main-header-logo" src="../assets/img/ka-logo-long.jpeg" alt="{{ title }}" />
     <div class="toolbar-spacer">
-      @if (tripService.tripName$ | async; as tripName) {
+      @if (trip) {
         <div class="trip-name-wrapper">{{ tripName }}</div>
       }
     </div>
@@ -30,7 +32,7 @@
     (click)="toggleLanguage()"
     id="toggle-lang-button"
   >
-    {{ translate.getCurrentLang() === 'en' ? '中文' : 'EN' }}
+    {{ currentLang === 'en' ? '中文' : 'EN' }}
     <mat-icon aria-label="Translate toggle icon" color="primary">translate</mat-icon>
   </button>
   <button
@@ -57,13 +59,13 @@
   >
     <mat-nav-list>
       @if (authState === AuthState.Authenticated) {
-        <a mat-list-item (click)="logout()">
+        <button mat-list-item (click)="logout()">
           <div matListItemIcon>
             <mat-icon color="primary">open_in_new</mat-icon>
           </div>
           <span>{{ 'LOG_OUT' | translate | uppercase }}</span>
           <mat-divider [inset]="true"></mat-divider>
-        </a>
+        </button>
       } @else {
         <a mat-list-item routerLink="/login">
           <div matListItemIcon>
@@ -132,10 +134,7 @@
       @for (page of appPages; track page.title) {
         @if (page.render | async) {
           @if (enableFullNavigation()) {
-            <a
-              mat-list-item
-              [routerLink]="page.url + ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))"
-            >
+            <a mat-list-item [routerLink]="page.url">
               <div matListItemIcon>
                 <mat-icon color="primary">{{ page.icon }}</mat-icon>
               </div>
@@ -173,10 +172,7 @@
       @for (page of policyPages; track page.title) {
         @if (page.render | async) {
           @if (enableFullNavigation()) {
-            <a
-              mat-list-item
-              [routerLink]="page.url + ((tripId$ | async) === null ? '' : '/' + (tripId$ | async))"
-            >
+            <a mat-list-item [routerLink]="page.url">
               <div matListItemIcon>
                 <mat-icon color="primary">{{ page.icon }}</mat-icon>
               </div>
@@ -204,11 +200,9 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    @if ((isHandset$ | async) && (tripService.tripName$ | async); as tripName) {
-      <div id="content-trip-name-wrapper">
-        <div class="trip-name-wrapper">{{ tripName }}</div>
-      </div>
-    }
+    <div id="content-trip-name-wrapper">
+      <div class="trip-name-wrapper">{{ tripName }}</div>
+    </div>
     @if (authState === AuthState.Unknown) {
       <app-loading-spinner-content></app-loading-spinner-content>
     } @else {

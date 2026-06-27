@@ -56,12 +56,11 @@ export class AppComponent implements OnInit {
   tripService = inject(TripService);
   // Expose the enum to the template, otherwise not available
   AuthState = AuthState;
+  currentLang = 'en';
 
   @ViewChild('drawer', { static: true })
   drawer!: MatSidenav;
   title = 'Keystone Adventures';
-  tripId$!: Observable<string | null>;
-  tripId: string | null = null;
   enableFullNavigation$!: Observable<boolean>;
 
   // TODO: Cleanup moving pages to a separate file
@@ -153,7 +152,9 @@ export class AppComponent implements OnInit {
     } else {
       this.translate.use('en');
     }
-    this.logger.debug(`TranslateService language set to "${this.translate.getCurrentLang()}"`);
+    const currentLang = this.translate.getCurrentLang();
+    this.currentLang = currentLang.includes('zh') ? 'zh' : 'en';
+    this.logger.debug(`TranslateService language set to "${currentLang}"`);
   }
 
   toggleLanguage() {
