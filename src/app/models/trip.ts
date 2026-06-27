@@ -1,19 +1,31 @@
+export interface TripJson {
+  id: number;
+  name_en: string;
+  name_zh: string;
+  accept_direct_payment: boolean | number;
+  is_staffing_confirmed: boolean | number;
+}
+
 /**
  * Trip model
  */
 export class Trip {
-  private _id: number;
-  private _nameEn: string | null;
-  private _nameZh: string | null;
-  private _acceptDirectPayment: boolean;
-  private _isStaffingConfirmed: boolean;
+  private constructor(
+    readonly _id: number,
+    readonly _nameEn: string,
+    readonly _nameZh: string,
+    readonly _acceptDirectPayment: boolean,
+    readonly _isStaffingConfirmed: boolean,
+  ) {}
 
-  constructor(tripJson: any) {
-    this._id = tripJson.id;
-    this._nameEn = tripJson.name_en;
-    this._nameZh = tripJson.name_zh;
-    this._acceptDirectPayment = tripJson.accept_direct_payment === 1;
-    this._isStaffingConfirmed = tripJson.is_staffing_confirmed === 1;
+  static fromJson(json: TripJson) {
+    return new Trip(
+      json.id,
+      json.name_en,
+      json.name_zh,
+      Boolean(json.accept_direct_payment),
+      Boolean(json.is_staffing_confirmed),
+    );
   }
 
   get nameEn(): string {
