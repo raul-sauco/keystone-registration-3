@@ -16,10 +16,10 @@
           <mat-label>{{ 'SECURITY_CODE' | translate }}</mat-label>
           <input matInput maxlength="6" formControlName="code" required type="text" />
         </mat-form-field>
-        @if (loading) {
+        @if (loading()) {
           <mat-progress-bar mode="indeterminate" class="progress-bar"></mat-progress-bar>
         }
-        <button mat-raised-button color="primary" [disabled]="!tripCodeForm.valid || loading">
+        <button mat-raised-button color="primary" [disabled]="!tripCodeForm.valid || loading()">
           {{ 'SUBMIT' | translate }}
         </button>
       </form>
