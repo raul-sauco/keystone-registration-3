@@ -1,14 +1,14 @@
-@if (userRegistrationForm) {
+@let tripCodes = this.registrationService.tripCodes();
+@if (userRegistrationForm && tripCodes !== null) {
+  @let isStudent = tripCodes.type === UserType.Student;
   <div id="registration-form-container">
     <mat-card appearance="outlined" id="registration-form-mat-card-container">
       <mat-card-content>
         <h1>
-          {{
-            (trip.type === 'student' ? 'REGISTER_NEW_STUDENT' : 'REGISTER_NEW_TEACHER') | translate
-          }}
+          {{ (isStudent ? 'REGISTER_NEW_STUDENT' : 'REGISTER_NEW_TEACHER') | translate }}
         </h1>
-        @if (trip.name) {
-          <h2 class="trip-name">{{ trip.name }}</h2>
+        @if (tripCodes.tripName) {
+          <h2 class="trip-name">{{ tripCodes.tripName }}</h2>
         }
         <form
           [formGroup]="userRegistrationForm"
@@ -19,9 +19,7 @@
             <markdown class="inner-form-prompt" [data]="content"></markdown>
           }
           <mat-form-field appearance="outline">
-            <mat-label>{{
-              (trip.type === 'student' ? 'STUDENT_NAME' : 'NAME') | translate
-            }}</mat-label>
+            <mat-label>{{ (isStudent ? 'STUDENT_NAME' : 'NAME') | translate }}</mat-label>
             <input type="text" matInput formControlName="name" required />
             @if (name?.errors?.required) {
               <mat-error>
@@ -30,9 +28,7 @@
             }
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>{{
-              (trip.type === 'student' ? 'STUDENT_DOB' : 'DOB') | translate
-            }}</mat-label>
+            <mat-label>{{ (isStudent ? 'STUDENT_DOB' : 'DOB') | translate }}</mat-label>
             <input type="text" matInput formControlName="dob" [matDatepicker]="picker" />
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker touchUi #picker></mat-datepicker>
@@ -49,8 +45,7 @@
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>{{
-              (trip.type === 'student' ? 'GOVERNMENT_ID_NUMBER' : 'TRAVEL_DOCUMENT_NUMBER')
-                | translate
+              (isStudent ? 'GOVERNMENT_ID_NUMBER' : 'TRAVEL_DOCUMENT_NUMBER') | translate
             }}</mat-label>
             <input type="text" matInput formControlName="id" />
             @if (id?.errors?.required) {
@@ -66,7 +61,7 @@
           </mat-form-field>
           @if (id?.errors?.uniqueUsername) {
             <div id="duplicate-id-prompt" class="inner-form-prompt">
-              @if (translate.currentLang.includes('zh')) {
+              @if (translate.getCurrentLang().includes('zh')) {
                 请确认证件号码是准确的，或直接'<a routerLink="/login">{{ 'LOGIN' | translate }}</a
                 >'。请'<a routerLink="/forgot-password">{{ 'FORGOT_MY_PASSWORD' | translate }}</a
                 >'找回您的密码。
@@ -120,13 +115,13 @@
               </mat-error>
             }
           </mat-form-field>
-          @if (loading) {
+          @if (loading()) {
             <mat-progress-bar mode="indeterminate" class="progress-bar"></mat-progress-bar>
           }
           <button
             mat-raised-button
             color="primary"
-            [disabled]="!userRegistrationForm.valid || loading"
+            [disabled]="!userRegistrationForm.valid || loading()"
           >
             {{ 'SUBMIT' | translate }}
           </button>

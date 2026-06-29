@@ -1,9 +1,7 @@
-// 1. Angular core
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
-
-// 2. Angular platform modules
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AsyncPipe, formatDate } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import {
   FormGroupDirective,
   FormsModule,
@@ -14,10 +12,6 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-
-// 3. Angular Material / CDK
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -38,23 +32,19 @@ import {
 import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatProgressBar } from '@angular/material/progress-bar';
-
-// 4. Third-party
+import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { MarkdownComponent } from 'ngx-markdown';
-
-// 5. RxJS
 import { Observable, map } from 'rxjs';
 
-// 6. Internal (aliases)
+import { UserType } from '@app/models/credentials';
+import { RegistrationService } from '@app/services/registration/registration.service';
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
 import { UniqueUsernameValidator } from '@directives/unique-username-validator.directive';
 import { DialogData } from '@interfaces/dialog-data';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
-import { PaymentService } from '@services/payment/payment.service';
-import { TripService } from '@services/trip/trip.service';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -70,7 +60,6 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AsyncPipe,
     FormsModule,
@@ -94,29 +83,29 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 })
 export class RegisterComponent implements OnInit {
   private api = inject(ApiService);
-  private paymentService = inject(PaymentService);
   private formBuilder = inject(NonNullableFormBuilder);
   private logger = inject(NGXLogger);
   private usernameValidator = inject(UniqueUsernameValidator);
+  protected readonly UserType = UserType;
   auth = inject(AuthService);
   dialog = inject(MatDialog);
+  registrationService = inject(RegistrationService);
   router = inject(Router);
   translate = inject(TranslateService);
-  trip = inject(TripService);
 
-  loading: boolean = false;
+  loading = signal(false);
   userRegistrationForm!: UntypedFormGroup;
   errorMatcher!: CrossFieldErrorMatcher;
   namePromptContent$!: Observable<string>;
-  lang: string = 'en';
 
   ngOnInit(): void {
-    this.logger.debug('RegisterComponent OnInit');
-    this.lang = this.translate.getCurrentLang().includes('zh') ? 'zh' : 'en';
-    this.errorMatcher = new CrossFieldErrorMatcher();
-    if (!this.trip.code || !this.trip.id) {
+    const tripCodes = this.registrationService.tripCodes();
+    if (tripCodes === null) {
+      this.logger.warn('RegisterComponent OnInit: Null trip codes, redirecting to trip codes page');
       this.router.navigateByUrl('/trip-codes');
     } else {
+      this.errorMatcher = new CrossFieldErrorMatcher();
+      this.logger.debug('RegisterComponent OnInit', tripCodes);
       this.initUserRegistrationForm();
     }
     this.fetchContents();
@@ -186,47 +175,34 @@ export class RegisterComponent implements OnInit {
    * POST user details to the server.
    * If successful, it will create a new Student record
    */
-  submitUserRegistration(): void {
-    const params = {
-      // username: this.userRegistrationForm.value.username,
-      password: this.userRegistrationForm.value.password,
-      // email: this.userRegistrationForm.value.email,
-      name: this.userRegistrationForm.value.name,
-      id: this.userRegistrationForm.value.id,
-      dob: this.sanitizeDate(this.userRegistrationForm.value.dob),
-      tripId: this.trip.id,
-      code: this.trip.code,
-    };
-    this.loading = true;
-
-    this.api.post('r', params).subscribe({
-      next: (response: any) => {
-        this.loading = false;
-
-        if (response.error === true) {
-          this.dialog.open(ErrorMessageDialogComponent, {
-            data: {
-              title: 'ERROR',
-              content: response.message,
-            },
-          });
-        } else {
-          this.auth.setCredentials(response);
-          this.loading = false;
-          this.paymentService.reload();
-          this.displayRegistrationSuccess();
-        }
-      },
-      error: (error: any) => {
-        this.logger.error('Error posting registration data', error);
-        this.dialog.open(ErrorMessageDialogComponent, {
-          data: {
-            title: 'ERROR',
-            content: 'SERVER_ERROR_TRY_LATER',
-          },
-        });
-      },
-    });
+  async submitUserRegistration() {
+    this.loading.set(true);
+    try {
+      this.registrationService.submitUserRegistration(
+        this.userRegistrationForm.value.id,
+        this.userRegistrationForm.value.name,
+        this.sanitizeDate(this.userRegistrationForm.value.dob) ?? '',
+        this.userRegistrationForm.value.password,
+      );
+      this.displayRegistrationSuccess();
+    } catch (err) {
+      this.logger.error('Error posting registration data', err);
+      // Server error or data has an error?
+      // this.dialog.open(ErrorMessageDialogComponent, {
+      //   data: {
+      //     title: 'ERROR',
+      //     content: response.message,
+      //   },
+      // });
+      this.dialog.open(ErrorMessageDialogComponent, {
+        data: {
+          title: 'ERROR',
+          content: 'SERVER_ERROR_TRY_LATER',
+        },
+      });
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   /**
@@ -258,7 +234,6 @@ export class RegisterComponent implements OnInit {
 @Component({
   selector: 'app-error-message-dialog-component',
   templateUrl: './error-message-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -278,7 +253,6 @@ export class ErrorMessageDialogComponent {
   selector: 'app-registration-success-dialog-component',
   templateUrl: './registration-success-dialog.component.html',
   styleUrls: ['./registration-success-dialog.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CdkScrollable,
     MatDialogContent,
