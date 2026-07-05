@@ -1,7 +1,8 @@
+import { formatDate } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Service, signal } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 
-import { HttpErrorResponse } from '@angular/common/http';
 import { CredentialsJson } from '@app/models/credentials';
 import { InvalidTripCodeError, ServerUnavailableError } from '@app/models/error';
 import { TripCodes } from '@models/tripCodes';
@@ -50,19 +51,21 @@ export class RegistrationService {
   async submitUserRegistration(
     id: string,
     name: string,
-    dob: string,
+    dob: Date | null,
     password: string,
   ): Promise<void> {
     const params = {
       id,
       name,
-      dob,
+      dob: this.sanitizeDate(dob),
       password,
       tripId: this.tripCodes()?.tripId,
       code: this.tripCodes()?.code,
     };
+    this.logger.debug('RegistrationService::submitUserRegistration', params);
     try {
       const response = await this.api.postAsync<RegistrationResponseJson>('r', params);
+      this.logger.debug('RegistrationService::submitUserRegistration got response', response);
       this.auth.setAccessToken(response.access_token);
       this.auth.setCredentials(response);
     } catch (err) {
@@ -79,5 +82,20 @@ export class RegistrationService {
 
       throw err;
     }
+  }
+
+  /**
+   * Validate a date and prepare it to be sent to the server.
+   * @param dateString
+   * @returns
+   */
+  sanitizeDate(date: Date | null): string | null {
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      this.logger.error(`Failed to format date ${date}`);
+      return null;
+    }
+    const formattedDate = formatDate(date, 'yyyy-MM-dd', 'en-US');
+    this.logger.debug(`RegistrationService::sanitizeDate: Formatted ${date} to ${formattedDate}`);
+    return formattedDate;
   }
 }

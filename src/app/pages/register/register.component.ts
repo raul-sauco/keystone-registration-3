@@ -1,5 +1,5 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { AsyncPipe, formatDate } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import {
@@ -9,7 +9,6 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   UntypedFormControl,
-  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -94,7 +93,21 @@ export class RegisterComponent implements OnInit {
   translate = inject(TranslateService);
 
   loading = signal(false);
-  userRegistrationForm!: UntypedFormGroup;
+
+  readonly userRegistrationForm = this.formBuilder.group(
+    {
+      id: this.formBuilder.control('', {
+        validators: [Validators.required],
+        asyncValidators: [(control) => this.usernameValidator.validate(control)],
+        updateOn: 'blur',
+      }),
+      name: ['', Validators.required],
+      dob: this.formBuilder.control<Date | null>(null, Validators.required),
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      passwordConfirm: ['', [Validators.required, Validators.minLength(8)]],
+    },
+    { validators: passwordMatchValidator },
+  );
   errorMatcher!: CrossFieldErrorMatcher;
   namePromptContent$!: Observable<string>;
 
@@ -106,13 +119,35 @@ export class RegisterComponent implements OnInit {
     } else {
       this.errorMatcher = new CrossFieldErrorMatcher();
       this.logger.debug('RegisterComponent OnInit', tripCodes);
-      this.initUserRegistrationForm();
     }
     this.fetchContents();
   }
 
   /**
-   * Fetch content that needs to be displayed in the UI.
+   * POST user details to the server.
+   * If successful, it will create a new Student record
+   */
+  async submitUserRegistration() {
+    this.loading.set(true);
+    try {
+      const { id, name, dob, password } = this.userRegistrationForm.getRawValue();
+      await this.registrationService.submitUserRegistration(id, name, dob, password);
+      this.displayRegistrationSuccess();
+    } catch (err) {
+      this.logger.error('Error posting registration data', err);
+      this.dialog.open(ErrorMessageDialogComponent, {
+        data: {
+          title: 'ERROR',
+          content: 'SERVER_ERROR_TRY_LATER',
+        },
+      });
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  /**
+   * TODO: Use i18n translations
    */
   fetchContents() {
     const options = {
@@ -127,28 +162,6 @@ export class RegisterComponent implements OnInit {
       );
   }
 
-  /**
-   * Initializes the first form of the registration that collects
-   * the trip's id and code that students/teachers need to use to
-   * register for the trip.
-   */
-  initUserRegistrationForm(): void {
-    this.userRegistrationForm = this.formBuilder.group(
-      {
-        id: this.formBuilder.control('', {
-          validators: [Validators.required],
-          asyncValidators: [(control) => this.usernameValidator.validate(control)],
-          updateOn: 'blur',
-        }),
-        // email: ['', Validators.email],
-        name: ['', Validators.required],
-        dob: ['', Validators.required],
-        password: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
-        passwordConfirm: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
-      },
-      { validators: passwordMatchValidator },
-    );
-  }
   get id() {
     return this.userRegistrationForm.get('id');
   }
@@ -172,40 +185,6 @@ export class RegisterComponent implements OnInit {
   }
 
   /**
-   * POST user details to the server.
-   * If successful, it will create a new Student record
-   */
-  async submitUserRegistration() {
-    this.loading.set(true);
-    try {
-      this.registrationService.submitUserRegistration(
-        this.userRegistrationForm.value.id,
-        this.userRegistrationForm.value.name,
-        this.sanitizeDate(this.userRegistrationForm.value.dob) ?? '',
-        this.userRegistrationForm.value.password,
-      );
-      this.displayRegistrationSuccess();
-    } catch (err) {
-      this.logger.error('Error posting registration data', err);
-      // Server error or data has an error?
-      // this.dialog.open(ErrorMessageDialogComponent, {
-      //   data: {
-      //     title: 'ERROR',
-      //     content: response.message,
-      //   },
-      // });
-      this.dialog.open(ErrorMessageDialogComponent, {
-        data: {
-          title: 'ERROR',
-          content: 'SERVER_ERROR_TRY_LATER',
-        },
-      });
-    } finally {
-      this.loading.set(false);
-    }
-  }
-
-  /**
    * Display a confirmation dialog and navigate to the home page
    * when the user closes the dialog.
    */
@@ -215,19 +194,6 @@ export class RegisterComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigateByUrl('/personal-info');
     });
-  }
-
-  /**
-   * Validate a date and prepare it to be sent to the server.
-   * @param dateString
-   * @returns
-   */
-  sanitizeDate(date: Date): string | null {
-    if (!(date instanceof Date) || isNaN(date.getTime())) {
-      this.logger.error(`Failed to format date ${date}`);
-      return null;
-    }
-    return formatDate(date, 'yyyy-MM-dd', 'en-US');
   }
 }
 
