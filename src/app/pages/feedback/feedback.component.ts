@@ -1,17 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
-import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
 import { FeedbackPieChartComponent } from '../../components/feedback-pie-chart/feedback-pie-chart.component';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 import { NoItemsNotificationComponent } from '../../components/no-items-notification/no-items-notification.component';
@@ -21,9 +14,7 @@ import { NoItemsNotificationComponent } from '../../components/no-items-notifica
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    AdminBannerComponent,
     MatTabGroup,
     MatTab,
     FeedbackPieChartComponent,

@@ -1,12 +1,11 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatCard, MatCardContent, MatCardImage, MatCardSubtitle } from '@angular/material/card';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AdminBannerComponent } from '@components/admin-banner/admin-banner.component';
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { LoginRequiredMessageComponent } from '@components/login-required-message/login-required-message.component';
 import { Guide } from '@models/guide';
@@ -19,10 +18,8 @@ import { TripService } from '@services/trip/trip.service';
   selector: 'app-guides',
   templateUrl: './guides.component.html',
   styleUrls: ['./guides.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoginRequiredMessageComponent,
-    AdminBannerComponent,
     MatCard,
     MatCardImage,
     MatCardContent,
@@ -54,8 +51,8 @@ export class GuidesComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('GuidesComponent OnInit');
-    const trip = this.tripService.trip;
-    if (trip !== null) {
+    const trip = this.tripService.trip();
+    if (trip) {
       if (trip.isStaffingConfirmed) {
         this.logger.debug(`Trip ${trip.id} staffing confirmed, fetching staff information`);
         this.displayStaffingNotConfirmedTemplate = false;

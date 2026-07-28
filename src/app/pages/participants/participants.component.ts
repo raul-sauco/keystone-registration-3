@@ -45,7 +45,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { AddParticipantComponent } from '@components/add-participant/add-participant.component';
-import { AdminBannerComponent } from '@components/admin-banner/admin-banner.component';
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { School } from '@models/school';
 import { Student } from '@models/student';
@@ -60,9 +59,7 @@ import { TripService } from '@services/trip/trip.service';
   templateUrl: './participants.component.html',
   styleUrls: ['./participants.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    AdminBannerComponent,
     CamelToSnakePipe,
     LoadingSpinnerContentComponent,
     MatCell,
@@ -120,7 +117,7 @@ export class ParticipantsComponent implements OnInit {
       ...(school?.useHouse ? ['house'] : []),
       ...(school?.useRoomNumber ? ['roomNumber'] : []),
       ...(school?.useStudentId ? ['studentId'] : []),
-      ...(this.tripService.trip?.acceptDirectPayment ? ['paid', 'paymentVerified'] : []),
+      ...(this.tripService.trip()?.acceptDirectPayment ? ['paid', 'paymentVerified'] : []),
       'citizenship',
       'travelDocument',
       'gender',

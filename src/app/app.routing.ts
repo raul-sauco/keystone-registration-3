@@ -15,16 +15,9 @@ export const routes: Routes = [
   },
   {
     path: 'program-overview',
-    loadChildren: () =>
-      import('./pages/program-overview/program-overview.module').then(
-        (m) => m.ProgramOverviewModule,
-      ),
-  },
-  {
-    path: 'program-overview/:trip-id',
-    loadChildren: () =>
-      import('./pages/program-overview/program-overview.module').then(
-        (m) => m.ProgramOverviewModule,
+    loadComponent: () =>
+      import('./pages/program-overview/program-overview.component').then(
+        (m) => m.ProgramOverviewComponent,
       ),
   },
   {

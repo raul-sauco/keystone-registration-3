@@ -4,7 +4,6 @@
   @if (supplier$ | async; as suppliers) {
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
-        <app-admin-banner></app-admin-banner>
         <div class="accommodation-page-container">
           @if (suppliers.length) {
             @for (supplier of suppliers; track supplier) {

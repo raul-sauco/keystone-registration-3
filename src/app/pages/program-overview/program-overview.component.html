@@ -4,7 +4,6 @@
   @if (document$ | async; as documents) {
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
-        <app-admin-banner></app-admin-banner>
         <ul class="documents-list mat-typography">
           @if (documents.length > 0) {
             @for (document of documents; track document) {

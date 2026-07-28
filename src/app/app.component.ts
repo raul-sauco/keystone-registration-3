@@ -12,7 +12,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerModule, NGXLogger } from 'ngx-logger';
 import { filter, map, Observable, of, shareReplay, withLatestFrom } from 'rxjs';
 
-import { AdminBannerModule } from '@components/admin-banner/admin-banner.module';
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { AuthState } from '@models/auth-state';
 import { ApiService } from '@services/api/api.service';
@@ -26,7 +25,6 @@ import { TripService } from '@services/trip/trip.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   imports: [
-    AdminBannerModule,
     AsyncPipe,
     CommonModule,
     LayoutModule,

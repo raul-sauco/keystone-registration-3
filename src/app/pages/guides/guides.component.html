@@ -4,7 +4,6 @@
   @if (displayStaffingNotConfirmedTemplate) {
     <div class="app-page-wrapper">
       <div class="app-content-wrapper">
-        <app-admin-banner></app-admin-banner>
         <div id="staffing-not-confirmed-container">
           <mat-card>
             <img matCardImage [src]="url + 'img/portal/ka-staff-2023.jpg'" />
@@ -21,7 +20,6 @@
     @if (guide$ | async; as guides) {
       <div class="app-page-wrapper">
         <div class="app-content-wrapper">
-          <app-admin-banner></app-admin-banner>
           <ul class="guides-list mat-typography">
             @for (guide of guides; track guide) {
               <li class="guide-item">

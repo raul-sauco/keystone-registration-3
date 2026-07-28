@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -11,7 +11,6 @@ import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PackingListService } from 'src/app/services/packing-list/packing-list.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
 import { PackingListItemComponent } from '../../components/packing-list-item/packing-list-item.component';
@@ -20,10 +19,8 @@ import { PackingListItemComponent } from '../../components/packing-list-item/pac
   selector: 'app-packing-list',
   templateUrl: './packing-list.component.html',
   styleUrls: ['./packing-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoginRequiredMessageComponent,
-    AdminBannerComponent,
     MatTabGroup,
     MatTab,
     MatTabLabel,

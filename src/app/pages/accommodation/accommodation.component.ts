@@ -8,7 +8,6 @@ import { Supplier } from 'src/app/models/supplier';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
 import { NoResultsComponent } from '../../components/no-results/no-results.component';
@@ -21,7 +20,6 @@ import { SupplierItemComponent } from '../../components/supplier-item/supplier-i
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoginRequiredMessageComponent,
-    AdminBannerComponent,
     SupplierItemComponent,
     NoResultsComponent,
     LoadingSpinnerContentComponent,

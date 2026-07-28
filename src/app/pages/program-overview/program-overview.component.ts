@@ -1,16 +1,16 @@
 import { AsyncPipe } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import {  Component, OnInit, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
+
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
 import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { AdminBannerComponent } from '../../components/admin-banner/admin-banner.component';
 import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
 import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
 import { NoResultsComponent } from '../../components/no-results/no-results.component';
@@ -19,10 +19,8 @@ import { NoResultsComponent } from '../../components/no-results/no-results.compo
   selector: 'app-program-overview',
   templateUrl: './program-overview.component.html',
   styleUrls: ['./program-overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoginRequiredMessageComponent,
-    AdminBannerComponent,
     MatIcon,
     NoResultsComponent,
     LoadingSpinnerContentComponent,
