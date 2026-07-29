@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, inject } from '@angular/core';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Observable } from 'rxjs';
 
 import { ComponentCanDeactivate } from '@interfaces/component-can-deactivate';
-import { AuthService } from '@services/auth/auth.service';
-import { GlobalsService } from '@services/globals/globals.service';
 import { PaymentService } from '@services/payment/payment.service';
 
 import { PaymentClosedComponent } from './payment-closed/payment-closed.component';
@@ -17,7 +15,6 @@ import { PaymentUploadedComponent } from './payment-uploaded/payment-uploaded.co
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     PaymentInstructionsComponent,
     PaymentQrCodesComponent,
@@ -29,17 +26,6 @@ import { PaymentUploadedComponent } from './payment-uploaded/payment-uploaded.co
 export class PaymentsComponent implements OnInit, ComponentCanDeactivate {
   private logger = inject(NGXLogger);
   paymentService = inject(PaymentService);
-  auth = inject(AuthService);
-
-  lang!: string;
-  content$!: Observable<any>;
-  staticUrl: string;
-
-  constructor() {
-    const globals = inject(GlobalsService);
-
-    this.staticUrl = globals.getResUrl();
-  }
 
   /**
    * Implement canDeactivate condition.

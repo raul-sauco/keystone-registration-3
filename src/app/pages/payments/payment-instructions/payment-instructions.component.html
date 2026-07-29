@@ -1,17 +1,29 @@
-@if (content$ | async; as content) {
-  <div id="payment-instructions-wrapper">
-    <markdown id="payment-instructions" [data]="content"></markdown>
-    <button
-      id="payment-proof-help-btn"
-      mat-icon-button
-      color="primary"
-      (click)="displayPaymentProofHelp()"
-    >
-      <mat-icon>help</mat-icon>
-    </button>
-  </div>
-} @else {
-  <div id="loading-wrapper">
-    <mat-progress-spinner mode="indeterminate" strokeWidth="3" diameter="32"></mat-progress-spinner>
-  </div>
+@switch (contentResource.status()) {
+  @case ('loading') {
+    <div id="loading-wrapper">
+      <mat-progress-spinner
+        mode="indeterminate"
+        strokeWidth="3"
+        diameter="32"
+      ></mat-progress-spinner>
+    </div>
+  }
+  @case ('error') {
+    <h1>{{ 'ERROR' | translate }}</h1>
+  }
+  @case ('resolved') {
+    @if (contentResource.value(); as content) {
+      <div id="payment-instructions-wrapper">
+        <markdown id="payment-instructions" [data]="content"></markdown>
+        <button
+          id="payment-proof-help-btn"
+          mat-icon-button
+          color="primary"
+          (click)="displayPaymentProofHelp()"
+        >
+          <mat-icon>help</mat-icon>
+        </button>
+      </div>
+    } @else {}
+  }
 }

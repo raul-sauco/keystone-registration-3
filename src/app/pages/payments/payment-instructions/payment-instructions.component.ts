@@ -1,5 +1,14 @@
-import { HttpHeaders } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+  resource,
+  signal,
+} from '@angular/core';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import {
   MatDialog,
   MatDialogActions,
@@ -8,88 +17,77 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
-import { Observable, map } from 'rxjs';
-
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { AsyncPipe } from '@angular/common';
-import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { NGXLogger } from 'ngx-logger';
+import { MarkdownComponent } from 'ngx-markdown';
+import { firstValueFrom } from 'rxjs';
+
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
-import { MarkdownComponent } from 'ngx-markdown';
+
+interface InstructionsJson {
+  text: string;
+  text_zh: string;
+}
 
 @Component({
   selector: 'app-payment-instructions',
   templateUrl: './payment-instructions.component.html',
   styleUrls: ['./payment-instructions.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [MarkdownComponent, MatIconButton, MatIcon, MatProgressSpinner, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MarkdownComponent, MatIconButton, MatIcon, MatProgressSpinner, TranslatePipe],
 })
 export class PaymentInstructionsComponent implements OnInit, OnDestroy {
-  dialog = inject(MatDialog);
-  private api = inject(ApiService);
-  private auth = inject(AuthService);
-  private logger = inject(NGXLogger);
-  private translate = inject(TranslateService);
+  private readonly dialog = inject(MatDialog);
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly logger = inject(NGXLogger);
+  private readonly translate = inject(TranslateService);
 
-  lang!: string;
-  content$!: Observable<any>;
-  timeout: number | null = null;
-  helpOpen: boolean = false;
+  timeoutId: number | null = null;
+  helpOpen = signal(false);
+
+  readonly contentResource = resource({
+    params: () => this.auth.credentialsSignal(),
+    loader: async ({ params: credentials }) => {
+      if (credentials === null) {
+        return null;
+      }
+      const endpoint = `payment-instructions/` + credentials.studentId;
+      const json = await this.api.getAsync<InstructionsJson>(endpoint);
+      return this.translate.getCurrentLang().includes('zh') ? json.text_zh : json.text;
+    },
+  });
 
   ngOnInit(): void {
-    this.logger.debug('PaymentInstructionsComponent on init');
-    this.lang = this.translate.currentLang.includes('zh') ? 'zh' : 'en';
-    const endpoint = `payment-instructions/` + this.auth.getCredentials()?.studentId;
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: ' Bearer ' + this.auth.getAccessToken(),
-      }),
-    };
-    this.content$ = this.api
-      .get(endpoint, null, options)
-      .pipe(map((doc: any) => (this.lang === 'zh' ? doc.text_zh : doc.text)));
+    this.logger.debug('PaymentInstructionsComponent::onInit()');
     // Need to use window.setTimeout to differentiate from NodeJS.Timeout.
     // https://stackoverflow.com/q/51040703/2557030
-    this.timeout = window.setTimeout(() => this.displayWarning(), 5000);
+    this.timeoutId = window.setTimeout(() => this.displayWarning(), 5000);
   }
 
   ngOnDestroy(): void {
-    if (this.timeout) {
-      window.clearTimeout(this.timeout);
+    if (this.timeoutId !== null) {
+      window.clearTimeout(this.timeoutId);
     }
   }
 
-  displayWarning(): void {
-    this.dialog
-      .open(AddParticipantInfoToPaymentReminderDialogComponent)
-      .afterClosed()
-      .subscribe({
-        next: (_) => {
-          this.logger.debug('Add payment info warning closed');
-        },
-      });
+  async displayWarning(): Promise<void> {
+    const dialogRef = this.dialog.open(AddParticipantInfoToPaymentReminderDialogComponent);
+    await firstValueFrom(dialogRef.afterClosed());
   }
 
-  displayPaymentProofHelp(): void {
-    if (!this.helpOpen) {
-      this.helpOpen = true;
-      this.dialog
-        .open(AddStudentNameToPaymentProofHelpDialogComponent)
-        .afterClosed()
-        .subscribe({
-          next: () => {
-            this.helpOpen = false;
-            this.logger.debug('Add student name to payment help closed');
-          },
-        });
+  async displayPaymentProofHelp(): Promise<void> {
+    if (this.helpOpen()) {
+      return;
     }
-    console.log('TODO: Not implemented yet');
+    this.helpOpen.set(true);
+    const dialogRef = this.dialog.open(AddStudentNameToPaymentProofHelpDialogComponent);
+    await firstValueFrom(dialogRef.afterClosed());
+    this.helpOpen.set(false);
   }
 }
 
@@ -97,7 +95,7 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   selector: 'app-add-participant-info-to-payment-reminder-dialog-component',
   templateUrl: './add-participant-info-to-payment-reminder-dialog.component.html',
   styleUrls: ['./add-participant-info-to-payment-reminder-dialog.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -120,7 +118,7 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
     this.exampleImgUrl =
       globals.getResUrl() +
       'img/portal/example-payment-proof-' +
-      (translate.currentLang.includes('zh') ? 'zh' : 'en') +
+      (translate.getCurrentLang().includes('zh') ? 'zh' : 'en') +
       '.png';
   }
 }
@@ -129,7 +127,7 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
   selector: 'app-add-student-name-to-payment-proof-help-dialog-component',
   templateUrl: './add-student-name-to-payment-proof-help-dialog.component.html',
   styleUrls: ['./add-student-name-to-payment-proof-help-dialog.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CdkScrollable, MatDialogContent],
 })
 export class AddStudentNameToPaymentProofHelpDialogComponent {
@@ -143,7 +141,7 @@ export class AddStudentNameToPaymentProofHelpDialogComponent {
     this.exampleImgUrl =
       globals.getResUrl() +
       'img/portal/example-payment-proof-' +
-      (translate.currentLang.includes('zh') ? 'zh' : 'en') +
+      (translate.getCurrentLang().includes('zh') ? 'zh' : 'en') +
       '.png';
   }
 }
