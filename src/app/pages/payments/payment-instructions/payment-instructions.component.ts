@@ -4,10 +4,12 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  computed,
   inject,
   resource,
   signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {
   MatDialog,
@@ -22,11 +24,12 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { MarkdownComponent } from 'ngx-markdown';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
+import { PaymentService } from '@services/payment/payment.service';
 
 interface InstructionsJson {
   text: string;
@@ -45,21 +48,33 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
   private readonly logger = inject(NGXLogger);
+  private readonly paymentService = inject(PaymentService);
   private readonly translate = inject(TranslateService);
 
   timeoutId: number | null = null;
   helpOpen = signal(false);
 
+  readonly currentLang = toSignal(this.translate.onLangChange.pipe(map((event) => event.lang)), {
+    initialValue: this.translate.getCurrentLang(),
+  });
+
   readonly contentResource = resource({
     params: () => this.auth.credentialsSignal(),
     loader: async ({ params: credentials }) => {
-      if (credentials === null) {
+      if (!credentials) {
         return null;
       }
-      const endpoint = `payment-instructions/` + credentials.studentId;
-      const json = await this.api.getAsync<InstructionsJson>(endpoint);
-      return this.translate.getCurrentLang().includes('zh') ? json.text_zh : json.text;
+      const endpoint = `payment-instructions/${credentials.studentId}`;
+      return await this.api.getAsync<InstructionsJson>(endpoint);
     },
+  });
+
+  readonly contentSignal = computed(() => {
+    const doc = this.contentResource.value();
+    if (!doc) {
+      return null;
+    }
+    return this.currentLang().includes('zh') ? doc.text_zh : doc.text;
   });
 
   ngOnInit(): void {
@@ -76,6 +91,9 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   }
 
   async displayWarning(): Promise<void> {
+    if (this.paymentService.paymentInfo.value()?.paid) {
+      return;
+    }
     const dialogRef = this.dialog.open(AddParticipantInfoToPaymentReminderDialogComponent);
     await firstValueFrom(dialogRef.afterClosed());
   }

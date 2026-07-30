@@ -200,9 +200,6 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div id="content-trip-name-wrapper">
-      <div class="trip-name-wrapper">{{ tripName }}</div>
-    </div>
     @if (authState === AuthState.Unknown) {
       <app-loading-spinner-content></app-loading-spinner-content>
     } @else {

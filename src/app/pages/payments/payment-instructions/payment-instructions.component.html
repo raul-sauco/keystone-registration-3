@@ -12,7 +12,7 @@
     <h1>{{ 'ERROR' | translate }}</h1>
   }
   @case ('resolved') {
-    @if (contentResource.value(); as content) {
+    @if (contentSignal(); as content) {
       <div id="payment-instructions-wrapper">
         <markdown id="payment-instructions" [data]="content"></markdown>
         <button
@@ -24,6 +24,6 @@
           <mat-icon>help</mat-icon>
         </button>
       </div>
-    } @else {}
+    }
   }
 }

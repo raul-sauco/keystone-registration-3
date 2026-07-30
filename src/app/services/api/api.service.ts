@@ -32,23 +32,21 @@ export class ApiService {
    * @param params support easy query params for GET requests.
    * @param reqOpts an object with options to configure the HttpRequest object.
    */
-  get(endpoint: string, params?: any, reqOpts?: any) {
-    /* Allow both full URLs and endpoints for main API https://stackoverflow.com/a/19709846/2557030 */
-    const url =
-      endpoint.includes('http://') || endpoint.includes('https://')
-        ? endpoint
-        : this.url + endpoint;
-    reqOpts = this.addDefaultReqOps(reqOpts);
-    // Support easy query params for GET requests
+  get<T = unknown>(
+    endpoint: string,
+    params?: Record<
+      string,
+      string | number | boolean | readonly (string | number | boolean)[]
+    > | null,
+    reqOpts?: JsonRequestOptions,
+  ) {
+    const options = this.addDefaultReqOps(reqOpts);
     if (params) {
-      reqOpts.params = new HttpParams();
-      // TSLint complains about for (... in ...)
-      // https://stackoverflow.com/a/43083415/2557030
-      for (const k of Object.keys(params)) {
-        reqOpts.params = reqOpts.params.set(k, params[k]);
-      }
+      options.params = new HttpParams({ fromObject: params });
     }
-    return this.http.get(url, reqOpts).pipe(catchError((err) => this.handleError(err)));
+    return this.http
+      .get<T>(this.buildUrl(endpoint), options)
+      .pipe(catchError((err) => this.handleError(err)));
   }
 
   /**
