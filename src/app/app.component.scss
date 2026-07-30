@@ -5,6 +5,10 @@
     cursor: not-allowed;
     background-color: #ddd;
   }
+  button[mat-list-item] {
+    border: none;
+    text-align: left;
+  }
 }
 $toolbarBackgroundGrey: rgb(190, 190, 190);
 #main-header {

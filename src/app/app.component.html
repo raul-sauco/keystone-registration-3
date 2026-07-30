@@ -64,7 +64,6 @@
             <mat-icon color="primary">open_in_new</mat-icon>
           </div>
           <span>{{ 'LOG_OUT' | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider>
         </button>
       } @else {
         <a mat-list-item routerLink="/login">
@@ -72,9 +71,9 @@
             <mat-icon color="primary">exit_to_app</mat-icon>
           </div>
           <span>{{ 'LOG_IN' | translate | uppercase }}</span>
-          <mat-divider [inset]="true"></mat-divider>
         </a>
       }
+      <mat-divider [inset]="true"></mat-divider>
       <a mat-list-item routerLink="/home">
         <div matListItemIcon><mat-icon color="primary">home</mat-icon></div>
         <span>{{ 'HOME' | translate | uppercase }}</span>
