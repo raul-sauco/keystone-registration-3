@@ -1,40 +1,47 @@
-@if (needsLogin) {
-  <app-login-required-message></app-login-required-message>
-} @else {
-  @if (document$ | async; as documents) {
-    <div class="app-page-wrapper">
-      <div class="app-content-wrapper">
-        <ul class="documents-list mat-typography">
-          @if (documents.length > 0) {
-            @for (document of documents; track document) {
-              <a
-                [href]="url + 'files/' + document.link"
-                target="_blank"
-                class="document-item-wrapper"
-              >
-                <li class="document-item">
-                  <div class="icon-container">
-                    <img [src]="url + 'file-icons/48px/pdf.png'" alt="pdf icon" />
-                  </div>
-                  <div class="file-details">
-                    <header class="file-name">
-                      {{ lang.includes('zh') ? document.name_zh : document.name_en }}
-                    </header>
-                    <div class="downloadable-element-feedback">
-                      <div>{{ 'DOWNLOAD' | translate }}</div>
-                      <mat-icon>download</mat-icon>
+@switch (auth.state()) {
+  @case (AuthState.Authenticated) {
+    @if (documentResource.value(); as documents) {
+      <div class="app-page-wrapper">
+        <div class="app-content-wrapper">
+          <ul class="documents-list mat-typography">
+            @if (documents.length > 0) {
+              @for (document of documents; track document) {
+                <a
+                  [href]="url + 'files/' + document.link"
+                  target="_blank"
+                  class="document-item-wrapper"
+                >
+                  <li class="document-item">
+                    <div class="icon-container">
+                      <img
+                        [src]="`${url}file-icons/48px/${document.file_type}.png`"
+                        alt="File icon"
+                      />
                     </div>
-                  </div>
-                </li>
-              </a>
+                    <div class="file-details">
+                      <header class="file-name">
+                        {{ lang.includes('zh') ? document.name_zh : document.name_en }}
+                      </header>
+                      <div class="downloadable-element-feedback">
+                        <div>{{ 'DOWNLOAD' | translate }}</div>
+                        <mat-icon>download</mat-icon>
+                      </div>
+                    </div>
+                  </li>
+                </a>
+              }
+            } @else {
+              <app-no-results></app-no-results>
             }
-          } @else {
-            <app-no-results></app-no-results>
-          }
-        </ul>
+          </ul>
+        </div>
       </div>
-    </div>
-  } @else {
+    }
+  }
+  @case (AuthState.Unauthenticated) {
+    <app-login-required-message></app-login-required-message>
+  }
+  @case (AuthState.Unknown) {
     <app-loading-spinner-content></app-loading-spinner-content>
   }
 }
