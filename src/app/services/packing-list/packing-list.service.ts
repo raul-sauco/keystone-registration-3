@@ -1,93 +1,39 @@
-import { HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject, resource } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { Subject } from 'rxjs';
-import { RequestParams } from 'src/app/models/requestParams';
-import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
+
+import { TripPackingListItem } from '@models/tripPackingListItem';
 import { ApiService } from '../api/api.service';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PackingListService {
   private api = inject(ApiService);
-  private auth = inject(AuthService);
   private logger = inject(NGXLogger);
   private translate = inject(TranslateService);
 
-  items: TripPackingListItem[] = [];
-  item$: Subject<TripPackingListItem[]> = new Subject<TripPackingListItem[]>();
+  readonly itemsResource = resource({
+    loader: async () => {
+      this.logger.debug('Loading Packing List Items');
+      const json = await this.api.getAsync<any[]>('trip-packing-list-items', { expand: 'item' });
+      return json.map((data) => {
+        console.log(data);
+        data.lang = this.translate.getCurrentLang();
+        return new TripPackingListItem(data);
+      });
+    },
+  });
 
-  constructor() {
-    this.logger.debug('PackingListService constructor called');
-  }
+  readonly itemsBring = computed(() =>
+    this.itemsResource.value()?.filter((item) => item.bring === 0),
+  );
 
-  /**
-   * Fetch all TripPackingListItems for a given trip and add them
-   * to the provider. When last page has been fetched the service
-   * will notify subscribers to item$.
-   *
-   * @param string|null tripId ID of the trip to fetch items for
-   */
-  fetchItems(tripId: string | null = null): void {
-    const endpoint = 'trip-packing-list-items';
-    const headers: any = { 'Content-Type': 'application/json' };
-    const params: RequestParams = new RequestParams();
-    params.expand = 'item';
-    let fetch = false;
-    if (tripId !== null) {
-      params['trip-id'] = tripId;
-      fetch = true;
-    } else if (this.auth.authenticated() && this.auth.accessToken) {
-      headers.authorization = ' Bearer ' + this.auth.accessToken;
-      fetch = true;
-    }
+  readonly itemsOptional = computed(() =>
+    this.itemsResource.value()?.filter((item) => item.bring === 1),
+  );
 
-    if (fetch) {
-      // Clean up
-      this.items = [];
-      const options = {
-        headers: new HttpHeaders(headers),
-        observe: 'response',
-      };
-      this.fetchItemBatch(endpoint, params, options);
-    }
-  }
-
-  /**
-   * Have the API request one page of data for the trip that
-   * we are currently requesting for.
-   *
-   * @param endpoint the endpoint for the current API call
-   * @param params an object with parameters to be passed to the call
-   */
-  protected fetchItemBatch(endpoint: string, params: any, options: any): void {
-    this.logger.debug(`PackingListService fetching ${endpoint}`);
-    this.api.get(endpoint, params, options).subscribe((resp: any) => {
-      this.addItems(resp.body);
-      if (this.api.hasNextPage(resp.headers)) {
-        this.fetchItemBatch(this.api.nextPageUrl(resp.headers), null, options);
-      } else {
-        // We fetched all the available items, notify subscribers
-        this.item$.next(this.items);
-      }
-    });
-  }
-
-  /**
-   * Use the ApiService response to instantiate new
-   * TripPackingListItems and add them to the service array.
-   *
-   * @param items JSON array with data for a batch of items
-   */
-  protected addItems(items: any): void {
-    this.logger.debug(`Adding ${items.length} packing list items to provider`);
-    items.forEach((i: any) => {
-      // Pass the language to the PLI
-      i.lang = this.translate.getCurrentLang();
-      this.items.push(new TripPackingListItem(i));
-    });
-  }
+  readonly itemsDoNotBring = computed(() =>
+    this.itemsResource.value()?.filter((item) => item.bring === 2),
+  );
 }

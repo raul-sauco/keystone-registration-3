@@ -1,4 +1,4 @@
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { MarkdownComponent, MarkdownPipe } from 'ngx-markdown';
 
@@ -9,13 +9,13 @@ import { GlobalsService } from '@services/globals/globals.service';
   selector: 'app-packing-list-item',
   templateUrl: './packing-list-item.component.html',
   styleUrls: ['./packing-list-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [MarkdownComponent, AsyncPipe, TitleCasePipe, MarkdownPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MarkdownComponent, TitleCasePipe, MarkdownPipe],
 })
 export class PackingListItemComponent implements OnInit {
   private globals = inject(GlobalsService);
 
-  public imageBase: string = '';
+  public imageBase = '';
 
   @Input() pli!: TripPackingListItem;
 

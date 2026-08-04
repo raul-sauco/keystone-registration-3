@@ -1,138 +1,43 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
 import { MarkdownPipe } from 'ngx-markdown';
-import { TripPackingListItem } from 'src/app/models/tripPackingListItem';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { PackingListService } from 'src/app/services/packing-list/packing-list.service';
-import { RouteStateService } from 'src/app/services/route-state/route-state.service';
-import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
-import { LoginRequiredMessageComponent } from '../../components/login-required-message/login-required-message.component';
-import { PackingListItemComponent } from '../../components/packing-list-item/packing-list-item.component';
+
+import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
+import { PackingListItemComponent } from '@components/packing-list-item/packing-list-item.component';
+import { PackingListService } from '@services/packing-list/packing-list.service';
 
 @Component({
   selector: 'app-packing-list',
   templateUrl: './packing-list.component.html',
   styleUrls: ['./packing-list.component.scss'],
   imports: [
-    LoginRequiredMessageComponent,
     MatTabGroup,
     MatTab,
     MatTabLabel,
     MatIcon,
     PackingListItemComponent,
     LoadingSpinnerContentComponent,
-    AsyncPipe,
     TranslatePipe,
     MarkdownPipe,
   ],
 })
-export class PackingListComponent implements OnInit, OnDestroy {
-  private auth = inject(AuthService);
-  private route = inject(ActivatedRoute);
-  private packingListService = inject(PackingListService);
-  private logger = inject(NGXLogger);
-  private routeStateService = inject(RouteStateService);
+export class PackingListComponent {
+  packingListService = inject(PackingListService);
   sanitizer = inject(DomSanitizer);
 
-  itemsBring: TripPackingListItem[] = [];
-  itemsOptional: TripPackingListItem[] = [];
-  itemsDoNotBring: TripPackingListItem[] = [];
   needsLogin = false;
   fetching = false;
 
-  ngOnInit(): void {
-    this.logger.debug('PackingList ngOnInit called');
-    // Try to find a trip-id parameter
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      const tripId = params.get('trip-id');
-      if (tripId !== null) {
-        if (this.routeStateService.getTripId() !== tripId) {
-          this.routeStateService.updateTripIdParamState(tripId);
-        }
-        this.fetch(tripId);
-      } else {
-        this.auth.checkAuthenticated().then((res: boolean) => {
-          if (res) {
-            this.fetch();
-          } else {
-            this.needsLogin = true;
-          }
-        });
-      }
-    });
-  }
-
-  /**
-   * Ask the service to fetch packing list items for the
-   * current user's trip. Optionally can pass a tripId
-   * parameter to indicate which trip to fetch for
-   * @param tripId string the id of the trip to fetch for.
-   */
-  fetch(tripId?: string): void {
-    this.fetching = true;
-    this.packingListService.fetchItems(tripId);
-    this.subscribe();
-  }
-
-  /**
-   * Subscribe to the service
-   */
-  subscribe(): void {
-    // Subscribe to the service observable
-    this.packingListService.item$.subscribe({
-      next: (items: TripPackingListItem[]) => {
-        this.logger.debug(`Got ${items.length} items from the service`);
-        this.fetching = false;
-
-        // Assign the items to the corresponding properties
-        items.forEach((i: TripPackingListItem) => {
-          switch (i.getBring()) {
-            case 0:
-              this.itemsBring.push(i);
-              break;
-            case 1:
-              this.itemsOptional.push(i);
-              break;
-            case 2:
-              this.itemsDoNotBring.push(i);
-              break;
-            default:
-              this.logger.warn(`PLI bring ${i.getBring()} is not valid;`, i);
-              break;
-          }
-        });
-
-        // Sort the arrays by the item's order property
-        [this.itemsBring, this.itemsOptional, this.itemsDoNotBring].forEach(
-          (array: TripPackingListItem[]) => {
-            array.sort(
-              (a: TripPackingListItem, b: TripPackingListItem) =>
-                (a.getOrder() || 0) - (b.getOrder() || 0),
-            );
-          },
-        );
-      },
-      error: (err: string) => {
-        this.logger.error(`Error fetching packing list items`, err);
-      },
-    });
-  }
-
-  /**
-   * Clean up
-   */
-  ngOnDestroy() {
-    this.logger.debug('PackingList ngOnDestroy called');
-    /*
-     * TODO unsubscribing from the Subject throws error if
-     * we try to subscribe back on the next ngOnInit call
-     */
-    // this.packingListService.item$.unsubscribe();
-  }
+  // Sort the arrays by the item's order property
+  // [this.itemsBring, this.itemsOptional, this.itemsDoNotBring].forEach(
+  //   (array: TripPackingListItem[]) => {
+  //     array.sort(
+  //       (a: TripPackingListItem, b: TripPackingListItem) =>
+  //         (a.getOrder() || 0) - (b.getOrder() || 0),
+  //     );
+  //   },
+  // );
 }

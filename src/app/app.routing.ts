@@ -22,13 +22,9 @@ export const routes: Routes = [
   },
   {
     path: 'packing-list',
-    loadChildren: () =>
-      import('./pages/packing-list/packing-list.module').then((m) => m.PackingListModule),
-  },
-  {
-    path: 'packing-list/:trip-id',
-    loadChildren: () =>
-      import('./pages/packing-list/packing-list.module').then((m) => m.PackingListModule),
+    loadComponent: () =>
+      import('./pages/packing-list/packing-list.component').then((m) => m.PackingListComponent),
+     canActivate: [AuthGuard],
   },
   {
     path: 'guides',
