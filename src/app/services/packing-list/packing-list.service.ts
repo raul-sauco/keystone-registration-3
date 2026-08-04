@@ -1,8 +1,7 @@
 import { Injectable, computed, inject, resource } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
-import { TripPackingListItem } from '@models/tripPackingListItem';
+import { PackingListItem, PackingListItemJson } from '@app/models/packingListItem';
 import { ApiService } from '../api/api.service';
 
 @Injectable({
@@ -11,22 +10,22 @@ import { ApiService } from '../api/api.service';
 export class PackingListService {
   private api = inject(ApiService);
   private logger = inject(NGXLogger);
-  private translate = inject(TranslateService);
 
   readonly itemsResource = resource({
     loader: async () => {
       this.logger.debug('Loading Packing List Items');
-      const json = await this.api.getAsync<any[]>('trip-packing-list-items', { expand: 'item' });
-      return json.map((data) => {
-        console.log(data);
-        data.lang = this.translate.getCurrentLang();
-        return new TripPackingListItem(data);
+      const json = await this.api.getAsync<PackingListItemJson[]>('trip-packing-list-items');
+      return json.map((json) => {
+        return PackingListItem.fromJson(json);
       });
     },
   });
 
   readonly itemsBring = computed(() =>
-    this.itemsResource.value()?.filter((item) => item.bring === 0),
+    this.itemsResource
+      .value()
+      ?.filter((item) => item.bring === 0)
+      .toSorted((a, b) => a.order - b.order),
   );
 
   readonly itemsOptional = computed(() =>

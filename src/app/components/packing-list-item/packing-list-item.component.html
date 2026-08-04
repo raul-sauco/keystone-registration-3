@@ -1,21 +1,23 @@
+@let lang = language();
 <div class="item-container">
   <div class="image-container">
     <picture>
       <source [srcset]="imageBase + '.avif'" type="image/avif" />
       <source [srcset]="imageBase + '.webp'" type="image/webp" />
-      <img loading="lazy" [src]="imageBase + '.png'" [alt]="pli.getName()" />
+      <img loading="lazy" [src]="imageBase + '.png'" [alt]="pli.getName(lang)" />
     </picture>
   </div>
   <div class="text-container {{ pli.getBringClass() }}">
     <h2>
-      <span class="pli-name" [innerHtml]="pli.getName() | titlecase"> </span>
-      <span class="pli-remarks" [innerHtml]="pli.getRemarks() ? '(' + pli.getRemarks() + ')' : ''">
-      </span>
-      @if (pli.hasQuantityMoreThanOne()) {
+      <span class="pli-name" [innerHtml]="pli.getName(lang) | titlecase"> </span>
+      @if (pli.getRemarks(lang)) {
+        <span class="pli-remarks" [innerHtml]="'(' + pli.getRemarks(lang) + ')'"> </span>
+      }
+      @if (pli.getQuantity()) {
         <span class="pli-quantity" [innerHtml]="', ' + pli.getQuantity()"> </span>
       }
     </h2>
-    <markdown class="description-container" [data]="pli.getDescription()"></markdown>
-    <footer [innerHtml]="pli.getFooter() | markdown"></footer>
+    <markdown class="description-container" [data]="pli.getDescription(lang)"></markdown>
+    <footer [innerHtml]="pli.getFooter(lang) | markdown"></footer>
   </div>
 </div>
