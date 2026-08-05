@@ -24,7 +24,7 @@ fi
 
 # Generate the matching bundle
 echo "${GREEN}»»» Generating $configuration bundle «««${NC}"
-ng build --configuration $configuration
+npx ng build --configuration $configuration
 
 # Clean up the remote playground folder
 # remote="climbdal@keystone-adventures.com"

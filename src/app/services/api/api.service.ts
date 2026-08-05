@@ -182,8 +182,8 @@ export class ApiService {
   }
 }
 
-type JsonRequestOptions = {
+export interface JsonRequestOptions {
   headers?: HttpHeaders;
   params?: HttpParams;
   withCredentials?: boolean;
-};
+}
