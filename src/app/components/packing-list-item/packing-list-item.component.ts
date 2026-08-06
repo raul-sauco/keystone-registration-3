@@ -1,9 +1,9 @@
 import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, computed, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { MarkdownComponent, MarkdownPipe } from 'ngx-markdown';
+import { MarkdownComponent } from 'ngx-markdown';
 
-import { PackingListItem } from '@app/models/packingListItem';
+import { PackingListItem } from '@models/packingListItem';
 import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { GlobalsService } from '@services/globals/globals.service';
   templateUrl: './packing-list-item.component.html',
   styleUrls: ['./packing-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MarkdownComponent, TitleCasePipe, MarkdownPipe],
+  imports: [MarkdownComponent, TitleCasePipe],
 })
 export class PackingListItemComponent implements OnInit {
   private globals = inject(GlobalsService);

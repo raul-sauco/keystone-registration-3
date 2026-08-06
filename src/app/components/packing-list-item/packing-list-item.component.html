@@ -17,7 +17,11 @@
         <span class="pli-quantity" [innerHtml]="', ' + pli.getQuantity()"> </span>
       }
     </h2>
-    <markdown class="description-container" [data]="pli.getDescription(lang)"></markdown>
-    <footer [innerHtml]="pli.getFooter(lang) | markdown"></footer>
+    @if (pli.getDescription(lang)) {
+      <markdown class="description-container" [data]="pli.getDescription(lang)"></markdown>
+    }
+    @if (pli.getFooter(lang)) {
+      <markdown [data]="pli.getFooter(lang)"></markdown>
+    }
   </div>
 </div>
