@@ -24,7 +24,7 @@ export const routes: Routes = [
     path: 'packing-list',
     loadComponent: () =>
       import('./pages/packing-list/packing-list.component').then((m) => m.PackingListComponent),
-     canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'guides',
@@ -48,15 +48,9 @@ export const routes: Routes = [
   },
   {
     path: 'accommodation',
-    loadChildren: () =>
-      import('./pages/accommodation/accommodation.module').then((m) => m.AccommodationModule),
-    // canActivate: [AuthGuard],
-  },
-  {
-    path: 'accommodation/:trip-id',
-    loadChildren: () =>
-      import('./pages/accommodation/accommodation.module').then((m) => m.AccommodationModule),
-    // canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./pages/accommodation/accommodation.component').then((m) => m.AccommodationComponent),
+    canActivate: [AuthGuard],
   },
   {
     path: 'feedback',

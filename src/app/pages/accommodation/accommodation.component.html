@@ -1,23 +1,21 @@
-@if (needsLogin) {
-  <app-login-required-message></app-login-required-message>
+@if (suppliersResource.isLoading()) {
+  <app-loading-spinner-content></app-loading-spinner-content>
+} @else if (suppliersResource.error()) {
+  <div>{{ 'ERROR' | translate }}</div>
 } @else {
-  @if (supplier$ | async; as suppliers) {
-    <div class="app-page-wrapper">
-      <div class="app-content-wrapper">
-        <div class="accommodation-page-container">
-          @if (suppliers.length) {
-            @for (supplier of suppliers; track supplier) {
-              <div>
-                <app-supplier-item [supplier]="supplier"></app-supplier-item>
-              </div>
-            }
-          } @else {
-            <app-no-results></app-no-results>
+  <div class="app-page-wrapper">
+    <div class="app-content-wrapper">
+      <div class="accommodation-page-container">
+        @if (suppliers().length > 0) {
+          @for (supplier of suppliers(); track supplier.id) {
+            <div>
+              <app-supplier-item [supplier]="supplier"></app-supplier-item>
+            </div>
           }
-        </div>
+        } @else {
+          <app-no-results></app-no-results>
+        }
       </div>
     </div>
-  } @else {
-    <app-loading-spinner-content></app-loading-spinner-content>
-  }
+  </div>
 }

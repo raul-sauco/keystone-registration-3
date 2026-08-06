@@ -68,7 +68,7 @@ export class PaymentService {
         this.logger.debug(
           `PaymentService received ${data.length} payment proof images from the server`,
         );
-        const images: Image[] = data.map((json: any) => new Image(json.image));
+        const images: Image[] = data.map((json: any) => Image.fromJson(json.image));
         return images;
       } catch (err: any) {
         this.logger.error('PaymentService: Error fetching PaymentProofs', err, credentials);
