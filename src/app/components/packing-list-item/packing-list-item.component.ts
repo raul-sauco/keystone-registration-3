@@ -1,10 +1,10 @@
 import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit, computed, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { MarkdownComponent } from 'ngx-markdown';
 
 import { PackingListItem } from '@models/packingListItem';
 import { GlobalsService } from '@services/globals/globals.service';
+import { LocalizationService } from '@services/localization/localization.service';
 
 @Component({
   selector: 'app-packing-list-item',
@@ -15,11 +15,11 @@ import { GlobalsService } from '@services/globals/globals.service';
 })
 export class PackingListItemComponent implements OnInit {
   private globals = inject(GlobalsService);
-  private translate = inject(TranslateService);
+  private localization = inject(LocalizationService);
 
-  public imageBase = '';
+  readonly language = this.localization.currentLanguage;
 
-  readonly language = computed(() => this.translate.getCurrentLang());
+  imageBase = '';
 
   @Input() pli!: PackingListItem;
 
