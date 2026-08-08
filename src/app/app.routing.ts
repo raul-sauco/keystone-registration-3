@@ -21,18 +21,15 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'guides',
+    loadComponent: () => import('./pages/guides/guides.component').then((m) => m.GuidesComponent),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'packing-list',
     loadComponent: () =>
       import('./pages/packing-list/packing-list.component').then((m) => m.PackingListComponent),
     canActivate: [AuthGuard],
-  },
-  {
-    path: 'guides',
-    loadChildren: () => import('./pages/guides/guides.module').then((m) => m.GuidesModule),
-  },
-  {
-    path: 'guides/:trip-id',
-    loadChildren: () => import('./pages/guides/guides.module').then((m) => m.GuidesModule),
   },
   {
     path: 'faq',

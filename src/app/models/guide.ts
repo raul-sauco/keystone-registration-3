@@ -1,45 +1,65 @@
+export interface GuideJson {
+  id: number;
+  nickname: string | null;
+  nickname_zh: string | null;
+  bio: string | null;
+  bio_zh: string | null;
+  avatar: string | null;
+}
+
 /**
- * Guide model class
+ * Guide model.
  */
 export class Guide {
-  private nameEn: string;
-  private nameZh?: string;
-  private bioEn: string;
-  private bioZh?: string;
-  private avatar: string;
+  private constructor(
+    readonly _id: number,
+    readonly _nameEn: string,
+    readonly _nameZh: string,
+    readonly _bioEn: string,
+    readonly _bioZh: string,
+    readonly _avatar: string,
+  ) {}
 
-  constructor(guide: any) {
-    this.nameEn = guide.nickname;
-    this.nameZh = guide.nickname_zh;
-    this.bioEn = guide.bio;
-    this.bioZh = guide.bio_zh;
-
-    // Assign default avatar if empty
-    this.avatar = guide.avatar || 'user.jpeg';
+  static fromJson(json: GuideJson): Guide {
+    return new Guide(
+      json.id,
+      json.nickname ?? '',
+      json.nickname_zh ?? '',
+      json.bio ?? '',
+      json.bio_zh ?? '',
+      json.avatar || 'user.jpeg',
+    );
   }
 
-  /**
-   * Name property getter.
-   *
-   * @param string lang current application language
-   */
+  get id(): number {
+    return this._id;
+  }
+
+  get nameEn(): string {
+    return this._nameEn;
+  }
+
+  get nameZh(): string {
+    return this._nameZh;
+  }
+
+  get bioEn(): string {
+    return this._bioEn;
+  }
+
+  get bioZh(): string {
+    return this._bioZh;
+  }
+
+  get avatar(): string {
+    return this._avatar;
+  }
+
   getName(lang: string): string {
-    return this.nameZh && lang.indexOf('zh') !== -1 ? this.nameZh : this.nameEn;
+    return lang.startsWith('zh') && this._nameZh ? this._nameZh : this._nameEn;
   }
 
-  /**
-   * Bio property getter.
-   *
-   * @param string lang current application language
-   */
   getBio(lang: string): string {
-    return this.bioZh && lang.indexOf('zh') !== -1 ? this.bioZh : this.bioEn;
-  }
-
-  /**
-   * Avatar property getter.
-   */
-  getAvatar(): string {
-    return this.avatar;
+    return lang.startsWith('zh') && this._bioZh ? this._bioZh : this._bioEn;
   }
 }
