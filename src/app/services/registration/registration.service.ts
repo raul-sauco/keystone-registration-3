@@ -5,7 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 
 import { CredentialsJson } from '@app/models/credentials';
 import { InvalidTripCodeError, ServerUnavailableError } from '@app/models/error';
-import { TripCodes } from '@models/tripCodes';
+import { TripCodes, TripCodesJson } from '@models/tripCodes';
 import { ApiService } from '../api/api.service';
 import { AuthService } from '../auth/auth.service';
 
@@ -29,9 +29,14 @@ export class RegistrationService {
    */
   async validateCodes(id: number, code: number, lang: string): Promise<void> {
     try {
-      const response = await this.api.postAsync<TripCodes>('trip-codes', { id, code, lang });
-      this.logger.debug('RegistrationService: Got TripCodes from API', response);
-      this._tripCodes.set(response);
+      const tripCodesJson = await this.api.postAsync<TripCodesJson>('trip-codes', {
+        id,
+        code,
+        lang,
+      });
+      const tripCodes = TripCodes.fromJson(tripCodesJson);
+      this.logger.debug('RegistrationService: Got TripCodes from API', tripCodes);
+      this._tripCodes.set(tripCodes);
     } catch (err) {
       this.logger.error('RegistrationService: Error validating codes', err);
 

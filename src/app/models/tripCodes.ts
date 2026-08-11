@@ -1,33 +1,29 @@
 import { UserType } from './credentials';
 
-export interface TripCodes {
-  tripId: number;
-  tripName: string;
+export interface TripCodesJson {
+  trip_id: string;
   code: number;
-  type: UserType;
+  trip_name_en: string;
+  trip_name_zh: string;
+  type: number;
 }
 
-// export interface TripCodesJson {
-//   id: string;
-//   name: string;
-//   code: number;
-//   type: string;
-// }
-//
-// export class TripCodes {
-//   private constructor(
-//     readonly id: string,
-//     readonly name: string,
-//     readonly code: number,
-//     readonly type: string,
-//   ) {}
-//
-//   static fromJson(json: TripCodesJson): TripCodes {
-//     return new TripCodes(
-//       json.id,
-//       json.name,
-//       json.code,
-//       json.type,
-//     );
-//   }
-// }
+export class TripCodes {
+  private constructor(
+    readonly tripId: string,
+    readonly code: number,
+    readonly tripNameEn: string,
+    readonly tripNameZh: string,
+    readonly type: UserType,
+  ) {}
+
+  static fromJson(json: TripCodesJson): TripCodes {
+    return new TripCodes(
+      json.trip_id,
+      json.code,
+      json.trip_name_en,
+      json.trip_name_zh,
+      json.type as UserType,
+    );
+  }
+}

@@ -33,12 +33,12 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
-import { LocalizationService } from '@app/services/localization/localization.service';
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
 import { UniqueUsernameValidator } from '@directives/unique-username-validator.directive';
 import { DialogData } from '@interfaces/dialog-data';
 import { UserType } from '@models/credentials';
 import { AuthService } from '@services/auth/auth.service';
+import { LocalizationService } from '@services/localization/localization.service';
 import { RegistrationService } from '@services/registration/registration.service';
 
 /** Error when the parent is invalid */

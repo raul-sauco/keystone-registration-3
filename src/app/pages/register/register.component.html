@@ -7,9 +7,7 @@
         <h1>
           {{ (isStudent ? 'REGISTER_NEW_STUDENT' : 'REGISTER_NEW_TEACHER') | translate }}
         </h1>
-        @if (tripCodes.tripName) {
-          <h2 class="trip-name">{{ tripCodes.tripName }}</h2>
-        }
+        <h2 class="trip-name">{{ isChinese() ? tripCodes.tripNameZh : tripCodes.tripNameEn }}</h2>
         <form
           [formGroup]="userRegistrationForm"
           id="registration-form"
