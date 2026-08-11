@@ -1,7 +1,5 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { AsyncPipe } from '@angular/common';
-import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import {
   FormGroupDirective,
   FormsModule,
@@ -34,16 +32,14 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
-import { MarkdownComponent } from 'ngx-markdown';
-import { Observable, map } from 'rxjs';
 
-import { UserType } from '@app/models/credentials';
-import { RegistrationService } from '@app/services/registration/registration.service';
+import { LocalizationService } from '@app/services/localization/localization.service';
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
 import { UniqueUsernameValidator } from '@directives/unique-username-validator.directive';
 import { DialogData } from '@interfaces/dialog-data';
-import { ApiService } from '@services/api/api.service';
+import { UserType } from '@models/credentials';
 import { AuthService } from '@services/auth/auth.service';
+import { RegistrationService } from '@services/registration/registration.service';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -59,10 +55,9 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    AsyncPipe,
     FormsModule,
-    MarkdownComponent,
     MatButton,
     MatCard,
     MatCardContent,
@@ -81,12 +76,14 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   ],
 })
 export class RegisterComponent implements OnInit {
-  private api = inject(ApiService);
   private formBuilder = inject(NonNullableFormBuilder);
+  private readonly localization = inject(LocalizationService);
   private logger = inject(NGXLogger);
   private usernameValidator = inject(UniqueUsernameValidator);
+
   protected readonly UserType = UserType;
-  auth = inject(AuthService);
+  protected readonly isChinese = this.localization.isChinese;
+
   dialog = inject(MatDialog);
   registrationService = inject(RegistrationService);
   router = inject(Router);
@@ -109,7 +106,6 @@ export class RegisterComponent implements OnInit {
     { validators: passwordMatchValidator },
   );
   errorMatcher!: CrossFieldErrorMatcher;
-  namePromptContent$!: Observable<string>;
 
   ngOnInit(): void {
     const tripCodes = this.registrationService.tripCodes();
@@ -120,7 +116,6 @@ export class RegisterComponent implements OnInit {
       this.errorMatcher = new CrossFieldErrorMatcher();
       this.logger.debug('RegisterComponent OnInit', tripCodes);
     }
-    this.fetchContents();
   }
 
   /**
@@ -144,22 +139,6 @@ export class RegisterComponent implements OnInit {
     } finally {
       this.loading.set(false);
     }
-  }
-
-  /**
-   * TODO: Use i18n translations
-   */
-  fetchContents() {
-    const options = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
-    this.namePromptContent$ = this.api
-      .get('documents/141', null, options)
-      .pipe(
-        map((doc: any) =>
-          this.translate.getCurrentLang().includes('zh') ? doc.text_zh : doc.text,
-        ),
-      );
   }
 
   get id() {

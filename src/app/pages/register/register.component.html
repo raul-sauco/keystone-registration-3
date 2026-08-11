@@ -15,9 +15,7 @@
           id="registration-form"
           (ngSubmit)="submitUserRegistration()"
         >
-          @if (namePromptContent$ | async; as content) {
-            <markdown class="inner-form-prompt" [data]="content"></markdown>
-          }
+          <div class="inner-form-prompt">{{ 'REG_USE_OFFICIAL_GOV_ID' | translate }}</div>
           <mat-form-field appearance="outline">
             <mat-label>{{ (isStudent ? 'STUDENT_NAME' : 'NAME') | translate }}</mat-label>
             <input type="text" matInput formControlName="name" required />
@@ -61,7 +59,7 @@
           </mat-form-field>
           @if (id?.errors?.uniqueUsername) {
             <div id="duplicate-id-prompt" class="inner-form-prompt">
-              @if (translate.getCurrentLang().includes('zh')) {
+              @if (isChinese()) {
                 请确认证件号码是准确的，或直接'<a routerLink="/login">{{ 'LOGIN' | translate }}</a
                 >'。请'<a routerLink="/forgot-password">{{ 'FORGOT_MY_PASSWORD' | translate }}</a
                 >'找回您的密码。
