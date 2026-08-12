@@ -13,7 +13,7 @@
           id="registration-form"
           (ngSubmit)="submitUserRegistration()"
         >
-          <div class="inner-form-prompt">{{ 'REG_USE_OFFICIAL_GOV_ID' | translate }}</div>
+          <div class="inner-form-prompt" [innerHtml]="'REG_USE_OFFICIAL_GOV_ID' | translate"></div>
           <mat-form-field appearance="outline">
             <mat-label>{{ (isStudent ? 'STUDENT_NAME' : 'NAME') | translate }}</mat-label>
             <input type="text" matInput formControlName="name" required />
