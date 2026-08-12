@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input, resource } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  resource,
+} from '@angular/core';
 import { MarkdownComponent } from 'ngx-markdown';
-import { map } from 'rxjs';
 
-import { LoadingSpinnerContentModule } from '@components/loading-spinner-content/loading-spinner-content.module';
+import { LocalizationService } from '@app/services/localization/localization.service';
+import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { ApiService } from '@services/api/api.service';
 
 interface MdDocumentJson {
@@ -17,19 +22,17 @@ interface MdDocumentJson {
   selector: 'app-ka-md-document',
   templateUrl: './ka-md-document.component.html',
   styleUrl: './ka-md-document.component.scss',
-  imports: [CommonModule, LoadingSpinnerContentModule, MarkdownComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, LoadingSpinnerContentComponent, MarkdownComponent],
 })
 export class KaMdDocumentComponent {
   private api = inject(ApiService);
-  private translate = inject(TranslateService);
+  private localization = inject(LocalizationService);
 
   // 1. Inputs
   endpoint = input.required<string>();
 
-  // 2. Reactively track the current language from the translation service
-  readonly lang = toSignal(this.translate.onLangChange.pipe(map((e) => e.lang)), {
-    initialValue: this.translate.getCurrentLang(),
-  });
+  protected readonly isChinese = this.localization.isChinese;
 
   // 3. Automatically fetch the document whenever the endpoint changes
   readonly docResource = resource({
@@ -41,6 +44,6 @@ export class KaMdDocumentComponent {
   readonly content = computed(() => {
     const doc = this.docResource.value(); // Extract value from the resource
     if (!doc) return null;
-    return this.lang().includes('zh') ? doc.text_zh : doc.text;
+    return this.isChinese() ? doc.text_zh : doc.text;
   });
 }

@@ -1,3 +1,4 @@
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import {
   FormGroupDirective,
@@ -9,6 +10,8 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatCard, MatCardContent } from '@angular/material/card';
 import { ErrorStateMatcher } from '@angular/material/core';
 import {
   MAT_DIALOG_DATA,
@@ -19,22 +22,18 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
-import { NGXLogger } from 'ngx-logger';
-import { passwordMatchValidator } from 'src/app/directives/password-match-validator.directive';
-import { DialogData } from 'src/app/interfaces/dialog-data';
-
-import { ApiService } from 'src/app/services/api/api.service';
-import { AuthService } from 'src/app/services/auth/auth.service';
-
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LoadingSpinnerContentComponent } from '../../components/loading-spinner-content/loading-spinner-content.component';
+import { NGXLogger } from 'ngx-logger';
+
+import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
+import { passwordMatchValidator } from '@directives/password-match-validator.directive';
+import { DialogData } from '@interfaces/dialog-data';
+import { ApiService } from '@services/api/api.service';
+import { AuthService } from '@services/auth/auth.service';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -50,7 +49,7 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
     MatCardContent,

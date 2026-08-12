@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { ApiService } from '@services/api/api.service';
@@ -27,7 +27,7 @@ import { RouteStateService } from '@services/route-state/route-state.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -38,7 +38,7 @@ import { RouteStateService } from '@services/route-state/route-state.service';
     MatProgressBarModule,
     MatSnackBarModule,
     RouterLink,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class LoginComponent implements OnInit {
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
   private paymentService = inject(PaymentService);
 
   loginForm!: UntypedFormGroup;
-  loading: boolean = false;
+  loading = false;
   errorMsg: string | null = null;
 
   ngOnInit(): void {

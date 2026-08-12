@@ -41,7 +41,7 @@ import { IdPhotoComponent } from './id-photo/id-photo.component';
   selector: 'app-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     FormsModule,
@@ -150,7 +150,7 @@ export class PersonalInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug('PersonalInfoComponent OnInit');
-    this.lang = this.translate.getCurrentLang().includes('zh') ? 'zh' : 'en';
+    this.lang = this.translate.getCurrentLang()?.includes('zh') ? 'zh' : 'en';
     this.fetchContents();
   }
 

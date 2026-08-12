@@ -99,7 +99,7 @@ export class TripCodesComponent {
       await this.registrationService.validateCodes(
         this.tripId() ?? this.tripCodeForm.getRawValue().tripId,
         this.tripCodeForm.value.code,
-        this.translate.getCurrentLang(),
+        this.translate.getCurrentLang() ?? 'en',
       );
       await this.router.navigateByUrl('/register');
     } catch (err) {

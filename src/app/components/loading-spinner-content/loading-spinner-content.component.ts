@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-loading-spinner-content',
   templateUrl: './loading-spinner-content.component.html',
   styleUrls: ['./loading-spinner-content.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatProgressSpinner, TranslatePipe],
 })
 export class LoadingSpinnerContentComponent {
@@ -14,6 +14,4 @@ export class LoadingSpinnerContentComponent {
   @Input() diameter = 50;
   @Input() strokeWidth = 2;
   mode: ProgressSpinnerMode = 'indeterminate';
-
-  constructor() {}
 }

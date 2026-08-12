@@ -55,7 +55,7 @@ export class PaymentInstructionsComponent implements OnInit, OnDestroy {
   helpOpen = signal(false);
 
   readonly currentLang = toSignal(this.translate.onLangChange.pipe(map((event) => event.lang)), {
-    initialValue: this.translate.getCurrentLang(),
+    initialValue: this.translate.getCurrentLang() ?? 'en',
   });
 
   readonly contentResource = resource({
@@ -136,7 +136,7 @@ export class AddParticipantInfoToPaymentReminderDialogComponent {
     this.exampleImgUrl =
       globals.getResUrl() +
       'img/portal/example-payment-proof-' +
-      (translate.getCurrentLang().includes('zh') ? 'zh' : 'en') +
+      (translate.getCurrentLang()?.includes('zh') ? 'zh' : 'en') +
       '.png';
   }
 }
@@ -159,7 +159,7 @@ export class AddStudentNameToPaymentProofHelpDialogComponent {
     this.exampleImgUrl =
       globals.getResUrl() +
       'img/portal/example-payment-proof-' +
-      (translate.getCurrentLang().includes('zh') ? 'zh' : 'en') +
+      (translate.getCurrentLang()?.includes('zh') ? 'zh' : 'en') +
       '.png';
   }
 }

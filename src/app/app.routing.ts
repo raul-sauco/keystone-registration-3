@@ -7,11 +7,7 @@ import { teacherGuard } from '@guards/teacher.guard';
 export const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
-  },
-  {
-    path: 'home/:trip-id',
-    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
+    loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
   {
     path: 'program-overview',
@@ -37,11 +33,8 @@ export const routes: Routes = [
   },
   {
     path: 'documents',
-    loadChildren: () => import('./pages/documents/documents.module').then((m) => m.DocumentsModule),
-  },
-  {
-    path: 'documents/:trip-id',
-    loadChildren: () => import('./pages/documents/documents.module').then((m) => m.DocumentsModule),
+    loadComponent: () =>
+      import('./pages/documents/documents.component').then((m) => m.DocumentsComponent),
   },
   {
     path: 'accommodation',
@@ -51,7 +44,8 @@ export const routes: Routes = [
   },
   {
     path: 'feedback',
-    loadChildren: () => import('./pages/feedback/feedback.module').then((m) => m.FeedbackModule),
+    loadComponent: () =>
+      import('./pages/feedback/feedback.component').then((m) => m.FeedbackComponent),
     canActivate: [teacherGuard],
   },
   {
@@ -68,7 +62,8 @@ export const routes: Routes = [
   },
   {
     path: 'payments',
-    loadChildren: () => import('./pages/payments/payments.module').then((m) => m.PaymentsModule),
+    loadComponent: () =>
+      import('./pages/payments/payments.component').then((m) => m.PaymentsComponent),
     canActivate: [AuthGuard],
   },
   {
@@ -104,7 +99,7 @@ export const routes: Routes = [
   },
   {
     path: 'help',
-    loadChildren: () => import('./pages/help/help.module').then((m) => m.HelpModule),
+    loadComponent: () => import('./pages/help/help.component').then((m) => m.HelpComponent),
   },
   {
     path: 'login',
@@ -144,8 +139,10 @@ export const routes: Routes = [
   },
   {
     path: 'reset-password/:token',
-    loadChildren: () =>
-      import('./pages/reset-password/reset-password.module').then((m) => m.ResetPasswordModule),
+    loadComponent: () =>
+      import('./pages/reset-password/reset-password.component').then(
+        (m) => m.ResetPasswordComponent,
+      ),
     canActivate: [NoAuthGuard],
   },
   {

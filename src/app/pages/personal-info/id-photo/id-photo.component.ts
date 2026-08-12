@@ -11,7 +11,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 
@@ -23,9 +23,9 @@ import { GlobalsService } from '@services/globals/globals.service';
 
 @Component({
   selector: 'app-id-photo',
-  imports: [MatButtonModule, MatIconModule, MatProgressBarModule, TranslateModule],
+  imports: [MatButtonModule, MatIconModule, MatProgressBarModule, TranslatePipe],
   templateUrl: './id-photo.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './id-photo.component.scss',
 })
 export class IdPhotoComponent implements OnInit {

@@ -251,7 +251,7 @@ export class Student {
       return formatDate(
         this[attr] || '',
         'longDate',
-        this.translate.getCurrentLang().includes('zh') ? 'zh' : 'en-US',
+        this.translate.getCurrentLang()?.includes('zh') ? 'zh' : 'en-US',
       );
     }
     return `${this[attr]}`;

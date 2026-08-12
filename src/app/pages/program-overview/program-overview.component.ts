@@ -1,12 +1,12 @@
-import { Component, OnInit, inject, resource } from '@angular/core';
+import { Component, inject, resource } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { NGXLogger } from 'ngx-logger';
+import { TranslatePipe } from '@ngx-translate/core';
 
-import { AuthState } from '@app/models/auth-state';
+import { LocalizationService } from '@app/services/localization/localization.service';
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { LoginRequiredMessageComponent } from '@components/login-required-message/login-required-message.component';
 import { NoResultsComponent } from '@components/no-results/no-results.component';
+import { AuthState } from '@models/auth-state';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
@@ -33,25 +33,15 @@ interface FileJson {
     TranslatePipe,
   ],
 })
-export class ProgramOverviewComponent implements OnInit {
-  private api = inject(ApiService);
-  private globals = inject(GlobalsService);
-  private logger = inject(NGXLogger);
-  private translate = inject(TranslateService);
-  auth = inject(AuthService);
+export class ProgramOverviewComponent {
+  private readonly api = inject(ApiService);
+  private readonly globals = inject(GlobalsService);
+  private readonly localization = inject(LocalizationService);
 
   protected readonly AuthState = AuthState;
-  url: string;
-  lang: string;
-
-  constructor() {
-    this.url = this.globals.getResUrl();
-    this.lang = this.translate.getCurrentLang();
-  }
-
-  ngOnInit(): void {
-    this.logger.debug('ProgramOverviewComponent OnInit');
-  }
+  protected readonly isChinese = this.localization.isChinese;
+  protected readonly url = this.globals.getResUrl();
+  protected readonly auth = inject(AuthService);
 
   readonly documentResource = resource({
     params: () => this.auth.credentialsSignal(),

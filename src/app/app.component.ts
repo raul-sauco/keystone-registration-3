@@ -1,6 +1,13 @@
 import { BreakpointObserver, Breakpoints, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LoggerModule, NGXLogger } from 'ngx-logger';
 import { filter, map, Observable, of, shareReplay, withLatestFrom } from 'rxjs';
 
@@ -24,6 +31,7 @@ import { TripService } from '@services/trip/trip.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     CommonModule,
@@ -38,7 +46,7 @@ import { TripService } from '@services/trip/trip.service';
     MatListModule,
     RouterLink,
     RouterOutlet,
-    TranslateModule,
+    TranslatePipe,
     UpperCasePipe,
   ],
 })
@@ -150,9 +158,8 @@ export class AppComponent implements OnInit {
     } else {
       this.translate.use('en');
     }
-    const currentLang = this.translate.getCurrentLang();
-    this.currentLang = currentLang.includes('zh') ? 'zh' : 'en';
-    this.logger.debug(`TranslateService language set to "${currentLang}"`);
+    this.currentLang = this.translate.getCurrentLang()?.includes('zh') ? 'zh' : 'en';
+    this.logger.debug(`TranslateService language set to "${this.currentLang}"`);
   }
 
   toggleLanguage() {

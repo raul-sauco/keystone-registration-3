@@ -9,7 +9,7 @@ import { PaymentService } from '@services/payment/payment.service';
   selector: 'app-waiver-content',
   templateUrl: './waiver-content.component.html',
   styleUrls: ['./waiver-content.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MarkdownComponent],
 })
 export class WaiverContentComponent implements OnInit {
@@ -24,7 +24,7 @@ export class WaiverContentComponent implements OnInit {
   ngOnInit(): void {
     this.logger.debug('WaiverContentComponent::OnInit');
     this.fetchDocument();
-    this.translate.onLangChange.subscribe((_) => this.pushContent());
+    this.translate.onLangChange.subscribe(() => this.pushContent());
   }
 
   fetchDocument() {
@@ -37,7 +37,7 @@ export class WaiverContentComponent implements OnInit {
 
   pushContent() {
     this.content.set(
-      this.translate.getCurrentLang().includes('zh') ? this.document.text_zh : this.document.text,
+      this.translate.getCurrentLang()?.includes('zh') ? this.document.text_zh : this.document.text,
     );
   }
 }

@@ -20,7 +20,7 @@
                     </div>
                     <div class="file-details">
                       <header class="file-name">
-                        {{ lang.includes('zh') ? document.name_zh : document.name_en }}
+                        {{ isChinese() ? document.name_zh : document.name_en }}
                       </header>
                       <div class="downloadable-element-feedback">
                         <div>{{ 'DOWNLOAD' | translate }}</div>

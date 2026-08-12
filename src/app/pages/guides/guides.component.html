@@ -1,5 +1,5 @@
 @let baseUrl = url;
-@let lang = language();
+@let lang = language() ?? 'en';
 
 @if (isLoading()) {
   <app-loading-spinner-content></app-loading-spinner-content>
