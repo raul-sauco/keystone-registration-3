@@ -28,8 +28,7 @@ import { Auth401Interceptor } from './http-interceptors/auth-401-interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideMarkdown(),
-    provideRouter(routes),
+    provideCharts(withDefaultRegisterables()),
     // TODO: Experiment with removing zone
     // provideExperimentalZonelessChangeDetection(),
     provideZoneChangeDetection(),
@@ -45,11 +44,11 @@ export const appConfig: ApplicationConfig = {
       await inject(AuthService).initialize();
     }),
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
-    provideCharts(withDefaultRegisterables()),
+    provideMarkdown(),
     provideNativeDateAdapter(),
     provideRouter(routes),
     provideTranslateService({
-      loader: provideTranslateLoader(CustomTranslationsLoader),
+      loader: provideTranslateLoader(() => new CustomTranslationsLoader()),
     }),
   ],
 };
