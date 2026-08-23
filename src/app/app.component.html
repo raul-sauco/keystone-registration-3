@@ -2,7 +2,8 @@
 @let authState = auth.state();
 @let authenticated = auth.authenticated();
 @let trip = tripService.trip();
-@let tripName = (currentLang === 'en' ? trip?.nameEn : trip?.nameZh) ?? '';
+@let chinese = isChinese();
+@let tripName = (chinese ? trip?.nameZh : trip?.nameEn) ?? '';
 <mat-toolbar id="main-header">
   @if (isHandset$ | async) {
     <button
@@ -32,7 +33,7 @@
     (click)="toggleLanguage()"
     id="toggle-lang-button"
   >
-    {{ currentLang === 'en' ? '中文' : 'EN' }}
+    {{ chinese ? 'EN' : '中文' }}
     <mat-icon aria-label="Translate toggle icon" color="primary">translate</mat-icon>
   </button>
   <button

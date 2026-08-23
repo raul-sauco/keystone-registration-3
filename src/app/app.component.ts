@@ -23,6 +23,7 @@ import { LoadingSpinnerContentComponent } from '@components/loading-spinner-cont
 import { AuthState } from '@models/auth-state';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
+import { LocalizationService } from '@services/localization/localization.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { StudentService } from '@services/student/student.service';
 import { TripService } from '@services/trip/trip.service';
@@ -51,18 +52,22 @@ import { TripService } from '@services/trip/trip.service';
   ],
 })
 export class AppComponent implements OnInit {
-  private breakpointObserver = inject(BreakpointObserver);
-  translate = inject(TranslateService);
-  private logger = inject(NGXLogger);
-  private router = inject(Router);
-  private api = inject(ApiService);
-  auth = inject(AuthService);
-  paymentService = inject(PaymentService);
-  studentService = inject(StudentService);
-  tripService = inject(TripService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly translate = inject(TranslateService);
+  private readonly localization = inject(LocalizationService);
+  private readonly logger = inject(NGXLogger);
+  private readonly router = inject(Router);
+  private readonly api = inject(ApiService);
+
+  readonly auth = inject(AuthService);
+  readonly paymentService = inject(PaymentService);
+  readonly studentService = inject(StudentService);
+  readonly tripService = inject(TripService);
+
   // Expose the enum to the template, otherwise not available
   AuthState = AuthState;
   currentLang = 'en';
+  readonly isChinese = this.localization.isChinese;
 
   @ViewChild('drawer', { static: true })
   drawer!: MatSidenav;
