@@ -27,7 +27,7 @@ export class AccommodationComponent {
   readonly suppliersResource = resource({
     loader: async () => {
       this.logger.debug('AccommodationService loading supplier json');
-      const json = await this.api.getAsync<SupplierJson[]>('accommodation');
+      const json = await this.api.getAsync<SupplierJson[]>('accommodation', { expand: 'images' });
       return json.map((json) => Supplier.fromJson(json));
     },
   });
