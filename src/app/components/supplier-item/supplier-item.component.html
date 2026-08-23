@@ -4,9 +4,9 @@
       <mat-card-title>
         <h4>
           {{
-            lang === 'en'
-              ? supplier.name + ' (' + supplier.nameZh + ')'
-              : supplier.nameZh + ' (' + supplier.name + ')'
+            isChinese()
+              ? supplier.nameZh + ' (' + supplier.name + ')'
+              : supplier.name + ' (' + supplier.nameZh + ')'
           }}
         </h4>
       </mat-card-title>
