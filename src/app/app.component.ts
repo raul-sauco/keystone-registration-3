@@ -195,6 +195,10 @@ export class AppComponent implements OnInit {
       return false;
     }
 
+    if (student.isSampleAccount) {
+      return true;
+    }
+
     const paymentInfo = this.paymentService.paymentInfo.value();
     if (!paymentInfo) {
       return false;
