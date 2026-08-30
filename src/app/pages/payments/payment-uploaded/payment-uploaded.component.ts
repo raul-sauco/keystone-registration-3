@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
   MatDialog,
@@ -12,17 +12,18 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
+import { firstValueFrom } from 'rxjs';
 
 import { AuthService } from '@services/auth/auth.service';
 import { GlobalsService } from '@services/globals/globals.service';
 import { PaymentService } from '@services/payment/payment.service';
 import { StudentService } from '@services/student/student.service';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-payment-uploaded',
   templateUrl: './payment-uploaded.component.html',
   styleUrls: ['./payment-uploaded.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButton, MatIcon, MatProgressSpinner, TranslatePipe],
 })
 export class PaymentUploadedComponent {
