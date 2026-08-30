@@ -1,4 +1,5 @@
 @let student = studentService.student();
+@let isStudent = auth.isStudentSignal();
 @if (student) {
   <div class="app-page-wrapper mat-typography">
     <div class="app-content-wrapper">
@@ -11,13 +12,12 @@
           >
             <!-- START Personal information section -->
             <h2>{{ 'PERSONAL_INFORMATION' | translate }}</h2>
-            @if (requiredFieldsPromptContent$ | async; as content) {
-              <markdown
-                id="required-fields-prompt"
-                class="inner-form-prompt"
-                [data]="content"
-              ></markdown>
-            }
+            <markdown
+              id="required-fields-prompt"
+              class="inner-form-prompt"
+              data-translate-key="PIF_REQUIRED_FIELDS_PROPMT_CONTENT"
+              [data]="'PIF_REQUIRED_FIELDS_PROPMT_CONTENT' | translate"
+            ></markdown>
             @if (idPhotoRequired) {
               <div #photoId></div>
               <app-id-photo
@@ -25,9 +25,11 @@
                 (idUploadedEvent)="handleIdUploadEvent($event)"
               ></app-id-photo>
             }
-            @if (namePromptContent$ | async; as content) {
-              <markdown class="inner-form-prompt" [data]="content"></markdown>
-            }
+            <markdown
+              class="inner-form-prompt"
+              data-translate-key="PIF_NAME_PROMPT_CONTENT"
+              [data]="'PIF_NAME_PROMPT_CONTENT' | translate"
+            ></markdown>
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel('name') }}</mat-label>
               <input type="text" matInput formControlName="name" />
@@ -37,9 +39,11 @@
                 </mat-error>
               }
             </mat-form-field>
-            @if (englishNamePromptContent$ | async; as content) {
-              <markdown class="inner-form-prompt" [data]="content"></markdown>
-            }
+            <markdown
+              class="inner-form-prompt"
+              data-translate-key="PIF_ENGLISH_NAME_PROMPT_CONTENT"
+              [data]="'PIF_ENGLISH_NAME_PROMPT_CONTENT' | translate"
+            ></markdown>
             <mat-form-field appearance="outline">
               <mat-label>{{ student.getAttributeLabel('englishName') }}</mat-label>
               <input type="text" matInput formControlName="englishName" />
@@ -47,8 +51,7 @@
             <div
               class="inner-form-prompt"
               [innerHTML]="
-                (auth.isStudentSignal() ? 'PIF_HINT_CITIZENSHIP_STUDENT' : 'PIF_HINT_CITIZENSHIP')
-                  | translate
+                (isStudent ? 'PIF_HINT_CITIZENSHIP_STUDENT' : 'PIF_HINT_CITIZENSHIP') | translate
               "
             ></div>
             <mat-form-field appearance="outline">
@@ -58,10 +61,8 @@
             <div
               class="inner-form-prompt"
               [innerHTML]="
-                (auth.isStudentSignal()
-                  ? 'PIF_HINT_TRAVEL_DOCUMENT_STUDENT'
-                  : 'PIF_HINT_TRAVEL_DOCUMENT'
-                ) | translate
+                (isStudent ? 'PIF_HINT_TRAVEL_DOCUMENT_STUDENT' : 'PIF_HINT_TRAVEL_DOCUMENT')
+                  | translate
               "
             ></div>
             <mat-form-field appearance="outline">
@@ -109,11 +110,9 @@
 
             <!-- START Contact information section -->
             <h2>
-              {{
-                (auth.isStudentSignal() ? 'CONTACT_DETAILS_STUDENT' : 'CONTACT_DETAILS') | translate
-              }}
+              {{ (isStudent ? 'CONTACT_DETAILS_STUDENT' : 'CONTACT_DETAILS') | translate }}
             </h2>
-            @if (auth.isStudentSignal()) {
+            @if (isStudent) {
               <mat-form-field appearance="outline">
                 <mat-label>{{ student.getAttributeLabel('guardianName') }}</mat-label>
                 <input type="text" matInput formControlName="guardianName" />
@@ -143,7 +142,7 @@
               @let school = schoolService.school.value();
               @if (
                 school !== undefined &&
-                auth.isStudentSignal() &&
+                isStudent &&
                 (school.useHouse ||
                   school.useRoomNumber ||
                   school.useGrade ||

@@ -1,4 +1,4 @@
-import { AsyncPipe, formatDate } from '@angular/common';
+import { formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,10 +28,9 @@ import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { MarkdownComponent } from 'ngx-markdown';
-import { Observable, firstValueFrom, map } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
-import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 import { SchoolService } from '@services/school/school.service';
 import { StudentService } from '@services/student/student.service';
@@ -43,7 +42,6 @@ import { IdPhotoComponent } from './id-photo/id-photo.component';
   styleUrls: ['./personal-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    AsyncPipe,
     FormsModule,
     IdPhotoComponent,
     LoadingSpinnerContentComponent,
@@ -64,23 +62,19 @@ import { IdPhotoComponent } from './id-photo/id-photo.component';
   ],
 })
 export class PersonalInfoComponent implements OnInit {
-  private api = inject(ApiService);
-  private formBuilder = inject(NonNullableFormBuilder);
-  private snackBar = inject(MatSnackBar);
-  private logger = inject(NGXLogger);
-  private router = inject(Router);
-  private translate = inject(TranslateService);
-  schoolService = inject(SchoolService);
-  studentService = inject(StudentService);
-  auth = inject(AuthService);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly logger = inject(NGXLogger);
+  private readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
+  protected readonly schoolService = inject(SchoolService);
+  protected readonly studentService = inject(StudentService);
+  protected readonly auth = inject(AuthService);
 
   @ViewChild('photoId') photoIdElement!: ElementRef;
   idPhotoProvided = false;
-  idPhotoRequired = false;
+  idPhotoRequired = true;
   lang: string = 'en';
-  namePromptContent$!: Observable<any>;
-  englishNamePromptContent$!: Observable<any>;
-  requiredFieldsPromptContent$!: Observable<any>;
 
   readonly personalInfoForm = this.formBuilder.group({
     name: this.formBuilder.control('', {
@@ -151,21 +145,6 @@ export class PersonalInfoComponent implements OnInit {
   ngOnInit(): void {
     this.logger.debug('PersonalInfoComponent OnInit');
     this.lang = this.translate.getCurrentLang()?.includes('zh') ? 'zh' : 'en';
-    this.fetchContents();
-  }
-
-  // TODO: This documents are small enough that could go into the translations
-  fetchContents() {
-    const isStudent = this.auth.isStudentSignal();
-    this.namePromptContent$ = this.fetchDocumentById(isStudent ? 145 : 146);
-    this.englishNamePromptContent$ = this.fetchDocumentById(isStudent ? 147 : 142);
-    this.requiredFieldsPromptContent$ = this.fetchDocumentById(144);
-  }
-
-  fetchDocumentById(id: number): Observable<any> {
-    return this.api
-      .get(`documents/${id}`)
-      .pipe(map((content: any) => (this.lang === 'zh' ? content.text_zh : content.text)));
   }
 
   get name() {
