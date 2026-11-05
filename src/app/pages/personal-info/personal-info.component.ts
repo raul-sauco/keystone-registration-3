@@ -7,6 +7,7 @@ import {
   ViewChild,
   effect,
   inject,
+  signal,
 } from '@angular/core';
 import {
   FormsModule,
@@ -74,7 +75,9 @@ export class PersonalInfoComponent implements OnInit {
   @ViewChild('photoId') photoIdElement!: ElementRef;
   idPhotoProvided = false;
   idPhotoRequired = true;
-  lang: string = 'en';
+  lang = 'en';
+
+  readonly submitting = signal(false);
 
   readonly personalInfoForm = this.formBuilder.group({
     name: this.formBuilder.control('', {
@@ -88,8 +91,10 @@ export class PersonalInfoComponent implements OnInit {
     email: this.formBuilder.control('', {
       validators: [Validators.email],
     }),
-    gender: this.formBuilder.control<number | null>(null),
-    dob: this.formBuilder.control('', {
+    gender: this.formBuilder.control<number | null>(null, {
+      validators: [Validators.required],
+    }),
+    dob: this.formBuilder.control<Date | null>(null, {
       validators: [Validators.required],
     }),
     guardianName: this.formBuilder.control(''),
@@ -124,7 +129,7 @@ export class PersonalInfoComponent implements OnInit {
         travelDocument: student.travelDocument,
         email: student.email,
         gender: student.gender,
-        dob: student.dob,
+        dob: this.parseDateOnly(student.dob),
         guardianName: student.guardianName,
         emergencyContact: student.emergencyContact,
         house: student.house,
@@ -181,6 +186,13 @@ export class PersonalInfoComponent implements OnInit {
 
   /** Handle form submission */
   async submitPersonalInfoForm(): Promise<void> {
+    if (this.personalInfoForm.invalid || this.submitting()) {
+      this.personalInfoForm.markAllAsTouched();
+      return;
+    }
+
+    this.submitting.set(true);
+
     this.logger.debug('PersonalInfoComponent::submitPersonalInfoForm()');
 
     if (this.idPhotoRequired && !this.idPhotoProvided) {
@@ -198,7 +210,7 @@ export class PersonalInfoComponent implements OnInit {
       return;
     }
 
-    const studentData = this.sanitizeData(this.personalInfoForm.value);
+    const studentData = this.sanitizeData(this.personalInfoForm.getRawValue());
     try {
       await this.studentService.updateStudent(studentData);
       const student = this.studentService.student();
@@ -218,11 +230,16 @@ export class PersonalInfoComponent implements OnInit {
     } catch (err) {
       this.logger.error('PersonalInfoComponent: Error updating student data', err);
       // TODO: Display the error in the UI
+    } finally {
+      this.submitting.set(false);
     }
   }
 
   /** Compare number select values to determine if we have a value already. */
-  intValueCompare(v: any, c: any): boolean {
+  intValueCompare(v: string | number | null, c: string | number | null): boolean {
+    if (v === null || v === '' || c === null || c === '') {
+      return v === c;
+    }
     return +v === +c;
   }
 
@@ -232,14 +249,15 @@ export class PersonalInfoComponent implements OnInit {
   }
 
   /** Sanitize the data entered by the user before sending it to the server. */
-  sanitizeData(data: any): any {
-    const sanitizedData: any = {
+  sanitizeData(data: ReturnType<typeof this.personalInfoForm.getRawValue>) {
+    return {
       name: data.name,
       english_name: data.englishName,
       citizenship: data.citizenship,
       travel_document: data.travelDocument,
       email: data.email,
       gender: data.gender,
+      dob: this.formatDateOnly(data.dob),
       guardian_name: data.guardianName,
       emergency_contact: data.emergencyContact,
       house: data.house,
@@ -248,18 +266,12 @@ export class PersonalInfoComponent implements OnInit {
       homeroom: data.homeroom,
       student_id: data.studentId,
       wechat_id: data.wechatId,
-      waiver_accepted: data.waiverAccepted,
-      waiver_signed_on: data.waiverSignedOn,
       dietary_requirements: data.dietaryRequirements,
       dietary_requirements_other: data.dietaryRequirementsOther,
       allergies: data.allergies,
       allergies_other: data.allergiesOther,
       medical_information: data.medicalInformation,
     };
-    if (data.dob) {
-      sanitizedData.dob = this.sanitizeDate(data.dob);
-    }
-    return sanitizedData;
   }
 
   /**
@@ -277,5 +289,42 @@ export class PersonalInfoComponent implements OnInit {
     const res = formatDate(dateObject, 'yyyy-MM-dd', 'en-US');
     this.logger.debug(`Converted field value ${dateString} to YYYY-mm-dd ${res}`);
     return res;
+  }
+
+  private parseDateOnly(value: string | null | undefined): Date | null {
+    if (!value) {
+      return null;
+    }
+
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+
+    if (!match) {
+      return null;
+    }
+
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+
+    const date = new Date(year, month - 1, day);
+
+    // Reject invalid dates such as 2026-02-31.
+    if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+      return null;
+    }
+
+    return date;
+  }
+
+  private formatDateOnly(date: Date | null): string | null {
+    if (!date || !Number.isFinite(date.getTime())) {
+      return null;
+    }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 }

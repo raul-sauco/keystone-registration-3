@@ -44,6 +44,29 @@ export interface StudentJson {
   is_photo_id_required: boolean;
 }
 
+export interface PersonalInfoJson {
+  name?: string;
+  english_name?: string;
+  citizenship?: string;
+  travel_document?: string;
+  email?: string;
+  gender: number | null;
+  dob: string | null;
+  guardian_name?: string;
+  emergency_contact?: string;
+  wechat_id?: string;
+  dietary_requirements: number | null;
+  dietary_requirements_other?: string;
+  allergies: number | null;
+  allergies_other?: string;
+  medical_information?: string;
+  student_id: string | null;
+  house: string | null;
+  room_number: string | null;
+  homeroom: string | null;
+  grade: string | null;
+}
+
 export class Student {
   id: number;
   index?: number;

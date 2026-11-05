@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { Credentials } from '@models/credentials';
-import { Student, StudentData, StudentJson } from '@models/student';
+import { PersonalInfoJson, Student, StudentData, StudentJson } from '@models/student';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 
@@ -44,7 +44,7 @@ export class StudentService {
     }
   }
 
-  async updateStudent(data: StudentData): Promise<void> {
+  async updateStudent(data: StudentData | PersonalInfoJson): Promise<void> {
     const credentials = this.auth.credentialsSignal();
     if (!credentials) {
       return;
