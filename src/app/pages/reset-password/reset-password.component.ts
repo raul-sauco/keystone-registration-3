@@ -1,13 +1,19 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  resource,
+  signal,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  FormControl,
   FormGroupDirective,
-  FormsModule,
   NgForm,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -25,24 +31,45 @@ import {
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
+import { map } from 'rxjs';
 
 import { LoadingSpinnerContentComponent } from '@components/loading-spinner-content/loading-spinner-content.component';
 import { passwordMatchValidator } from '@directives/password-match-validator.directive';
 import { DialogData } from '@interfaces/dialog-data';
+import { CredentialsJson } from '@models/credentials';
 import { ApiService } from '@services/api/api.service';
 import { AuthService } from '@services/auth/auth.service';
 
-/** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: UntypedFormControl | null,
-    form: FormGroupDirective | NgForm | null,
-  ): boolean {
-    return (control?.dirty && form?.invalid) || false;
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    if (!control) {
+      return false;
+    }
+
+    const interacted = control.dirty || control.touched;
+
+    return !!(interacted && (control.invalid || form?.hasError('passwordMismatch')));
   }
+}
+
+interface CheckTokenResponseJson {
+  error: boolean;
+  code?: string;
+  user: {
+    id: number;
+    username: string;
+    email: string;
+  };
+}
+
+interface PasswordResetResponseJson {
+  error: boolean;
+  message: string;
+  access_token: string;
+  credentials: CredentialsJson;
 }
 
 @Component({
@@ -53,7 +80,6 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   imports: [
     MatCard,
     MatCardContent,
-    FormsModule,
     ReactiveFormsModule,
     MatFormField,
     MatLabel,
@@ -66,148 +92,133 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     TranslatePipe,
   ],
 })
-export class ResetPasswordComponent implements OnInit {
-  dialog = inject(MatDialog);
-  private api = inject(ApiService);
-  private auth = inject(AuthService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private formBuilder = inject(UntypedFormBuilder);
-  private logger = inject(NGXLogger);
+export class ResetPasswordComponent {
+  private readonly dialog = inject(MatDialog);
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly logger = inject(NGXLogger);
 
-  validating = true;
-  loading = false;
-  isTokenValid = false;
-  accountNotFound = false;
-  passwordResetForm!: UntypedFormGroup;
-  errorMatcher!: CrossFieldErrorMatcher;
-  userData: any = null;
-  private token: string | null = null;
+  readonly errorMatcher = new CrossFieldErrorMatcher();
 
-  ngOnInit(): void {
-    this.logger.debug('ResetPasswordComponent OnInit');
-    this.errorMatcher = new CrossFieldErrorMatcher();
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.token = params.get('token');
-      this.validateToken();
-      this.initPasswordResetForm();
-    });
-  }
+  readonly loading = signal(false);
+  readonly accountNotFound = computed(
+    () => this.tokenResource.value()?.code === 'TOKEN_MATCH_NO_USER',
+  );
 
-  /** Check the validity of the token against the backend. */
-  validateToken(): void {
-    const endpoint = 'reset-password?token=' + this.token;
-    this.api.get(endpoint).subscribe({
-      next: (res: any) => {
-        this.validating = false;
-        if (!res.error) {
-          this.isTokenValid = true;
-          this.userData = res.user;
-        } else {
-          this.isTokenValid = false;
-          if (res.code === 'INVALID_TOKEN') {
-            this.logger.warn('Error validating password reset token', res);
-          } else if (res.code === 'TOKEN_MATCH_NO_USER') {
-            this.logger.warn('No user found for password reset token', res);
-            this.accountNotFound = true;
-          } else {
-            this.logger.error('Error validating password reset token', res);
-            const dialogRef = this.dialog.open(ResetPasswordDialogComponent, {
-              data: {
-                title: 'SERVER_ERROR',
-                content: 'ERROR_PERSISTS_CONTACT_US',
-              },
-            });
-            dialogRef.afterClosed().subscribe(() => {
-              this.router.navigateByUrl('/home');
-            });
-          }
-        }
-      },
-      error: (err: any) => {
-        this.validating = false;
-        this.isTokenValid = false;
-        this.logger.error('Error validating password reset token', err);
-        const dialogRef = this.dialog.open(ResetPasswordDialogComponent, {
-          data: {
-            title: 'SERVER_ERROR',
-            content: 'ERROR_PERSISTS_CONTACT_US',
-          },
-        });
-        dialogRef.afterClosed().subscribe(() => {
-          this.router.navigateByUrl('/home');
-        });
-      },
-    });
-  }
+  private readonly token = toSignal(
+    this.route.paramMap.pipe(map((params) => params.get('token'))),
+    {
+      initialValue: null,
+    },
+  );
 
-  initPasswordResetForm(): void {
-    this.passwordResetForm = this.formBuilder.group(
-      {
-        password: this.formBuilder.control('', {
-          validators: [Validators.required, Validators.minLength(8)],
-        }),
-        passwordConfirm: this.formBuilder.control('', {
-          validators: [Validators.required, Validators.minLength(8)],
-        }),
-      },
-      { validators: passwordMatchValidator },
-    );
-  }
+  readonly tokenResource = resource({
+    params: () => this.token(),
+    loader: async ({ params: token }) => {
+      if (!token) {
+        return null;
+      }
 
-  get password() {
-    return this.passwordResetForm.get('password');
-  }
-  get passwordConfirm() {
-    return this.passwordResetForm.get('passwordConfirm');
-  }
+      this.logger.debug('Validating password reset token');
 
-  submit(): void {
-    this.loading = true;
-    const endpoint = 'reset-password/' + this.userData.id;
+      return this.api.getAsync<CheckTokenResponseJson>(
+        `reset-password?token=${encodeURIComponent(token)}`,
+      );
+    },
+  });
+
+  readonly validating = this.tokenResource.isLoading;
+
+  readonly isTokenValid = computed(() => {
+    const response = this.tokenResource.value();
+    return !!response && !response.error;
+  });
+
+  readonly userData = computed(() => {
+    const response = this.tokenResource.value();
+    return response?.error ? null : (response?.user ?? null);
+  });
+
+  readonly passwordResetForm = this.formBuilder.group(
+    {
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      passwordConfirm: ['', [Validators.required, Validators.minLength(8)]],
+    },
+    {
+      validators: passwordMatchValidator,
+    },
+  );
+
+  async submit(): Promise<void> {
+    if (this.passwordResetForm.invalid || this.loading()) {
+      return;
+    }
+
+    const user = this.userData();
+    const token = this.token();
+
+    if (!user || !token) {
+      return;
+    }
+
+    this.loading.set(true);
+
     const params = {
       password: this.passwordResetForm.value.password,
-      token: this.token,
+      token,
     };
-    this.api.patch(endpoint, params).subscribe({
-      next: (res: any) => {
-        this.loading = false;
-        this.logger.debug('Success updating password', res);
-        if (!res.error) {
-          this.auth.setCredentials(res);
-        } else {
-          this.logger.warn('Password reset error', res);
-        }
-        const dialogRef = this.dialog.open(ResetPasswordDialogComponent, {
-          data: {
-            title: 'SUCCESS',
-            content: 'PASSWORD_RESET_COMPLETE',
-            message: 'AUTOMATICALLY_LOGGED_IN',
-          },
-        });
-        dialogRef.afterClosed().subscribe(() => {
-          this.router.navigateByUrl('/home');
-        });
-      },
-      error: (err: any) => {
-        this.loading = false;
-        this.passwordResetForm.reset();
-        this.logger.error('Error updating password', err);
-        this.dialog.open(ResetPasswordDialogComponent, {
-          data: {
-            title: 'SERVER_ERROR',
-            content: 'SERVER_ERROR_TRY_LATER',
-          },
-        });
-      },
-    });
+
+    try {
+      const resJson = await this.api.patchAsync<PasswordResetResponseJson>(
+        `reset-password/${user.id}`,
+        params,
+      );
+
+      if (resJson.error) {
+        this.logger.warn('Password reset error', resJson);
+        throw new Error(resJson.message || 'Password reset failed');
+      }
+
+      this.logger.debug('Success updating password', resJson);
+      this.auth.setAccessToken(resJson.access_token);
+      // resJson complies with the AuthCheckResponseJson interface
+      this.auth.setCredentials(resJson);
+
+      const dialogRef = this.dialog.open(ResetPasswordDialogComponent, {
+        data: {
+          title: 'SUCCESS',
+          content: 'PASSWORD_RESET_COMPLETE',
+          message: 'AUTOMATICALLY_LOGGED_IN',
+        },
+      });
+
+      dialogRef.afterClosed().subscribe(() => {
+        this.router.navigateByUrl('/home');
+      });
+    } catch (err) {
+      this.passwordResetForm.reset();
+
+      this.logger.error('Error updating password', err);
+
+      this.dialog.open(ResetPasswordDialogComponent, {
+        data: {
+          title: 'SERVER_ERROR',
+          content: 'SERVER_ERROR_TRY_LATER',
+        },
+      });
+    } finally {
+      this.loading.set(false);
+    }
   }
 }
 
 @Component({
   selector: 'app-password-reset-dialog-component',
   templateUrl: './reset-password-dialog-component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -219,6 +230,7 @@ export class ResetPasswordComponent implements OnInit {
   ],
 })
 export class ResetPasswordDialogComponent {
-  dialogRef = inject<MatDialogRef<ResetPasswordDialogComponent>>(MatDialogRef);
-  data = inject<DialogData>(MAT_DIALOG_DATA);
+  readonly dialogRef = inject<MatDialogRef<ResetPasswordDialogComponent>>(MatDialogRef);
+
+  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 }
