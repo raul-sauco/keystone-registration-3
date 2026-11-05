@@ -1,10 +1,9 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
-  FormGroup,
   FormsModule,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -27,7 +26,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { map } from 'rxjs';
 
-import { InvalidTripCodeError } from '@app/models/error';
+import { InvalidTripCodeError, ServerUnavailableError } from '@app/models/error';
 import { RegistrationService } from '@app/services/registration/registration.service';
 
 export interface DialogData {
@@ -40,6 +39,7 @@ export interface DialogData {
   selector: 'app-trip-codes',
   templateUrl: './trip-codes.component.html',
   styleUrls: ['./trip-codes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatCard,
     MatCardContent,
@@ -56,35 +56,39 @@ export interface DialogData {
   ],
 })
 export class TripCodesComponent {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private translate = inject(TranslateService);
-  private formBuilder = inject(FormBuilder);
-  private registrationService = inject(RegistrationService);
-  private logger = inject(NGXLogger);
-  dialog = inject(MatDialog);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly registrationService = inject(RegistrationService);
+  private readonly logger = inject(NGXLogger);
+  private readonly dialog = inject(MatDialog);
 
   readonly tripId = toSignal(
     this.route.paramMap.pipe(map((params: ParamMap) => params.get('id'))),
     { initialValue: null },
   );
 
-  tripCodeForm!: FormGroup;
-  loading = signal(false);
+  readonly loading = signal(false);
+  readonly tripCodeForm = this.formBuilder.group({
+    tripId: this.formBuilder.control('', {
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(4)],
+    }),
+    code: this.formBuilder.control('', {
+      validators: [Validators.required, Validators.minLength(6), Validators.maxLength(6)],
+    }),
+  });
 
   constructor() {
     this.logger.debug('TripComponent::constructor');
     effect(() => {
       const tripId = this.tripId();
-      this.tripCodeForm = this.formBuilder.group({
-        tripId: this.formBuilder.control(
-          { value: tripId ?? '', disabled: !!tripId },
-          { validators: [Validators.required] },
-        ),
-        code: this.formBuilder.control('', {
-          validators: [Validators.required, Validators.minLength(6), Validators.maxLength(6)],
-        }),
-      });
+      if (tripId) {
+        this.tripCodeForm.controls.tripId.setValue(tripId);
+        this.tripCodeForm.controls.tripId.disable({ emitEvent: false });
+      } else {
+        this.tripCodeForm.controls.tripId.enable({ emitEvent: false });
+      }
     });
   }
 
@@ -93,22 +97,34 @@ export class TripCodesComponent {
    * the user and verify them against the server.
    */
   async submitTripCodes(): Promise<void> {
+    // Prevent multiple submission.
+    if (this.tripCodeForm.invalid || this.loading()) {
+      return;
+    }
+
     this.loading.set(true);
 
     try {
+      const { tripId, code } = this.tripCodeForm.getRawValue();
       await this.registrationService.validateCodes(
-        this.tripId() ?? this.tripCodeForm.getRawValue().tripId,
-        this.tripCodeForm.value.code,
-        this.translate.getCurrentLang() ?? 'en',
+        tripId,
+        code,
+        this.translate.currentLang() ?? 'en',
       );
       await this.router.navigateByUrl('/register');
     } catch (err) {
-      this.resetForm();
+      const message =
+        err instanceof InvalidTripCodeError
+          ? 'WRONG_CODES'
+          : err instanceof ServerUnavailableError
+            ? 'SERVER_ERROR_TRY_LATER'
+            : 'UNEXPECTED_ERROR';
+      this.tripCodeForm.controls.code.reset();
       this.logger.info('TripCodesComponent: Error posting trip-codes', err);
       this.dialog.open(CodeErrorDialogComponent, {
         data: {
           title: 'ERROR',
-          content: err instanceof InvalidTripCodeError ? 'WRONG_CODES' : 'SERVER_ERROR_TRY_LATER',
+          content: message,
         },
       });
     } finally {
@@ -117,20 +133,11 @@ export class TripCodesComponent {
   }
 
   /**
-   * Reset the form to it's initial state after a server
-   * error or a failed attempt
-   */
-  resetForm(): void {
-    this.tripCodeForm.controls.code.setValue('');
-    this.tripCodeForm.controls.code.setErrors(null);
-  }
-
-  /**
    * Show a dialog with help content related to the trip codes
    */
   showHelp() {
     this.dialog.open(TripCodeHelpDialogComponent, {
-      data: { lang: this.translate.getCurrentLang() },
+      data: { lang: this.translate.currentLang() },
     });
   }
 }
@@ -138,6 +145,8 @@ export class TripCodesComponent {
 @Component({
   selector: 'app-code-error-dialog-component',
   templateUrl: './code-error-dialog.component.html',
+  styleUrls: ['./code-error-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -148,10 +157,10 @@ export class TripCodesComponent {
   ],
 })
 export class CodeErrorDialogComponent {
-  dialogRef = inject<MatDialogRef<CodeErrorDialogComponent>>(MatDialogRef);
-  data = inject<DialogData>(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject<MatDialogRef<CodeErrorDialogComponent>>(MatDialogRef);
+  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
-  onClose() {
+  close() {
     this.dialogRef.close();
   }
 }
@@ -159,6 +168,7 @@ export class CodeErrorDialogComponent {
 @Component({
   selector: 'app-trip-code-help-dialog-component',
   templateUrl: './trip-code-help-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatDialogTitle,
     CdkScrollable,
@@ -172,7 +182,7 @@ export class TripCodeHelpDialogComponent {
   dialogRef = inject<MatDialogRef<TripCodeHelpDialogComponent>>(MatDialogRef);
   data = inject<DialogData>(MAT_DIALOG_DATA);
 
-  dismiss() {
+  close() {
     this.dialogRef.close();
   }
 }

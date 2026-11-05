@@ -99,7 +99,9 @@ export class RegisterComponent implements OnInit {
         updateOn: 'blur',
       }),
       name: ['', Validators.required],
-      dob: this.formBuilder.control<Date | null>(null, Validators.required),
+      dob: this.formBuilder.control<Date | null>(null, {
+        validators: [Validators.required],
+      }),
       password: ['', [Validators.required, Validators.minLength(8)]],
       passwordConfirm: ['', [Validators.required, Validators.minLength(8)]],
     },

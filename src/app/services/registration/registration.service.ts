@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Service, signal } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
@@ -21,13 +20,14 @@ export class RegistrationService {
   private api = inject(ApiService);
   private auth = inject(AuthService);
   private logger = inject(NGXLogger);
-  private _tripCodes = signal<TripCodes | null>(null);
+
+  private readonly _tripCodes = signal<TripCodes | null>(null);
   readonly tripCodes = this._tripCodes.asReadonly();
 
   /**
    * Validate trip codes entered by the user. Either returns or throws an error
    */
-  async validateCodes(id: number, code: number, lang: string): Promise<void> {
+  async validateCodes(id: string, code: string, lang: string): Promise<void> {
     try {
       const tripCodesJson = await this.api.postAsync<TripCodesJson>('trip-codes', {
         id,
@@ -38,18 +38,8 @@ export class RegistrationService {
       this.logger.debug('RegistrationService: Got TripCodes from API', tripCodes);
       this._tripCodes.set(tripCodes);
     } catch (err) {
-      this.logger.error('RegistrationService: Error validating codes', err);
-
-      if (err instanceof HttpErrorResponse) {
-        if (err.status === 401) {
-          throw new InvalidTripCodeError();
-        }
-        if (err.status === 500 || err.status === 0) {
-          throw new ServerUnavailableError();
-        }
-      }
-
-      throw err;
+      this.logger.error('RegistrationService: Error validating codes', err, this.tripCodes());
+      this.handleHttpError(err);
     }
   }
 
@@ -59,15 +49,23 @@ export class RegistrationService {
     dob: Date | null,
     password: string,
   ): Promise<void> {
+    const tripCodes = this.tripCodes();
+
+    if (!tripCodes) {
+      throw new Error('Trip codes have not been validated');
+    }
+
     const params = {
       id,
       name,
       dob: this.sanitizeDate(dob),
       password,
-      tripId: this.tripCodes()?.tripId,
-      code: this.tripCodes()?.code,
+      tripId: tripCodes.tripId,
+      code: tripCodes.code,
     };
+
     this.logger.debug('RegistrationService::submitUserRegistration', params);
+
     try {
       const response = await this.api.postAsync<RegistrationResponseJson>('r', params);
       this.logger.debug('RegistrationService::submitUserRegistration got response', response);
@@ -75,17 +73,7 @@ export class RegistrationService {
       this.auth.setCredentials(response);
     } catch (err) {
       this.logger.error('RegistrationService: Error submitting registration', err);
-
-      if (err instanceof HttpErrorResponse) {
-        if (err.status === 401) {
-          throw new InvalidTripCodeError();
-        }
-        if (err.status === 500 || err.status === 0) {
-          throw new ServerUnavailableError();
-        }
-      }
-
-      throw err;
+      this.handleHttpError(err);
     }
   }
 
@@ -95,12 +83,29 @@ export class RegistrationService {
    * @returns
    */
   sanitizeDate(date: Date | null): string | null {
-    if (!(date instanceof Date) || isNaN(date.getTime())) {
-      this.logger.error(`Failed to format date ${date}`);
+    if (!(date instanceof Date) || !Number.isFinite(date.getTime())) {
       return null;
     }
-    const formattedDate = formatDate(date, 'yyyy-MM-dd', 'en-US');
-    this.logger.debug(`RegistrationService::sanitizeDate: Formatted ${date} to ${formattedDate}`);
-    return formattedDate;
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
+  private handleHttpError(err: unknown): never {
+    if (err instanceof HttpErrorResponse) {
+      switch (err.status) {
+        case 401:
+          throw new InvalidTripCodeError();
+
+        case 0:
+        case 500:
+          throw new ServerUnavailableError();
+      }
+    }
+
+    throw err;
   }
 }

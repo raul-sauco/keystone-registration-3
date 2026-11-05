@@ -1,17 +1,18 @@
 @if (data.lang.includes('zh')) {
-  <h1 mat-dialog-title>Security Codes Help</h1>
+  <h1 mat-dialog-title>安全码帮助</h1>
   <div mat-dialog-content>
-    <h2>Where do I find the codes?</h2>
-    <p>Keystone Adventures sends the codes to the school at the same time as we send the link.</p>
-    <p>If you didn't receive the codes yet, ask the trip organizer.</p>
-    <h2>What do the codes look like?</h2>
-    <p>The trip code is all digits, usually 3 digits in length, something like <em>143</em>.</p>
-    <p>The security code can have digits and letters, and it is always 6 characters long.</p>
+    <h2>在哪里可以找到代码？</h2>
+    <p>Keystone Adventures 会在发送链接的同时将代码发送给学校。</p>
+    <p>如果您尚未收到代码，请咨询旅行组织者。</p>
+    <h2>代码是什么样的？</h2>
+    <p>旅行代码全部由数字组成，通常为 3 位数字，例如 <em>143</em>。</p>
+    <p>安全码可以包含数字和字母，长度始终为 6 个字符。</p>
     <p>
-      If you think you have the right codes, but something is not working, try refreshing the page,
-      then make sure you don't add any extra spaces when entering the codes. Try sending them again
+      如果您认为输入的代码正确，但仍然无法使用，请尝试刷新页面，
+      并确保输入代码时没有添加任何多余的空格。然后请再次尝试提交代码。
     </p>
-    <p>If after all you still have problems, please contact your trip organizer.</p>
+    <p>请尝试再次发送</p>
+    <p>如果问题仍然存在，请联系您的旅行组织者。</p>
   </div>
 } @else {
   <h1 mat-dialog-title>Security Codes Help</h1>
@@ -26,11 +27,11 @@
       If you think you have the right codes, but something is not working, try refreshing the page,
       then make sure you don't add any extra spaces when entering the codes. Try sending them again
     </p>
-    <p>If after all you still have problems, please contact your trip organizer.</p>
+    <p>If you still experience problems, please contact your trip organizer.</p>
   </div>
 }
 <div mat-dialog-actions>
-  <button mat-button (click)="dismiss()">
+  <button mat-button (click)="close()">
     {{ 'BACK' | translate }}
   </button>
 </div>
