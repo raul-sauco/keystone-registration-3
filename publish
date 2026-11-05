@@ -1,30 +1,39 @@
 #!/bin/bash
 
-# Some colors for the output
+set -euo pipefail
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
-NC='\033[0m' # No Color
-
-# Clean up the dist folder
-rm -rf dist/keystone-registration
+NC='\033[0m'
 
 # Check if production or staging
 production=false
 while getopts 'p' opt; do
-  production=true
+  case "$opt" in
+    p) production=true ;;
+  esac
 done
-shift "$(($OPTIND -1))"
+shift "$((OPTIND - 1))"
 
-# Set the configuration variable
 configuration="staging"
-if [[ "$production" = true ]]
-then
+if [[ "$production" == true ]]; then
   configuration="production"
 fi
 
-# Generate the matching bundle
-echo "${GREEN}»»» Generating $configuration bundle «««${NC}"
-npx ng build --configuration $configuration
+# Read version from package.json
+version=$(node -p "require('./package.json').version")
+
+# Temporarily update index.html
+cp src/index.html src/index.html.bak
+trap 'mv -f src/index.html.bak src/index.html' EXIT
+
+sed -i "s/{{ VERSION }}/$version/g" src/index.html
+
+# Generate bundle
+echo "${GREEN}»»» Generating $configuration bundle (v$version) «««${NC}"
+
+rm -rf dist/keystone-registration
+npx ng build --configuration "$configuration"
 
 # Clean up the remote playground folder
 # remote="climbdal@keystone-adventures.com"

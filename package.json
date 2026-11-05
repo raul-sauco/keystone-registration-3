@@ -1,6 +1,6 @@
 {
   "name": "keystone-registration",
-  "version": "22.0.8",
+  "version": "22.0.10",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
